@@ -1,0 +1,79 @@
+@theme {
+  /* display */
+  --text-d1: 2.9375rem; /* 47px */
+  --text-d1--font-weight: 800;
+  --text-d1--line-height: 147%;
+  --text-d1--letter-spacing: -0.05875rem;
+
+  --text-d2: 2rem; /* 32px */
+  --text-d2--font-weight: 800;
+  --text-d2--line-height: 147%;
+
+  --text-d3: 1.3125rem; /* 21px */
+  --text-d3--font-weight: 600;
+  --text-d3--line-height: 147%;
+  --text-d3--letter-spacing: 0.01313rem;
+
+  /* heading */
+  --text-h1: 1.375rem; /* 22px */
+  --text-h1--font-weight: 600;
+  --text-h1--line-height: 150%;
+  --text-h1--letter-spacing: -0.0275rem;
+
+  --text-h2: 1.25rem; /* 20px */
+  --text-h2--font-weight: 600;
+  --text-h2--line-height: 147%;
+  --text-h2--letter-spacing: 0.0125rem;
+
+  --text-h3: 1.125rem; /* 18px */
+  --text-h3--font-weight: 600;
+  --text-h3--line-height: 150%;
+  --text-h3--letter-spacing: -0.0675rem;
+
+  /* subtitle */
+  --text-sub-number: 1.5625rem; /* 25px */
+  --text-sub-number--font-weight: 600;
+  --text-sub-number--line-height: 150%;
+  --text-sub-number--letter-spacing: -0.03125rem;
+
+  --text-sub1-sb: 1.0625rem; /* 17px */
+  --text-sub1-sb--font-weight: 600;
+  --text-sub1-sb--line-height: 150%;
+  --text-sub1-sb--letter-spacing: 0.01063rem;
+
+  --text-sub1-r: 1.0625rem; /* 17px */
+  --text-sub1-r--font-weight: 400;
+  --text-sub1-r--line-height: 150%;
+  --text-sub1-r--letter-spacing: -0.01063rem;
+
+  --text-sub2-sb: 0.8125rem; /* 13px */
+  --text-sub2-sb--font-weight: 600;
+  --text-sub2-sb--line-height: 150%;
+
+  --text-sub2-r: 0.8125rem; /* 13px */
+  --text-sub2-r--font-weight: 400;
+  --text-sub2-r--line-height: 150%;
+
+  --text-sub3: 0.6875rem; /* 11px */
+  --text-sub3--font-weight: 400;
+  --text-sub3--line-height: 150%;
+
+  /* body */
+  --text-body1-md: 0.9375rem; /* 15px */
+  --text-body1-md--font-weight: 500;
+  --text-body1-md--line-height: 150%;
+  --text-body1-md--letter-spacing: 0.0375rem;
+
+  --text-body2: 0.9375rem; /* 15px */
+  --text-body2--font-weight: 400;
+  --text-body2--line-height: 150%;
+
+  --text-body3: 0.875rem; /* 14px */
+  --text-body3--font-weight: 400;
+  --text-body3--line-height: 150%;
+
+  --text-navigation: 0.6875rem; /* 11px */
+  --text-navigation--font-weight: 400;
+  --text-navigation--line-height: 150%;
+  --text-navigation--letter-spacing: -0.02063rem;
+}

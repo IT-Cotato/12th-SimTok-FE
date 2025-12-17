@@ -1,0 +1,42 @@
+@import "tailwindcss";
+@import "./typography.css";
+
+@theme {
+  --color-green-00: #00a855;
+  --color-green-01: #00c362;
+  --color-green-02: #50cd7a;
+  --color-green-03: #bbecc8;
+  --color-green-04: #ebf9ef;
+
+  --color-mint-01: #42f09e;
+  --color-mint-02: #c1f8da;
+  --color-mint-03: #f0fff4;
+  --color-mint-04: #f7fdfa;
+
+  --color-orange-00: #ff6700;
+  --color-orange-01: #ff9100;
+  --color-orange-02: #fbc223;
+  --color-oragne-03: #fff2de;
+  --color-oragne-04: #fdf8d2;
+
+  --color-yellowgreen: #f6f8ad;
+  --color-green: #d9eec5;
+  --color-mintgreen: #b1ea77;
+  --color-antique-white: #f8e6d8;
+  --color-mottled-brown: #c58964;
+  --color-coconut: #935e3c;
+
+  --color-black: #242628;
+  --color-neutral-01: #323438;
+  --color-neutral-02: #4b4c50;
+  --color-neutral-03: #57595b;
+  --color-neutral-04: #686a6d;
+  --color-neutral-05: #85878c;
+  --color-neutral-06: #a4a6ad;
+  --color-neutral-07: #c5c7cc;
+  --color-neutral-08: #e5e6e9;
+  --color-neutral-09: #e9e9ea;
+  --color-neutral-10: #f3f3f4;
+  --color-neutral-11: #f9f9fb;
+  --color-white: #fefefe;
+}
