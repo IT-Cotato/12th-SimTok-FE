@@ -1,17 +1,20 @@
 import type { NextConfig } from "next";
 
+import type { RuleSetRule } from "webpack";
+
 const nextConfig: NextConfig = {
   webpack(config) {
-    const fileLoaderRule = config.module.rules.find((rule: any) =>
-      rule.test?.test?.(".svg"),
+    const rules = config.module?.rules as RuleSetRule[];
+
+    const fileLoaderRule = rules.find(
+      rule => rule.test instanceof RegExp && rule.test.test(".svg"),
     );
 
     if (fileLoaderRule) {
       fileLoaderRule.exclude = /\.svg$/i;
     }
 
-    // SVGR 로더 추가
-    config.module.rules.push({
+    rules.push({
       test: /\.svg$/i,
       issuer: /\.[jt]sx?$/,
       use: ["@svgr/webpack"],
