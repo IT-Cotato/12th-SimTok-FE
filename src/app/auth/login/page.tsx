@@ -3,9 +3,9 @@
 
 import { useState } from "react";
 
-import EyeIcon from "@/components/icons/Eye";
-import LockIcon from "@/components/icons/Lock";
-import PhoneIcon from "@/components/icons/Phone";
+import EyeIcon from "@/assets/eye.svg";
+import LockIcon from "@/assets/lock.svg";
+import PhoneIcon from "@/assets/phone.svg";
 
 export default function LoginPage() {
   const [phone, setPhone] = useState("");

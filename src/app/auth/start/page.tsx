@@ -3,7 +3,7 @@
 
 import { useRouter } from "next/navigation";
 
-import KakaoIcon from "@/components/icons/Kakao";
+import KakaoIcon from "@/assets/kakao.svg";
 
 export default function AuthStartPage() {
   const router = useRouter();
