@@ -18,6 +18,8 @@ export default function LoginPage() {
   const router = useRouter();
 
   const isActive = phone.length > 0 && password.length > 0;
+  const activeBg =
+    "radial-gradient(39.1% 31.12% at 21.02% 2.51%, rgba(246, 248, 173, 0.42) 57.26%, rgba(255, 255, 255, 0.42) 100%)";
 
   const formatPhone = (value: string) => {
     const onlyNumber = value.replace(/\D/g, ""); // 숫자만 남기기
@@ -38,7 +40,12 @@ export default function LoginPage() {
 
   return (
     <main className="flex min-h-dvh justify-center bg-white">
-      <div className="flex h-[956px] w-[440px] flex-col px-4 py-[57px]">
+      <div
+        className="flex h-[956px] w-[440px] flex-col px-4 py-[57px]"
+        style={{
+          background: isActive ? activeBg : "bg-white",
+        }}
+      >
         {/* 상단 헤더: 뒤로가기 + 로그인 */}
         <header className="flex w-full items-center justify-between px-4">
           <button
@@ -133,6 +140,7 @@ export default function LoginPage() {
           <button
             type="button"
             disabled={!isActive}
+            onClick={() => router.push("/")}
             className={`font-noraml flex h-[58px] w-full items-center justify-center rounded-2xl text-[20px] ${
               isActive
                 ? "bg-mint-01 text-white"
