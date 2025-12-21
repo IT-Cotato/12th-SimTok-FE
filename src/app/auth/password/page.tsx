@@ -107,10 +107,8 @@ export default function PasswordPage() {
         <PageHeader title="비밀번호 찾기" />
 
         {/* 상단 타이틀 */}
-        <div className="mt-[63px] flex w-full items-center gap-[10px] px-4 py-[10px]">
-          <h1 className="text-d2 text-neutral-02 w-[274px]">
-            비밀번호를 찾아볼까요?
-          </h1>
+        <div className="mt-[63px] flex w-full items-center gap-[10px] py-[10px]">
+          <h1 className="text-neutral-02 text-d2">비밀번호를 찾아볼까요?</h1>
         </div>
 
         {/* 입력 필드 영역 */}

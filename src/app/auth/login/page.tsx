@@ -40,8 +40,8 @@ export default function LoginPage() {
         <PageHeader title="로그인" />
 
         {/* 상단 타이틀 */}
-        <div className="mt-[63px] flex w-full items-center gap-[10px] px-4 py-[10px]">
-          <h1 className="text-neutral-02 text-d2 w-[274px]">
+        <div className="mt-[63px] flex w-full items-center gap-[10px] py-[10px]">
+          <h1 className="text-neutral-02 text-d2">
             로그인하고
             <br />
             심톡을 시작해볼까요?
