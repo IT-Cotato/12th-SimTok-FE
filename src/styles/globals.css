@@ -40,3 +40,26 @@
   --color-neutral-11: #f9f9fb;
   --color-white: #fefefe;
 }
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+  .bg-radial-yellowgreen-mintgreen {
+    background:
+      radial-gradient(
+        39.1% 31.12% at 80.25% 2.51%,
+        rgba(246, 248, 173, 0.42) 57.26%,
+        rgba(255, 255, 255, 0.42) 100%
+      ),
+      radial-gradient(
+        39.99% 49.21% at 23.64% 2.72%,
+        rgba(66, 240, 158, 0.66) 21.15%,
+        rgba(255, 255, 255, 0.87) 93.53%
+      );
+  }
+}
