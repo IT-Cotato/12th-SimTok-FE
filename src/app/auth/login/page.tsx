@@ -18,8 +18,6 @@ export default function LoginPage() {
   const router = useRouter();
 
   const isActive = phone.length > 0 && password.length > 0;
-  const activeBg =
-    "radial-gradient(39.1% 31.12% at 21.02% 2.51%, rgba(246, 248, 173, 0.42) 57.26%, rgba(255, 255, 255, 0.42) 100%)";
 
   const formatPhone = (value: string) => {
     const onlyNumber = value.replace(/\D/g, ""); // 숫자만 남기기
@@ -41,10 +39,9 @@ export default function LoginPage() {
   return (
     <main className="flex min-h-dvh justify-center bg-white">
       <div
-        className="flex h-[956px] w-[440px] flex-col px-4 py-[57px]"
-        style={{
-          background: isActive ? activeBg : "bg-white",
-        }}
+        className={`flex h-[956px] w-[440px] flex-col px-4 py-[57px] ${
+          isActive ? "bg-radial-yellowgreen-mintgreen" : "bg-white"
+        }`}
       >
         {/* 상단 헤더: 뒤로가기 + 로그인 */}
         <header className="flex w-full items-center justify-between px-4">
@@ -131,7 +128,7 @@ export default function LoginPage() {
         <div className="mt-auto flex flex-col items-center gap-[10px] pb-[30px]">
           <button
             type="button"
-            className="text-subtitle2_semibold text-black"
+            className="text-subtitle2_semibold cursor-pointer text-black"
             onClick={() => router.push("/auth/password")}
           >
             비밀번호를 잊으셨나요?
