@@ -20,6 +20,7 @@
   --color-oragne-04: #fdf8d2;
 
   --color-yellowgreen: #f6f8ad;
+  --color-kakao: #fee500;
   --color-green: #d9eec5;
   --color-mintgreen: #b1ea77;
   --color-antique-white: #f8e6d8;
@@ -39,6 +40,8 @@
   --color-neutral-10: #f3f3f4;
   --color-neutral-11: #f9f9fb;
   --color-white: #fefefe;
+
+  --color-dim-02: #242628D4;
 }
 
 @layer utilities {
@@ -61,5 +64,17 @@
         rgba(66, 240, 158, 0.66) 21.15%,
         rgba(255, 255, 255, 0.87) 93.53%
       );
+  }
+
+  .bg-dim02 {
+    background-color: var(--dim02);
+  }
+
+  .bg-dim02-gradient {
+    background: linear-gradient(
+        0deg,
+        rgba(36, 38, 40, 0.83) 0%,
+        rgba(36, 38, 40, 0.83) 100%
+      )
   }
 }

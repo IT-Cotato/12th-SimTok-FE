@@ -5,9 +5,13 @@ import { useRouter } from "next/navigation";
 
 import { useEffect, useState } from "react";
 
-import BackIcon from "@/assets/back.svg";
 import PhoneIcon from "@/assets/phone.svg";
 import ProfileIcon from "@/assets/profile.svg";
+
+import AlertModal from "@/components/AlertModal";
+import PageHeader from "@/components/Header";
+
+import { formatPhone } from "@/utils/formatPhone";
 
 export default function PasswordPage() {
   const [name, setName] = useState("");
@@ -89,16 +93,6 @@ export default function PasswordPage() {
     setIsVerified(false);
   };
 
-  const formatPhone = (value: string) => {
-    const onlyNumber = value.replace(/\D/g, ""); // 숫자만 남기기
-
-    if (onlyNumber.length < 4) return onlyNumber;
-    if (onlyNumber.length < 8) {
-      return `${onlyNumber.slice(0, 3)}-${onlyNumber.slice(3)}`; // 010-123
-    }
-    return `${onlyNumber.slice(0, 3)}-${onlyNumber.slice(3, 7)}-${onlyNumber.slice(7, 11)}`; // 010-1234-5678
-  };
-
   // onChange 핸들러
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value;
@@ -108,27 +102,13 @@ export default function PasswordPage() {
 
   return (
     <main className="flex min-h-dvh justify-center bg-white">
-      <div className="flex h-[956px] w-[440px] flex-col px-4 py-[57px]">
+      <div className="mt-[13px] flex h-full w-110 flex-col px-4">
         {/* 상단 헤더: 뒤로가기 */}
-        <header className="flex w-full items-center justify-between px-4">
-          <button
-            type="button"
-            onClick={() => router.back()}
-            className="flex h-6 w-6 items-center justify-center"
-          >
-            <BackIcon className="text-neutral-02 h-6 w-6" />
-          </button>
-          <span className="text-neutral-02 text-subtitle1_semibold">
-            비밀번호 찾기
-          </span>
-
-          {/* 오른쪽 자리를 맞추기 위한 더미 박스 */}
-          <div className="h-6 w-6" />
-        </header>
+        <PageHeader title="비밀번호 찾기" />
 
         {/* 상단 타이틀 */}
         <div className="mt-[63px] flex w-full items-center gap-[10px] px-4 py-[10px]">
-          <h1 className="text-display02 w-[274px] text-black">
+          <h1 className="text-d2 text-neutral-02 w-[274px]">
             비밀번호를 찾아볼까요?
           </h1>
         </div>
@@ -270,31 +250,16 @@ export default function PasswordPage() {
 
           {/* 인증 결과 모달 */}
           {modalType && (
-            <div className="bg-dim02 fixed inset-0 z-50 flex items-center justify-center">
-              {/* 모달 박스 */}
-              <div className="flex w-[316px] flex-col items-stretch rounded-2xl bg-white">
-                {/* 상단 텍스트 영역 */}
-                <div className="flex flex-col items-center justify-center px-[10px] py-[7px]">
-                  <p className="text-heading3 text-neutral-01 text-center">
-                    {modalType === "success" ? "인증완료" : "인증오류"}
-                  </p>
-                  <p className="text-body3 text-neutral-01 mt-[4px] text-center">
-                    {modalType === "success"
-                      ? "인증이 완료되었습니다."
-                      : "인증번호를 확인할 수 없습니다."}
-                  </p>
-                </div>
-
-                {/* 하단 버튼 영역 */}
-                <button
-                  type="button"
-                  onClick={handleModalConfirm}
-                  className="bg-mint-01 text-body2 flex h-[45px] w-full items-center justify-center rounded-b-2xl text-white"
-                >
-                  확인
-                </button>
-              </div>
-            </div>
+            <AlertModal
+              isOpen={!!modalType}
+              title={modalType === "success" ? "인증완료" : "인증오류"}
+              message={
+                modalType === "success"
+                  ? "인증이 완료되었습니다."
+                  : "인증번호를 확인할 수 없습니다."
+              }
+              onClose={handleModalConfirm}
+            />
           )}
         </div>
       </div>
