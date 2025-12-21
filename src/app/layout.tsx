@@ -14,8 +14,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={pretendard.className}>
-      <body>{children}</body>
+    <html
+      lang="ko"
+      className={`${pretendard.className} scrollbar-hide flex items-center justify-center`}
+    >
+      <body className="flex h-screen w-[440px] overflow-y-scroll">
+        {children}
+      </body>
     </html>
   );
 }
