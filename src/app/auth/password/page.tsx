@@ -1,4 +1,3 @@
-// src/app/auth/password/page.tsx
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -9,6 +8,7 @@ import PhoneIcon from "@/assets/phone.svg";
 import ProfileIcon from "@/assets/profile.svg";
 
 import AlertModal from "@/components/AlertModal";
+import FullButton from "@/components/FullButton";
 import PageHeader from "@/components/Header";
 
 import { formatPhone } from "@/utils/formatPhone";
@@ -112,16 +112,18 @@ export default function PasswordPage() {
         </div>
 
         {/* 입력 필드 영역 */}
-        <div className="mt-[40px] flex w-full flex-col gap-[10px]">
+        <div className="mt-[65px] flex w-full flex-col gap-[10px] pt-[11px]">
           {/* 이름 */}
           <div
-            className={`bg-neutral-11 flex h-[55px] w-full items-center gap-[12px] rounded-2xl border px-[10px] py-[8px] ${
+            className={`bg-neutral-11 flex h-[55px] w-full items-center rounded-2xl border px-[10px] py-[8px] ${
               focused === "name" || name.length > 0
                 ? "border-mint-01"
                 : "border-neutral-08"
             }`}
           >
-            <ProfileIcon className="h-[24px] w-[24px]" />
+            <div className="pr-2.5">
+              <ProfileIcon />
+            </div>
             <input
               type="name"
               value={name}
@@ -129,12 +131,12 @@ export default function PasswordPage() {
               onFocus={() => setFocused("name")}
               onBlur={() => setFocused(prev => (prev === "name" ? null : prev))}
               placeholder="이름"
-              className="text-neutral-07 placeholder:text-neutral-07 text-heading2 w-full bg-transparent outline-none"
+              className="placeholder:text-neutral-07 text-h2 w-full bg-transparent text-black outline-none"
             />
           </div>
 
           {/* 전화번호 + 인증번호 받기 */}
-          <div className="flex w-full gap-[10px]">
+          <div className="flex w-full gap-[13px]">
             {/* 전화번호 입력 */}
             <div
               className={`bg-neutral-11 flex h-[55px] flex-1 items-center gap-[12px] rounded-2xl border px-[10px] py-[8px] ${
@@ -143,7 +145,7 @@ export default function PasswordPage() {
                   : "border-neutral-08"
               }`}
             >
-              <PhoneIcon className="h-[24px] w-[24px]" />
+              <PhoneIcon />
               <input
                 type="tel"
                 value={formatPhone(phone)}
@@ -153,7 +155,7 @@ export default function PasswordPage() {
                   setFocused(prev => (prev === "phone" ? null : prev))
                 }
                 placeholder="전화번호"
-                className="text-neutral-07 placeholder:text-neutral-07 text-heading2 w-full bg-transparent outline-none"
+                className="placeholder:text-neutral-07 text-h2 w-full bg-transparent text-black outline-none"
               />
             </div>
 
@@ -162,7 +164,7 @@ export default function PasswordPage() {
               type="button"
               onClick={handleRequestCode}
               disabled={!phone || (isCodeRequested && timeLeft > 0)}
-              className={`text-heading2 flex h-[55px] w-[125px] items-center justify-center rounded-2xl border px-[10px] py-[8px] ${
+              className={`text-h2 flex h-[55px] cursor-pointer items-center justify-center rounded-2xl border px-[10px] py-[8px] whitespace-nowrap ${
                 !phone
                   ? "border-neutral-08 text-neutral-06 border bg-white" // 입력 없음
                   : isCodeRequested && timeLeft > 0
@@ -175,11 +177,11 @@ export default function PasswordPage() {
           </div>
 
           {/* 인증번호 + 인증하기 */}
-          <div className="flex w-full gap-[10px]">
+          <div className="flex w-full gap-[13px]">
             {/* 인증번호 입력 */}
             <div className="flex flex-1 items-center gap-[10px]">
               <div
-                className={`bg-neutral-11 flex h-[55px] flex-1 items-center gap-[12px] rounded-2xl border px-[10px] py-[8px] ${
+                className={`bg-neutral-11 flex h-[55px] flex-1 items-center gap-[13px] rounded-2xl border px-[10px] py-[8px] ${
                   focused === "code" || code.length > 0
                     ? "border-mint-01"
                     : "border-neutral-08"
@@ -194,11 +196,11 @@ export default function PasswordPage() {
                     setFocused(prev => (prev === "code" ? null : prev))
                   }
                   placeholder="인증번호"
-                  className="text-neutral-07 placeholder:text-neutral-07 text-heading2 w-full bg-transparent outline-none"
+                  className="placeholder:text-neutral-07 text-h2 w-full bg-transparent text-black outline-none"
                 />
                 {/* 카운트다운 */}
                 {isCodeRequested && timeLeft > 0 && (
-                  <span className="text-subtitle1_semibold text-orange-00">
+                  <span className="text-sub1-sb text-orange-00">
                     {formatTime(timeLeft)}
                   </span>
                 )}
@@ -210,7 +212,7 @@ export default function PasswordPage() {
               type="button"
               onClick={handleVerify}
               disabled={!code || !isCodeRequested || timeLeft === 0}
-              className={`text-heading2 flex h-[55px] w-[125px] items-center justify-center rounded-2xl border px-[10px] py-[8px] ${
+              className={`text-h2 flex h-[55px] w-[125px] cursor-pointer items-center justify-center rounded-2xl border px-[10px] py-[8px] ${
                 !code || !isCodeRequested || timeLeft === 0
                   ? "border-neutral-08 text-neutral-06 bg-white"
                   : "border-mint-01 bg-mint-01 text-white"
@@ -226,25 +228,24 @@ export default function PasswordPage() {
               <button
                 type="button"
                 onClick={handleResendClick}
-                className="text-orange-00 text-[10px] leading-[150%] underline"
+                className="text-orange-00 cursor-pointer text-[10px] leading-[150%] underline"
               >
                 인증번호가 오지 않나요?
               </button>
             </div>
           )}
 
-          <div className="mt-[270px] flex w-full justify-center"></div>
-          <button
-            type="button"
-            disabled={!isConfirmActive}
-            className={`font-noraml flex h-[58px] w-full items-center justify-center rounded-2xl text-[20px] ${
-              isConfirmActive
-                ? "bg-mint-01 text-white"
-                : "border-neutral-08 text-neutral-06 border bg-white"
-            }`}
-          >
-            확인
-          </button>
+          <div className="mt-[270px] flex w-full justify-center">
+            <FullButton
+              activeClass="bg-mint-01 text-white text-button-sb"
+              inactiveClass="border border-neutral-08 bg-white text-neutral-06 text-button-sb"
+              isActive={isConfirmActive}
+              // 필요하면 onClick 추가
+              // onClick={...}
+            >
+              확인
+            </FullButton>
+          </div>
 
           {/* 인증 결과 모달 */}
           {modalType && (
