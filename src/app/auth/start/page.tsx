@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 
 import KakaoIcon from "@/assets/kakao.svg";
 
+import FullButton from "@/components/FullButton";
+
 export default function AuthStartPage() {
   const router = useRouter();
 
@@ -26,39 +28,39 @@ export default function AuthStartPage() {
         <div className="flex flex-col gap-[10px] pt-[10px] pb-[10px]">
           {/* 카카오 로그인 버튼 */}
           <div className="px-4">
-            <button className="bg-kakao flex h-[58px] w-full cursor-pointer items-center justify-center rounded-2xl px-[14px]">
-              <div className="flex items-center gap-2 px-[82px]">
+            <FullButton
+              activeClass="bg-kakao"
+              inactiveClass="bg-kakao"
+              isActive
+            >
+              <div className="flex items-center gap-2">
                 <KakaoIcon />
-                <span className="text-h2 flex h-[30px] items-center">
-                  카카오 로그인
-                </span>
+                <span>카카오 로그인</span>
               </div>
-            </button>
+            </FullButton>
           </div>
 
           {/* 일반 로그인 버튼 */}
           <div className="px-4">
-            <button
-              className="border-neutral-08 flex h-[58px] w-full cursor-pointer items-center justify-center rounded-2xl border px-[14px]"
+            <FullButton
+              activeClass="bg-white border border-neutral-08"
+              inactiveClass="bg-white border border-neutral-08"
+              isActive
               onClick={handleClickLogin}
             >
-              <div className="flex items-center px-[82px]">
-                <span className="text-h2 flex h-[30px] items-center">
-                  로그인
-                </span>
-              </div>
-            </button>
+              로그인
+            </FullButton>
           </div>
 
           {/* 회원가입 버튼 */}
           <div className="px-4">
-            <button className="flex h-[58px] w-full cursor-pointer items-center justify-center rounded-2xl bg-black px-[14px]">
-              <div className="flex items-center px-[82px]">
-                <span className="text-h2 flex h-[30px] items-center text-white">
-                  회원가입
-                </span>
-              </div>
-            </button>
+            <FullButton
+              activeClass="bg-black text-white"
+              inactiveClass="bg-black text-white"
+              isActive
+            >
+              회원가입
+            </FullButton>
           </div>
         </div>
       </div>

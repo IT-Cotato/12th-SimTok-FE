@@ -9,6 +9,7 @@ import EyeIcon from "@/assets/eye.svg";
 import LockIcon from "@/assets/lock.svg";
 import PhoneIcon from "@/assets/phone.svg";
 
+import FullButton from "@/components/FullButton";
 import PageHeader from "@/components/Header";
 
 import { formatPhone } from "@/utils/formatPhone";
@@ -49,16 +50,18 @@ export default function LoginPage() {
         </div>
 
         {/* 입력 필드 영역 */}
-        <div className="mt-[40px] flex w-full flex-col gap-[10px]">
+        <div className="mt-[29px] flex w-full flex-col gap-[10px]">
           {/* 전화번호 */}
           <div
-            className={`bg-neutral-11 flex h-[55px] w-full items-center gap-[12px] rounded-2xl border px-[10px] py-[8px] ${
+            className={`bg-neutral-11 flex h-[55px] w-full items-center rounded-2xl border px-[10px] py-[8px] ${
               focused === "phone" || phone.length > 0
                 ? "border-mint-01"
                 : "border-neutral-08"
             }`}
           >
-            <PhoneIcon className="h-[24px] w-[24px]" />
+            <div className="pr-3">
+              <PhoneIcon />
+            </div>
             <input
               type="tel"
               value={formatPhone(phone)}
@@ -68,19 +71,21 @@ export default function LoginPage() {
                 setFocused(prev => (prev === "phone" ? null : prev))
               }
               placeholder="전화번호"
-              className="text-neutral-07 placeholder:text-neutral-07 text-heading2 w-full bg-transparent outline-none"
+              className="text-neutral-07 placeholder:text-neutral-07 text-h2 w-full bg-transparent outline-none"
             />
           </div>
 
           {/* 비밀번호 */}
           <div
-            className={`bg-neutral-11 flex h-[55px] w-full items-center gap-[12px] rounded-2xl border px-[10px] py-[8px] ${
+            className={`bg-neutral-11 flex h-[55px] w-full items-center rounded-2xl border px-[10px] py-[8px] ${
               focused === "password" || password.length > 0
                 ? "border-mint-01"
                 : "border-neutral-08"
             }`}
           >
-            <LockIcon className="h-[24px] w-[24px]" />
+            <div className="pr-3">
+              <LockIcon />
+            </div>
             <input
               type={showPassword ? "text" : "password"}
               value={password}
@@ -90,43 +95,40 @@ export default function LoginPage() {
                 setFocused(prev => (prev === "password" ? null : prev))
               }
               placeholder="비밀번호"
-              className="text-neutral-07 placeholder:text-neutral-07 text-heading2 w-full bg-transparent outline-none"
+              className="text-neutral-07 placeholder:text-neutral-07 text-h2 w-full bg-transparent outline-none"
             />
 
             {password.length > 0 && (
               <button
                 type="button"
                 onClick={() => setShowPassword(prev => !prev)}
-                className="flex h-[24px] w-[24px] items-center justify-center"
+                className="flex items-center justify-center"
               >
-                <EyeIcon className="text-neutral-06 h-[24px] w-[24px]" />
+                <EyeIcon />
               </button>
             )}
           </div>
         </div>
 
         {/* 하단 영역 */}
-        <div className="mt-auto flex flex-col items-center gap-[10px] pb-[30px]">
+        <div className="mt-[319px] flex flex-col items-center py-2.5">
           <button
-            type="button"
-            className="text-subtitle2_semibold cursor-pointer text-black"
+            className="text-sub1-r text-neutral-01 cursor-pointer"
             onClick={() => router.push("/auth/password")}
           >
             비밀번호를 잊으셨나요?
           </button>
+        </div>
 
-          <button
-            type="button"
-            disabled={!isActive}
+        <div>
+          <FullButton
+            activeClass="bg-mint-01 text-white text-button-sb"
+            inactiveClass="border border-neutral-08 bg-white text-neutral-06 text-button-sb"
+            isActive={isActive}
             onClick={() => router.push("/")}
-            className={`font-noraml flex h-[58px] w-full items-center justify-center rounded-2xl text-[20px] ${
-              isActive
-                ? "bg-mint-01 text-white"
-                : "border-neutral-08 text-neutral-06 border bg-white"
-            }`}
           >
             로그인
-          </button>
+          </FullButton>
         </div>
       </div>
     </main>
