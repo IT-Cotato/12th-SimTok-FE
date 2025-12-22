@@ -1,4 +1,3 @@
-// src/app/auth/start/page.tsx
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -15,45 +14,52 @@ export default function AuthStartPage() {
   return (
     <main className="flex min-h-dvh justify-center">
       {/* 440 × 956 프레임 */}
-      <div className="flex h-[956px] w-[440px] flex-col gap-[197px] px-4 py-8">
+      <div className="flex h-full w-110 flex-col gap-[197px]">
         {/* 상단 로고 영역 */}
         <div className="mt-[289px] flex w-full items-center justify-center px-4 py-2.5">
-          <span className="text-neutral-02 flex h-[21px] w-[408px] items-center justify-center text-[13px] font-medium">
+          <span className="text-sub1-r flex h-[21px] items-center justify-center text-black">
             LOGO
           </span>
         </div>
 
         {/* 하단 버튼 영역 */}
-        <div className="flex flex-col gap-[10px]">
+        <div className="flex flex-col gap-[10px] pt-[10px] pb-[10px]">
           {/* 카카오 로그인 버튼 */}
-          <button
-            type="button"
-            className="bg-kakao flex h-[58px] w-full cursor-pointer items-center justify-center gap-[10px] rounded-2xl px-[14px] py-[30px]"
-          >
-            <KakaoIcon className="h-[30px] w-[30px]" />
-            <span className="text-h2 text-black">카카오 로그인</span>
-          </button>
+          <div className="px-4">
+            <button className="bg-kakao flex h-[58px] w-full cursor-pointer items-center justify-center rounded-2xl px-[14px]">
+              <div className="flex items-center gap-2 px-[82px]">
+                <KakaoIcon />
+                <span className="text-h2 flex h-[30px] items-center">
+                  카카오 로그인
+                </span>
+              </div>
+            </button>
+          </div>
 
           {/* 일반 로그인 버튼 */}
-          <button
-            type="button"
-            onClick={handleClickLogin}
-            className="border-neutral-08 flex h-[58px] w-full cursor-pointer items-center justify-center rounded-2xl border bg-white px-[82px] py-[30px]"
-          >
-            <span className="text-h2 flex h-[30px] w-[57px] items-center justify-center text-[20px]">
-              로그인
-            </span>
-          </button>
+          <div className="px-4">
+            <button
+              className="border-neutral-08 flex h-[58px] w-full cursor-pointer items-center justify-center rounded-2xl border px-[14px]"
+              onClick={handleClickLogin}
+            >
+              <div className="flex items-center px-[82px]">
+                <span className="text-h2 flex h-[30px] items-center">
+                  로그인
+                </span>
+              </div>
+            </button>
+          </div>
 
           {/* 회원가입 버튼 */}
-          <button
-            type="button"
-            className="flex h-[58px] w-full cursor-pointer items-center justify-center rounded-2xl bg-black px-[82px] py-[30px]"
-          >
-            <span className="flex h-[30px] w-[74px] items-center justify-center text-[20px] text-white">
-              회원가입
-            </span>
-          </button>
+          <div className="px-4">
+            <button className="flex h-[58px] w-full cursor-pointer items-center justify-center rounded-2xl bg-black px-[14px]">
+              <div className="flex items-center px-[82px]">
+                <span className="text-h2 flex h-[30px] items-center text-white">
+                  회원가입
+                </span>
+              </div>
+            </button>
+          </div>
         </div>
       </div>
     </main>
