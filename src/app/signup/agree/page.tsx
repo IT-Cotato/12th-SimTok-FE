@@ -31,9 +31,13 @@ const initialAgreements: Record<AgreementKey, boolean> = {
   marketing: false,
 };
 
-export default function SignupPage() {
+export default function AgreePage() {
+  const router = useRouter();
   const [agreements, setAgreements] =
     useState<Record<AgreementKey, boolean>>(initialAgreements);
+
+  const isConfirmActive =
+    agreements.service && agreements.finance && agreements.personalReq;
 
   const allChecked = Object.values(agreements).every(Boolean);
 
@@ -60,7 +64,7 @@ export default function SignupPage() {
         <PageHeader title="회원가입" />
 
         {/* 상단 타이틀 */}
-        <div className="mt-[63px] flex w-full items-center gap-[10px] py-[10px]">
+        <div className="mt-[63px] flex w-full items-center gap-2.5 py-2.5">
           <h1 className="text-neutral-02 text-d2">
             반가워요! 가입하려면
             <br />
@@ -69,9 +73,9 @@ export default function SignupPage() {
         </div>
 
         {/* 전체동의 영역 */}
-        <div className="mt-[31px] flex w-full flex-col py-[10px]">
+        <div className="mt-[31px] flex w-full flex-col py-2.5">
           {/* 전체동의 */}
-          <div className="border-neutral-09 border-b pb-[20px]">
+          <div className="border-neutral-09 border-b pb-5">
             <Checkbox
               label="전체동의"
               checked={allChecked}
@@ -80,47 +84,57 @@ export default function SignupPage() {
           </div>
         </div>
         {/* 개별 약관들 */}
-        <div className="py-[10px]">
+        <div className="py-2.5">
           <Checkbox
             label="심톡 이용약관 동의 (필수)"
             checked={agreements.service}
             onChange={handleChange("service")}
           />
         </div>
-        <div className="py-[10px]">
+        <div className="py-2.5">
           <Checkbox
             label="전자금융거래 이용약관동의 (필수)"
             checked={agreements.finance}
             onChange={handleChange("finance")}
           />
         </div>
-        <div className="py-[10px]">
+        <div className="py-2.5">
           <Checkbox
             label="개인정보 수집 이용 동의 (필수)"
             checked={agreements.personalReq}
             onChange={handleChange("personalReq")}
           />
         </div>
-        <div className="py-[10px]">
+        <div className="py-2.5">
           <Checkbox
             label="개인정보 수집 이용 동의 (선택)"
             checked={agreements.personalOpt1}
             onChange={handleChange("personalOpt1")}
           />
         </div>
-        <div className="py-[10px]">
+        <div className="py-2.5">
           <Checkbox
             label="개인정보 수집 이용 동의 (선택)"
             checked={agreements.personalOpt2}
             onChange={handleChange("personalOpt2")}
           />
         </div>
-        <div className="py-[10px]">
+        <div className="py-2.5">
           <Checkbox
             label="마케팅 정보 메일, SNS수신동의 (선택)"
             checked={agreements.marketing}
             onChange={handleChange("marketing")}
           />
+        </div>
+        <div className="mt-29 flex w-full justify-center">
+          <FullButton
+            activeClass="bg-mint-01 text-white text-button-sb"
+            inactiveClass="border border-neutral-08 bg-white text-neutral-06 text-button-sb"
+            isActive={isConfirmActive}
+            onClick={() => router.push("/signup/register")}
+          >
+            동의하기
+          </FullButton>
         </div>
       </div>
     </main>
