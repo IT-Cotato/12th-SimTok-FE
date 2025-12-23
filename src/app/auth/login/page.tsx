@@ -103,7 +103,7 @@ export default function LoginPage() {
                 onClick={() => setShowPassword(prev => !prev)}
                 className="flex items-center justify-center"
               >
-                <EyeIcon />
+                <EyeIcon className="cursor-pointer" />
               </button>
             )}
           </div>
