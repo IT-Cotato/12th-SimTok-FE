@@ -21,12 +21,12 @@ export default function FullButton({
 
   return (
     <button
-      className={`flex h-[58px] w-full cursor-pointer items-center justify-center rounded-2xl px-[14px] ${stateClass} ${className}`}
+      className={`flex h-14.5 w-full cursor-pointer items-center justify-center rounded-2xl px-3.5 ${stateClass} ${className}`}
       disabled={!isActive}
       {...props}
     >
-      <div className="flex items-center px-[82px]">
-        <span className="text-h2 flex h-[30px] items-center">{children}</span>
+      <div className="flex items-center px-20.5">
+        <span className="text-h2 flex h-7.5 items-center">{children}</span>
       </div>
     </button>
   );
