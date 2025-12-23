@@ -240,8 +240,7 @@ export default function PasswordPage() {
               activeClass="bg-mint-01 text-white text-button-sb"
               inactiveClass="border border-neutral-08 bg-white text-neutral-06 text-button-sb"
               isActive={isConfirmActive}
-              // 필요하면 onClick 추가
-              // onClick={...}
+              onClick={() => router.push("/auth/find")}
             >
               확인
             </FullButton>
