@@ -58,6 +58,7 @@ export default function AuthStartPage() {
               activeClass="bg-black text-white"
               inactiveClass="bg-black text-white"
               isActive
+              onClick={() => router.push("/auth/signup")}
             >
               회원가입
             </FullButton>
