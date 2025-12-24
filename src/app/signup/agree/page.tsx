@@ -2,11 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { useEffect, useState } from "react";
-
-import dateIcon from "@/assets/date.svg";
-import PhoneIcon from "@/assets/phone.svg";
-import ProfileIcon from "@/assets/profile.svg";
+import { useState } from "react";
 
 import Checkbox from "@/components/Checkbox";
 import FullButton from "@/components/FullButton";
@@ -93,7 +89,7 @@ export default function AgreePage() {
         </div>
         <div className="py-2.5">
           <Checkbox
-            label="전자금융거래 이용약관동의 (필수)"
+            label="전자금융거래 이용약관 동의 (필수)"
             checked={agreements.finance}
             onChange={handleChange("finance")}
           />
