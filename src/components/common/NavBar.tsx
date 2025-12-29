@@ -9,7 +9,7 @@ export const NavBar = () => {
   const pathname = usePathname();
 
   return (
-    <nav>
+    <nav className="grid grid-cols-1 items-center justify-center">
       {NAV_ITEMS.map(({ key, label, href, icons }) => {
         const isActive =
           href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -18,7 +18,9 @@ export const NavBar = () => {
 
         return (
           <Link key={key} href={href}>
-            <div>
+            <div className="flex flex-col">
+              {" "}
+              {/* 디자인추가해야함 */}
               <Icon />
               <p>{label}</p>
             </div>
