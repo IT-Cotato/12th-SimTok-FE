@@ -3,7 +3,7 @@ import { Header } from "@/components/dailyRecord/Header";
 
 const DailyRecordPage = () => {
   return (
-    <main>
+    <main className="w-full">
       <Header />
       <NavBar />
     </main>
