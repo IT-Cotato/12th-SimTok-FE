@@ -1,4 +1,12 @@
+import { NavBar } from "@/components/common/NavBar";
+import { Header } from "@/components/dailyRecord/Header";
+
 const DailyRecordPage = () => {
-  return <div>Daily Record Page</div>;
+  return (
+    <main>
+      <Header />
+      <NavBar />
+    </main>
+  );
 };
 export default DailyRecordPage;
