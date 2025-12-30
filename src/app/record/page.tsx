@@ -9,7 +9,7 @@ const DailyRecordPage = () => {
     <main className="flex w-full flex-col pb-[112px]">
       <Header />
       <RecordMissionCard />
-      <div className="mt-[13px]">
+      <div className="mt-[17.5px]">
         <RecordMissionFeed />
       </div>
       <SharedDiaryCard />
