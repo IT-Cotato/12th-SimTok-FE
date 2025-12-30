@@ -2,6 +2,7 @@ import { NavBar } from "@/components/common/NavBar";
 import { Header } from "@/components/dailyRecord/Header";
 import { RecordMissionCard } from "@/components/dailyRecord/MissionCard";
 import { RecordMissionFeed } from "@/components/dailyRecord/MissionFeed";
+import { SharedDiaryCard } from "@/components/dailyRecord/ShareDiaryCard";
 
 const DailyRecordPage = () => {
   return (
@@ -11,6 +12,7 @@ const DailyRecordPage = () => {
       <div className="mt-[13px]">
         <RecordMissionFeed />
       </div>
+      <SharedDiaryCard />
       <NavBar />
     </main>
   );
