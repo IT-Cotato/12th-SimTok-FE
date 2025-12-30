@@ -1,5 +1,5 @@
 export interface UserActivity {
-  id: number;
+  userId: number;
   userName: string;
   image: string;
   isRead: boolean;
