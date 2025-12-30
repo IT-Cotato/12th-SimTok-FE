@@ -1,0 +1,102 @@
+[
+  {
+    "id": 1,
+    "userId": 101,
+    "userName": "김푸딩",
+    "profile": "/images/profile.jpg",
+    "emotion": "happy-3",
+    "text": "오늘 하루가 꽤 만족스러웠어요.",
+    "image": "/images/1.jpg",
+    "createdAt": "2025-01-09T09:12:00"
+  },
+  {
+    "id": 2,
+    "userId": 102,
+    "userName": "이하늘",
+    "profile": "/images/profile.jpg",
+    "emotion": "daily-7",
+    "text": "평범하지만 소중한 하루.",
+    "image": "/images/2.jpg",
+    "createdAt": "2025-01-09T08:45:00"
+  },
+  {
+    "id": 3,
+    "userId": 103,
+    "userName": "박민수",
+    "profile": "/images/profile.jpg",
+    "emotion": "sad-11",
+    "text": "생각이 많아지는 밤이에요.",
+    "image": "/images/3.jpg",
+    "createdAt": "2025-01-08T22:30:00"
+  },
+  {
+    "id": 4,
+    "userId": 104,
+    "userName": "정수진",
+    "profile": "/images/profile.jpg",
+    "emotion": "happy-12",
+    "text": "오랜만에 웃을 수 있었어요.",
+    "image": "/images/4.jpg",
+    "createdAt": "2025-01-08T18:05:00"
+  },
+  {
+    "id": 5,
+    "userId": 105,
+    "userName": "최유나",
+    "profile": "/images/profile.jpg",
+    "emotion": "bad-4",
+    "text": "조금은 힘든 하루였어요.",
+    "image": "/images/5.jpg",
+    "createdAt": "2025-01-07T14:20:00"
+  },
+  {
+    "id": 6,
+    "userId": 106,
+    "userName": "오지훈",
+    "profile": "/images/profile.jpg",
+    "emotion": "daily-12",
+    "text": "특별하진 않지만 기록해요.",
+    "image": "/images/6.jpg",
+    "createdAt": "2025-01-07T11:10:00"
+  },
+  {
+    "id": 7,
+    "userId": 107,
+    "userName": "한서연",
+    "profile": "/images/profile.jpg",
+    "emotion": "happy-6",
+    "text": "기분 좋은 일이 있었어요.",
+    "image": "/images/7.jpg",
+    "createdAt": "2025-01-06T21:55:00"
+  },
+  {
+    "id": 8,
+    "userId": 108,
+    "userName": "윤태호",
+    "profile": "/images/profile.jpg",
+    "emotion": "daily-3",
+    "text": "하루를 정리하며 남깁니다.",
+    "image": "/images/8.jpg",
+    "createdAt": "2025-01-06T16:40:00"
+  },
+  {
+    "id": 9,
+    "userId": 109,
+    "userName": "장하린",
+    "profile": "/images/profile.jpg",
+    "emotion": "sad-2",
+    "text": "조용히 지나간 하루.",
+    "image": "/images/9.jpg",
+    "createdAt": "2025-01-05T19:25:00"
+  },
+  {
+    "id": 10,
+    "userId": 110,
+    "userName": "백도윤",
+    "profile": "/images/profile.jpg",
+    "emotion": "bad-9",
+    "text": "컨디션이 별로였어요.",
+    "image": "/images/10.jpg",
+    "createdAt": "2025-01-05T10:00:00"
+  }
+]
