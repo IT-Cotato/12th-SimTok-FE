@@ -2,6 +2,8 @@
 
 import type { InputHTMLAttributes, ReactNode } from "react";
 
+import CheckIcon from "@/assets/check.svg";
+
 type CheckboxProps = {
   label?: ReactNode;
 } & Omit<InputHTMLAttributes<HTMLInputElement>, "type">;
@@ -9,40 +11,32 @@ type CheckboxProps = {
 export default function Checkbox({
   label,
   className = "",
-  checked,
+  checked = false,
   onChange,
   ...props
 }: CheckboxProps) {
+  const isChecked = !!checked;
+
   return (
     <label className={`flex cursor-pointer items-center gap-2 ${className}`}>
       <input
         type="checkbox"
         className="peer sr-only"
-        checked={checked}
+        checked={isChecked}
         onChange={onChange}
         {...props}
       />
 
       {/* 커스텀 박스 */}
-      <span className="border-box peer-checked:bg-mint-01 peer-checked:border-mint-01 flex h-6 w-6 items-center justify-center rounded-sm border-2 bg-white transition-colors">
-        {/* 체크 아이콘 */}
-        <svg
-          className="h-4 w-4 text-white"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M3 8.5L6.5 12L13 4"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </span>
+      <div
+        className={`relative flex h-6 w-6 items-center justify-center rounded-[4px] border-2 transition-colors ${
+          isChecked ? "bg-mint-01 border-mint-01" : "border-neutral-08 bg-white"
+        }`}
+      >
+        {isChecked && <CheckIcon className="h-4 w-4 text-white" />}
+      </div>
 
-      {label && <span className="text-h3 text-neutral-01">{label}</span>}
+      {label && <span className="text-sub1-sb text-neutral-01">{label}</span>}
     </label>
   );
 }
