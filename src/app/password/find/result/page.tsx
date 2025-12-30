@@ -14,7 +14,7 @@ export default function FindPage() {
 
   return (
     <main className="flex min-h-dvh justify-center bg-white">
-      <div className="mt-[13px] flex h-full w-110 flex-col">
+      <div className="mt-[13px] flex h-full w-110 flex-col whitespace-nowrap">
         <PageHeader title="비밀번호 찾기" />
 
         <PageTitle>기존에 사용하셨던 비밀번호예요.</PageTitle>
