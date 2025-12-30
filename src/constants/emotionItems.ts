@@ -15,7 +15,7 @@ export const EMOTION_ITEMS = {
       11: { presentText: "만족스러워요", pastText: "만족스러웠어요" },
       12: { presentText: "좋아요", pastText: "세상 행복했어요" },
     },
-    getImageSrc: (index: number) => `/assets/emoji/happy-${index}.svg`,
+    getImageSrc: (index: number) => `/images/emoji/happy-${index}.svg`,
   },
 
   daily: {
@@ -23,10 +23,7 @@ export const EMOTION_ITEMS = {
     items: {
       1: { presentText: "무난해요", pastText: "무난했어요" },
       2: { presentText: "비밀이에요", pastText: "비밀이었어요" },
-      3: {
-        presentText: "말하고 싶지 않아요",
-        pastText: "말하고 싶지 않았어요",
-      },
+      3: { presentText: "말하고 싶지않아요", pastText: "말하고 싶지 않았어요" },
       4: { presentText: "아파요", pastText: "아팠어요" },
       5: { presentText: "그냥 그래요", pastText: "그냥 그랬어요" },
       6: { presentText: "모르겠어요", pastText: "잘 모르겠었어요" },
@@ -37,7 +34,7 @@ export const EMOTION_ITEMS = {
       11: { presentText: "심심해요", pastText: "심심했어요" },
       12: { presentText: "신기해요", pastText: "신기했어요" },
     },
-    getImageSrc: (index: number) => `/assets/emoji/daily-${index}.svg`,
+    getImageSrc: (index: number) => `/images/emoji/daily-${index}.svg`,
   },
 
   sad: {
@@ -56,7 +53,7 @@ export const EMOTION_ITEMS = {
       11: { presentText: "두려워요", pastText: "두려웠어요" },
       12: { presentText: "속상해요", pastText: "속상했어요" },
     },
-    getImageSrc: (index: number) => `/assets/emoji/sad-${index}.svg`,
+    getImageSrc: (index: number) => `/images/emoji/sad-${index}.svg`,
   },
 
   bad: {
@@ -73,6 +70,6 @@ export const EMOTION_ITEMS = {
       9: { presentText: "원망스러워요", pastText: "원망스러웠어요" },
       10: { presentText: "미워요", pastText: "미웠어요" },
     },
-    getImageSrc: (index: number) => `/assets/emoji/bad-${index}.svg`,
+    getImageSrc: (index: number) => `/images/emoji/bad-${index}.svg`,
   },
 } as const;
