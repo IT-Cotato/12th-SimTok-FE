@@ -31,7 +31,7 @@ export const SharedDiaryCard = () => {
                   className="p-[10px]"
                 />
                 <p className="text-sub1-sb -mt-[16px] text-black">
-                  {`"오늘 하루는 {emotionMeta.pastText}"`}
+                  {`"오늘 하루는 ${emotionMeta.pastText}"`}
                 </p>
               </h3>
             )}
