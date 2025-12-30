@@ -36,7 +36,7 @@ export const RecordMissionFeed = () => {
               <PlusIcon className="text-neutral-05 h-12 w-12" />
             </div>
           )}
-          <p>나</p>
+          <p className="text-neutral-03 text-d3">나</p>
         </div>
       </section>
 
@@ -54,7 +54,7 @@ export const RecordMissionFeed = () => {
               height={88}
               className={`${item.isRead ? "" : "border-green-03 border border-[4px] shadow-[0_0_12px_-1px_rgba(0,168,85,0.39)]"} h-[88px] w-[88px] rounded-full object-cover`}
             />
-            <p>{item.userName}</p>
+            <p className="text-neutral-03 text-d3">{item.userName}</p>
           </div>
         ))}
       </section>
