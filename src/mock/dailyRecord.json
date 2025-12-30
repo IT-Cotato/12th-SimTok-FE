@@ -1,59 +1,69 @@
 [
   {
+    "userId": 101,
     "userName": "김푸딩",
     "image": "/images/profile1.png",
     "isRead": false,
     "createdAt": "2025-01-09T09:12:00"
   },
   {
+    "userId": 102,
     "userName": "이하늘",
     "image": "/images/profile2.png",
     "isRead": true,
     "createdAt": "2025-01-09T08:45:00"
   },
   {
+    "userId": 103,
     "userName": "박민수",
     "image": "/images/profile3.png",
     "isRead": false,
     "createdAt": "2025-01-08T22:30:00"
   },
   {
+    "userId": 104,
     "userName": "정수진",
     "image": "/images/profile4.png",
     "isRead": true,
     "createdAt": "2025-01-08T18:05:00"
   },
   {
+    "userId": 105,
     "userName": "최유나",
     "image": "/images/profile5.png",
     "isRead": false,
     "createdAt": "2025-01-07T14:20:00"
   },
   {
+    "userId": 106,
     "userName": "오지훈",
     "image": "/images/profile6.png",
     "isRead": true,
     "createdAt": "2025-01-07T11:10:00"
   },
   {
+    "userId": 107,
     "userName": "한서연",
     "image": "/images/profile7.png",
     "isRead": false,
     "createdAt": "2025-01-06T21:55:00"
   },
   {
+    "userId": 108,
     "userName": "윤태호",
     "image": "/images/profile8.png",
     "isRead": true,
     "createdAt": "2025-01-06T16:40:00"
   },
   {
+    "userId": 109,
     "userName": "장하린",
     "image": "/images/profile9.png",
     "isRead": false,
     "createdAt": "2025-01-05T19:25:00"
   },
   {
+    "userId": 110,
     "userName": "백도윤",
     "image": "/images/profile10.png",
     "isRead": true,
