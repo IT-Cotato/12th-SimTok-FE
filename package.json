@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --webpack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -17,11 +17,13 @@
     ]
   },
   "dependencies": {
+    "@toss/use-funnel": "^1.4.2",
     "axios": "^1.13.2",
     "next": "16.0.10",
     "react": "19.2.1",
     "react-dom": "19.2.1",
     "react-lottie-player": "^2.1.0",
+    "react-query": "^3.39.3",
     "zustand": "^5.0.9"
   },
   "devDependencies": {

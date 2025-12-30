@@ -78,4 +78,44 @@
         rgba(36, 38, 40, 0.83) 100%
       )
   }
+   .bg-onboarding-circle-mint {
+    border-radius: 146px;
+    background: linear-gradient(
+      180deg,
+      rgba(79, 255, 144, 0.10) 0%,
+      rgba(255, 255, 255, 0.10) 100%
+    );
+  }
+
+  .bg-onboarding-circle-gray {
+    border-radius: 146px;
+    background: linear-gradient(
+      160deg,
+      rgba(255, 255, 255, 0.10) 42.99%,
+      rgba(103, 103, 103, 0.10) 80.56%
+    );
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+  .bg-radial-yellowgreen-mintgreen {
+    background:
+      radial-gradient(
+        39.1% 31.12% at 80.25% 2.51%,
+        rgba(246, 248, 173, 0.42) 57.26%,
+        rgba(255, 255, 255, 0.42) 100%
+      ),
+      radial-gradient(
+        39.99% 49.21% at 23.64% 2.72%,
+        rgba(66, 240, 158, 0.66) 21.15%,
+        rgba(255, 255, 255, 0.87) 93.53%
+      );
+  }
 }

@@ -12,12 +12,17 @@ export default function Header({ title }: HeaderProps) {
   const router = useRouter();
 
   return (
-    <header className="flex gap-[156px]">
-      <button type="button" onClick={() => router.back()} className="h-6 w-6">
+    <header className="px-4 py-[10px]">
+      <button
+        type="button"
+        onClick={() => router.back()}
+        className="fixed h-6 w-6"
+      >
         <BackIcon />
       </button>
-
-      <span className="text-h3 whitespace-nowrap text-black">{title}</span>
+      <span className="text-h3 flex items-center justify-center whitespace-nowrap text-black">
+        {title}
+      </span>
     </header>
   );
 }
