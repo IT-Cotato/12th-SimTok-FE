@@ -4,10 +4,10 @@ import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
-import Checkbox from "@/components/Checkbox";
-import FullButton from "@/components/FullButton";
-import PageHeader from "@/components/Header";
-import PageTitle from "@/components/PageTitle";
+import Checkbox from "@/components/common/Checkbox";
+import FullButton from "@/components/common/FullButton";
+import PageHeader from "@/components/common/Header";
+import PageTitle from "@/components/common/PageTitle";
 
 type AgreementKey =
   | "service" // 심톡 이용약관 동의 (필수)

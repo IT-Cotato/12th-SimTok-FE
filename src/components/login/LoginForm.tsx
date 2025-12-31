@@ -8,7 +8,7 @@ import EyeIcon from "@/assets/eye.svg";
 import LockIcon from "@/assets/lock.svg";
 import PhoneIcon from "@/assets/phone.svg";
 
-import FullButton from "@/components/FullButton";
+import FullButton from "@/components/common/FullButton";
 
 import { formatPhone } from "@/utils/formatPhone";
 
