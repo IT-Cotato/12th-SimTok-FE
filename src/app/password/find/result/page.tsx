@@ -26,7 +26,7 @@ export default function FindPage() {
         <div className="mt-[415px] flex w-full justify-center px-4">
           <FullButton
             isActive={true}
-            onClick={() => router.push("/login/phone")} // auth/login 대신 새 경로라면 여기 수정
+            onClick={() => router.push("/login/phone")}
           >
             확인
           </FullButton>
