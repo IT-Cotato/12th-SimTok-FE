@@ -8,9 +8,9 @@ import Exclamation from "@/assets/exclamation.svg";
 import EyeIcon from "@/assets/eye.svg";
 import LockIcon from "@/assets/lock.svg";
 
-import FullButton from "@/components/FullButton";
-import PageHeader from "@/components/Header";
-import PageTitle from "@/components/PageTitle";
+import FullButton from "@/components/common/FullButton";
+import PageHeader from "@/components/common/Header";
+import PageTitle from "@/components/common/PageTitle";
 
 import { usePasswordValidation } from "@/hooks/usePasswordValidation";
 

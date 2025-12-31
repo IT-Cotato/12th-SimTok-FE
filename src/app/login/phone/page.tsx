@@ -8,9 +8,9 @@ import EyeIcon from "@/assets/eye.svg";
 import LockIcon from "@/assets/lock.svg";
 import PhoneIcon from "@/assets/phone.svg";
 
-import FullButton from "@/components/FullButton";
-import PageHeader from "@/components/Header";
-import PageTitle from "@/components/PageTitle";
+import FullButton from "@/components/common/FullButton";
+import PageHeader from "@/components/common/Header";
+import PageTitle from "@/components/common/PageTitle";
 
 import { formatPhone } from "@/utils/formatPhone";
 import { phoneChangeHandler } from "@/utils/phoneHandlers";
