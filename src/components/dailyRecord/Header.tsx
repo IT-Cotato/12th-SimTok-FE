@@ -5,6 +5,8 @@ import { useState } from "react";
 import AlarmIcon from "@/assets/bell.svg";
 import PencilIcon from "@/assets/pencil.svg";
 
+import { InfoMessage } from "./InfoMessage";
+
 export const Header = () => {
   const [isAlaramNew, setIsAlarmNew] = useState(true);
 
@@ -24,6 +26,9 @@ export const Header = () => {
           <AlarmIcon className="h-6 w-6 cursor-pointer" />
         )}
         <PencilIcon className="h-6 w-6 cursor-pointer" />
+      </div>
+      <div className="absolute top-[41px] right-3">
+        <InfoMessage />
       </div>
     </header>
   );
