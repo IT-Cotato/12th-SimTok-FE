@@ -36,7 +36,7 @@ export default function PasswordForm() {
 
   const isNameFilled = name.trim().length > 0;
 
-  const canRequestCode = isNameFilled && isValidPhone;
+  const canRequestCode = isValidPhone;
   const isConfirmActive = isNameFilled && isVerified;
 
   const handleRequestCode = () => {
