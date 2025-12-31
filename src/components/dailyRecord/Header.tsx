@@ -9,6 +9,7 @@ import { InfoMessage } from "./InfoMessage";
 
 export const Header = () => {
   const [isAlaramNew, setIsAlarmNew] = useState(true);
+  const [isPencilClick, setIsPencilClick] = useState(false);
 
   return (
     <header className="relative mt-[13px] flex items-center justify-center px-4 py-[10px]">
@@ -25,11 +26,16 @@ export const Header = () => {
         ) : (
           <AlarmIcon className="h-6 w-6 cursor-pointer" />
         )}
-        <PencilIcon className="h-6 w-6 cursor-pointer" />
+        <PencilIcon
+          className="h-6 w-6 cursor-pointer"
+          onClick={() => setIsPencilClick(true)}
+        />
       </div>
-      <div className="absolute top-[41px] right-3">
-        <InfoMessage />
-      </div>
+      {!isPencilClick && (
+        <div className="absolute top-[41px] right-3">
+          <InfoMessage />
+        </div>
+      )}
     </header>
   );
 };
