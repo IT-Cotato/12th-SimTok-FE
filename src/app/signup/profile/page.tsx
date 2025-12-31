@@ -1,7 +1,6 @@
 import PageHeader from "@/components/Header";
 import PageTitle from "@/components/PageTitle";
-
-import ProfileForm from "./ProfileForm";
+import ProfileForm from "@/components/ProfileForm";
 
 export default function RegisterPage() {
   return (
