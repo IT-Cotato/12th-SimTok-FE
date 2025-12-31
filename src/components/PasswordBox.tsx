@@ -3,7 +3,6 @@
 import { useState } from "react";
 
 import EyeIcon from "@/assets/eye.svg";
-import ActiveEye from "@/assets/eye_mint.svg";
 import LockIcon from "@/assets/lock.svg";
 
 import { maskPassword } from "@/utils/maskPassword";
@@ -25,11 +24,11 @@ export default function PasswordBox({ password }: PasswordBoxProps) {
       </div>
 
       <button type="button" onClick={() => setShowPassword(prev => !prev)}>
-        {showPassword ? (
-          <ActiveEye className="cursor-pointer" />
-        ) : (
-          <EyeIcon className="cursor-pointer" />
-        )}
+        <EyeIcon
+          className={`cursor-pointer transition-colors ${
+            showPassword ? "text-mint-01" : "text-neutral-05"
+          }`}
+        />
       </button>
     </div>
   );
