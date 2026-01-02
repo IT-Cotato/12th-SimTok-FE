@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { SendButton } from "@/assets/SendButton";
 import HeartFillIcon from "@/assets/heart-fill.svg";
 import HeartBlankIcon from "@/assets/heart.svg";
 import SendIcon from "@/assets/messenger.svg";
@@ -27,9 +28,7 @@ export const StoryBottomBar = () => {
       </div>
       <div className="relative flex-1">
         <input className="border-neutral-07 bg-neutral-11 w-full rounded-2xl border border-solid px-4 py-1" />
-        <button className="absolute top-1/2 right-4 -translate-y-1/2">
-          <SendIcon className="text-neutral-04 h-6 w-6" />
-        </button>
+        <SendButton />
       </div>
     </footer>
   );
