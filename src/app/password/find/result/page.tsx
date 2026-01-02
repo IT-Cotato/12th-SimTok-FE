@@ -2,10 +2,10 @@
 
 import { useRouter } from "next/navigation";
 
-import PasswordBox from "@/components/PasswordBox";
 import FullButton from "@/components/common/FullButton";
 import PageHeader from "@/components/common/Header";
 import PageTitle from "@/components/common/PageTitle";
+import PasswordBox from "@/components/password/PasswordBox";
 
 export default function FindPage() {
   //임시 비밀번호
