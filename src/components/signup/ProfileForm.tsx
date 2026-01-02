@@ -13,7 +13,7 @@ import FullButton from "@/components/common/FullButton";
 import { useCountdown } from "@/hooks/useCountdown";
 import { usePhoneValidation } from "@/hooks/usePhoneValidation";
 
-import { formatBirthInput } from "@/utils/formatBirth";
+import { formatBirthInput, isValidBirth } from "@/utils/formatBirth";
 import { formatPhone } from "@/utils/formatPhone";
 import { formatTime } from "@/utils/formatTime";
 import { phoneChangeHandler } from "@/utils/phoneHandlers";
@@ -37,7 +37,9 @@ export default function ProfileForm() {
   const isCodeRequested = isRunning;
   const isNameFilled = name.trim().length > 0;
   const canRequestCode = isValidPhone;
-  const isConfirmActive = isNameFilled && isVerified;
+
+  const isBirthValid = isValidBirth(birth);
+  const isConfirmActive = isNameFilled && isVerified && isBirthValid;
 
   const handleRequestCode = () => {
     if (!canRequestCode) return;
@@ -62,8 +64,17 @@ export default function ProfileForm() {
 
   const handlePhoneChange = phoneChangeHandler(setPhone);
 
+  // const handleBirthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setBirth(formatBirthInput(e.target.value));
+  // };
+
   const handleBirthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setBirth(formatBirthInput(e.target.value));
+    const value = e.target.value;
+    if (value === "") {
+      setBirth("");
+      return;
+    }
+    setBirth(formatBirthInput(value));
   };
 
   return (
