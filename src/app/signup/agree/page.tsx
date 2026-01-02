@@ -57,7 +57,6 @@ export default function AgreePage() {
   const handleChange =
     (key: AgreementKey) => (e: React.ChangeEvent<HTMLInputElement>) => {
       const checked = e.target.checked;
-      console.log("change", key, e.target.checked);
       setAgreements(prev => ({ ...prev, [key]: checked }));
     };
 
