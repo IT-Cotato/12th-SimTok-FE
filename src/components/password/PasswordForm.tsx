@@ -102,7 +102,7 @@ export default function PasswordForm() {
           <ProfileIcon />
         </div>
         <input
-          type="name"
+          type="text"
           value={name}
           onChange={e => setName(e.target.value)}
           onFocus={() => setFocused("name")}
