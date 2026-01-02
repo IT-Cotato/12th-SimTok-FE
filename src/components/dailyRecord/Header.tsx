@@ -8,14 +8,14 @@ import PencilIcon from "@/assets/pencil.svg";
 import { InfoMessage } from "./InfoMessage";
 
 export const Header = () => {
-  const [isAlaramNew, setIsAlarmNew] = useState(true);
+  const [isAlarmNew, setIsAlarmNew] = useState(true);
   const [isPencilClick, setIsPencilClick] = useState(false);
 
   return (
     <header className="relative mt-[13px] flex items-center justify-center px-4 py-[10px]">
       <h1>하루기록</h1>
       <div className="absolute right-4 flex gap-2">
-        {isAlaramNew ? (
+        {isAlarmNew ? (
           <button
             className="relative cursor-pointer"
             onClick={() => setIsAlarmNew(false)}
