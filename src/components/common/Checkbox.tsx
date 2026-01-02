@@ -8,13 +8,13 @@ type CheckboxProps = {
   label?: ReactNode;
 } & Omit<InputHTMLAttributes<HTMLInputElement>, "type">;
 
-export default function Checkbox({
+const Checkbox = ({
   label,
   className = "",
   checked = false,
   onChange,
   ...props
-}: CheckboxProps) {
+}: CheckboxProps) => {
   const isChecked = !!checked;
 
   return (
@@ -27,7 +27,6 @@ export default function Checkbox({
         {...props}
       />
 
-      {/* 커스텀 박스 */}
       <div
         className={`relative flex h-6 w-6 items-center justify-center rounded-[4px] border-2 transition-colors ${
           isChecked ? "bg-mint-01 border-mint-01" : "border-neutral-08 bg-white"
@@ -39,4 +38,6 @@ export default function Checkbox({
       {label && <span className="text-sub1-sb text-neutral-01">{label}</span>}
     </label>
   );
-}
+};
+
+export default Checkbox;

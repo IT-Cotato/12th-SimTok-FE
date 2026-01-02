@@ -15,7 +15,7 @@ import PageTitle from "@/components/common/PageTitle";
 import { formatPhone } from "@/utils/formatPhone";
 import { phoneChangeHandler } from "@/utils/phoneHandlers";
 
-export default function LoginPage() {
+const LoginPage = () => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [focused, setFocused] = useState<"phone" | "password" | null>(null);
@@ -124,4 +124,6 @@ export default function LoginPage() {
       </div>
     </main>
   );
-}
+};
+
+export default LoginPage;

@@ -2,7 +2,7 @@ import PageHeader from "@/components/common/Header";
 import PageTitle from "@/components/common/PageTitle";
 import ProfileForm from "@/components/signup/ProfileForm";
 
-export default function RegisterPage() {
+const RegisterPage = () => {
   return (
     <main className="flex min-h-dvh justify-center bg-white">
       <div className="mt-[13px] flex h-full w-110 flex-col">
@@ -17,4 +17,6 @@ export default function RegisterPage() {
       </div>
     </main>
   );
-}
+};
+
+export default RegisterPage;

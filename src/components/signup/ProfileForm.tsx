@@ -19,7 +19,7 @@ import { formatPhone } from "@/utils/formatPhone";
 import { formatTime } from "@/utils/formatTime";
 import { phoneChangeHandler } from "@/utils/phoneHandlers";
 
-export default function ProfileForm() {
+const ProfileForm = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [birth, setBirth] = useState("");
@@ -258,4 +258,6 @@ export default function ProfileForm() {
       )}
     </div>
   );
-}
+};
+
+export default ProfileForm;

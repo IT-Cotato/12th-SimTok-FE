@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 import KakaoIcon from "@/assets/kakao.svg";
 
-export default function AuthStartPage() {
+const AuthStartPage = () => {
   const router = useRouter();
 
   const handleClickLogin = () => {
@@ -61,4 +61,6 @@ export default function AuthStartPage() {
       </div>
     </main>
   );
-}
+};
+
+export default AuthStartPage;

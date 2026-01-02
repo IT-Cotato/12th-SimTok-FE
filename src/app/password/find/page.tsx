@@ -2,7 +2,7 @@ import PageHeader from "@/components/common/Header";
 import PageTitle from "@/components/common/PageTitle";
 import PasswordForm from "@/components/password/PasswordForm";
 
-export default function PasswordPage() {
+const PasswordPage = () => {
   return (
     <main className="flex min-h-dvh justify-center bg-white">
       <div className="mt-[13px] flex h-full w-110 flex-col">
@@ -12,4 +12,6 @@ export default function PasswordPage() {
       </div>
     </main>
   );
-}
+};
+
+export default PasswordPage;
