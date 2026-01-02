@@ -7,7 +7,7 @@ import PlusIcon from "@/assets/plus.svg";
 import DailyRecordData from "@/mock/dailyRecord.json";
 
 export const RecordMissionFeed = () => {
-  const MY_ID = 111;
+  const MY_ID = 101;
 
   const myRecord = DailyRecordData.find(item => item.userId === MY_ID);
 
