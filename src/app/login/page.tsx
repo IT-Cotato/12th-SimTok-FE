@@ -24,7 +24,7 @@ export default function AuthStartPage() {
         {/* 하단 버튼 영역 */}
         <div className="flex flex-col gap-[10px] py-[10px]">
           {/* 카카오 로그인 버튼 */}
-          <div className="px-4">
+          {/* <div className="px-4">
             <button
               type="button"
               className="bg-kakao flex h-14.5 w-full cursor-pointer items-center justify-center rounded-2xl px-3.5"
@@ -34,7 +34,7 @@ export default function AuthStartPage() {
                 <span className="text-button-sb">카카오 로그인</span>
               </div>
             </button>
-          </div>
+          </div> */}
 
           {/* 일반 로그인 버튼 */}
           <div className="px-4">
