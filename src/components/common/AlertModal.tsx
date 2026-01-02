@@ -1,4 +1,3 @@
-// src/components/AlertModal.tsx
 "use client";
 
 type AlertModalProps = {
