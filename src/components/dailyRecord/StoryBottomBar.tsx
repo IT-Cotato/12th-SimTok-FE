@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-import { SendButton } from "@/assets/SendButton";
 import HeartFillIcon from "@/assets/heart-fill.svg";
 import HeartBlankIcon from "@/assets/heart.svg";
-import SendIcon from "@/assets/messenger.svg";
 import MicIcon from "@/assets/mic-stroke.svg";
+
+import { MessageInput } from "../common/MessageInput";
 
 export const StoryBottomBar = () => {
   const [heartClicked, setHeartClicked] = useState(false);
@@ -26,10 +26,7 @@ export const StoryBottomBar = () => {
           <MicIcon className="text-neutral-04 h-8 w-8 py-[3px]" />
         </button>
       </div>
-      <div className="relative flex-1">
-        <input className="border-neutral-07 bg-neutral-11 w-full rounded-2xl border border-solid px-4 py-1" />
-        <SendButton />
-      </div>
+      <MessageInput />
     </footer>
   );
 };
