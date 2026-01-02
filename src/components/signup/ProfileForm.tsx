@@ -8,6 +8,7 @@ import DateIcon from "@/assets/date.svg";
 import PhoneIcon from "@/assets/phone.svg";
 import ProfileIcon from "@/assets/profile.svg";
 
+import AlertModal from "@/components/common/AlertModal";
 import FullButton from "@/components/common/FullButton";
 
 import { useCountdown } from "@/hooks/useCountdown";
@@ -28,6 +29,7 @@ export default function ProfileForm() {
   >(null);
 
   const [isVerified, setIsVerified] = useState(false);
+  const [modalType, setModalType] = useState<"success" | "error" | null>(null);
 
   const router = useRouter();
 
@@ -56,17 +58,30 @@ export default function ProfileForm() {
 
   const handleVerify = () => {
     if (!code || !isCodeRequested || timeLeft === 0) return;
-    if (code === "1234") {
+    const isSuccess = code === "1234";
+
+    if (isSuccess) {
       setIsVerified(true);
+      setModalType("success");
       stop();
+    } else {
+      setIsVerified(false);
+      setModalType("error");
+    }
+  };
+
+  const handleModalConfirm = () => {
+    if (modalType === "success") {
+      setModalType(null);
+    } else {
+      setModalType(null);
+      stop();
+      setCode("");
+      setIsVerified(false);
     }
   };
 
   const handlePhoneChange = phoneChangeHandler(setPhone);
-
-  // const handleBirthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setBirth(formatBirthInput(e.target.value));
-  // };
 
   const handleBirthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -221,6 +236,18 @@ export default function ProfileForm() {
           확인
         </FullButton>
       </div>
+      {modalType && (
+        <AlertModal
+          isOpen={!!modalType}
+          title={modalType === "success" ? "인증완료" : "인증오류"}
+          message={
+            modalType === "success"
+              ? "인증이 완료되었습니다."
+              : "인증번호를 확인할 수 없습니다."
+          }
+          onClose={handleModalConfirm}
+        />
+      )}
     </div>
   );
 }
