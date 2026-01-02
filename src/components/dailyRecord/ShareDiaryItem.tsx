@@ -62,7 +62,11 @@ export const SharedDiaryItem = ({ item }: { item: Diary }) => {
               className="cursor-pointer"
               onClick={() => setHeartClicked(prev => !prev)}
             >
-              {heartClicked ? <HeartFillIcon /> : <HeartIcon />}
+              {heartClicked ? (
+                <HeartFillIcon width={24} height={24} />
+              ) : (
+                <HeartIcon width={24} height={24} />
+              )}
             </div>
             <CommentIcon className="cursor-pointer" />
           </div>
