@@ -1,6 +1,6 @@
-import PasswordForm from "@/components/PasswordForm";
 import PageHeader from "@/components/common/Header";
 import PageTitle from "@/components/common/PageTitle";
+import PasswordForm from "@/components/password/PasswordForm";
 
 export default function PasswordPage() {
   return (
