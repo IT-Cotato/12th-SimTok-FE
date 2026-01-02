@@ -82,6 +82,14 @@ export default function ProfileForm() {
   };
 
   const handlePhoneChange = phoneChangeHandler(setPhone);
+  const handlePhoneInput: React.ChangeEventHandler<HTMLInputElement> = e => {
+    handlePhoneChange(e);
+    if (isCodeRequested || timeLeft > 0 || isVerified) {
+      stop();
+      setIsVerified(false);
+      setCode("");
+    }
+  };
 
   const handleBirthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -151,7 +159,7 @@ export default function ProfileForm() {
           <input
             type="tel"
             value={formatPhone(phone)}
-            onChange={handlePhoneChange}
+            onChange={handlePhoneInput}
             onFocus={() => setFocused("phone")}
             onBlur={() => setFocused(prev => (prev === "phone" ? null : prev))}
             placeholder="전화번호"

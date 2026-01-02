@@ -80,7 +80,6 @@ export default function PasswordForm() {
   const handlePhoneChange = phoneChangeHandler(setPhone);
   const handlePhoneInput: React.ChangeEventHandler<HTMLInputElement> = e => {
     handlePhoneChange(e);
-    // 번호를 바꾸면 인증 상태/타이머 리셋
     if (isCodeRequested || timeLeft > 0 || isVerified) {
       stop();
       setIsVerified(false);
