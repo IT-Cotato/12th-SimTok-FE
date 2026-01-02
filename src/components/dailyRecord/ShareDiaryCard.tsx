@@ -30,10 +30,10 @@ export const SharedDiaryCard = () => {
                 height={46}
                 className="rounded-full object-cover"
               />
-              <p>{item.userName}</p>
+              <p className="text-sub2-sb text-neutral-01">{item.userName}</p>
             </div>
             {emotionMeta && (
-              <h3 className="-mt-[32px] flex flex-col items-center">
+              <figure className="-mt-[32px] flex flex-col items-center">
                 <Image
                   src={emotionMeta.imageSrc}
                   alt={item.emotion}
@@ -41,10 +41,10 @@ export const SharedDiaryCard = () => {
                   height={89}
                   className="p-[10px]"
                 />
-                <p className="text-sub1-sb -mt-[16px] text-black">
+                <figcaption className="text-sub1-sb -mt-[16px] text-black">
                   {`"오늘 하루는 ${emotionMeta.pastText}"`}
-                </p>
-              </h3>
+                </figcaption>
+              </figure>
             )}
             <div className="bg-neutral-11 relative mt-2 h-[589px] w-full">
               <Image
