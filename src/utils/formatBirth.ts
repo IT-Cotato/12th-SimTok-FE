@@ -11,7 +11,7 @@ export const formatBirthInput = (raw: string): string => {
   if (len >= 4) {
     const y = Number(year);
     if (y < 1900 || y > 2025) {
-      const prev = onlyDigits.slice(0, 3);       
+      const prev = onlyDigits.slice(0, 3);
       return formatBirthInput(prev);
     }
   }
