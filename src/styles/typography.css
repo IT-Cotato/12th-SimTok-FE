@@ -76,4 +76,9 @@
   --text-navigation--font-weight: 400;
   --text-navigation--line-height: 150%;
   --text-navigation--letter-spacing: -0.02063rem;
+
+  /* button */
+  --text-button-sb: 1.25rem; /* 20px */
+  --text-button-sb--font-weight: 600;
+  --text-button-sb--line-height: 150%;
 }
