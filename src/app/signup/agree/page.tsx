@@ -35,7 +35,7 @@ const initialAgreements: Record<AgreementKey, boolean> = {
   marketing: false,
 };
 
-export default function AgreePage() {
+const AgreePage = () => {
   const router = useRouter();
   const [agreements, setAgreements] =
     useState<Record<AgreementKey, boolean>>(initialAgreements);
@@ -106,4 +106,6 @@ export default function AgreePage() {
       </div>
     </main>
   );
-}
+};
+
+export default AgreePage;

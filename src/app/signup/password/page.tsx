@@ -17,7 +17,7 @@ import { usePasswordValidation } from "@/hooks/usePasswordValidation";
 const getIconClass = (state: string) =>
   state === "invalid" ? "text-orange-00" : "text-neutral-07";
 
-export default function SettingPage() {
+const SettingPage = () => {
   const router = useRouter();
 
   const [password, setPassword] = useState("");
@@ -143,4 +143,6 @@ export default function SettingPage() {
       </div>
     </main>
   );
-}
+};
+
+export default SettingPage;

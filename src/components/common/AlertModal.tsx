@@ -8,13 +8,13 @@ type AlertModalProps = {
   onClose: () => void;
 };
 
-export default function AlertModal({
+const AlertModal = ({
   isOpen,
   title,
   message,
   confirmLabel = "확인",
   onClose,
-}: AlertModalProps) {
+}: AlertModalProps) => {
   if (!isOpen) return null;
 
   return (
@@ -26,17 +26,14 @@ export default function AlertModal({
         className="flex w-[316px] flex-col rounded-2xl bg-white"
         onClick={e => e.stopPropagation()}
       >
-        {/* 1. 타이틀 */}
         <div className="flex h-[47px] items-center justify-center">
           <p className="text-h3 text-neutral-01 text-center">{title}</p>
         </div>
 
-        {/* 2. 본문 */}
         <div className="flex items-center justify-center px-[10px] py-[7px]">
           <p className="text-sub2-r text-neutral-01 text-center">{message}</p>
         </div>
 
-        {/* 3. 버튼 영역 */}
         <div className="flex w-full">
           <button
             type="button"
@@ -49,4 +46,6 @@ export default function AlertModal({
       </div>
     </div>
   );
-}
+};
+
+export default AlertModal;

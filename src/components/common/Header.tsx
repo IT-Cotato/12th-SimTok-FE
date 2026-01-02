@@ -6,6 +6,8 @@ interface HeaderProps {
   title: string;
 }
 
-export default function Header({ title }: HeaderProps) {
+const Header = ({ title }: HeaderProps) => {
   return <BackHeader title={title} />;
-}
+};
+
+export default Header;

@@ -17,7 +17,7 @@ import { formatPhone } from "@/utils/formatPhone";
 import { formatTime } from "@/utils/formatTime";
 import { phoneChangeHandler } from "@/utils/phoneHandlers";
 
-export default function PasswordForm() {
+const PasswordForm = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
@@ -227,4 +227,6 @@ export default function PasswordForm() {
       )}
     </div>
   );
-}
+};
+
+export default PasswordForm;
