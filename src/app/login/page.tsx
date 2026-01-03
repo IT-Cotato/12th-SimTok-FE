@@ -2,8 +2,6 @@
 
 import { useRouter } from "next/navigation";
 
-import KakaoIcon from "@/assets/kakao.svg";
-
 const AuthStartPage = () => {
   const router = useRouter();
 
