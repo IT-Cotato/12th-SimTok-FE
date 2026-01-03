@@ -26,14 +26,14 @@ const OnboardingPage = () => {
 
     if (!next) {
       localStorage.setItem("onboardingDone", "true");
-      router.push("/home");
+      router.push("/onboarding/profile");
       return;
     }
     setStep(next);
   };
 
   return (
-    <main className="flex min-h-dvh justify-center bg-white">
+    <main className="flex min-h-dvh justify-center">
       <div className="mt-[13px] flex h-full w-[440px] flex-col">
         <ProgressDots total={ONBOARDING_STEPS.length} current={currentIndex} />
 
