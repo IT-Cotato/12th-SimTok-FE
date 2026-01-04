@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import AlertModal from "@/components/common/AlertModal";
 import FullButton from "@/components/common/FullButton";
+import NameInput from "@/components/common/NameInput";
 import ProfileImagePicker from "@/components/onboarding/ProfileImagePicker";
 import UploadAlert from "@/components/onboarding/UploadAlert";
 
@@ -33,13 +34,7 @@ const OnboardingProfileClient = () => {
               onClick={() => setIsUploadOpen(true)}
             />
             <div className="mt-4 w-full px-[118px]">
-              <input
-                type="text"
-                value={name}
-                onChange={e => setName(e.target.value)}
-                placeholder="이름을 입력해주세요"
-                className="border-mint-01 text-d3 text-neutral-01 placeholder:text-neutral-07 focus:border-mint-01 w-full rounded-2xl border px-4 py-2 text-center outline-none focus:ring-0"
-              />
+              <NameInput value={name} onChange={setName} />
             </div>
           </section>
 
