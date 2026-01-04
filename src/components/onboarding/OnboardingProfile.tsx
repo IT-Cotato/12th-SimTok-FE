@@ -2,11 +2,9 @@
 
 import { useState } from "react";
 
-import ProfileIcon from "@/assets/onboarding_profile.svg";
-import PhotoIcon from "@/assets/photo.svg";
-
 import AlertModal from "@/components/common/AlertModal";
 import FullButton from "@/components/common/FullButton";
+import ProfileImagePicker from "@/components/onboarding/ProfileImagePicker";
 import UploadAlert from "@/components/onboarding/UploadAlert";
 
 import { useProfileImageUpload } from "@/hooks/useProfileImageUpload";
@@ -30,26 +28,10 @@ const OnboardingProfileClient = () => {
             </p>
           </section>
           <section className="mt-[86px] flex flex-col items-center">
-            <div
-              className="relative flex h-[160px] w-[160px] items-center justify-center"
+            <ProfileImagePicker
+              imageUrl={profileImage}
               onClick={() => setIsUploadOpen(true)}
-            >
-              {profileImage ? (
-                <img
-                  src={profileImage}
-                  alt="프로필 이미지"
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <ProfileIcon />
-              )}
-              <button
-                type="button"
-                className="absolute right-[16px] bottom-[16px] h-[32px] w-[32px] items-center justify-center"
-              >
-                <PhotoIcon />
-              </button>
-            </div>
+            />
             <div className="mt-4 w-full px-[118px]">
               <input
                 type="text"
