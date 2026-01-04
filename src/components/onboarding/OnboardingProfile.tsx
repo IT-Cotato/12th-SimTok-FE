@@ -26,7 +26,7 @@ const OnboardingProfileClient = () => {
         <div className="mt-[13px] flex h-full w-[440px] flex-col">
           <section className="mt-[123px] px-4 py-2.5">
             <p className="text-d2 text-neutral-02 whitespace-pre-line">
-              가족들에게 보여줄 내 프로필을{"\n"}만들어주세요
+              가족들에게 보여줄{"\n"}내 프로필을 만들어주세요
             </p>
           </section>
           <section className="mt-[86px] flex flex-col items-center">
