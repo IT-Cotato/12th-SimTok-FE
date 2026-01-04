@@ -5,14 +5,33 @@ import { useState } from "react";
 import ProfileIcon from "@/assets/onboarding_profile.svg";
 import PhotoIcon from "@/assets/photo.svg";
 
+import AlertModal from "@/components/common/AlertModal";
 import FullButton from "@/components/common/FullButton";
 import UploadAlert from "@/components/onboarding/UploadAlert";
 
 const OnboardingProfilePage = () => {
   const [name, setName] = useState("");
   const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const isNameValid = name.trim().length > 0;
+
+  const handleSelectAlbum = async (file: File) => {
+    setIsLoading(true);
+
+    await new Promise(res => setTimeout(res, 2000));
+
+    const imageUrl = URL.createObjectURL(file);
+    setProfileImage(imageUrl);
+
+    setIsLoading(false);
+  };
+
+  const handleSelectDefault = () => {
+    setProfileImage(null);
+    setIsUploadOpen(false);
+  };
 
   return (
     <>
@@ -20,7 +39,7 @@ const OnboardingProfilePage = () => {
         <div className="mt-[13px] flex h-full w-[440px] flex-col">
           <section className="mt-[123px] px-4 py-2.5">
             <p className="text-d2 text-neutral-02 whitespace-pre-line">
-              가족들에게 보여줄 내 프로필을{"\n"}만들어주세요.
+              가족들에게 보여줄 내 프로필을{"\n"}만들어주세요
             </p>
           </section>
           <section className="mt-[86px] flex flex-col items-center">
@@ -28,7 +47,15 @@ const OnboardingProfilePage = () => {
               className="relative flex h-[160px] w-[160px] items-center justify-center"
               onClick={() => setIsUploadOpen(true)}
             >
-              <ProfileIcon />
+              {profileImage ? (
+                <img
+                  src={profileImage}
+                  alt="프로필 이미지"
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <ProfileIcon />
+              )}
               <button
                 type="button"
                 className="absolute right-[16px] bottom-[16px] h-[32px] w-[32px] items-center justify-center"
@@ -55,12 +82,21 @@ const OnboardingProfilePage = () => {
       <UploadAlert
         isOpen={isUploadOpen}
         onClose={() => setIsUploadOpen(false)}
-        onSelectAlbum={() => {
+        onSelectAlbum={file => {
+          handleSelectAlbum(file);
           setIsUploadOpen(false);
         }}
-        onSelectDefault={() => {
-          setIsUploadOpen(false);
-        }}
+        onSelectDefault={handleSelectDefault}
+      />
+
+      <AlertModal
+        isOpen={isLoading}
+        title="로딩중"
+        confirmLabel="취소하기"
+        isLoading
+        loadingImageSrc="/loading.gif"
+        backdrop="blur"
+        onClose={() => setIsLoading(false)}
       />
     </>
   );

@@ -43,6 +43,8 @@
   --color-white: #fefefe;
 
   --color-dim-02: #242628D4;
+  --color-dim-00: #2426284D;
+  --color-dim-01: #24262880;
 }
 
 @layer utilities {
@@ -74,6 +76,7 @@
         rgba(36, 38, 40, 0.83) 100%
       )
   }
+
    .bg-onboarding-circle-mint {
     border-radius: 146px;
     background: linear-gradient(
@@ -113,6 +116,16 @@
         rgba(66, 240, 158, 0.66) 21.15%,
         rgba(255, 255, 255, 0.87) 93.53%
       );
+  }
+}
+
+@layer utilities {
+  .bg-dim-01 {
+    background-color: var(--color-dim-01);
+  }
+
+  .backdrop-blur-7 {
+    backdrop-filter: blur(7px);
   }
 }
 

@@ -222,6 +222,7 @@ const PasswordForm = () => {
               ? "인증이 완료되었습니다."
               : "인증번호를 확인할 수 없습니다."
           }
+          backdrop="default"
           onClose={handleModalConfirm}
         />
       )}
