@@ -18,7 +18,7 @@ const ProfileImagePicker = ({ imageUrl, onClick }: ProfileImagePickerProps) => {
         <img
           src={imageUrl}
           alt="프로필 이미지"
-          className="h-full w-full rounded-full object-cover"
+          className="h-full w-full rounded-[36px] object-cover"
         />
       ) : (
         <ProfileIcon />
