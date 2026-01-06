@@ -34,7 +34,7 @@ const OnboardingPage = () => {
 
   return (
     <section className="flex min-h-dvh justify-center">
-      <div className="mt-[13px] flex h-full w-full flex-col">
+      <div className="mt-[13px] flex h-full flex-col">
         <ProgressDots total={ONBOARDING_STEPS.length} current={currentIndex} />
 
         <Funnel>
