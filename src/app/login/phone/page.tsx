@@ -8,8 +8,8 @@ import EyeIcon from "@/assets/eye.svg";
 import LockIcon from "@/assets/lock.svg";
 import PhoneIcon from "@/assets/phone.svg";
 
+import { BackHeader } from "@/components/common/BackHeader";
 import FullButton from "@/components/common/FullButton";
-import PageHeader from "@/components/common/Header";
 import PageTitle from "@/components/common/PageTitle";
 
 import { formatPhone } from "@/utils/formatPhone";
@@ -33,7 +33,7 @@ const LoginPage = () => {
           isActive ? "bg-radial-yellowgreen-mintgreen" : "bg-white"
         }`}
       >
-        <PageHeader title="로그인" />
+        <BackHeader title="로그인" />
 
         <PageTitle>
           로그인하고
