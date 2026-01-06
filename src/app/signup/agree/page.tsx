@@ -9,36 +9,14 @@ import Checkbox from "@/components/common/Checkbox";
 import FullButton from "@/components/common/FullButton";
 import PageTitle from "@/components/common/PageTitle";
 
-type AgreementKey =
-  | "service" // 심톡 이용약관 동의 (필수)
-  | "finance" // 전자금융거래 이용약관 동의 (필수)
-  | "personalReq" // 개인정보 수집 이용 동의 (필수)
-  | "personalOpt1" // 개인정보 수집 이용 동의 (선택)
-  | "personalOpt2" // 개인정보 수집 이용 동의 (선택)
-  | "marketing"; // 마케팅 정보 수신 동의 (선택)
+import { AGREEMENTS, INITIAL_AGREEMENTS } from "@/constants/agreement";
 
-const AGREEMENTS: { key: AgreementKey; label: string }[] = [
-  { key: "service", label: "심톡 이용약관 동의 (필수)" },
-  { key: "finance", label: "전자금융거래 이용약관 동의 (필수)" },
-  { key: "personalReq", label: "개인정보 수집 이용 동의 (필수)" },
-  { key: "personalOpt1", label: "개인정보 수집 이용 동의 (선택)" },
-  { key: "personalOpt2", label: "개인정보 수집 이용 동의 (선택)" },
-  { key: "marketing", label: "마케팅 정보 메일, SNS수신동의 (선택)" },
-];
-
-const initialAgreements: Record<AgreementKey, boolean> = {
-  service: false,
-  finance: false,
-  personalReq: false,
-  personalOpt1: false,
-  personalOpt2: false,
-  marketing: false,
-};
+import type { AgreementKey } from "@/types/agreement.type";
 
 const AgreePage = () => {
   const router = useRouter();
   const [agreements, setAgreements] =
-    useState<Record<AgreementKey, boolean>>(initialAgreements);
+    useState<Record<AgreementKey, boolean>>(INITIAL_AGREEMENTS);
 
   const isConfirmActive =
     agreements.service && agreements.finance && agreements.personalReq;
