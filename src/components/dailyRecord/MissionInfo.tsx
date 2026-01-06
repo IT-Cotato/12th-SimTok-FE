@@ -13,8 +13,11 @@ export const RecordMissionInfo = ({ hasMyRecord }: RecordMissionInfoProps) => {
             <p className="text-sub1-sb text-neutral-07">
               오늘의 챌린지 미션을 완료했어요.
             </p>
-            <div className="flex flex-col">
-              <CheckIcon />
+            <div className="flex flex-col items-center gap-[7px]">
+              <div className="bg-neutral-07 flex h-6 w-6 items-center justify-center rounded-full">
+                <CheckIcon className="h-4 w-4 text-white" />
+              </div>
+
               <p className="text-sub2-r text-neutral-06 -mt-[4px] px-[6px]">
                 미션완료
               </p>
