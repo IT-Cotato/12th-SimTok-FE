@@ -17,32 +17,35 @@ const OnboardingStep = ({ stepName, isLastStep, onNext }: Props) => {
   const { title, background } = ONBOARDING_CONTENTS[stepName];
 
   return (
-    <div className="flex h-screen flex-col bg-white pt-[558px]">
-      {background.type === "image" && (
-        <Image
-          src={background.src}
-          alt=""
-          fill
-          priority
-          className="pointer-events-none -translate-y-[110px] object-cover object-top"
-        />
-      )}
-      {background.type === "class" && (
-        <div
-          className={`pointer-events-none absolute -translate-y-[110px] ${background.className}`}
-          aria-hidden
-        />
-      )}
+    <div className="flex min-h-dvh justify-center bg-white">
+      <div className="relative mt-[13px] flex h-full w-[440px] flex-col pt-[558px]">
+        {background.type === "image" && (
+          <Image
+            src={background.src}
+            alt=""
+            fill
+            priority
+            className="pointer-events-none -translate-y-[110px] object-cover object-top"
+          />
+        )}
 
-      <section className="relative z-10 px-4 py-2.5">
-        <p className="text-d2 text-neutral-02 whitespace-pre-line">{title}</p>
-      </section>
+        {background.type === "class" && (
+          <div
+            className={`pointer-events-none absolute -translate-y-[110px] ${background.className}`}
+            aria-hidden
+          />
+        )}
 
-      <section className="relative z-10 mt-[33px] px-4">
-        <FullButton type="button" onClick={onNext} isActive>
-          {isLastStep ? "시작하기" : "다음"}
-        </FullButton>
-      </section>
+        <section className="relative z-10 px-4 py-2.5">
+          <p className="text-d2 text-neutral-02 whitespace-pre-line">{title}</p>
+        </section>
+
+        <section className="relative z-10 mt-[33px] px-4">
+          <FullButton type="button" onClick={onNext} isActive>
+            {isLastStep ? "시작하기" : "다음"}
+          </FullButton>
+        </section>
+      </div>
     </div>
   );
 };
