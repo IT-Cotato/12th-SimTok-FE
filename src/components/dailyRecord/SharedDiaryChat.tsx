@@ -64,7 +64,7 @@ export const SharedDiaryComment = ({
         <h3 className="text-h3 text-neutral-01 border-neutral-10 flex items-center justify-center border-b p-[10px]">
           댓글
         </h3>
-        <div className="flex-1 overflow-y-scroll pb-[109px]">
+        <div className="flex-1 overflow-y-auto pb-[109px]">
           <CommentList comments={comments} />
         </div>
 
