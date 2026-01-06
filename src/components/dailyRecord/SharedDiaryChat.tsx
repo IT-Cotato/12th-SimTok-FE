@@ -1,20 +1,44 @@
 "use client";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+
+import { useState } from "react";
 
 import CloseIcon from "@/assets/close.svg";
 
+import { MessageInput } from "@/components/common/MessageInput";
+
+import CommentData from "@/mock/diaryComment.json";
 import MyProfile from "@/mock/myProfile.json";
 
-import { MessageInput } from "../common/MessageInput";
+interface SharedDiaryCommentProps {
+  variant?: "modal" | "page";
+}
 
-export const SharedDiaryChat = () => {
+export const SharedDiaryComment = ({
+  variant = "modal",
+}: SharedDiaryCommentProps) => {
   const profileImg = MyProfile.profileImg;
   const router = useRouter();
+  const { id } = useParams<{ id: string }>();
+  const numericId = Number(id);
+
+  const isPage = variant === "page";
+  const [hasComment, setHasComment] = useState(false);
 
   return (
-    <div className="fixed inset-0 bottom-0 left-1/2 z-50 flex w-full max-w-[440px] -translate-x-1/2 items-end justify-center bg-black/50">
-      <section className="flex h-[545px] w-full max-w-[440px] flex-1 flex-col rounded-t-2xl bg-white">
+    <div
+      className={`${
+        isPage
+          ? "min-h-screen"
+          : "fixed inset-0 bottom-0 left-1/2 z-50 -translate-x-1/2 bg-black/50"
+      } flex w-full max-w-[440px] items-end justify-center`}
+    >
+      <section
+        className={`flex w-full max-w-[440px] flex-col bg-white ${
+          isPage ? "h-screen rounded-none" : "h-[545px] rounded-t-2xl"
+        }`}
+      >
         <div className="h-[433px]">
           <div className="w-full px-4 py-[10px]">
             <button className="h-[14px] w-[14px] cursor-pointer">
@@ -37,7 +61,9 @@ export const SharedDiaryChat = () => {
             height={53}
             className="rounded-full object-cover"
           />
-          <MessageInput />
+          <MessageInput
+            onClick={() => router.push(`/shared-diary/${numericId}/comment`)}
+          />
         </footer>
       </section>
     </div>

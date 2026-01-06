@@ -13,7 +13,7 @@ import { Diary } from "@/types/diary.type";
 import { getEmotionMeta } from "@/utils/getEmotionMeta";
 import { getTimeAgo } from "@/utils/getTimeAgo";
 
-import { SharedDiaryChat } from "./SharedDiaryChat";
+import { SharedDiaryComment } from "./SharedDiaryChat";
 
 interface SharedDiaryItemProps {
   item: Diary;
@@ -89,7 +89,7 @@ export const SharedDiaryItem = ({
       </div>
       {commentMode && (
         <div className="w-full">
-          <SharedDiaryChat />
+          <SharedDiaryComment />
         </div>
       )}
     </section>
