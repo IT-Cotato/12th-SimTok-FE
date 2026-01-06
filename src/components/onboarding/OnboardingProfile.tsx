@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { useState } from "react";
 
 import FullButton from "@/components/common/FullButton";
@@ -11,6 +13,8 @@ import UploadButton from "@/components/onboarding/UploadButton";
 import { useProfileImageUpload } from "@/hooks/useProfileImageUpload";
 
 const OnboardingProfileClient = () => {
+  const router = useRouter();
+
   const [name, setName] = useState("");
   const [isUploadOpen, setIsUploadOpen] = useState(false);
 
@@ -18,6 +22,11 @@ const OnboardingProfileClient = () => {
 
   const { profileImage, isLoading, uploadImage, resetImage } =
     useProfileImageUpload();
+
+  const handleCreateProfile = () => {
+    if (!isNameValid) return;
+    router.replace("/");
+  };
 
   return (
     <>
@@ -39,7 +48,9 @@ const OnboardingProfileClient = () => {
           </section>
 
           <section className="absolute right-0 bottom-[42px] left-0 px-4 py-2.5">
-            <FullButton isActive={isNameValid}>프로필생성하기</FullButton>
+            <FullButton isActive={isNameValid} onClick={handleCreateProfile}>
+              프로필생성하기
+            </FullButton>
           </section>
         </div>
       </main>
@@ -61,7 +72,6 @@ const OnboardingProfileClient = () => {
         title="로딩중"
         confirmLabel="취소하기"
         isLoading
-        loadingImageSrc="/loading.gif"
         backdrop="blur"
         onClose={() => {}}
       />

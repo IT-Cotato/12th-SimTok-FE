@@ -14,11 +14,11 @@ import { useFunnel } from "@/hooks/useFunnel";
 
 const OnboardingPage = () => {
   const router = useRouter();
-  const { Funnel, Step, setStep, currentStep } = useFunnel(ONBOARDING_STEPS[0]);
-
-  const currentIndex = ONBOARDING_STEPS.indexOf(
-    currentStep as OnboardingStepName,
+  const { Funnel, Step, setStep, currentStep } = useFunnel<OnboardingStepName>(
+    ONBOARDING_STEPS[0],
   );
+
+  const currentIndex = ONBOARDING_STEPS.indexOf(currentStep);
   const isLastStep = currentIndex === ONBOARDING_STEPS.length - 1;
 
   const goNext = () => {
@@ -38,7 +38,7 @@ const OnboardingPage = () => {
         <ProgressDots total={ONBOARDING_STEPS.length} current={currentIndex} />
 
         <Funnel>
-          {ONBOARDING_STEPS.map((name: OnboardingStepName) => (
+          {ONBOARDING_STEPS.map(name => (
             <Step key={name} name={name}>
               <OnboardingStep
                 stepName={name}
