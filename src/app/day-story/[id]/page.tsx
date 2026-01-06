@@ -22,7 +22,7 @@ const DailyStory = () => {
   const timeAgo = getTimeAgo(story.createdAt);
 
   return (
-    <section className="relative flex h-screen w-full items-center">
+    <section className="relative h-screen w-full">
       <div className="fixed top-0 w-full max-w-[440px]">
         <BackHeader title={`${story.userName}의 하루`} timeAgo={timeAgo} />
       </div>
