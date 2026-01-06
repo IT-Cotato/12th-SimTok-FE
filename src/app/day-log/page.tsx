@@ -1,7 +1,7 @@
 import { NavBar } from "@/components/common/NavBar";
 import { Header } from "@/components/dailyRecord/Header";
 import { RecordMissionFeed } from "@/components/dailyRecord/MissionFeed";
-import { RecordMissionCard } from "@/components/dailyRecord/MissionInfo";
+import { RecordMissionInfo } from "@/components/dailyRecord/MissionInfo";
 import { SharedDiaryCard } from "@/components/dailyRecord/SharedDiaryCard";
 
 import DailyRecordData from "@/mock/dailyRecord.json";
@@ -13,7 +13,7 @@ const DailyRecordPage = () => {
   return (
     <main className="flex w-full flex-col pb-[112px]">
       <Header />
-      <RecordMissionCard hasMyRecord={hasMyRecord} />
+      <RecordMissionInfo hasMyRecord={hasMyRecord} />
       <div className="mt-[17.5px]">
         <RecordMissionFeed />
       </div>

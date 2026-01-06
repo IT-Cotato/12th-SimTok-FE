@@ -1,10 +1,10 @@
 "use client";
 import CheckIcon from "@/assets/check.svg";
 
-interface RecordMissionCardProps {
+interface RecordMissionInfoProps {
   hasMyRecord: boolean;
 }
-export const RecordMissionCard = ({ hasMyRecord }: RecordMissionCardProps) => {
+export const RecordMissionInfo = ({ hasMyRecord }: RecordMissionInfoProps) => {
   return (
     <section className="border-mint-01 bg-neutral-11 mx-4 mt-[13.5px] cursor-pointer rounded-2xl border">
       <div className="flex h-[76px] items-center justify-between p-[10px]">
