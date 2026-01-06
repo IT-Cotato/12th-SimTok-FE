@@ -4,11 +4,19 @@ import { SendButton } from "@/assets/SendButton";
 
 interface MessageInputProps {
   onClick?: React.MouseEventHandler<HTMLInputElement>;
+  onSend?: (message: string) => void;
 }
 
-export const MessageInput = ({ onClick }: MessageInputProps) => {
+export const MessageInput = ({ onClick, onSend }: MessageInputProps) => {
   const [text, setText] = useState("");
+  const [isComposing, setIsComposing] = useState(false);
+
   const hasText = Boolean(text);
+  const sendMessage = () => {
+    if (!hasText) return;
+    onSend?.(text.trim());
+    setText("");
+  };
 
   return (
     <div className="relative flex-1">
@@ -18,8 +26,16 @@ export const MessageInput = ({ onClick }: MessageInputProps) => {
         value={text}
         onChange={e => setText(e.target.value)}
         onClick={onClick}
+        onCompositionStart={() => setIsComposing(true)}
+        onCompositionEnd={() => setIsComposing(false)}
+        onKeyDown={e => {
+          if (e.key === "Enter" && !isComposing) {
+            e.preventDefault();
+            sendMessage();
+          }
+        }}
       />
-      <SendButton hasText={hasText} />
+      <SendButton hasText={hasText} onClick={sendMessage} />
     </div>
   );
 };

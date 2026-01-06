@@ -27,7 +27,7 @@ export const CommentList = ({ comments }: CommentListProps) => {
             alt={comment.userName}
             width={56}
             height={56}
-            className="rounded-2xl object-cover"
+            className="h-14 w-14 rounded-2xl object-cover"
           />
           <div className="flex flex-1 justify-between">
             <div className="flex flex-col">

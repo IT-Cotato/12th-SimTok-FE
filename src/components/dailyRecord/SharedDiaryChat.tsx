@@ -2,6 +2,8 @@
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 
+import { useState } from "react";
+
 import CloseIcon from "@/assets/close.svg";
 
 import { MessageInput } from "@/components/common/MessageInput";
@@ -24,6 +26,7 @@ export const SharedDiaryComment = ({
   const numericId = Number(id);
 
   const isPage = variant === "page";
+  const [comments, setComments] = useState(CommentData);
 
   return (
     <div
@@ -51,7 +54,7 @@ export const SharedDiaryComment = ({
           <h3 className="text-h3 text-neutral-01 border-neutral-10 flex items-center justify-center border-b p-[10px]">
             댓글
           </h3>
-          <CommentList comments={CommentData} />
+          <CommentList comments={comments} />
         </div>
         <footer className="fixed bottom-0 flex w-full max-w-[440px] items-center gap-[13px] bg-white px-4 pt-4 pb-10 shadow-[0_-2px_10px_0px_rgba(0,0,0,0.10)]">
           <Image
@@ -59,10 +62,22 @@ export const SharedDiaryComment = ({
             alt="myProfileImage"
             width={53}
             height={53}
-            className="rounded-full object-cover"
+            className="h-[53px] w-[53px] rounded-full object-cover"
           />
           <MessageInput
             onClick={() => router.push(`/shared-diary/${numericId}/comment`)}
+            onSend={message => {
+              setComments(prev => [
+                ...prev,
+                {
+                  id: Date.now(),
+                  userName: MyProfile.userName,
+                  profileImg: profileImg,
+                  comment: message,
+                  createdAt: new Date().toISOString(),
+                },
+              ]);
+            }}
           />
         </footer>
       </section>
