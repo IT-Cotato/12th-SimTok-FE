@@ -134,7 +134,7 @@ const SettingPage = () => {
           <div className="mt-[320px] flex w-full justify-center">
             <FullButton
               isActive={isPasswordConfirmValid}
-              onClick={() => router.push("/login")}
+              onClick={() => router.push("/onboarding")}
             >
               완료
             </FullButton>
