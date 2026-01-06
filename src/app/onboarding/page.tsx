@@ -2,15 +2,15 @@
 
 import { useRouter } from "next/navigation";
 
-import React from "react";
+import OnboardingStep from "@/components/onboarding/OnboardingStep";
+import ProgressDots from "@/components/onboarding/ProgressDots";
 
-import OnboardingStep from "../../components/onboarding/OnboardingStep";
-import ProgressDots from "../../components/onboarding/ProgressDots";
 import {
   ONBOARDING_STEPS,
   OnboardingStepName,
-} from "../../config/onboardingSteps";
-import { useFunnel } from "../../hooks/useFunnel";
+} from "@/constants/onboardingSteps";
+
+import { useFunnel } from "@/hooks/useFunnel";
 
 const OnboardingPage = () => {
   const router = useRouter();
@@ -19,7 +19,7 @@ const OnboardingPage = () => {
   const currentIndex = ONBOARDING_STEPS.indexOf(
     currentStep as OnboardingStepName,
   );
-  const isLast = currentIndex === ONBOARDING_STEPS.length - 1;
+  const isLastStep = currentIndex === ONBOARDING_STEPS.length - 1;
 
   const goNext = () => {
     const next = ONBOARDING_STEPS[currentIndex + 1];
@@ -33,19 +33,23 @@ const OnboardingPage = () => {
   };
 
   return (
-    <main className="flex min-h-dvh justify-center">
-      <div className="mt-[13px] flex h-full w-[440px] flex-col">
+    <section className="flex min-h-dvh justify-center">
+      <div className="mt-[13px] flex h-full w-full flex-col">
         <ProgressDots total={ONBOARDING_STEPS.length} current={currentIndex} />
 
         <Funnel>
-          {ONBOARDING_STEPS.map(name => (
+          {ONBOARDING_STEPS.map((name: OnboardingStepName) => (
             <Step key={name} name={name}>
-              <OnboardingStep stepName={name} isLast={isLast} onNext={goNext} />
+              <OnboardingStep
+                stepName={name}
+                isLastStep={isLastStep}
+                onNext={goNext}
+              />
             </Step>
           ))}
         </Funnel>
       </div>
-    </main>
+    </section>
   );
 };
 

@@ -5,7 +5,7 @@ type Props = {
 
 export default function ProgressDots({ total, current }: Props) {
   return (
-    <div className="z-10 flex w-full items-center justify-center px-4 py-[10px] pt-[73px]">
+    <div className="z-10 mt-[73px] flex w-full items-center justify-center px-4 py-[10px]">
       <div className="flex gap-[9px]">
         {Array.from({ length: total }).map((_, i) => {
           const isActive = i <= current;
