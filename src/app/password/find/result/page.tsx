@@ -3,9 +3,9 @@
 import { useRouter } from "next/navigation";
 
 import { BackHeader } from "@/components/common/BackHeader";
-import FullButton from "@/components/common/FullButton";
-import PageTitle from "@/components/common/PageTitle";
-import PasswordBox from "@/components/password/PasswordBox";
+import { FullButton } from "@/components/common/FullButton";
+import { PageTitle } from "@/components/common/PageTitle";
+import { PasswordBox } from "@/components/password/PasswordBox";
 
 const FindPage = () => {
   //임시 비밀번호
