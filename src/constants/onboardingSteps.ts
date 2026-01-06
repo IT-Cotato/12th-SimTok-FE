@@ -1,5 +1,12 @@
 export const ONBOARDING_STEPS = ["전체", "커뮤니티", "정원"] as const;
+
 export type OnboardingStepName = (typeof ONBOARDING_STEPS)[number];
+
+export type OnboardingFunnelSteps = {
+  전체: object;
+  커뮤니티: object;
+  정원: object;
+};
 
 type OnboardingBackground =
   | { type: "image"; src: string }
