@@ -5,7 +5,7 @@ type OnboardingBackground =
   | { type: "image"; src: string }
   | { type: "class"; className: string };
 
-export const onboardingContents: Record<
+export const ONBOARDING_CONTENTS: Record<
   OnboardingStepName,
   {
     title: string;
@@ -16,21 +16,21 @@ export const onboardingContents: Record<
     title: "시니어와 가족이 조금 편하게\n연결될 수 있도록",
     background: {
       type: "image",
-      src: "/images/onboarding-step-1.png",
+      src: "/images/onboarding-step-1.svg",
     },
   },
   커뮤니티: {
     title: "작은 순간도 반가운 소식이\n될 수 있도록",
     background: {
       type: "image",
-      src: "/images/onboarding-step-2.png",
+      src: "/images/onboarding-step-2.svg",
     },
   },
   정원: {
     title: "소중한 마음을 모아 정원을\n꾸며볼까요?",
     background: {
       type: "image",
-      src: "/images/onboarding-step-3.png",
+      src: "/images/onboarding-step-3.svg",
     },
   },
 };

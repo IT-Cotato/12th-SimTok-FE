@@ -26,7 +26,7 @@ const ProfileImagePicker = ({ imageUrl, onClick }: ProfileImagePickerProps) => {
 
       <button
         type="button"
-        className="absolute right-[16px] bottom-[16px] h-[32px] w-[32px]"
+        className="absolute right-[16px] bottom-[16px] h-[32px] w-[32px] cursor-pointer"
       >
         <PhotoIcon />
       </button>
