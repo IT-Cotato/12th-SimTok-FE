@@ -1,15 +1,17 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import PlusIcon from "@/assets/plus.svg";
 
 import DailyRecordData from "@/mock/dailyRecord.json";
 
 export const RecordMissionFeed = () => {
-  const MY_ID = 101;
+  const MY_ID = 111;
 
   const myRecord = DailyRecordData.find(item => item.userId === MY_ID);
+  const router = useRouter();
 
   // TODO: api연결시, zustand로 optimistic update로직 추가
   const otherRecords = DailyRecordData.filter(
@@ -37,7 +39,10 @@ export const RecordMissionFeed = () => {
               />
             </Link>
           ) : (
-            <div className="bg-neutral-11 flex h-[88px] w-[88px] items-center justify-center rounded-full">
+            <div
+              className="bg-neutral-11 flex h-[88px] w-[88px] items-center justify-center rounded-full"
+              onClick={() => router.push("/day-story/upload")}
+            >
               <PlusIcon className="text-neutral-05 h-12 w-12" />
             </div>
           )}
