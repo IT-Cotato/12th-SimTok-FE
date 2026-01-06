@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 
 import { useState } from "react";
+import { useEffect } from "react";
 
 import CloseIcon from "@/assets/close.svg";
 
@@ -28,6 +29,16 @@ export const SharedDiaryComment = ({
   const isPage = variant === "page";
   const [comments, setComments] = useState(CommentData);
 
+  useEffect(() => {
+    if (!isPage) {
+      document.body.style.overflow = "hidden";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isPage]);
+
   return (
     <div
       className={`${
@@ -45,17 +56,18 @@ export const SharedDiaryComment = ({
         }`}
         onClick={e => e.stopPropagation()}
       >
-        <div className="h-[433px]">
-          <div className="w-full px-4 py-[10px]">
-            <button className="h-[14px] w-[14px] cursor-pointer">
-              <CloseIcon onClick={() => router.back()} />
-            </button>
-          </div>
-          <h3 className="text-h3 text-neutral-01 border-neutral-10 flex items-center justify-center border-b p-[10px]">
-            댓글
-          </h3>
+        <div className="w-full px-4 py-[10px]">
+          <button className="h-[14px] w-[14px] cursor-pointer">
+            <CloseIcon onClick={() => router.back()} />
+          </button>
+        </div>
+        <h3 className="text-h3 text-neutral-01 border-neutral-10 flex items-center justify-center border-b p-[10px]">
+          댓글
+        </h3>
+        <div className="flex-1 overflow-y-scroll pb-[109px]">
           <CommentList comments={comments} />
         </div>
+
         <footer className="fixed bottom-0 flex w-full max-w-[440px] items-center gap-[13px] bg-white px-4 pt-4 pb-10 shadow-[0_-2px_10px_0px_rgba(0,0,0,0.10)]">
           <Image
             src={profileImg}
