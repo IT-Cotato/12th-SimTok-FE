@@ -1,5 +1,3 @@
-import { redirect } from "next/navigation";
-
-export default function RootPage() {
-  redirect("/login");
+export default function HomePage() {
+  return <main>홈 화면</main>;
 }

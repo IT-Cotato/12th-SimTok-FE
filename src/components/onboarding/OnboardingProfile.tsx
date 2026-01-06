@@ -25,7 +25,7 @@ const OnboardingProfileClient = () => {
 
   const handleCreateProfile = () => {
     if (!isNameValid) return;
-    router.replace("/");
+    router.replace("/login");
   };
 
   return (
