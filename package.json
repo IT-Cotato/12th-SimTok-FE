@@ -17,7 +17,7 @@
     ]
   },
   "dependencies": {
-    "@toss/use-funnel": "^1.4.2",
+    "@use-funnel/next": "^0.0.22",
     "axios": "^1.13.2",
     "next": "16.0.10",
     "react": "19.2.1",
