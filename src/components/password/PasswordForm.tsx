@@ -7,8 +7,8 @@ import { useState } from "react";
 import PhoneIcon from "@/assets/phone.svg";
 import ProfileIcon from "@/assets/profile.svg";
 
-import AlertModal from "@/components/common/AlertModal";
-import FullButton from "@/components/common/FullButton";
+import { AlertModal } from "@/components/common/AlertModal";
+import { FullButton } from "@/components/common/FullButton";
 
 import { useCountdown } from "@/hooks/useCountdown";
 import { usePhoneValidation } from "@/hooks/usePhoneValidation";
@@ -17,7 +17,7 @@ import { formatPhone } from "@/utils/formatPhone";
 import { formatTime } from "@/utils/formatTime";
 import { phoneChangeHandler } from "@/utils/phoneHandlers";
 
-const PasswordForm = () => {
+export const PasswordForm = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
@@ -228,5 +228,3 @@ const PasswordForm = () => {
     </div>
   );
 };
-
-export default PasswordForm;

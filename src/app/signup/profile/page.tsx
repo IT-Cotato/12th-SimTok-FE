@@ -1,6 +1,6 @@
 import { BackHeader } from "@/components/common/BackHeader";
-import PageTitle from "@/components/common/PageTitle";
-import ProfileForm from "@/components/signup/ProfileForm";
+import { PageTitle } from "@/components/common/PageTitle";
+import { ProfileForm } from "@/components/signup/ProfileForm";
 
 const RegisterPage = () => {
   return (
