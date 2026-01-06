@@ -3,11 +3,11 @@ import { useState } from "react";
 import { SendButton } from "@/assets/SendButton";
 
 interface MessageInputProps {
-  onClick?: React.MouseEventHandler<HTMLInputElement>;
+  onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onSend?: (message: string) => void;
 }
 
-export const MessageInput = ({ onClick, onSend }: MessageInputProps) => {
+export const MessageInput = ({ onFocus, onSend }: MessageInputProps) => {
   const [text, setText] = useState("");
   const [isComposing, setIsComposing] = useState(false);
 
@@ -25,7 +25,7 @@ export const MessageInput = ({ onClick, onSend }: MessageInputProps) => {
         type="text"
         value={text}
         onChange={e => setText(e.target.value)}
-        onClick={onClick}
+        onFocus={onFocus}
         onCompositionStart={() => setIsComposing(true)}
         onCompositionEnd={() => setIsComposing(false)}
         onKeyDown={e => {

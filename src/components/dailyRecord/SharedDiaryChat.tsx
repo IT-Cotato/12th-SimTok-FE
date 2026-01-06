@@ -65,7 +65,11 @@ export const SharedDiaryComment = ({
             className="h-[53px] w-[53px] rounded-full object-cover"
           />
           <MessageInput
-            onClick={() => router.push(`/shared-diary/${numericId}/comment`)}
+            onFocus={() => {
+              if (!isPage) {
+                router.push(`/shared-diary/${numericId}/comment`);
+              }
+            }}
             onSend={message => {
               setComments(prev => [
                 ...prev,
