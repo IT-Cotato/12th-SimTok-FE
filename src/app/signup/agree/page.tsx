@@ -4,9 +4,9 @@ import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
+import { BackHeader } from "@/components/common/BackHeader";
 import Checkbox from "@/components/common/Checkbox";
 import FullButton from "@/components/common/FullButton";
-import PageHeader from "@/components/common/Header";
 import PageTitle from "@/components/common/PageTitle";
 
 type AgreementKey =
@@ -63,7 +63,7 @@ const AgreePage = () => {
   return (
     <main className="flex min-h-dvh justify-center bg-white">
       <div className="mt-[13px] flex h-full w-110 flex-col">
-        <PageHeader title="회원가입" />
+        <BackHeader title="회원가입" />
 
         <PageTitle>
           반가워요! 가입하려면

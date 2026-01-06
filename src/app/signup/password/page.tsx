@@ -8,8 +8,8 @@ import Exclamation from "@/assets/exclamation.svg";
 import EyeIcon from "@/assets/eye.svg";
 import LockIcon from "@/assets/lock.svg";
 
+import { BackHeader } from "@/components/common/BackHeader";
 import FullButton from "@/components/common/FullButton";
-import PageHeader from "@/components/common/Header";
 import PageTitle from "@/components/common/PageTitle";
 
 import { usePasswordValidation } from "@/hooks/usePasswordValidation";
@@ -42,7 +42,7 @@ const SettingPage = () => {
   return (
     <main className="flex min-h-dvh justify-center bg-white">
       <div className="mt-[13px] flex h-full w-110 flex-col">
-        <PageHeader title="회원가입" />
+        <BackHeader title="회원가입" />
 
         <PageTitle>
           로그인에 사용할 비밀번호를
