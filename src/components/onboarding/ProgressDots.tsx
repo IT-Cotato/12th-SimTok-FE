@@ -1,11 +1,11 @@
-type Props = {
+interface ProgressDotsProps {
   total: number;
   current: number;
-};
+}
 
-export default function ProgressDots({ total, current }: Props) {
+export default function ProgressDots({ total, current }: ProgressDotsProps) {
   return (
-    <div className="z-10 mt-[73px] flex w-full items-center justify-center px-4 py-[10px]">
+    <div className="z-10 flex w-full items-center justify-center px-4 py-[10px]">
       <div className="flex gap-[9px]">
         {Array.from({ length: total }).map((_, i) => {
           const isActive = i <= current;
@@ -13,11 +13,7 @@ export default function ProgressDots({ total, current }: Props) {
           return (
             <span
               key={i}
-              className={
-                isActive
-                  ? "bg-mint-01 h-2.5 w-2.5 rounded-full"
-                  : "bg-neutral-08 h-2.5 w-2.5 rounded-full"
-              }
+              className={`${isActive ? "bg-mint-01" : "bg-neutral-08"} h-3 w-3 rounded-full`}
             />
           );
         })}

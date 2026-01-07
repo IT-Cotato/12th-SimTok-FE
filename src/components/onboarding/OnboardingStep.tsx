@@ -17,21 +17,21 @@ const OnboardingStep = ({ stepName, isLastStep, onNext }: Props) => {
   const { title, background } = ONBOARDING_CONTENTS[stepName];
 
   return (
-    <div className="flex min-h-dvh justify-center bg-white">
-      <div className="relative mt-[13px] flex h-full w-[440px] flex-col pt-[558px]">
+    <div className="flex min-h-dvh justify-center">
+      <div className="relative flex h-full w-[440px] flex-col pt-[558px]">
         {background.type === "image" && (
           <Image
             src={background.src}
             alt=""
             fill
             priority
-            className="pointer-events-none -translate-y-[110px] object-cover object-top"
+            className="pointer-events-none -translate-y-[120px] object-cover object-top"
           />
         )}
 
         {background.type === "class" && (
           <div
-            className={`pointer-events-none absolute -translate-y-[110px] ${background.className}`}
+            className={`pointer-events-none absolute -z-10 -translate-y-[120px] ${background.className}`}
             aria-hidden
           />
         )}
