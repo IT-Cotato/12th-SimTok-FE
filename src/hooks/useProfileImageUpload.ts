@@ -19,6 +19,10 @@ export const useProfileImageUpload = () => {
     setIsLoading(false);
   };
 
+  const cancelUpload = () => {
+    setIsLoading(false);
+  };
+
   // const uploadImage = async (file: File) => {
   //   try {
   //     setIsLoading(true);
@@ -39,5 +43,11 @@ export const useProfileImageUpload = () => {
   //   uploadImage,
   //   resetImage,
   // };
-  return { profileImage, isLoading, uploadImage, resetImage } as const;
+  return {
+    profileImage,
+    isLoading,
+    uploadImage,
+    resetImage,
+    cancelUpload,
+  } as const;
 };

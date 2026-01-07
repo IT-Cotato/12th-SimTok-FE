@@ -20,7 +20,7 @@ const OnboardingProfileClient = () => {
 
   const isNameValid = name.trim().length > 0;
 
-  const { profileImage, isLoading, uploadImage, resetImage } =
+  const { profileImage, isLoading, uploadImage, resetImage, cancelUpload } =
     useProfileImageUpload();
 
   const handleCreateProfile = async () => {
@@ -93,7 +93,7 @@ const OnboardingProfileClient = () => {
         confirmLabel="취소하기"
         isLoading
         backdrop="blur"
-        onClose={() => {}}
+        onClose={cancelUpload}
       />
     </>
   );
