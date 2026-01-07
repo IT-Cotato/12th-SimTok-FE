@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 import FullButton from "@/components/common/FullButton";
 
@@ -18,6 +18,22 @@ const UploadButton = ({
   onSelectDefault,
 }: UploadButtonProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const modalRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    modalRef.current?.focus();
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -42,13 +58,21 @@ const UploadButton = ({
       className="fixed inset-0 z-50 flex items-end justify-center"
       style={{ backgroundColor: "rgba(36, 38, 40, 0.3)" }}
       onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
     >
       <div
+        ref={modalRef}
         className="mb-[42px] w-full max-w-[440px] px-4"
         onClick={e => e.stopPropagation()}
+        tabIndex={-1}
       >
         <div className="bg-neutral-11 overflow-hidden rounded-2xl">
-          <div className="text-h3 text-neutral-06 h-[48px] px-[14px] py-[10px] text-center">
+          <div
+            id="modal-title"
+            className="text-h3 text-neutral-06 h-[48px] px-[14px] py-[10px] text-center"
+          >
             프로필 사진 설정
           </div>
 
