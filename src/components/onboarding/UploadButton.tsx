@@ -22,7 +22,10 @@ const UploadButton = ({
   if (!isOpen) return null;
 
   const handleAlbumClick = () => {
-    fileInputRef.current?.click();
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+      fileInputRef.current.click();
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,6 +33,7 @@ const UploadButton = ({
     if (!file) return;
 
     onSelectAlbum(file);
+    e.target.value = "";
     onClose();
   };
 
