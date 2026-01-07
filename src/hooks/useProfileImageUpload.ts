@@ -33,11 +33,11 @@ export const useProfileImageUpload = () => {
     setProfileImage(null);
   };
 
-  return {
-    profileImage,
-    isLoading,
-    uploadImage,
-    resetImage,
-  };
+  // return {
+  //   profileImage,
+  //   isLoading,
+  //   uploadImage,
+  //   resetImage,
+  // };
   return { profileImage, isLoading, uploadImage, resetImage } as const;
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
@@ -23,8 +23,24 @@ const OnboardingProfileClient = () => {
   const { profileImage, isLoading, uploadImage, resetImage } =
     useProfileImageUpload();
 
-  const handleCreateProfile = () => {
+  const handleCreateProfile = async () => {
     if (!isNameValid) return;
+
+    // 1) 프로필 데이터 저장 (지금은 임시로 localStorage 예시)
+    const profile = {
+      name: name.trim(),
+      imageUrl: profileImage ?? null,
+    };
+    try {
+      // TODO: 실제 API로 교체
+      // await fetch("/api/profile", { method: "POST", body: JSON.stringify(profile) });
+      localStorage.setItem("onboardingProfile", JSON.stringify(profile));
+    } catch (e) {
+      // 에러 처리
+      console.error(e);
+      return;
+    }
+    // 2) 저장이 끝난 뒤에만 페이지 이동
     router.replace("/login");
   };
 
@@ -57,9 +73,13 @@ const OnboardingProfileClient = () => {
       <UploadButton
         isOpen={isUploadOpen}
         onClose={() => setIsUploadOpen(false)}
-        onSelectAlbum={file => {
-          uploadImage(file);
-          setIsUploadOpen(false);
+        onSelectAlbum={async file => {
+          try {
+            await uploadImage(file);
+            setIsUploadOpen(false);
+          } catch (error) {
+            console.error("이미지 업로드 실패:", error);
+          }
         }}
         onSelectDefault={() => {
           resetImage();
