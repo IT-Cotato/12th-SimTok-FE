@@ -10,7 +10,7 @@ interface LoadingModalProps {
   onClose: () => void;
   backdrop?: AlertBackdrop;
   isLoading?: boolean;
-  loadingImageSrc?: string;
+  //loadingImageSrc?: string;
 }
 
 const LoadingModal = ({
@@ -21,7 +21,7 @@ const LoadingModal = ({
   onClose,
   backdrop = "default",
   isLoading = false,
-  loadingImageSrc,
+  //loadingImageSrc,
 }: LoadingModalProps) => {
   if (!isOpen) return null;
 
