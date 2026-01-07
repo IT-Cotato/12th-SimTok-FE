@@ -1792,17 +1792,17 @@
   resolved "https://registry.yarnpkg.com/@unrs/resolver-binding-win32-x64-msvc/-/resolver-binding-win32-x64-msvc-1.11.1.tgz#538b1e103bf8d9864e7b85cc96fa8d6fb6c40777"
   integrity sha512-lrW200hZdbfRtztbygyaq/6jP6AKE8qQN2KvPcJ+x7wiD038YtnYtZ82IMNJ69GJibV7bwL3y9FgK+5w/pYt6g==
 
+"@use-funnel/browser@^0.0.16":
+  version "0.0.16"
+  resolved "https://registry.yarnpkg.com/@use-funnel/browser/-/browser-0.0.16.tgz#7f28c0f6454ab562a89c2fec433af4c9eead2832"
+  integrity sha512-L3qOxT3aU82LVKcj14K6Z/qndCt1qV8XBfyK2zRNR/btD6787bznmuevwFwcPZnze9VkzsQAJlRHHsrPAByIKw==
+  dependencies:
+    "@use-funnel/core" "^0.0.13"
+
 "@use-funnel/core@^0.0.13":
   version "0.0.13"
   resolved "https://registry.yarnpkg.com/@use-funnel/core/-/core-0.0.13.tgz#3ca3a124d1ec0055a736f44bab91ca4bb7e394e9"
   integrity sha512-0cFqUs0Z5QWnTG5ua2FZloKyGn3KAbA9miaFOa6RAeBmm74lilyFk4ovLe/9g1W58ZZlR3+1wbjDzyAT9yIGig==
-
-"@use-funnel/next@^0.0.22":
-  version "0.0.22"
-  resolved "https://registry.yarnpkg.com/@use-funnel/next/-/next-0.0.22.tgz#9cc4573087e21d3592f614d58adbedf1049093c3"
-  integrity sha512-AFdROs+MfC+HxVnHNyI6jNuWmgV1YjUq6IG2ckps2PTqPLp7ZowtmVAa1k7iJxEBu/0PXqXiLstEku1V8kZACQ==
-  dependencies:
-    "@use-funnel/core" "^0.0.13"
 
 "@webassemblyjs/ast@1.14.1", "@webassemblyjs/ast@^1.14.1":
   version "1.14.1"
