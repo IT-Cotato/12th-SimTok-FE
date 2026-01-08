@@ -1,4 +1,6 @@
 "use client";
+import Image from "next/image";
+
 import { useState } from "react";
 
 import { EMOTION_BUTTONS, EMOTION_ITEMS } from "@/constants/emotionItems";
@@ -44,9 +46,11 @@ export const EmotionSelectSection = ({
               className={`mx-[6px] flex flex-col items-center justify-center gap-1 rounded-2xl py-[10px] ${isSelected ? "bg-mint-02" : "bg-white"} cursor-pointer`}
               onClick={() => handleClickItem(idx)}
             >
-              <img
+              <Image
                 src={EMOTION_ITEMS[isActive].getImageSrc(Number(index))}
                 alt={item.presentText}
+                width={97.625}
+                height={96.25}
                 className="h-[96.25px] w-[97.625px]"
               />
               <span className="text-sub1-r text-black">{item.presentText}</span>
