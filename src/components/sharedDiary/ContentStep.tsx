@@ -9,7 +9,7 @@ import { getEmotionMeta } from "@/utils/getEmotionMeta";
 
 import { BackHeader } from "../common/BackHeader";
 import { FullButton } from "../common/FullButton";
-import ProgressDots from "../common/ProgressDot";
+import { ProgressDots } from "../common/ProgressDot";
 import { WriteStepButton } from "./ContentStepButton";
 import { UploadTitle } from "./UploadTitle";
 
