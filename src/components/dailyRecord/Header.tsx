@@ -38,7 +38,7 @@ export const Header = () => {
       </div>
       {!isPencilClick && (
         <div className="absolute top-[41px] right-3">
-          <InfoMessage />
+          <InfoMessage text=" 공유일기를 작성하고 친구들과 공유해보세요!" />
         </div>
       )}
     </header>
