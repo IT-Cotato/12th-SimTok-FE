@@ -1,9 +1,13 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { createFunnelSteps, useFunnel } from "@use-funnel/browser";
 
 import type { SharedDiaryFormState } from "@/types/sharedDiarySteps.type";
 
+import { CompleteStep } from "./CompleteStep";
+import { ConfirmStep } from "./ConfirmStep";
 import { ContentStep } from "./ContentStep";
 import { EmotionStep } from "./EmotionStep";
 
@@ -19,6 +23,7 @@ const steps = createFunnelSteps<SharedDiaryFormState>()
   .build();
 
 export const SharedDiaryFunnel = () => {
+  const router = useRouter();
   const funnel = useFunnel({
     id: "sharedDiary",
     initial: {
@@ -66,28 +71,28 @@ export const SharedDiaryFunnel = () => {
     case "confirm": {
       const { emotion, text, file } = funnel.context;
 
-      // return (
-      //   <ConfirmStep
-      //     emotion={emotion}
-      //     text={text}
-      //     file={file}
-      //     onSubmit={() => {
-      //       // TODO: 업로드 API 호출
-      //       funnel.history.push("complete");
-      //     }}
-      //     onBack={() => funnel.history.back()}
-      //   />
-      // );
+      return (
+        <ConfirmStep
+          emotion={emotion}
+          text={text}
+          file={file}
+          onSubmit={() => {
+            // TODO: 업로드 API 호출
+            funnel.history.push("complete");
+          }}
+          onBack={() => funnel.history.back()}
+        />
+      );
     }
 
     case "complete": {
-      // return (
-      //   <CompleteStep
-      //     onClose={() => {
-      //       // 닫기 처리
-      //     }}
-      //   />
-      // );
+      return (
+        <CompleteStep
+          onClose={() => {
+            router.push("/day-log");
+          }}
+        />
+      );
     }
   }
 };
