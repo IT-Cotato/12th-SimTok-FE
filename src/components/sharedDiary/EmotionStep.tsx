@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 
 import { Emotion } from "@/types/emotion.type";
@@ -19,7 +20,7 @@ export const EmotionStep = ({
   const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
   console.log(selectedEmotion);
   return (
-    <section className="w-full">
+    <main className="flex w-full flex-col">
       <BackHeader title="공유일기쓰기" />
       <div className="mt-[1px]">
         <ProgressDots total={3} current={1} />
@@ -33,7 +34,7 @@ export const EmotionStep = ({
       <div className="pb-[112px]">
         <EmotionSelectSection onSelect={value => setSelectedEmotion(value)} />
       </div>
-      <div className="fixed bottom-0 h-[119px] min-w-[440px] bg-white px-4 py-[10px]">
+      <div className="fixed bottom-0 h-[119px] w-screen max-w-[440px] bg-white px-4 py-[10px]">
         <FullButton
           isActive={!!selectedEmotion}
           onClick={() => selectedEmotion && onNext(selectedEmotion as Emotion)}
@@ -41,6 +42,6 @@ export const EmotionStep = ({
           <p>다음</p>
         </FullButton>
       </div>
-    </section>
+    </main>
   );
 };
