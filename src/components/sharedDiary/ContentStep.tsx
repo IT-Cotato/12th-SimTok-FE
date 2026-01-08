@@ -30,9 +30,8 @@ export const ContentStep = ({
   const emotionData = getEmotionMeta(emotion);
 
   const [file, setFile] = useState<File | null>(defaultFile ?? null);
-
-  const [content, setContent] = useState<string | null>("");
-  const hasInput = Boolean(content || file);
+  const [text, setText] = useState<string>("");
+  const hasInput = Boolean(text || file);
 
   const previewUrl = useMemo(() => {
     if (!file) return null;
@@ -46,6 +45,8 @@ export const ContentStep = ({
       }
     };
   }, [previewUrl]);
+
+  console.log(text);
 
   return (
     <main className="flex w-full flex-col">
@@ -74,22 +75,32 @@ export const ContentStep = ({
         </section>
       )}
 
-      {previewUrl && (
+      {(previewUrl || text) && (
         <section className="pb-[254px]">
-          <Image
-            src={previewUrl}
-            alt="업로드 이미지 미리보기"
-            width={440}
-            height={440}
-            className="w-[440px]"
-          />
+          {previewUrl && (
+            <Image
+              src={previewUrl}
+              alt="업로드 이미지 미리보기"
+              width={440}
+              height={440}
+              className="w-full"
+            />
+          )}
+
+          {text && (
+            <div className="text-sub1-r px-4 py-[15px] whitespace-pre-wrap text-black">
+              {text}
+            </div>
+          )}
         </section>
       )}
 
-      <div className="fixed bottom-[119px] w-full max-w-[440px]">
+      <div className="fixed bottom-[119px] z-99 w-full max-w-[440px]">
         <WriteStepButton
           onSelectImage={selectedFile => setFile(selectedFile)}
           showInfoMessage={!hasInput}
+          text={text}
+          onChangeText={setText}
         />
       </div>
       <div className="fixed bottom-0 h-[119px] w-screen max-w-[440px] bg-white px-4 py-[10px]">
