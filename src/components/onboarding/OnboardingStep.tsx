@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import FullButton from "@/components/common/FullButton";
+import { FullButton } from "@/components/common/FullButton";
 
 import type { OnboardingStepName } from "@/constants/onboardingSteps";
 import { ONBOARDING_CONTENTS } from "@/constants/onboardingSteps";

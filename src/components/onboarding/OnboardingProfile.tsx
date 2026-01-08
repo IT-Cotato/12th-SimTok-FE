@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
-import FullButton from "@/components/common/FullButton";
+import { FullButton } from "@/components/common/FullButton";
 import LoadingModal from "@/components/common/LoadingModal";
 import NameInput from "@/components/common/NameInput";
 import ProfileImagePicker from "@/components/onboarding/ProfileImagePicker";
