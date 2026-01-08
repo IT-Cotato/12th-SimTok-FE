@@ -11,7 +11,7 @@ type PasswordBoxProps = {
   password: string;
 };
 
-const PasswordBox = ({ password }: PasswordBoxProps) => {
+export const PasswordBox = ({ password }: PasswordBoxProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const displayPassword = showPassword ? password : maskPassword(password);
@@ -33,5 +33,3 @@ const PasswordBox = ({ password }: PasswordBoxProps) => {
     </div>
   );
 };
-
-export default PasswordBox;

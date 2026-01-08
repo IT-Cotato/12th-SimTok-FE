@@ -7,7 +7,7 @@ type FullButtonProps = {
   children: ReactNode;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
-const FullButton = ({
+export const FullButton = ({
   isActive = true,
   children,
   className = "",
@@ -33,5 +33,3 @@ const FullButton = ({
     </button>
   );
 };
-
-export default FullButton;
