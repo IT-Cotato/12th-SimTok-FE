@@ -9,8 +9,8 @@ import EyeIcon from "@/assets/eye.svg";
 import LockIcon from "@/assets/lock.svg";
 
 import { BackHeader } from "@/components/common/BackHeader";
-import FullButton from "@/components/common/FullButton";
-import PageTitle from "@/components/common/PageTitle";
+import { FullButton } from "@/components/common/FullButton";
+import { PageTitle } from "@/components/common/PageTitle";
 
 import { usePasswordValidation } from "@/hooks/usePasswordValidation";
 

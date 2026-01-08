@@ -8,7 +8,7 @@ import DateIcon from "@/assets/date.svg";
 import PhoneIcon from "@/assets/phone.svg";
 import ProfileIcon from "@/assets/profile.svg";
 
-import FullButton from "@/components/common/FullButton";
+import { FullButton } from "@/components/common/FullButton";
 import LoadingModal from "@/components/common/LoadingModal";
 
 import { useCountdown } from "@/hooks/useCountdown";
@@ -19,7 +19,7 @@ import { formatPhone } from "@/utils/formatPhone";
 import { formatTime } from "@/utils/formatTime";
 import { phoneChangeHandler } from "@/utils/phoneHandlers";
 
-const ProfileForm = () => {
+export const ProfileForm = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [birth, setBirth] = useState("");
@@ -259,5 +259,3 @@ const ProfileForm = () => {
     </div>
   );
 };
-
-export default ProfileForm;

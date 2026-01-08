@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { BackHeader } from "@/components/common/BackHeader";
-import Checkbox from "@/components/common/Checkbox";
-import FullButton from "@/components/common/FullButton";
-import PageTitle from "@/components/common/PageTitle";
+import { Checkbox } from "@/components/common/Checkbox";
+import { FullButton } from "@/components/common/FullButton";
+import { PageTitle } from "@/components/common/PageTitle";
 
 import { AGREEMENTS, INITIAL_AGREEMENTS } from "@/constants/agreement";
 

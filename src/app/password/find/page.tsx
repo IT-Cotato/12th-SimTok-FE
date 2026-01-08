@@ -1,6 +1,6 @@
 import { BackHeader } from "@/components/common/BackHeader";
-import PageTitle from "@/components/common/PageTitle";
-import PasswordForm from "@/components/password/PasswordForm";
+import { PageTitle } from "@/components/common/PageTitle";
+import { PasswordForm } from "@/components/password/PasswordForm";
 
 const PasswordPage = () => {
   return (

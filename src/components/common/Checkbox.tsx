@@ -8,7 +8,7 @@ type CheckboxProps = {
   label?: ReactNode;
 } & Omit<InputHTMLAttributes<HTMLInputElement>, "type">;
 
-const Checkbox = ({
+export const Checkbox = ({
   label,
   className = "",
   checked = false,
@@ -39,5 +39,3 @@ const Checkbox = ({
     </label>
   );
 };
-
-export default Checkbox;
