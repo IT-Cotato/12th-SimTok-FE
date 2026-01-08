@@ -31,7 +31,9 @@ export const ContentStep = ({
 
   const [file, setFile] = useState<File | null>(defaultFile ?? null);
   const [text, setText] = useState<string>("");
+
   const hasInput = Boolean(text || file);
+  const canGoNext = Boolean(text && file);
 
   const previewUrl = useMemo(() => {
     if (!file) return null;
@@ -104,7 +106,13 @@ export const ContentStep = ({
         />
       </div>
       <div className="fixed bottom-0 h-[119px] w-screen max-w-[440px] bg-white px-4 py-[10px]">
-        <FullButton>
+        <FullButton
+          isActive={canGoNext}
+          onClick={() => {
+            if (!file) return;
+            onNext(text, file);
+          }}
+        >
           <p>다음</p>
         </FullButton>
       </div>
