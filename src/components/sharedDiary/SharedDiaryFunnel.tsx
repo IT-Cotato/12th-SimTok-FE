@@ -5,6 +5,7 @@ import { createFunnelSteps, useFunnel } from "@use-funnel/browser";
 import type { SharedDiaryFormState } from "@/types/sharedDiarySteps.type";
 
 import { EmotionStep } from "./EmotionStep";
+import { WriteStep } from "./WriteStep";
 
 const steps = createFunnelSteps<SharedDiaryFormState>()
   .extends("emotion")
@@ -36,7 +37,6 @@ export const SharedDiaryFunnel = () => {
             funnel.history.push("write", {
               emotion,
               content: "",
-              file: undefined,
             })
           }
         />
@@ -46,21 +46,21 @@ export const SharedDiaryFunnel = () => {
     case "write": {
       const { emotion, content, file } = funnel.context;
 
-      // return (
-      //   <WriteStep
-      //     emotion={emotion}
-      //     defaultContent={content}
-      //     defaultFile={file}
-      //     onNext={(nextContent, nextFile) =>
-      //       funnel.history.push("confirm", {
-      //         emotion,
-      //         content: nextContent,
-      //         file: nextFile,
-      //       })
-      //     }
-      //     onBack={() => funnel.history.pop()}
-      //   />
-      // );
+      return (
+        <WriteStep
+          emotion={emotion}
+          defaultContent={content}
+          defaultFile={file}
+          onNext={(nextContent, nextFile) =>
+            funnel.history.push("confirm", prev => ({
+              ...prev,
+              content: nextContent,
+              file: nextFile,
+            }))
+          }
+          onBack={() => funnel.history.back()}
+        />
+      );
     }
 
     case "confirm": {
@@ -75,7 +75,7 @@ export const SharedDiaryFunnel = () => {
       //       // TODO: 업로드 API 호출
       //       funnel.history.push("complete");
       //     }}
-      //     onBack={() => funnel.history.pop()}
+      //     onBack={() => funnel.history.back()}
       //   />
       // );
     }
