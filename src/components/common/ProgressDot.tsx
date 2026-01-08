@@ -8,7 +8,7 @@ export default function ProgressDots({ total, current }: progressDotsProps) {
     <div className="z-10 flex w-full items-center justify-center px-4 py-[10px]">
       <div className="flex gap-[9px]">
         {Array.from({ length: total }).map((_, i) => {
-          const isActive = i <= current;
+          const isActive = i <= current - 1;
 
           return (
             <span
