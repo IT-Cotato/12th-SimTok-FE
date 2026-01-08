@@ -5,7 +5,7 @@ import { Emotion } from "@/types/emotion.type";
 
 import { BackHeader } from "../common/BackHeader";
 import { FullButton } from "../common/FullButton";
-import ProgressDots from "../common/ProgressDot";
+import { ProgressDots } from "../common/ProgressDot";
 import { EmotionSelectSection } from "./EmotionSelectSection";
 import { UploadTitle } from "./UploadTitle";
 

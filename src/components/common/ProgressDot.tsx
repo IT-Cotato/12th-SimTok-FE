@@ -3,7 +3,7 @@ interface progressDotsProps {
   current: number;
 }
 
-export default function ProgressDots({ total, current }: progressDotsProps) {
+export const ProgressDots = ({ total, current }: progressDotsProps) => {
   return (
     <div className="z-10 flex w-full items-center justify-center px-4 py-[10px]">
       <div className="flex gap-[9px]">
@@ -20,4 +20,4 @@ export default function ProgressDots({ total, current }: progressDotsProps) {
       </div>
     </div>
   );
-}
+};
