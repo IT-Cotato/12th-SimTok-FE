@@ -11,6 +11,7 @@ import { BackHeader } from "../common/BackHeader";
 import { FullButton } from "../common/FullButton";
 import ProgressDots from "../common/ProgressDot";
 import { UploadTitle } from "./UploadTitle";
+import { WriteStepButton } from "./WriteStepButton";
 
 interface WriteStepProps {
   emotion: Emotion;
@@ -54,22 +55,9 @@ export const WriteStep = ({
           </p>
         </section>
       )}
-      <section className="fixed bottom-[119px] mb-5 w-full max-w-[440px]">
-        <div className="flex justify-between px-4">
-          <button className="bg-neutral-11 border-mint-01 h-[95px] max-w-[196px] flex-1 cursor-pointer rounded-2xl border border-solid px-[10px] py-[10px] pt-[20px]">
-            <div className="inline-flex items-center justify-center rounded-2xl bg-white p-[10px]">
-              <GalleryAssets />
-            </div>
-            <p>사진추가하기</p>
-          </button>
-          <button className="bg-neutral-11 border-mint-01 h-[95px] max-w-[196px] flex-1 cursor-pointer rounded-2xl border border-solid px-[10px] py-[10px] pt-[20px]">
-            <div className="text-sub2-sb inline-flex items-center justify-center rounded-2xl bg-white p-[10px] text-black">
-              TEXT
-            </div>
-            <p>글쓰기</p>
-          </button>
-        </div>
-      </section>
+      <div className="fixed bottom-[119px] mb-5 w-full max-w-[440px]">
+        <WriteStepButton />
+      </div>
       <div className="fixed bottom-0 h-[119px] w-screen max-w-[440px] bg-white px-4 py-[10px]">
         <FullButton>
           <p>다음</p>
