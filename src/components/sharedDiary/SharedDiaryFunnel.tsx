@@ -4,8 +4,8 @@ import { createFunnelSteps, useFunnel } from "@use-funnel/browser";
 
 import type { SharedDiaryFormState } from "@/types/sharedDiarySteps.type";
 
+import { ContentStep } from "./ContentStep";
 import { EmotionStep } from "./EmotionStep";
-import { WriteStep } from "./WriteStep";
 
 const steps = createFunnelSteps<SharedDiaryFormState>()
   .extends("emotion")
@@ -13,7 +13,7 @@ const steps = createFunnelSteps<SharedDiaryFormState>()
     requiredKeys: ["emotion"],
   })
   .extends("confirm", {
-    requiredKeys: ["emotion", "content", "file"],
+    requiredKeys: ["emotion", "text", "file"],
   })
   .extends("complete")
   .build();
@@ -36,7 +36,7 @@ export const SharedDiaryFunnel = () => {
           onNext={emotion =>
             funnel.history.push("write", {
               emotion,
-              content: "",
+              text: "",
             })
           }
         />
@@ -44,17 +44,17 @@ export const SharedDiaryFunnel = () => {
     }
 
     case "write": {
-      const { emotion, content, file } = funnel.context;
+      const { emotion, text, file } = funnel.context;
 
       return (
-        <WriteStep
+        <ContentStep
           emotion={emotion}
-          defaultContent={content}
+          defaultContent={text}
           defaultFile={file}
-          onNext={(nextContent, nextFile) =>
+          onNext={(nextText, nextFile) =>
             funnel.history.push("confirm", prev => ({
               ...prev,
-              content: nextContent,
+              text: nextText,
               file: nextFile,
             }))
           }
@@ -64,12 +64,12 @@ export const SharedDiaryFunnel = () => {
     }
 
     case "confirm": {
-      const { emotion, content, file } = funnel.context;
+      const { emotion, text, file } = funnel.context;
 
       // return (
       //   <ConfirmStep
       //     emotion={emotion}
-      //     content={content}
+      //     text={text}
       //     file={file}
       //     onSubmit={() => {
       //       // TODO: 업로드 API 호출
