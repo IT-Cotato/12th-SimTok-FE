@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 
-import FullButton from "@/components/common/FullButton";
+import { FullButton } from "@/components/common/FullButton";
 
 interface UploadButtonProps {
   isOpen: boolean;
