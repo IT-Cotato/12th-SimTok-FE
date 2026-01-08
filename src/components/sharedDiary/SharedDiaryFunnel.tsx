@@ -19,7 +19,7 @@ const steps = createFunnelSteps<SharedDiaryFormState>()
 
 export const SharedDiaryFunnel = () => {
   const funnel = useFunnel({
-    id: "shared-diary-steps",
+    id: "sharedDiary",
     initial: {
       step: "emotion",
       context: {},

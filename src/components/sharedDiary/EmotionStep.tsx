@@ -1,14 +1,23 @@
+import { useState } from "react";
+
 import { Emotion } from "@/types/emotion.type";
 
 import { BackHeader } from "../common/BackHeader";
+import { FullButton } from "../common/FullButton";
 import ProgressDots from "../common/ProgressDot";
+import { EmotionSelectSection } from "./EmotionSelectSection";
 import { UploadTitle } from "./UploadTitle";
 
 interface EmotionStepProps {
   emotion?: Emotion;
   onNext: (emotion: Emotion) => void;
 }
-export const EmotionStep = ({ emotion, onNext }: EmotionStepProps) => {
+export const EmotionStep = ({
+  emotion: initialEmotion,
+  onNext,
+}: EmotionStepProps) => {
+  const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
+  console.log(selectedEmotion);
   return (
     <section className="w-full">
       <BackHeader title="공유일기쓰기" />
@@ -20,6 +29,17 @@ export const EmotionStep = ({ emotion, onNext }: EmotionStepProps) => {
           title="오늘 기분은 어떠셨나요?"
           subTitle="아래 표정으로 표현해보세요!"
         />
+      </div>
+      <div className="pb-[112px]">
+        <EmotionSelectSection onSelect={value => setSelectedEmotion(value)} />
+      </div>
+      <div className="fixed bottom-0 h-[119px] min-w-[440px] bg-white px-4 py-[10px]">
+        <FullButton
+          isActive={!!selectedEmotion}
+          onClick={() => selectedEmotion && onNext(selectedEmotion as Emotion)}
+        >
+          <p>다음</p>
+        </FullButton>
       </div>
     </section>
   );
