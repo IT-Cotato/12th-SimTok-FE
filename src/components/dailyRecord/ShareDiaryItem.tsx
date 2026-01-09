@@ -56,14 +56,16 @@ export const SharedDiaryItem = ({
           </figcaption>
         </figure>
       )}
-      <div className="bg-neutral-11 relative mt-2 h-[589px] w-full">
-        <Image
-          src={item.image}
-          alt={item.image}
-          fill
-          className="w-full object-contain"
-        />
-      </div>
+      {item.image && (
+        <div className="bg-neutral-11 relative mt-2 h-[589px] w-full">
+          <Image
+            src={item.image}
+            alt={item.image}
+            fill
+            className="w-full object-contain"
+          />
+        </div>
+      )}
 
       <div className="flex flex-col gap-[10px] px-4 pt-[10px] pb-4">
         <p className="text-body1-md text-black">{item.text}</p>
