@@ -32,7 +32,7 @@ export const WriteStepButton = ({
       {showInfoMessage && (
         <div className="px-4">
           <InfoMessage
-            text="사진과 글을 추가해서 일기를 꾸며보세요!"
+            text="사진이나 글을 추가해서 일기를 꾸며보세요!"
             triangleUp={false}
           />
         </div>

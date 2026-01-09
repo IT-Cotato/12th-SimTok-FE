@@ -17,7 +17,7 @@ interface ContentStepProps {
   emotion: Emotion;
   defaultContent?: string;
   defaultFile?: File;
-  onNext: (content: string, file: File) => void;
+  onNext: (text: string, file?: File) => void;
   onBack: () => void;
 }
 export const ContentStep = ({
@@ -29,11 +29,10 @@ export const ContentStep = ({
 }: ContentStepProps) => {
   const emotionData = getEmotionMeta(emotion);
 
-  const [file, setFile] = useState<File | null>(defaultFile ?? null);
+  const [file, setFile] = useState<File | undefined>(defaultFile);
   const [text, setText] = useState<string>("");
 
   const hasInput = Boolean(text || file);
-  const canGoNext = Boolean(text && file);
 
   const previewUrl = useMemo(() => {
     if (!file) return null;
@@ -107,10 +106,10 @@ export const ContentStep = ({
       </div>
       <div className="fixed bottom-0 h-[119px] w-screen max-w-[440px] bg-white px-4 py-[10px]">
         <FullButton
-          isActive={canGoNext}
+          isActive={hasInput}
           onClick={() => {
-            if (!file) return;
-            onNext(text, file);
+            if (!text) return;
+            onNext(text, file || undefined);
           }}
         >
           <p>다음</p>

@@ -17,7 +17,7 @@ const steps = createFunnelSteps<SharedDiaryFormState>()
     requiredKeys: ["emotion"],
   })
   .extends("confirm", {
-    requiredKeys: ["emotion", "text", "file"],
+    requiredKeys: ["emotion", "text"],
   })
   .extends("complete")
   .build();
