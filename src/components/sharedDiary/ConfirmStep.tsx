@@ -16,7 +16,7 @@ import { UploadTitle } from "./UploadTitle";
 interface ConfirmStep {
   emotion: Emotion;
   text: string;
-  file: File;
+  file?: File;
   onSubmit: () => void;
   onBack: () => void;
 }
