@@ -15,3 +15,14 @@ export const MISSION_STATUS = {
     buttonText: "확인",
   },
 } as const;
+
+export const MISSION_SORT = [
+  { sort: "food", icon: "/images/missionIcon/food.svg" },
+  {
+    sort: "plant",
+    icon: "/images/missionIcon/plant.svg",
+  },
+  { sort: "color", icon: "/images/missionIcon/color.svg" },
+  { sort: "time", icon: "/images/missionIcon/time.svg" },
+  { sort: "tv", icon: "/images/missionIcon/tv.svg" },
+];
