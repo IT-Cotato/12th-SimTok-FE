@@ -55,8 +55,7 @@ const UploadButton = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center"
-      style={{ backgroundColor: "rgba(36, 38, 40, 0.3)" }}
+      className="bg-neutral-01/30 fixed inset-0 z-50 flex items-end justify-center"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -75,6 +74,7 @@ const UploadButton = ({
           >
             프로필 사진 설정
           </div>
+          <div className="bg-neutral-08 h-px w-full" />
 
           <button
             type="button"
@@ -83,6 +83,8 @@ const UploadButton = ({
           >
             앨범에서 사진 선택
           </button>
+
+          <div className="bg-neutral-08 h-px w-full" />
 
           <input
             ref={fileInputRef}

@@ -18,38 +18,36 @@ const OnboardingStep = ({ stepName, isLastStep, onNext }: Props) => {
   const [firstLine, secondLine] = title.split("\n");
 
   return (
-    <div className="flex min-h-dvh justify-center">
-      <div className="relative flex h-full w-[440px] flex-col pt-[558px]">
-        {background.type === "image" && (
-          <Image
-            src={background.src}
-            alt=""
-            fill
-            priority
-            className="pointer-events-none -translate-y-[120px] object-cover object-top"
-          />
-        )}
+    <div className="relative flex h-full w-full flex-col">
+      {background.type === "image" && (
+        <Image
+          src={background.src}
+          alt=""
+          fill
+          priority
+          className="pointer-events-none object-cover object-top"
+        />
+      )}
 
-        {background.type === "class" && (
-          <div
-            className={`pointer-events-none absolute -z-10 -translate-y-[120px] ${background.className}`}
-            aria-hidden
-          />
-        )}
+      {background.type === "class" && (
+        <div
+          className={`pointer-events-none absolute inset-0 ${background.className}`}
+          aria-hidden
+        />
+      )}
 
-        <section className="relative z-10 px-4 py-2.5">
+      <section className="fixed inset-x-0 bottom-0 z-20 px-4 pb-[32px]">
+        <div className="mx-auto w-full max-w-[440px] space-y-[23px]">
           <p className="text-d2 text-neutral-02">
             <span className="block whitespace-nowrap">{firstLine}</span>
             <span className="block whitespace-nowrap">{secondLine}</span>
           </p>
-        </section>
 
-        <section className="relative z-10 mt-[33px] px-4">
           <FullButton type="button" onClick={onNext} isActive>
             {isLastStep ? "시작하기" : "다음"}
           </FullButton>
-        </section>
-      </div>
+        </div>
+      </section>
     </div>
   );
 };

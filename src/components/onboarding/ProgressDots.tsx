@@ -5,7 +5,7 @@ interface ProgressDotsProps {
 
 export default function ProgressDots({ total, current }: ProgressDotsProps) {
   return (
-    <div className="z-10 flex w-full items-center justify-center px-4 py-[10px]">
+    <div className="flex w-full items-center justify-center px-4 py-[10px]">
       <div className="flex gap-[9px]">
         {Array.from({ length: total }).map((_, i) => {
           const isActive = i <= current;

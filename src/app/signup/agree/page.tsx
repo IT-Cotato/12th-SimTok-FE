@@ -19,7 +19,7 @@ const AgreePage = () => {
     useState<Record<AgreementKey, boolean>>(INITIAL_AGREEMENTS);
 
   const isConfirmActive =
-    agreements.service && agreements.finance && agreements.personalReq;
+    agreements.service && agreements.finance && agreements.personalRequired;
 
   const allChecked = Object.values(agreements).every(Boolean);
 

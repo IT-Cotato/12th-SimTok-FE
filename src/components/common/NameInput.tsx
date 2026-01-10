@@ -8,9 +8,9 @@ interface NameInputProps {
 }
 
 const PLACEHOLDER = "이름을 입력해주세요";
-
 const INITIAL_WIDTH = 204;
-const NameInput = ({ value, onChange }: NameInputProps) => {
+
+export const NameInput = ({ value, onChange }: NameInputProps) => {
   const spanRef = useRef<HTMLSpanElement>(null);
   const [inputWidth, setInputWidth] = useState<number>(INITIAL_WIDTH);
 
@@ -38,5 +38,3 @@ const NameInput = ({ value, onChange }: NameInputProps) => {
     </div>
   );
 };
-
-export default NameInput;
