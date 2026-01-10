@@ -36,8 +36,8 @@ const OnboardingPage = () => {
   };
 
   return (
-    <section className="flex min-h-dvh justify-center">
-      <div className="relative mt-[73px] flex h-full flex-col">
+    <section className="flex min-h-dvh w-full justify-center">
+      <div className="relative mt-[13px] flex h-full w-full flex-col">
         <div className="z-10">
           <ProgressDots
             total={ONBOARDING_STEPS.length}
