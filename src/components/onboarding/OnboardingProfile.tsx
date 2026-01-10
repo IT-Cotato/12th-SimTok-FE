@@ -46,8 +46,8 @@ const OnboardingProfileClient = () => {
 
   return (
     <>
-      <main className="flex min-h-dvh justify-center">
-        <div className="relative mt-[13px] flex h-full w-[440px] flex-col">
+      <main className="flex h-screen min-h-dvh w-full justify-center">
+        <div className="relative mt-[13px] flex h-full w-full flex-col">
           <section className="mt-[123px] px-4 py-2.5">
             <p className="text-d2 text-neutral-02 whitespace-pre-line">
               가족들에게 보여줄{"\n"}내 프로필을 만들어주세요
@@ -63,7 +63,7 @@ const OnboardingProfileClient = () => {
             </div>
           </section>
 
-          <section className="absolute right-0 bottom-[42px] left-0 px-4 py-2.5">
+          <section className="mt-[210px] px-4 py-2.5">
             <FullButton isActive={isNameValid} onClick={handleCreateProfile}>
               프로필생성하기
             </FullButton>

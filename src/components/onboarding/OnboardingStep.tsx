@@ -15,6 +15,7 @@ interface Props {
 
 const OnboardingStep = ({ stepName, isLastStep, onNext }: Props) => {
   const { title, background } = ONBOARDING_CONTENTS[stepName];
+  const [firstLine, secondLine] = title.split("\n");
 
   return (
     <div className="flex min-h-dvh justify-center">
@@ -37,7 +38,10 @@ const OnboardingStep = ({ stepName, isLastStep, onNext }: Props) => {
         )}
 
         <section className="relative z-10 px-4 py-2.5">
-          <p className="text-d2 text-neutral-02 whitespace-pre-line">{title}</p>
+          <p className="text-d2 text-neutral-02">
+            <span className="block whitespace-nowrap">{firstLine}</span>
+            <span className="block whitespace-nowrap">{secondLine}</span>
+          </p>
         </section>
 
         <section className="relative z-10 mt-[33px] px-4">

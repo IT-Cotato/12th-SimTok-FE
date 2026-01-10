@@ -27,12 +27,12 @@ const LoginPage = () => {
   const handlePhoneChange = phoneChangeHandler(setPhone);
 
   return (
-    <main className="flex min-h-dvh justify-center bg-white">
-      <div
-        className={`mt-[13px] flex h-full w-110 flex-col px-4 ${
-          isActive ? "bg-radial-yellowgreen-mintgreen" : "bg-white"
-        }`}
-      >
+    <main
+      className={`flex min-h-dvh justify-center ${
+        isActive ? "bg-radial-yellowgreen-mintgreen" : "bg-white"
+      }`}
+    >
+      <div className="mt-[13px] flex h-full w-full flex-col px-4">
         <BackHeader title="로그인" />
 
         <PageTitle>
