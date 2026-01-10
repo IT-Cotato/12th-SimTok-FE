@@ -11,14 +11,14 @@ type ProfileImagePickerProps = {
 const ProfileImagePicker = ({ imageUrl, onClick }: ProfileImagePickerProps) => {
   return (
     <div
-      className="relative flex h-[160px] w-[160px] cursor-pointer items-center justify-center"
+      className="relative flex h-40 w-40 cursor-pointer items-center justify-center"
       onClick={onClick}
     >
       {imageUrl ? (
         <img
           src={imageUrl}
           alt="프로필 이미지"
-          className="h-full w-full rounded-[36px] object-cover"
+          className="h-full w-full rounded-[36px]"
         />
       ) : (
         <ProfileIcon />
@@ -26,9 +26,9 @@ const ProfileImagePicker = ({ imageUrl, onClick }: ProfileImagePickerProps) => {
 
       <button
         type="button"
-        className="absolute right-[16px] bottom-[16px] h-[32px] w-[32px] cursor-pointer"
+        className="absolute top-[120px] left-[129.5px] cursor-pointer"
       >
-        <PhotoIcon />
+        <PhotoIcon className="h-[40px] w-[40px]" />
       </button>
     </div>
   );
