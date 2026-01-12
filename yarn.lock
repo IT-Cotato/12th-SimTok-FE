@@ -847,7 +847,7 @@
     "@babel/plugin-transform-modules-commonjs" "^7.27.1"
     "@babel/plugin-transform-typescript" "^7.28.5"
 
-"@babel/runtime@^7.14.8", "@babel/runtime@^7.19.0", "@babel/runtime@^7.21.0", "@babel/runtime@^7.23.8", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2", "@babel/runtime@^7.7.2":
+"@babel/runtime@^7.23.8", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2", "@babel/runtime@^7.7.2":
   version "7.28.4"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.28.4.tgz#a70226016fabe25c5783b2f22d3e1c9bc5ca3326"
   integrity sha512-Q/N6JNWvIvPnLDvjlE1OUBLPQHH6l3CltCEsHIujp45zQUSSh8K+gHnaEX45yAT1nyngnINhvWtzN+Nb9D8RAQ==
@@ -1506,63 +1506,6 @@
     "@tailwindcss/oxide" "4.1.18"
     postcss "^8.4.41"
     tailwindcss "4.1.18"
-
-"@toss/assert@^1.2.2":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@toss/assert/-/assert-1.2.2.tgz#78a96586e134edd38947553b20a18bc24a692c52"
-  integrity sha512-qK2G1LzI2ghY0aUOsz9mFiy2v/eNlMHG5qXdSogfGFLxHqFZ6KQWJQpnb9eN+dyHYIudBVWPZhbkljqnT8R3/g==
-  dependencies:
-    "@toss/utils" "^1.6.1"
-
-"@toss/react@^1.8.1":
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/@toss/react/-/react-1.8.1.tgz#d69d9e5dfed21c8f9fa791473293239e31ac5dda"
-  integrity sha512-jH3oo/7yctexuutj/YgQrddaK1bU2s5659dkJIXOe23bEjkY+lbhvEz2FLEhRjSo6k6ktPagpxO4AcdhCi5k5A==
-  dependencies:
-    "@babel/runtime" "^7.14.8"
-    "@toss/storage" "^1.4.1"
-    "@toss/utils" "^1.6.1"
-    classnames "^2.3.1"
-    lodash.debounce "^4.0.8"
-    lodash.throttle "^4.1.1"
-
-"@toss/storage@^1.4.1":
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/@toss/storage/-/storage-1.4.1.tgz#c7f03946244a35631dbd4f40a7c513c314750f86"
-  integrity sha512-jvnBXAQ/Fqqdt+gqYKeHYk7SzR2LX/FC50JIoVI0RldG1mDh1tebOqD7XkrZ89q77t/RwTuh60+8fjZDgend/g==
-  dependencies:
-    "@babel/runtime" "^7.19.0"
-
-"@toss/use-funnel@^1.4.2":
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/@toss/use-funnel/-/use-funnel-1.4.2.tgz#08e7d681e4f200fb83159100c037fb195dd43e8e"
-  integrity sha512-qgfYhdoJh07D4+kyRgRE3Du5wEdecFOR9Ht3MjgFMYAJyGplNbD++hpD/FcXrGT5oa14KG0bB5bpp60KLmPkFw==
-  dependencies:
-    "@toss/assert" "^1.2.2"
-    "@toss/react" "^1.8.1"
-    "@toss/storage" "^1.4.1"
-    "@toss/use-query-param" "^1.3.1"
-    "@toss/utils" "^1.6.1"
-    fast-deep-equal "^3.1.3"
-
-"@toss/use-query-param@^1.3.1":
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/@toss/use-query-param/-/use-query-param-1.3.1.tgz#a9bc67692972f300b8d011e00f0af17f6fa3d7d0"
-  integrity sha512-GRA+6st46/88KgmP9PGx8mV9sxxkewwLMzBl25TpXPjnqHz+tiZdybVZMQ5UHj0Kzf7bZnHGF3kd5oko492vxA==
-
-"@toss/utility-types@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@toss/utility-types/-/utility-types-1.2.1.tgz#3c67bea23b7aaffd4b4e7c2a518773ae22a496f6"
-  integrity sha512-1y8s1bvmuhuMX/d6qR9mmvcgFZIKYIQqJbAIshlGArXkjk/ec67gXc5uByEV1Y7in9ZhrGNRmjD8DTH0988vpQ==
-
-"@toss/utils@^1.6.1":
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/@toss/utils/-/utils-1.6.1.tgz#e1226b1274b3d7e04b5b648ef11accdc013568c3"
-  integrity sha512-x6m8jLKWtAmCbxTLXbgTzJ5wZyRSUQPLpR/oLJP1ZK9ytXcRf03oA46W/+78kErUkEw/yQz2L+t2xFDHSeZ6IQ==
-  dependencies:
-    "@babel/runtime" "^7.14.8"
-    "@toss/utility-types" "^1.2.1"
-    date-fns "^2.25.0"
 
 "@trivago/prettier-plugin-sort-imports@^6.0.0":
   version "6.0.1"
@@ -2345,11 +2288,6 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.4.tgz#05bffd7ff928465093314708c93bdfa9bd1f0f5b"
   integrity sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==
 
-classnames@^2.3.1:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.5.1.tgz#ba774c614be0f016da105c858e7159eae8e7687b"
-  integrity sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==
-
 cli-cursor@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/cli-cursor/-/cli-cursor-5.0.0.tgz#24a4831ecf5a6b01ddeb32fb71a4b2088b0dce38"
@@ -2520,13 +2458,6 @@ data-view-byte-offset@^1.0.1:
     call-bound "^1.0.2"
     es-errors "^1.3.0"
     is-data-view "^1.0.1"
-
-date-fns@^2.25.0:
-  version "2.30.0"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.30.0.tgz#f367e644839ff57894ec6ac480de40cae4b0f4d0"
-  integrity sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==
-  dependencies:
-    "@babel/runtime" "^7.21.0"
 
 debug@^3.2.7:
   version "3.2.7"
@@ -3874,11 +3805,6 @@ lodash.merge@^4.6.2:
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
-
-lodash.throttle@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
-  integrity sha512-wIkUCfVKpVsWo3JSZlc+8MB5it+2AN5W8J7YVMST30UrvcQNZ1Okbj+rbVniijTWE6FGYy4XJq/rHkas8qJMLQ==
 
 log-update@^6.1.0:
   version "6.1.0"

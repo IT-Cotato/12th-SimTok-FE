@@ -13,8 +13,8 @@ const FindPage = () => {
   const router = useRouter();
 
   return (
-    <main className="flex min-h-dvh justify-center bg-white">
-      <div className="mt-[13px] flex h-full w-110 flex-col whitespace-nowrap">
+    <main className="flex h-screen min-h-dvh w-full justify-center bg-white">
+      <div className="mt-[13px] flex w-full flex-col whitespace-nowrap">
         <BackHeader title="비밀번호 찾기" />
 
         <PageTitle>기존에 사용하셨던 비밀번호예요.</PageTitle>
