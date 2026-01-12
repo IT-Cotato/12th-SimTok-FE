@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import ProfileIcon from "@/assets/onboarding_profile.svg";
 import PhotoIcon from "@/assets/photo.svg";
 
@@ -11,24 +13,26 @@ type ProfileImagePickerProps = {
 const ProfileImagePicker = ({ imageUrl, onClick }: ProfileImagePickerProps) => {
   return (
     <div
-      className="relative flex h-40 w-40 cursor-pointer items-center justify-center"
+      className="relative flex cursor-pointer items-center justify-center"
       onClick={onClick}
     >
       {imageUrl ? (
-        <img
+        <Image
           src={imageUrl}
           alt="프로필 이미지"
-          className="h-full w-full rounded-[36px]"
+          width={160}
+          height={160}
+          className="h-40 w-40 rounded-[36px] object-cover"
         />
       ) : (
-        <ProfileIcon />
+        <ProfileIcon className="h-40 w-40" />
       )}
 
       <button
         type="button"
         className="absolute top-[120px] left-[129.5px] cursor-pointer"
       >
-        <PhotoIcon className="h-[40px] w-[40px]" />
+        <PhotoIcon className="h-[45px] w-[45px]" />
       </button>
     </div>
   );
