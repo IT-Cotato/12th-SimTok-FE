@@ -1,10 +1,13 @@
 "use client";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
 import { WEEK_DAYS } from "@/constants/dayToKorean";
 import { MISSION_SORT, MISSION_STATUS } from "@/constants/missionCard";
+
+import { useImageUpload } from "@/hooks/useImageUpload";
 
 import missionCardData from "@/mock/randomMission.json";
 
@@ -13,6 +16,8 @@ import { getTodayIndex } from "@/utils/getCurrentDay";
 export const DailyMissionCard = () => {
   const [status, setStatus] =
     useState<keyof typeof MISSION_STATUS>("NOT_STARTED");
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
   const currentDayIndex = getTodayIndex();
   const currentDay = WEEK_DAYS[currentDayIndex]; // 현재 요일
 
@@ -27,6 +32,19 @@ export const DailyMissionCard = () => {
     item => item.sort === missionKind,
   )?.icon;
 
+  const onSelectImage = (file: File) => {
+    const url = URL.createObjectURL(file);
+    setPreviewUrl(url);
+    setStatus("IMAGE_UPLOADED");
+  };
+
+  const { inputRef, openFilePicker, onChangeFile } = useImageUpload({
+    onSelect: ({ file }) => {
+      onSelectImage(file);
+    },
+    maxSizeMB: 10,
+  });
+  const router = useRouter();
   return (
     <section className="flex h-[385px] w-[353px] flex-col items-center justify-center gap-5 rounded-2xl bg-white">
       <div className="flex flex-col items-center justify-center">
@@ -35,7 +53,7 @@ export const DailyMissionCard = () => {
         </h3>
         <p className="text-neutral-06 text-sub1-r -mt-[4px]">{subtitle}</p>
       </div>
-      {missionIcon && (
+      {status === "NOT_STARTED" && missionIcon && (
         <div className="bg-neutral-11 flex h-28 w-28 items-center justify-center rounded-full">
           <Image
             src={missionIcon}
@@ -45,17 +63,42 @@ export const DailyMissionCard = () => {
           />
         </div>
       )}
+      {status !== "NOT_STARTED" && previewUrl && (
+        <div
+          className={`h-27 w-27 overflow-hidden rounded-full ${status === "IMAGE_CONFIRMED" ? "border border-[4px] border-white shadow-[0_0_12px_-1px_#00C362]" : ""}`}
+        >
+          <Image
+            src={previewUrl}
+            alt="하루한컷이미지"
+            width={108}
+            height={108}
+            className="h-full w-full object-cover"
+          />
+        </div>
+      )}
 
       <div className="flex flex-col items-center justify-center">
         <div className="text-sub-number p-[10px]">
           {missionCardData[0].mission}
         </div>
         <button
-          className={`${status == "NOT_STARTED" ? "bg-gradient-orange" : "bg-green-01"} text-button-sb h-[50px] w-[90px] cursor-pointer rounded-2xl text-white`}
+          className={`${status == "NOT_STARTED" ? "bg-gradient-orange" : "bg-mint-01"} text-button-sb h-[50px] w-[90px] cursor-pointer rounded-2xl text-white`}
+          onClick={() => {
+            if (status === "NOT_STARTED") openFilePicker();
+            if (status === "IMAGE_UPLOADED") setStatus("IMAGE_CONFIRMED");
+            if (status === "IMAGE_CONFIRMED") router.push("/day-log");
+          }}
         >
           {MISSION_STATUS[status].buttonText}
         </button>
       </div>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={onChangeFile}
+      />
     </section>
   );
 };
