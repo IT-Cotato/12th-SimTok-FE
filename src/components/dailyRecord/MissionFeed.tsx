@@ -49,13 +49,13 @@ export const RecordMissionFeed = () => {
       <section className="flex gap-4">
         {otherRecords.map(item => (
           <Link key={item.id} href={`/day-story/${item.id}`}>
-            <div className="flex w-[88px] shrink-0 cursor-pointer flex-col items-center gap-2">
+            <div className="flex w-[88px] shrink-0 cursor-pointer flex-col items-center gap-2 py-1">
               <Image
                 src={item.image}
                 alt={item.userName}
                 width={88}
                 height={88}
-                className={`${item.isRead ? "" : "border-green-03 border border-[4px] shadow-[0_0_12px_-1px_rgba(0,168,85,0.39)]"} h-[88px] w-[88px] rounded-full object-cover`}
+                className={`${item.isRead ? "" : "border-green-03 border border-[4px] shadow-[0_0_6px_-1px_rgba(0,168,85,0.50)]"} h-[88px] w-[88px] rounded-full object-cover`}
               />
               <p className="text-neutral-03 text-d3">{item.userName}</p>
             </div>
