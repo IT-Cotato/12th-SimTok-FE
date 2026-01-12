@@ -4,7 +4,7 @@ import { ProfileForm } from "@/components/signup/ProfileForm";
 
 const RegisterPage = () => {
   return (
-    <main className="flex min-h-dvh justify-center bg-white">
+    <main className="flex min-h-dvh w-full justify-center bg-white">
       <div className="mt-[13px] flex h-full w-110 flex-col">
         <BackHeader title="회원가입" />
 
