@@ -35,6 +35,10 @@ const OnboardingPage = () => {
     setCurrentStepIndex(nextIndex);
   };
 
+  const goPrev = () => {
+    setCurrentStepIndex(prev => (prev > 0 ? prev - 1 : prev));
+  };
+
   return (
     <section className="flex min-h-dvh w-full justify-center">
       <div className="relative mt-[13px] flex h-full w-full flex-col">
@@ -49,6 +53,7 @@ const OnboardingPage = () => {
           stepName={currentStepName}
           isLastStep={isLastStep}
           onNext={goNext}
+          onPrev={goPrev}
         />
       </div>
     </section>
