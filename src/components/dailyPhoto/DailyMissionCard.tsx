@@ -4,8 +4,8 @@ import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
-import { WEEK_DAYS } from "@/constants/dayToKorean";
 import { MISSION_SORT, MISSION_STATUS } from "@/constants/missionCard";
+import { WEEK_DAYS_KOR } from "@/constants/weekDays";
 
 import { useImageUpload } from "@/hooks/useImageUpload";
 
@@ -13,13 +13,19 @@ import missionCardData from "@/mock/randomMission.json";
 
 import { getTodayIndex } from "@/utils/getCurrentDay";
 
-export const DailyMissionCard = () => {
-  const [status, setStatus] =
-    useState<keyof typeof MISSION_STATUS>("NOT_STARTED");
+interface DailyMissionCardProps {
+  status: keyof typeof MISSION_STATUS;
+  setStatus: React.Dispatch<React.SetStateAction<keyof typeof MISSION_STATUS>>;
+}
+
+export const DailyMissionCard = ({
+  status,
+  setStatus,
+}: DailyMissionCardProps) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const currentDayIndex = getTodayIndex();
-  const currentDay = WEEK_DAYS[currentDayIndex]; // 현재 요일
+  const currentDay = WEEK_DAYS_KOR[currentDayIndex]; // 현재 요일
 
   const subtitle =
     typeof MISSION_STATUS[status].subtitle === "function"
