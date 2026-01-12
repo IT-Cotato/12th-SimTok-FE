@@ -7,8 +7,8 @@ import { useState } from "react";
 import PhoneIcon from "@/assets/phone.svg";
 import ProfileIcon from "@/assets/profile.svg";
 
-import { AlertModal } from "@/components/common/AlertModal";
 import { FullButton } from "@/components/common/FullButton";
+import LoadingModal from "@/components/common/LoadingModal";
 
 import { useCountdown } from "@/hooks/useCountdown";
 import { usePhoneValidation } from "@/hooks/usePhoneValidation";
@@ -214,7 +214,7 @@ export const PasswordForm = () => {
       </div>
 
       {modalType && (
-        <AlertModal
+        <LoadingModal
           isOpen={!!modalType}
           title={modalType === "success" ? "인증완료" : "인증오류"}
           message={
@@ -222,6 +222,7 @@ export const PasswordForm = () => {
               ? "인증이 완료되었습니다."
               : "인증번호를 확인할 수 없습니다."
           }
+          backdrop="default"
           onClose={handleModalConfirm}
         />
       )}

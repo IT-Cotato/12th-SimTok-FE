@@ -1,9 +1,11 @@
 export const usePasswordValidation = () => {
+  // const isValidPassword = (pwd: string) => {
+  //   const hasLetter = /[A-Za-z]/.test(pwd);
+  //   const hasNumber = /\d/.test(pwd);
+  //   const hasSpecial = /[^A-Za-z0-9]/.test(pwd);
+  //   return pwd.length >= 8 && hasLetter && hasNumber && hasSpecial;
   const isValidPassword = (pwd: string) => {
-    const hasLetter = /[A-Za-z]/.test(pwd);
-    const hasNumber = /\d/.test(pwd);
-    const hasSpecial = /[^A-Za-z0-9]/.test(pwd);
-    return pwd.length >= 8 && hasLetter && hasNumber && hasSpecial;
+    return pwd.length >= 8;
   };
 
   const getState = (value: string, isValid: boolean) => {

@@ -10,7 +10,7 @@ const AuthStartPage = () => {
   };
 
   return (
-    <main className="flex min-h-dvh justify-center">
+    <main className="flex min-h-dvh w-full justify-center">
       <div className="flex h-full w-110 flex-col gap-[197px]">
         {/* 상단 로고 영역 */}
         <div className="mt-[289px] flex w-full items-center justify-center px-4 py-2.5">
