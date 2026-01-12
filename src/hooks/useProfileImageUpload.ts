@@ -1,53 +1,55 @@
 "use client";
 
-import { useState } from "react";
-
-//import { uploadImageFile } from "@/utils/upload";
+import { useEffect, useRef, useState } from "react";
 
 export const useProfileImageUpload = () => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  const objectUrlRef = useRef<string | null>(null);
+
+  const revokeCurrentUrl = () => {
+    if (objectUrlRef.current) {
+      URL.revokeObjectURL(objectUrlRef.current);
+      objectUrlRef.current = null;
+    }
+  };
+
   const uploadImage = async (file: File) => {
     setIsLoading(true);
+    try {
+      revokeCurrentUrl(); //이전 URL 정리
 
-    await new Promise(res => setTimeout(res, 2000));
-
-    const imageUrl = URL.createObjectURL(file);
-    setProfileImage(imageUrl);
-
-    setIsLoading(false);
+      const blobUrl = URL.createObjectURL(file);
+      objectUrlRef.current = blobUrl;
+      setProfileImage(blobUrl);
+    } finally {
+      setIsLoading(false);
+    }
   };
-
-  const cancelUpload = () => {
-    setIsLoading(false);
-  };
-
-  // const uploadImage = async (file: File) => {
-  //   try {
-  //     setIsLoading(true);
-  //     const { url } = await uploadImageFile(file);
-  //     setProfileImage(url);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   const resetImage = () => {
+    revokeCurrentUrl();
     setProfileImage(null);
   };
 
-  // return {
-  //   profileImage,
-  //   isLoading,
-  //   uploadImage,
-  //   resetImage,
-  // };
+  const cancelUpload = () => {
+    revokeCurrentUrl();
+    setProfileImage(null);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    return () => {
+      revokeCurrentUrl();
+    };
+  }, []);
+
   return {
     profileImage,
     isLoading,
     uploadImage,
     resetImage,
     cancelUpload,
-  } as const;
+  };
 };
