@@ -28,7 +28,7 @@ const LoginPage = () => {
 
   return (
     <main
-      className={`flex min-h-dvh justify-center ${
+      className={`flex min-h-dvh w-full justify-center ${
         isActive ? "bg-radial-yellowgreen-mintgreen" : "bg-white"
       }`}
     >
