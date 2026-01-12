@@ -58,7 +58,10 @@ export const SharedDiaryComment = ({
       >
         <div className="w-full px-4 py-[10px]">
           <button className="h-[14px] w-[14px] cursor-pointer">
-            <CloseIcon onClick={() => router.back()} />
+            <CloseIcon
+              onClick={() => router.back()}
+              className="h-[14px] w-[14px] text-black"
+            />
           </button>
         </div>
         <h3 className="text-h3 text-neutral-01 border-neutral-10 flex items-center justify-center border-b p-[10px]">

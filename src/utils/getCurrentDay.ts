@@ -10,7 +10,7 @@ export const getTodayIndex = () => {
 type DayStatus = "past" | "today" | "future";
 
 export const getWeekDayStatus = (targetIndex: number): DayStatus => {
-  const todayIndex = getTodayIndex();
+  const todayIndex = 4;
 
   if (targetIndex < todayIndex) return "past";
   if (targetIndex > todayIndex) return "future";
