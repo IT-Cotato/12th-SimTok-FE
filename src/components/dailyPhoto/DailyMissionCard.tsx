@@ -85,7 +85,9 @@ export const DailyMissionCard = ({
 
       <div className="flex flex-col items-center justify-center">
         <div className="text-sub-number p-[10px]">
-          {missionCardData[0].mission}
+          {status === "IMAGE_CONFIRMED"
+            ? "미션이 완료되었어요!"
+            : missionCardData[0].mission}
         </div>
         <button
           className={`${status == "NOT_STARTED" ? "bg-gradient-orange" : "bg-mint-01"} text-button-sb h-[50px] w-[90px] cursor-pointer rounded-2xl text-white`}

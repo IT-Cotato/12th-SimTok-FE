@@ -14,7 +14,7 @@ const DayStoryUpload = () => {
     <main className="w-full bg-black">
       <BackHeader title="하루한컷" titleColor="white" />
       <DailyMissionProgress status={status} />
-      <div className="mt-[143px] flex items-center justify-center">
+      <div className="mt-[120px] flex items-center justify-center">
         <DailyMissionCard status={status} setStatus={setStatus} />
       </div>
     </main>

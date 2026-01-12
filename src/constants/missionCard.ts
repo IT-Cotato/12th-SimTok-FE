@@ -10,7 +10,7 @@ export const MISSION_STATUS = {
     buttonText: "공유하기",
   },
   IMAGE_CONFIRMED: {
-    title: "미션이 완료되었어요",
+    title: "미션 업로드 성공",
     subtitle: "소중한 오늘의 한컷을 기록했어요",
     buttonText: "보러가기",
   },
