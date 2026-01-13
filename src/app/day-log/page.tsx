@@ -1,5 +1,5 @@
+import { HeaderWithIcon } from "@/components/common/HeaderWithIcon";
 import { NavBar } from "@/components/common/NavBar";
-import { Header } from "@/components/dailyRecord/Header";
 import { RecordMissionFeed } from "@/components/dailyRecord/MissionFeed";
 import { RecordMissionInfo } from "@/components/dailyRecord/MissionInfo";
 import { SharedDiaryCard } from "@/components/dailyRecord/SharedDiaryCard";
@@ -12,7 +12,7 @@ const DailyRecordPage = () => {
 
   return (
     <main className="flex w-full flex-col pb-[112px]">
-      <Header />
+      <HeaderWithIcon title="하루기록" havePencil={true} />
       <RecordMissionInfo hasMyRecord={hasMyRecord} />
       <div className="mt-[17.5px]">
         <RecordMissionFeed />
