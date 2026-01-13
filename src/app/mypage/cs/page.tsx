@@ -7,7 +7,7 @@ const rowClass =
 
 const AlarmPage = () => {
   return (
-    <main className="flex min-h-dvh justify-center">
+    <main className="flex min-h-dvh w-full justify-center">
       <div className="mt-[13px] flex h-full w-110 flex-col px-4">
         <BackHeader title="고객센터" />
         <section className="mt-[18.5px]">
