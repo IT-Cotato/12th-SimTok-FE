@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 
-import { Header } from "@/components/dailyRecord/Header";
+import { HeaderWithIcon } from "@/components/common/HeaderWithIcon";
 import { SharedDiaryItem } from "@/components/dailyRecord/ShareDiaryItem";
 
 import SharedDiaryData from "@/mock/sharedDiary.json";
@@ -22,7 +22,7 @@ const SharedDiaryPage = () => {
 
   return (
     <div className="flex w-full flex-col justify-center">
-      <Header />
+      <HeaderWithIcon title="공유일기" havePencil={true} />
       <SharedDiaryItem key={diaryData.id} item={diaryData} commentMode />
     </div>
   );
