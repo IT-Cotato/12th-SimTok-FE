@@ -4,6 +4,7 @@ import type { RuleSetRule } from "webpack";
 
 const nextConfig: NextConfig = {
   webpack(config) {
+    console.log(">>> SIMPLE SVG WEBPACK CONFIG");
     const rules = config.module?.rules as RuleSetRule[];
 
     const fileLoaderRule = rules.find(
@@ -16,13 +17,12 @@ const nextConfig: NextConfig = {
 
     rules.push({
       test: /\.svg$/i,
-      issuer: /\.[jt]sx?$/,
+      // issuer: /\.[jt]sx?$/,
       use: ["@svgr/webpack"],
     });
 
     return config;
   },
-  turbopack: {},
 };
 
 export default nextConfig;
