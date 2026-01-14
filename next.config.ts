@@ -4,7 +4,6 @@ import type { RuleSetRule } from "webpack";
 
 const nextConfig: NextConfig = {
   webpack(config) {
-    console.log(">>> SIMPLE SVG WEBPACK CONFIG");
     const rules = config.module?.rules as RuleSetRule[];
 
     const fileLoaderRule = rules.find(
