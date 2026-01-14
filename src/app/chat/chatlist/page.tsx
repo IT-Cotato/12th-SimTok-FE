@@ -1,6 +1,7 @@
 import BellIcon from "@/assets/bell_chat.svg";
 
 import { BackHeader } from "@/components/common/BackHeader";
+import { SearchBox } from "@/components/common/SearchBox";
 
 const ChatListPage = () => {
   return (
@@ -8,9 +9,11 @@ const ChatListPage = () => {
       <div className="mt-[13px] flex h-full w-110 flex-col">
         <BackHeader title="대화" showBackIcon={false}>
           <button className="flex items-center justify-center">
-            <BellIcon className="h-6 w-6" />
+            <BellIcon />
           </button>
         </BackHeader>
+
+        <SearchBox />
       </div>
     </main>
   );
