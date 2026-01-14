@@ -9,7 +9,22 @@ import { useUserProfile } from "@/hooks/useUserProfile";
 
 const ProfileSettingPage = () => {
   const router = useRouter();
-  const { profile, isLoading } = useUserProfile();
+  const { profile, isLoading, error } = useUserProfile();
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-dvh items-center justify-center">
+        로딩 중...
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="flex min-h-dvh items-center justify-center">
+        프로필을 불러올 수 없습니다.
+      </div>
+    );
+  }
 
   return (
     <main className="flex min-h-dvh w-full justify-center bg-white">
