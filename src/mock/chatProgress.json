@@ -1,0 +1,82 @@
+[
+  {
+    "profileImg": "/images/1.jpg",
+    "userName": "이숙희",
+    "userId": 1,
+    "goalDays": 7,
+    "totalDays": 3,
+    "hasTodayChat": true
+  },
+  {
+    "profileImg": "/images/2.jpg",
+    "userName": "김민준",
+    "userId": 2,
+    "goalDays": 5,
+    "totalDays": 2,
+    "hasTodayChat": false
+  },
+  {
+    "profileImg": "/images/3.jpg",
+    "userName": "박지연",
+    "userId": 3,
+    "goalDays": 6,
+    "totalDays": 4,
+    "hasTodayChat": true
+  },
+  {
+    "profileImg": "/images/4.jpg",
+    "userName": "최현우",
+    "userId": 4,
+    "goalDays": 4,
+    "totalDays": 1,
+    "hasTodayChat": false
+  },
+  {
+    "profileImg": "/images/5.jpg",
+    "userName": "정수빈",
+    "userId": 5,
+    "goalDays": 7,
+    "totalDays": 7,
+    "hasTodayChat": true
+  },
+  {
+    "profileImg": "/images/6.jpg",
+    "userName": "오지훈",
+    "userId": 6,
+    "goalDays": 3,
+    "totalDays": 2,
+    "hasTodayChat": false
+  },
+  {
+    "profileImg": "/images/7.jpg",
+    "userName": "한유진",
+    "userId": 7,
+    "goalDays": 6,
+    "totalDays": 5,
+    "hasTodayChat": true
+  },
+  {
+    "profileImg": "/images/8.jpg",
+    "userName": "임도윤",
+    "userId": 8,
+    "goalDays": 5,
+    "totalDays": 3,
+    "hasTodayChat": false
+  },
+  {
+    "profileImg": "/images/9.jpg",
+    "userName": "서연우",
+    "userId": 9,
+    "goalDays": 4,
+    "totalDays": 4,
+    "hasTodayChat": true
+  },
+  {
+    "profileImg": "/images/10.jpg",
+    "userName": "장하늘",
+    "userId": 10,
+    "goalDays": 7,
+    "totalDays": 6,
+    "hasTodayChat": false
+  }
+]
