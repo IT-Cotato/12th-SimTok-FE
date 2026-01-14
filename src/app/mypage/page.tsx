@@ -26,8 +26,12 @@ const MyPage = () => {
     } else if (label === "고객센터") {
       router.push("/mypage/cs");
       return;
+    } else if (label === "내 프로필 설정") {
+      router.push("/mypage/profile");
+      return;
     }
   };
+
   return (
     <main className="flex min-h-dvh w-full justify-center">
       <div className="mt-[13px] flex h-full w-110 flex-col px-4">
