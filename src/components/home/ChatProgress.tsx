@@ -3,10 +3,12 @@ import Image from "next/image";
 import chatProgressData from "@/mock/chatProgress.json";
 
 import { getPercentage } from "@/utils/getPercentage";
+import { sortChatProgress } from "@/utils/sortChatProgress";
 
 import { ProgressBar } from "./ProgressBar";
 
 export const ChatProgress = () => {
+  const sortedData = sortChatProgress(chatProgressData);
   return (
     <section className="flex flex-col gap-4">
       <div className="flex items-center px-4">
@@ -15,7 +17,7 @@ export const ChatProgress = () => {
         </p>
       </div>
       <div className="px-4 py-[10px]">
-        {chatProgressData.map(data => {
+        {sortedData.map(data => {
           const chatPercentage = getPercentage(data.totalDays, data.goalDays);
           return (
             <div className="flex gap-[15px] py-[10px]" key={data.userId}>
