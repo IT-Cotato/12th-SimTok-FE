@@ -1,0 +1,52 @@
+[
+  {
+    "userId": 101,
+    "userName": "김푸딩",
+    "profileImg": "/images/1.jpg"
+  },
+  {
+    "userId": 102,
+    "userName": "이하늘",
+    "profileImg": "/images/2.jpg"
+  },
+  {
+    "userId": 103,
+    "userName": "박민수",
+    "profileImg": "/images/3.jpg"
+  },
+  {
+    "userId": 104,
+    "userName": "정수진",
+    "profileImg": "/images/4.jpg"
+  },
+  {
+    "userId": 105,
+    "userName": "최유나",
+    "profileImg": "/images/5.jpg"
+  },
+  {
+    "userId": 106,
+    "userName": "오지훈",
+    "profileImg": "/images/6.jpg"
+  },
+  {
+    "userId": 107,
+    "userName": "한서연",
+    "profileImg": "/images/7.jpg"
+  },
+  {
+    "userId": 108,
+    "userName": "윤태호",
+    "profileImg": "/images/8.jpg"
+  },
+  {
+    "userId": 109,
+    "userName": "장하린",
+    "profileImg": "/images/9.jpg"
+  },
+  {
+    "userId": 110,
+    "userName": "백도윤",
+    "profileImg": "/images/10.jpg"
+  }
+]
