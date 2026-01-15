@@ -35,18 +35,18 @@ export const DailyMissionCard = ({
     item => item.sort === missionKind,
   )?.icon;
 
-  const onSelectImage = (file: File) => {
-    const url = URL.createObjectURL(file);
-    setPreviewUrl(url);
+  const onSelectImage = (previewUrl: string) => {
+    setPreviewUrl(previewUrl);
     setStatus("IMAGE_UPLOADED");
   };
 
   const { inputRef, openFilePicker, onChangeFile } = useImageUpload({
-    onSelect: ({ file }) => {
-      onSelectImage(file);
+    onSelect: ({ previewUrl }) => {
+      onSelectImage(previewUrl);
     },
     maxSizeMB: 10,
   });
+
   const router = useRouter();
   return (
     <section className="flex h-[385px] w-[353px] flex-col items-center justify-center gap-5 rounded-2xl bg-white">
