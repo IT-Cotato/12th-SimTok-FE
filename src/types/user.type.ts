@@ -1,8 +1,8 @@
-export type UserProfile = {
+export interface UserProfile {
   id: string;
-  imageUrl: string | null;
+  profileImg: string | null;
   nickname: string;
-  name: string;
-  phone: string; // "010-1234-5678"
-  birth: string; // "YYYY.MM.DD"
-};
+  userName: string; // name -> userName
+  phoneNumber: string; // phone -> phoneNumber
+  birthDate: string; // birth -> birthDate
+}
