@@ -1,6 +1,7 @@
 "use client";
 import { BackHeader } from "@/components/common/BackHeader";
-import { SearchField } from "@/components/home/SearchField";
+import { FriendList } from "@/components/friends/FrinedList";
+import { SearchField } from "@/components/friends/SearchField";
 
 const FriendsListPage = () => {
   return (
@@ -8,8 +9,9 @@ const FriendsListPage = () => {
       <div className="mt-[8.5px]">
         <BackHeader title="친구목록" subtext="편집하기" />
       </div>
-      <div className="mt-[30.5px]">
+      <div className="mt-[30.5px] flex flex-col gap-5">
         <SearchField />
+        <FriendList />
       </div>
     </main>
   );
