@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import AlarmIcon from "@/assets/bell.svg";
-import FriendIcon from "@/assets/friend.svg";
 import PencilIcon from "@/assets/pencil.svg";
 
 import { InfoMessage } from "../dailyRecord/InfoMessage";
@@ -19,6 +18,7 @@ export const HeaderWithIcon = ({
   title,
   havePencil = false,
 }: HeaderWithIconProps) => {
+  const router = useRouter();
   const [isAlarmNew, setIsAlarmNew] = useState(true);
   const [isPencilClick, setIsPencilClick] = useState(false);
 
@@ -45,7 +45,7 @@ export const HeaderWithIcon = ({
         {havePencil && (
           <PencilIcon
             className="h-6 w-6 cursor-pointer"
-            onClick={() => setIsPencilClick(true)}
+            onClick={pencilClick}
           />
         )}
       </div>
