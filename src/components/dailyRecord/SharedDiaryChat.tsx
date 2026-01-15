@@ -21,12 +21,8 @@ interface SharedDiaryCommentProps {
 export const SharedDiaryComment = ({
   variant = "modal",
 }: SharedDiaryCommentProps) => {
-  const profileImg = MyProfile.profileImg;
-  const router = useRouter();
-  const { id } = useParams<{ id: string }>();
-  const numericId = Number(id);
-
   const isPage = variant === "page";
+
   const [comments, setComments] = useState(CommentData);
 
   useEffect(() => {
@@ -38,6 +34,15 @@ export const SharedDiaryComment = ({
       document.body.style.overflow = "";
     };
   }, [isPage]);
+
+  const profileImg = MyProfile.profileImg;
+  const router = useRouter();
+  const { id } = useParams<{ id: string }>();
+  const numericId = parseInt(id, 10);
+  if (isNaN(numericId)) {
+    // 에러 처리 또는 fallback
+    return <div>잘못된 ID입니다</div>;
+  }
 
   return (
     <div
