@@ -18,7 +18,6 @@ export const EmotionStep = ({
   onNext,
 }: EmotionStepProps) => {
   const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
-  console.log(selectedEmotion);
   return (
     <main className="flex w-full flex-col">
       <BackHeader title="공유일기쓰기" />
