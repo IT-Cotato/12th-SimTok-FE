@@ -40,8 +40,6 @@
   --color-neutral-10: #f3f3f4;
   --color-neutral-11: #f9f9fb;
   --color-white: #fefefe;
-
-  --color-dim-02: #242628D4;
 }
 
 @layer utilities {
@@ -66,13 +64,6 @@
       );
   }
 
-  .bg-dim02-gradient {
-    background: linear-gradient(
-        0deg,
-        rgba(36, 38, 40, 0.83) 0%,
-        rgba(36, 38, 40, 0.83) 100%
-      )
-  }
    .bg-onboarding-circle-mint {
     border-radius: 146px;
     background: linear-gradient(
@@ -112,6 +103,27 @@
         rgba(66, 240, 158, 0.66) 21.15%,
         rgba(255, 255, 255, 0.87) 93.53%
       );
+  }
+}
+
+@layer utilities{
+  .loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid var(--color-white);
+    border-bottom-color: var(--color-mint-01); 
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+  }
+}
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 

@@ -8,8 +8,8 @@ import DateIcon from "@/assets/date.svg";
 import PhoneIcon from "@/assets/phone.svg";
 import ProfileIcon from "@/assets/profile.svg";
 
-import { AlertModal } from "@/components/common/AlertModal";
 import { FullButton } from "@/components/common/FullButton";
+import LoadingModal from "@/components/common/LoadingModal";
 
 import { useCountdown } from "@/hooks/useCountdown";
 import { usePhoneValidation } from "@/hooks/usePhoneValidation";
@@ -245,7 +245,7 @@ export const ProfileForm = () => {
         </FullButton>
       </div>
       {modalType && (
-        <AlertModal
+        <LoadingModal
           isOpen={!!modalType}
           title={modalType === "success" ? "인증완료" : "인증오류"}
           message={
