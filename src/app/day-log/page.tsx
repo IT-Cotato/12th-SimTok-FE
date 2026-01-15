@@ -7,7 +7,7 @@ import { SharedDiaryCard } from "@/components/dailyRecord/SharedDiaryCard";
 import DailyRecordData from "@/mock/dailyRecord.json";
 
 const DailyRecordPage = () => {
-  const MY_ID = 101;
+  const MY_ID = 111;
   const hasMyRecord = DailyRecordData.some(item => item.userId === MY_ID);
 
   return (

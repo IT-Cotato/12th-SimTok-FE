@@ -22,7 +22,7 @@ export const NAV_ITEMS = [
   {
     key: "record",
     label: "하루기록",
-    href: "/record",
+    href: "/day-log",
     icons: {
       blank: RecordBlankIcon,
       fill: RecordFillIcon,
