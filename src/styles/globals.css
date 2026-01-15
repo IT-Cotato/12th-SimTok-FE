@@ -82,28 +82,44 @@
       rgba(103, 103, 103, 0.1) 80.56%
     );
   }
-}
-
-@layer utilities {
-  .scrollbar-hide {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+  .bg-plant-blue {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.1) -5.63%,
+      #85f3ff 91.94%
+    );
   }
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera*/
+  .bg-plant-yellow {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 9.05%,
+      #f9eea4 91.94%
+    );
   }
-  .bg-radial-yellowgreen-mintgreen {
+  .bg-plant-red {
     background:
-      radial-gradient(
-        39.1% 31.12% at 80.25% 2.51%,
-        rgba(246, 248, 173, 0.42) 57.26%,
-        rgba(255, 255, 255, 0.42) 100%
+      linear-gradient(
+        143deg,
+        rgba(255, 255, 255, 0.04) 4.45%,
+        rgba(255, 218, 150, 0.38) 94.97%
       ),
-      radial-gradient(
-        39.99% 49.21% at 23.64% 2.72%,
-        rgba(66, 240, 158, 0.66) 21.15%,
-        rgba(255, 255, 255, 0.87) 93.53%
+      linear-gradient(188deg, rgba(255, 255, 255, 0.1) 13.21%, #ff9b7c 97.84%);
+  }
+  .bg-plant-green {
+    background:
+      linear-gradient(188deg, rgba(255, 255, 255, 0.1) 13.21%, #98ffc0 97.84%),
+      linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.04) 5.17%,
+        rgba(254, 255, 230, 0.38) 79.52%
       );
+  }
+  .bg-blur {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 36.82%,
+      #fff 74.32%
+    );
   }
 }
 
