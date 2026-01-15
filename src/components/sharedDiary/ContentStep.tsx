@@ -47,8 +47,6 @@ export const ContentStep = ({
     };
   }, [previewUrl]);
 
-  console.log(text);
-
   return (
     <main className="flex w-full flex-col">
       <BackHeader title="공유일기쓰기" />
