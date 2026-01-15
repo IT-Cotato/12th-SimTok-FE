@@ -30,7 +30,7 @@ export const ContentStep = ({
   const emotionData = getEmotionMeta(emotion);
 
   const [file, setFile] = useState<File | undefined>(defaultFile);
-  const [text, setText] = useState<string>("");
+  const [text, setText] = useState<string>(defaultContent || "");
 
   const hasInput = Boolean(text || file);
 
