@@ -94,7 +94,7 @@ export const SharedDiaryComment = ({
               setComments(prev => [
                 ...prev,
                 {
-                  id: Date.now(),
+                  id: Date.now(), //TODO: mock id
                   userName: MyProfile.userName,
                   profileImg: profileImg,
                   comment: message,
