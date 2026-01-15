@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import BlueCircle from "@/assets/home/blue_circle.svg";
+import BlueCircle from "@/assets/home/blue-circle.svg";
 import GreenCircle from "@/assets/home/green-circle.svg";
 import RedCircle from "@/assets/home/red_circle.svg";
 import YellowCircle from "@/assets/home/yellow-circle.svg";
