@@ -1,25 +1,33 @@
 "use client";
 
-type AlertModalProps = {
+import { ALERT_BACKDROP_CLASS, AlertBackdrop } from "@/constants/alert";
+
+interface LoadingModalProps {
   isOpen: boolean;
   title: string;
-  message: string;
+  message?: string;
   confirmLabel?: string;
   onClose: () => void;
-};
+  backdrop?: AlertBackdrop;
+  isLoading?: boolean;
+}
 
-export const AlertModal = ({
+const LoadingModal = ({
   isOpen,
   title,
   message,
   confirmLabel = "확인",
   onClose,
-}: AlertModalProps) => {
+  backdrop = "default",
+  isLoading = false,
+}: LoadingModalProps) => {
   if (!isOpen) return null;
 
   return (
     <div
-      className="bg-dim-02 fixed inset-0 z-50 flex items-center justify-center"
+      className={`fixed inset-0 z-50 flex items-center justify-center ${
+        ALERT_BACKDROP_CLASS[backdrop]
+      }`}
       onClick={onClose}
     >
       <div
@@ -31,7 +39,15 @@ export const AlertModal = ({
         </div>
 
         <div className="flex items-center justify-center px-[10px] py-[7px]">
-          <p className="text-sub2-r text-neutral-01 text-center">{message}</p>
+          {isLoading ? (
+            <span className="loader" />
+          ) : (
+            message && (
+              <p className="text-sub2-r text-neutral-01 text-center">
+                {message}
+              </p>
+            )
+          )}
         </div>
 
         <div className="flex w-full">
@@ -47,3 +63,5 @@ export const AlertModal = ({
     </div>
   );
 };
+
+export default LoadingModal;

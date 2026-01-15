@@ -27,8 +27,8 @@ export const FullButton = ({
       disabled={!isActive}
       {...props}
     >
-      <div className="flex items-center px-20.5">
-        <span className="text-h2 flex h-7.5 items-center">{children}</span>
+      <div className="flex h-[58px] items-center justify-center">
+        <span className="text-button-sb">{children}</span>
       </div>
     </button>
   );

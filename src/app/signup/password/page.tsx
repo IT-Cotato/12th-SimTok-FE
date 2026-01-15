@@ -40,7 +40,7 @@ const SettingPage = () => {
   );
 
   return (
-    <main className="flex min-h-dvh justify-center bg-white">
+    <main className="flex min-h-dvh w-full justify-center bg-white">
       <div className="mt-[13px] flex h-full w-110 flex-col">
         <BackHeader title="회원가입" />
 
@@ -63,7 +63,7 @@ const SettingPage = () => {
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={e => setPassword(e.target.value)}
-              placeholder="영문, 숫자, 특수문자 포함 8자 이상"
+              placeholder="8자 이상 입력해주세요"
               className="placeholder:text-neutral-07 text-h2 w-full bg-transparent text-black outline-none"
             />
 
@@ -134,7 +134,7 @@ const SettingPage = () => {
           <div className="mt-[320px] flex w-full justify-center">
             <FullButton
               isActive={isPasswordConfirmValid}
-              onClick={() => router.push("/login")}
+              onClick={() => router.push("/onboarding")}
             >
               완료
             </FullButton>
