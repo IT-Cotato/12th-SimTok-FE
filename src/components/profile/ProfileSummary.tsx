@@ -12,7 +12,7 @@ import { InfoRow } from "@/components/mypage/InfoRow";
 import type { UserProfile } from "@/types/user.type";
 
 interface ProfileSummaryProps {
-  userProfileData: UserProfile;
+  userProfileData: UserProfile | null;
 }
 
 export const ProfileSummary = ({ userProfileData }: ProfileSummaryProps) => {
