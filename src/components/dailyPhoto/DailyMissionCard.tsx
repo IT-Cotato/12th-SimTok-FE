@@ -26,7 +26,6 @@ export const DailyMissionCard = ({
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const currentDayIndex = getTodayIndex();
-  const currentDay = WEEK_DAYS_KOR[currentDayIndex]; // 현재 요일
 
   const subtitle = getMissionSubtitle(status, currentDayIndex);
 
