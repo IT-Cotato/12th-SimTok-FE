@@ -24,7 +24,7 @@ export const SharedDiaryComment = ({
   const profileImg = MyProfile.profileImg;
   const router = useRouter();
   const { id } = useParams<{ id: string }>();
-  const numericId = Number(id);
+  const numericId = id ? Number(id) : null;
 
   const isPage = variant === "page";
   const [comments, setComments] = useState(CommentData);
@@ -81,7 +81,7 @@ export const SharedDiaryComment = ({
           />
           <MessageInput
             onFocus={() => {
-              if (!isPage) {
+              if (!isPage && numericId !== null) {
                 router.push(`/shared-diary/${numericId}/comment`);
               }
             }}
