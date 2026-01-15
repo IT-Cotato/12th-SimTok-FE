@@ -42,14 +42,14 @@ export const BackHeader = ({
         </p>
       )}
       {menuIcon && (
-        <div className="absolute top-1/2 right-4 -translate-y-1/2">
+        <button className="absolute top-1/2 right-4 -translate-y-1/2">
           <ListIcon />
-        </div>
+        </button>
       )}
       {subtext && (
-        <p className="text-h3 text-neutral-04 absolute top-1/2 right-4 -translate-y-1/2">
+        <button className="text-h3 text-neutral-04 absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer">
           {subtext}
-        </p>
+        </button>
       )}
     </header>
   );
