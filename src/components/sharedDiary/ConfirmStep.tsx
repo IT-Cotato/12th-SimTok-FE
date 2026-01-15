@@ -13,7 +13,7 @@ import { FullButton } from "../common/FullButton";
 import { ProgressDots } from "../common/ProgressDot";
 import { UploadTitle } from "./UploadTitle";
 
-interface ConfirmStep {
+interface ConfirmStepProps {
   emotion: Emotion;
   text: string;
   file?: File;
@@ -26,7 +26,7 @@ export const ConfirmStep = ({
   text,
   onSubmit,
   onBack,
-}: ConfirmStep) => {
+}: ConfirmStepProps) => {
   const emotionData = getEmotionMeta(emotion);
 
   const previewUrlRef = useRef<string | null>(null);
