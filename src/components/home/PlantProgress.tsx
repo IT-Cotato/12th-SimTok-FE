@@ -53,7 +53,7 @@ export const PlantProgress = () => {
             const BG = PLANT_BG_BY_STATUS[plantStatus];
 
             const buttonTitle =
-              plantStatus === PlantWaterStatus.WATERABLE
+              plantStatus === PlantWaterStatus.EMPTY
                 ? "식물 키우러가기"
                 : "물주기";
 
@@ -72,9 +72,9 @@ export const PlantProgress = () => {
 
                     <Bubble status={plantStatus} />
                     <div className="bg-blur absolute bottom-0 z-10 h-[329px] w-full max-w-[440px]" />
-                    <div className="absolute bottom-[84px] z-99 flex w-full items-center justify-center bg-white/10 px-4 py-[10px]">
+                    <div className="absolute bottom-[84px] z-30 flex w-full items-center justify-center px-4 py-[10px]">
                       {plantLength > 1 ? (
-                        <p className="text-h3 text-neutral-05 p-[10px]">
+                        <p className="text-h3 text-neutral-05 bg-glass-style z-99 rounded-2xl p-[10px]">
                           {plant.plantName}
                         </p>
                       ) : (
@@ -84,6 +84,11 @@ export const PlantProgress = () => {
                     <div className="absolute bottom-[13px] z-99 w-full px-4 py-[10px]">
                       <FullButton
                         isActive={!(plantStatus === "WATERED_RECENTLY")}
+                        colorScheme={
+                          (plantStatus === "WATERABLE" && "blue") ||
+                          (plantStatus === "WITHERED" && "orange") ||
+                          "mint"
+                        }
                       >
                         {buttonTitle}
                       </FullButton>
