@@ -16,5 +16,6 @@ export const getEmotionMeta = (emotion: string) => {
   return {
     imageSrc: emotionGroup.getImageSrc(index),
     pastText: item.pastText,
+    presentText: item.presentText,
   };
 };

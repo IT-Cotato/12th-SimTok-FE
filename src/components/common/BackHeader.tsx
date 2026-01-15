@@ -9,9 +9,15 @@ interface HeaderProps {
   title: string;
   timeAgo?: string; // 하루한컷보기에서 사용
   menuIcon?: boolean; // 채팅페이지에서 사용
+  titleColor?: string; //하루한컷 업로드에서 사용
 }
 
-export const BackHeader = ({ title, timeAgo, menuIcon }: HeaderProps) => {
+export const BackHeader = ({
+  title,
+  timeAgo,
+  menuIcon,
+  titleColor = "black",
+}: HeaderProps) => {
   const router = useRouter();
 
   return (
@@ -21,9 +27,11 @@ export const BackHeader = ({ title, timeAgo, menuIcon }: HeaderProps) => {
         onClick={() => router.back()}
         className="absolute top-1/2 left-4 -translate-y-1/2 cursor-pointer"
       >
-        <BackIcon className="h-6 w-6" />
+        <BackIcon className={`text-${titleColor} h-6 w-6`} />
       </button>
-      <h1 className="text-h1 flex w-full items-center justify-center whitespace-nowrap text-black">
+      <h1
+        className={`text-h1 flex w-full items-center justify-center whitespace-nowrap text-${titleColor}`}
+      >
         {title}
       </h1>
       {timeAgo && (

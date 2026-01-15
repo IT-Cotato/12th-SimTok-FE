@@ -6,7 +6,6 @@
     "profile": "/images/profile.jpg",
     "emotion": "happy-3",
     "text": "오늘 하루가 꽤 만족스러웠어요.",
-    "image": "/images/1.jpg",
     "createdAt": "2025-12-30T09:12:00"
   },
   {
@@ -16,7 +15,6 @@
     "profile": "/images/profile.jpg",
     "emotion": "daily-7",
     "text": "평범하지만 소중한 하루.",
-    "image": "/images/2.jpg",
     "createdAt": "2025-12-29T08:45:00"
   },
   {
