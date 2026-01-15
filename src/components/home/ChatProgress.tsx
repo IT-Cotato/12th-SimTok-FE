@@ -1,4 +1,7 @@
+"use client";
 import Image from "next/image";
+
+import EyesIcon from "@/assets/two-eyes.svg";
 
 import chatProgressData from "@/mock/chatProgress.json";
 
@@ -12,8 +15,11 @@ export const ChatProgress = () => {
   return (
     <section className="flex flex-col gap-4">
       <div className="flex items-center px-4">
-        <p className="text-h1 text-neutral-01">
-          이번주에 대화를 이만큼 나눴어요 👀
+        <p className="text-h1 text-neutral-01 flex items-center">
+          이번주에 대화를 이만큼 나눴어요
+          <span>
+            <EyesIcon className="w- h-[29px]" />
+          </span>
         </p>
       </div>
       <div className="px-4 py-[10px]">
