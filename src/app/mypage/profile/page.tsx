@@ -9,16 +9,9 @@ import { useUserProfile } from "@/hooks/useUserProfile";
 
 const ProfileSettingPage = () => {
   const router = useRouter();
-  const { profile, isLoading, error } = useUserProfile();
+  const { userProfileData, error } = useUserProfile();
 
-  if (isLoading) {
-    return (
-      <div className="flex min-h-dvh items-center justify-center">
-        로딩 중...
-      </div>
-    );
-  }
-  if (error) {
+  if (error || !userProfileData) {
     return (
       <div className="flex min-h-dvh items-center justify-center">
         프로필을 불러올 수 없습니다.
@@ -29,7 +22,7 @@ const ProfileSettingPage = () => {
   return (
     <main className="flex min-h-dvh w-full justify-center bg-white">
       <div className="mt-[13px] flex h-full w-110 flex-col">
-        <ProfileSummary profile={profile} />
+        <ProfileSummary userProfileData={userProfileData} />
         <div className="mt-[252px] flex w-full justify-center px-4">
           <FullButton onClick={() => router.push("/mypage")}>
             설정완료

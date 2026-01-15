@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 
-type ToggleProps = {
+interface ToggleProps {
   defaultOn?: boolean;
   onChange?: (value: boolean) => void;
-};
+}
 
-const Toggle = ({ defaultOn = true, onChange }: ToggleProps) => {
+export const Toggle = ({ defaultOn = true, onChange }: ToggleProps) => {
   const [on, setOn] = useState(defaultOn);
 
   const handleClick = () => {
@@ -28,5 +28,3 @@ const Toggle = ({ defaultOn = true, onChange }: ToggleProps) => {
     </button>
   );
 };
-
-export default Toggle;
