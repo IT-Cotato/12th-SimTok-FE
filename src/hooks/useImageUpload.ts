@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-import { UploadImageResult, uploadImage } from "@/utils/uploadImgae.util";
+import { UploadImageResult, uploadImage } from "@/utils/uploadImage.util";
 
 interface UseImageUploadProps {
   onSelect: (result: UploadImageResult) => void;
