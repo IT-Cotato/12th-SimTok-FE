@@ -1,6 +1,7 @@
 import { PlantWaterStatus } from "@/constants/plantStatus";
 
 export const getPlantStatus = (recentWateredTime: string) => {
+  if (!recentWateredTime) return PlantWaterStatus.EMPTY;
   const wateredAt = new Date(recentWateredTime).getTime();
 
   const now = new Date();
