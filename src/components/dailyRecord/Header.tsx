@@ -21,7 +21,7 @@ export const Header = () => {
 
   return (
     <header className="relative mt-[13px] flex items-center justify-center px-4 py-[10px]">
-      <h1>하루기록</h1>
+      <h1 className="text-h1 text-black">하루기록</h1>
       <div className="absolute right-4 flex gap-2">
         {isAlarmNew ? (
           <button
