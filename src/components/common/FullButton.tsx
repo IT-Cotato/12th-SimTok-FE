@@ -5,17 +5,26 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 type FullButtonProps = {
   isActive?: boolean;
   children: ReactNode;
+  colorScheme?: "mint" | "orange" | "blue";
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const FullButton = ({
   isActive = true,
   children,
+  colorScheme = "mint",
   className = "",
   ...props
 }: FullButtonProps) => {
   const baseClass =
     "flex h-14.5 w-full cursor-pointer items-center justify-center rounded-2xl px-3.5";
-  const activeClass = "bg-mint-01 text-white text-button-sb";
+  const activeClass =
+    colorScheme === "mint"
+      ? "bg-mint-01 text-white text-button-sb"
+      : colorScheme === "orange"
+        ? "bg-orange-00 text-white text-button-sb"
+        : colorScheme === "blue"
+          ? "bg-blue-00 text-white text-button-sb"
+          : "";
   const inactiveClass =
     "border border-neutral-11 bg-neutral-10 text-neutral-07 text-button-sb";
 
