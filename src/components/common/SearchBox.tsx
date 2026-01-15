@@ -11,7 +11,7 @@ export const SearchBox = ({
   return (
     <div className="px-4">
       <div className="bg-neutral-11 flex items-center gap-2 rounded-[16px] px-4 py-2">
-        <SearchIcon className="h-5 w-5" />
+        <SearchIcon className="h-5 w-6" />
         <input
           type="text"
           placeholder={placeholder}
