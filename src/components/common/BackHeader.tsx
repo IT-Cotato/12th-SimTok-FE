@@ -10,6 +10,7 @@ interface HeaderProps {
   timeAgo?: string; // 하루한컷보기에서 사용
   menuIcon?: boolean; // 채팅페이지에서 사용
   titleColor?: string; //하루한컷 업로드에서 사용
+  subtext?: string; // 친구목록에서 사용
 }
 
 export const BackHeader = ({
@@ -17,6 +18,7 @@ export const BackHeader = ({
   timeAgo,
   menuIcon,
   titleColor = "black",
+  subtext,
 }: HeaderProps) => {
   const router = useRouter();
 
@@ -43,6 +45,11 @@ export const BackHeader = ({
         <div className="absolute top-1/2 right-4 -translate-y-1/2">
           <ListIcon />
         </div>
+      )}
+      {subtext && (
+        <p className="text-h3 text-neutral-04 absolute top-1/2 right-4 -translate-y-1/2">
+          {subtext}
+        </p>
       )}
     </header>
   );
