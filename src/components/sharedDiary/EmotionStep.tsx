@@ -17,9 +17,8 @@ export const EmotionStep = ({
   emotion: initialEmotion,
   onNext,
 }: EmotionStepProps) => {
-  const [selectedEmotion, setSelectedEmotion] = useState<string | null>(
-    initialEmotion ?? null,
-  );
+  const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
+
   return (
     <main className="flex w-full flex-col">
       <BackHeader title="공유일기쓰기" />
