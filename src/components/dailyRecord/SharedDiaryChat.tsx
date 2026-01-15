@@ -38,11 +38,7 @@ export const SharedDiaryComment = ({
   const profileImg = MyProfile.profileImg;
   const router = useRouter();
   const { id } = useParams<{ id: string }>();
-  const numericId = parseInt(id, 10);
-  if (isNaN(numericId)) {
-    // 에러 처리 또는 fallback
-    return <div>잘못된 ID입니다</div>;
-  }
+  const numericId = id ? Number(id) : null;
 
   return (
     <div
@@ -72,7 +68,7 @@ export const SharedDiaryComment = ({
         <h3 className="text-h3 text-neutral-01 border-neutral-10 flex items-center justify-center border-b p-[10px]">
           댓글
         </h3>
-        <div className="flex-1 overflow-y-scroll pb-[109px]">
+        <div className="flex-1 overflow-y-auto pb-[109px]">
           <CommentList comments={comments} />
         </div>
 
@@ -86,7 +82,7 @@ export const SharedDiaryComment = ({
           />
           <MessageInput
             onFocus={() => {
-              if (!isPage) {
+              if (!isPage && numericId !== null) {
                 router.push(`/shared-diary/${numericId}/comment`);
               }
             }}
