@@ -23,11 +23,11 @@ export const EMOTION_ITEMS = {
     items: {
       1: { presentText: "무난해요", pastText: "무난했어요" },
       2: { presentText: "비밀이에요", pastText: "비밀이었어요" },
-      3: { presentText: "말하고 싶지않아요", pastText: "말하고 싶지 않았어요" },
+      3: { presentText: "말하고싶지않아요", pastText: "말하고 싶지 않았어요" },
       4: { presentText: "아파요", pastText: "아팠어요" },
-      5: { presentText: "그냥 그래요", pastText: "그냥 그랬어요" },
+      5: { presentText: "그냥그래요", pastText: "그냥 그랬어요" },
       6: { presentText: "모르겠어요", pastText: "잘 모르겠었어요" },
-      7: { presentText: "숨고 싶어요", pastText: "숨고 싶었어요" },
+      7: { presentText: "숨고싶어요", pastText: "숨고 싶었어요" },
       8: { presentText: "혼란스러워요", pastText: "혼란스러웠어요" },
       9: { presentText: "피곤해요", pastText: "피곤했어요" },
       10: { presentText: "장난치고싶어요", pastText: "장난치고 싶었어요" },
@@ -73,3 +73,10 @@ export const EMOTION_ITEMS = {
     getImageSrc: (index: number) => `/images/emoji/bad-${index}.svg`,
   },
 } as const;
+
+export const EMOTION_BUTTONS = [
+  { key: "happy", label: "기쁨/행복/즐거움" },
+  { key: "sad", label: "슬픔/우울/걱정" },
+  { key: "bad", label: "화남/분노" },
+  { key: "daily", label: "기타" },
+];

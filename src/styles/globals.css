@@ -75,11 +75,10 @@
   }
 
   .bg-onboarding-circle-gray {
-    border-radius: 146px;
     background: linear-gradient(
       160deg,
       rgba(255, 255, 255, 0.1) 42.99%,
-      rgba(103, 103, 103, 0.1) 80.56%
+      rgba(103, 103, 103, 0.1) 80.56% <<<<<<< HEAD
     );
   }
   .bg-plant-blue {
@@ -121,9 +120,9 @@
       #fff 74.32%
     );
   }
-}
-
-@layer utilities {
+  .bg-gradient-orange {
+    background: linear-gradient(180deg, #f9cb4c 0%, #fdbb05 100%);
+  }
   .loader {
     width: 48px;
     height: 48px;
@@ -135,6 +134,7 @@
     animation: rotation 1s linear infinite;
   }
 }
+
 @keyframes rotation {
   0% {
     transform: rotate(0deg);

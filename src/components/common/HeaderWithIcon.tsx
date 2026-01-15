@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { useState } from "react";
 
 import AlarmIcon from "@/assets/bell.svg";
@@ -19,6 +21,11 @@ export const HeaderWithIcon = ({
 }: HeaderWithIconProps) => {
   const [isAlarmNew, setIsAlarmNew] = useState(true);
   const [isPencilClick, setIsPencilClick] = useState(false);
+
+  const pencilClick = () => {
+    setIsPencilClick(true);
+    router.push("/shared-diary/upload");
+  };
 
   return (
     <header className="relative mt-[13px] flex items-center justify-center px-4 py-[10px]">
@@ -44,7 +51,7 @@ export const HeaderWithIcon = ({
       </div>
       {havePencil && !isPencilClick && (
         <div className="absolute top-[41px] right-3">
-          <InfoMessage />
+          <InfoMessage text=" 공유일기를 작성하고 친구들과 공유해보세요!" />
         </div>
       )}
     </header>
