@@ -23,7 +23,7 @@ const ProfileSettingPage = () => {
     <main className="flex min-h-dvh w-full justify-center bg-white">
       <div className="mt-[13px] flex h-full w-110 flex-col">
         <ProfileSummary userProfileData={userProfileData} />
-        <div className="fixed mt-[252px] flex w-full justify-center px-4">
+        <div className="mt-252px] fixed flex w-full justify-center px-4">
           <FullButton onClick={() => router.push("/mypage")}>
             설정완료
           </FullButton>
