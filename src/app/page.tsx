@@ -6,7 +6,10 @@ import { PlantProgress } from "@/components/home/PlantProgress";
 export default function HomePage() {
   return (
     <main className="w-full">
-      <Header />
+      <div className="mt-[8.5px]">
+        <Header />
+      </div>
+
       <div className="pt-[23.5px] pb-[75px]">
         <PlantProgress />
       </div>
