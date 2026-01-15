@@ -12,6 +12,7 @@ import { useImageUpload } from "@/hooks/useImageUpload";
 import missionCardData from "@/mock/randomMission.json";
 
 import { getTodayIndex } from "@/utils/getCurrentDay";
+import { getMissionSubtitle } from "@/utils/getMissionSubtitle";
 
 interface DailyMissionCardProps {
   status: keyof typeof MISSION_STATUS;
@@ -27,10 +28,7 @@ export const DailyMissionCard = ({
   const currentDayIndex = getTodayIndex();
   const currentDay = WEEK_DAYS_KOR[currentDayIndex]; // 현재 요일
 
-  const subtitle =
-    typeof MISSION_STATUS[status].subtitle === "function"
-      ? `${MISSION_STATUS[status].subtitle(currentDay)}요일`
-      : MISSION_STATUS[status].subtitle;
+  const subtitle = getMissionSubtitle(status, currentDayIndex);
 
   const missionKind = missionCardData[0].kind;
 
