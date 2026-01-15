@@ -1,20 +1,24 @@
+"use client";
+import { useRouter } from "next/navigation";
+
 import { BackHeader } from "@/components/common/BackHeader";
+import { MenuItem } from "@/components/mypage/MenuItem";
 
-const menuItems = ["1:1 문의하기", "공지사항"];
+import { CS_MENU_ITEMS } from "@/constants/cs";
 
-const rowClass =
-  "flex h-[71px] w-full items-center py-5 border-b border-neutral-10 text-h2 text-neutral-04 cursor-pointer";
-
-const AlarmPage = () => {
+const CustomerServicePage = () => {
+  const router = useRouter();
   return (
     <main className="flex min-h-dvh w-full justify-center">
       <div className="mt-[13px] flex h-full w-110 flex-col px-4">
         <BackHeader title="고객센터" />
         <section className="mt-[18.5px]">
-          {menuItems.map(label => (
-            <div key={label} className={rowClass}>
-              {label}
-            </div>
+          {CS_MENU_ITEMS.map(item => (
+            <MenuItem
+              key={item.label}
+              label={item.label}
+              onClick={() => router.push(item.path)}
+            />
           ))}
         </section>
       </div>
@@ -22,4 +26,4 @@ const AlarmPage = () => {
   );
 };
 
-export default AlarmPage;
+export default CustomerServicePage;
