@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { BackHeader } from "../common/BackHeader";
 import { FullButton } from "../common/FullButton";
 import { ProgressDots } from "../common/ProgressDot";
