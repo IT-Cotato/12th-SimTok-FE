@@ -24,11 +24,12 @@ const MyPage = () => {
             <MyProfileCard userProfileData={userProfileData} />
           )}
         </section>
-        <section className="mt-4">
+        <section className="mt-10 flex flex-col gap-[26px]">
           {MY_PAGE_MENU_ITEMS.map(item => (
             <MenuItem
               key={item.label}
               label={item.label}
+              Icon={item.Icon}
               onClick={() => router.push(item.path)}
             />
           ))}
