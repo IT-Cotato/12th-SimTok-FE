@@ -16,13 +16,12 @@ const nextConfig: NextConfig = {
 
     rules.push({
       test: /\.svg$/i,
-      issuer: /\.[jt]sx?$/,
+      // issuer: /\.[jt]sx?$/,
       use: ["@svgr/webpack"],
     });
 
     return config;
   },
-  turbopack: {},
 };
 
 export default nextConfig;

@@ -30,7 +30,7 @@ const ProfileImagePicker = ({ imageUrl, onClick }: ProfileImagePickerProps) => {
 
       <button
         type="button"
-        className="absolute top-[120px] left-[129.5px] cursor-pointer"
+        className="absolute top-[120px] left-[129.5px] cursor-pointer object-cover"
       >
         <PhotoIcon className="h-[45px] w-[45px]" />
       </button>
