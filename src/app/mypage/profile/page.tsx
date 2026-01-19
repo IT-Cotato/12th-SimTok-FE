@@ -21,11 +21,17 @@ const ProfileSettingPage = () => {
   }
 
   return (
-    <main className="flex min-h-dvh w-full justify-center bg-white">
-      <div className="flex h-full w-110 flex-col">
+    <main className="relative flex min-h-dvh w-full justify-center bg-white">
+      <div className="flex h-full w-110 flex-1 flex-col pb-20">
         <BackHeader title="프로필 설정" />
-        <ProfileSummary userProfileData={userProfileData} />
-        <div className="mt-[167px] flex w-full justify-center px-4">
+
+        <section className="flex flex-col items-center">
+          <ProfileSummary userProfileData={userProfileData} />
+        </section>
+      </div>
+
+      <div className="fixed right-0 bottom-0 left-0 z-10 px-4 pb-4">
+        <div className="mx-auto max-w-110">
           <FullButton onClick={() => router.push("/mypage")}>
             설정완료
           </FullButton>

@@ -1,13 +1,19 @@
 "use client";
-
 import Image from "next/image";
+
+import { useState } from "react";
 
 import DateIcon from "@/assets/date.svg";
 import OnboardingProfileIcon from "@/assets/onboarding_profile.svg";
 import PhoneIcon from "@/assets/phone.svg";
+import PhotoIcon from "@/assets/photo.svg";
 import ProfileIcon from "@/assets/profile.svg";
 
+import LoadingModal from "@/components/common/LoadingModal";
 import { InfoRow } from "@/components/mypage/InfoRow";
+import UploadButton from "@/components/onboarding/UploadButton";
+
+import { useProfileImageUpload } from "@/hooks/useProfileImageUpload";
 
 import type { UserProfile } from "@/types/user.type";
 
@@ -16,17 +22,28 @@ interface ProfileSummaryProps {
 }
 
 export const ProfileSummary = ({ userProfileData }: ProfileSummaryProps) => {
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const { profileImage, isLoading, uploadImage, resetImage, cancelUpload } =
+    useProfileImageUpload();
+
   if (!userProfileData) return null;
-  const { profileImg, nickname, userName, phoneNumber, birthDate } =
-    userProfileData;
+
+  const {
+    profileImg: originalProfileImg,
+    nickname,
+    userName,
+    phoneNumber,
+    birthDate,
+  } = userProfileData;
+  const currentProfileImage = profileImage ?? originalProfileImg;
 
   return (
     <div className="flex w-full max-w-[440px] flex-col items-center">
       <div className="mt-[11px] flex flex-col items-center">
         <div className="relative flex h-40 w-40 items-center justify-center overflow-hidden rounded-[36px]">
-          {profileImg ? (
+          {currentProfileImage ? (
             <Image
-              src={profileImg}
+              src={currentProfileImage}
               alt={`${nickname}의 프로필 이미지`}
               fill
               className="object-cover"
@@ -35,8 +52,17 @@ export const ProfileSummary = ({ userProfileData }: ProfileSummaryProps) => {
             <OnboardingProfileIcon className="h-full w-full" />
           )}
         </div>
+        <button
+          type="button"
+          className="absolute top-[120px] right-[125px] cursor-pointer"
+          onClick={() => setIsUploadOpen(true)}
+        >
+          <PhotoIcon className="h-[45px] w-[45px]" />
+        </button>
 
-        <h2 className="text-d3 mt-2 text-black">{nickname}</h2>
+        <div className="border-mint-01 mt-4 rounded-2xl border px-4 py-2">
+          <span className="text-d3 text-neutral-01">{nickname}</span>
+        </div>
       </div>
 
       <div className="mt-[68px] flex w-full flex-col gap-2.5 px-4 py-2.5">
@@ -44,6 +70,32 @@ export const ProfileSummary = ({ userProfileData }: ProfileSummaryProps) => {
         <InfoRow Icon={DateIcon} value={birthDate} />
         <InfoRow Icon={PhoneIcon} value={phoneNumber} />
       </div>
+
+      <UploadButton
+        isOpen={isUploadOpen}
+        onClose={() => setIsUploadOpen(false)}
+        onSelectAlbum={async file => {
+          try {
+            await uploadImage(file);
+            setIsUploadOpen(false);
+          } catch (error) {
+            console.error("이미지 업로드 실패:", error);
+          }
+        }}
+        onSelectDefault={() => {
+          resetImage();
+          setIsUploadOpen(false);
+        }}
+      />
+
+      <LoadingModal
+        isOpen={isLoading}
+        title="프로필 사진 업로드 중"
+        confirmLabel="취소하기"
+        isLoading
+        backdrop="blur"
+        onClose={cancelUpload}
+      />
     </div>
   );
 };
