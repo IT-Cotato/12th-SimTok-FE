@@ -22,7 +22,7 @@ export const ProfileSummary = ({ userProfileData }: ProfileSummaryProps) => {
 
   return (
     <div className="flex w-full max-w-[440px] flex-col items-center">
-      <div className="mt-[86px] flex flex-col items-center">
+      <div className="mt-[11px] flex flex-col items-center">
         <div className="relative flex h-40 w-40 items-center justify-center overflow-hidden rounded-[36px]">
           {profileImg ? (
             <Image
@@ -39,10 +39,10 @@ export const ProfileSummary = ({ userProfileData }: ProfileSummaryProps) => {
         <h2 className="text-d3 mt-2 text-black">{nickname}</h2>
       </div>
 
-      <div className="mt-[10px] flex w-full flex-col gap-2.5 px-4 py-2.5">
+      <div className="mt-[68px] flex w-full flex-col gap-2.5 px-4 py-2.5">
         <InfoRow Icon={ProfileIcon} value={userName} />
-        <InfoRow Icon={PhoneIcon} value={phoneNumber} />
         <InfoRow Icon={DateIcon} value={birthDate} />
+        <InfoRow Icon={PhoneIcon} value={phoneNumber} />
       </div>
     </div>
   );

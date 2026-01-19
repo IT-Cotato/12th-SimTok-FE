@@ -8,6 +8,6 @@ export const InfoRow = ({ Icon, value }: InfoRowProps) => (
     <div className="pr-2.5">
       <Icon />
     </div>
-    <span className="text-h2 text-neutral-07">{value}</span>
+    <span className="text-h2 text-neutral-03">{value}</span>
   </div>
 );

@@ -8,7 +8,7 @@ interface AlarmItemProps {
 }
 
 export const AlarmItem = ({ label, onChange }: AlarmItemProps) => (
-  <div className="border-neutral-10 text-h2 text-neutral-04 flex h-[71px] w-full items-center justify-between border-b py-5">
+  <div className="text-sub0-sb text-neutral-03 flex h-8 w-full items-center justify-between">
     <span>{label}</span>
     <div className="flex items-center">
       <Toggle defaultOn onChange={onChange} />
