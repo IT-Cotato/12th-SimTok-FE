@@ -31,6 +31,11 @@
   --text-h3--letter-spacing: -0.0675rem;
 
   /* subtitle */
+  --text-sub0-sb: 1.375rem;/* 22px */
+  --text-sub0-sb--font-weight: 400;
+  --text-sub0-sb--line-height: 147%;
+  --text-sub0-sb--letter-spacing: 0.0125rem;
+
   --text-sub-number: 1.5625rem; /* 25px */
   --text-sub-number--font-weight: 600;
   --text-sub-number--line-height: 150%;
