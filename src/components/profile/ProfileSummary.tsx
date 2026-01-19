@@ -11,6 +11,7 @@ import ProfileIcon from "@/assets/profile.svg";
 
 import LoadingModal from "@/components/common/LoadingModal";
 import { InfoRow } from "@/components/mypage/InfoRow";
+import ProfileImagePicker from "@/components/onboarding/ProfileImagePicker";
 import UploadButton from "@/components/onboarding/UploadButton";
 
 import { useProfileImageUpload } from "@/hooks/useProfileImageUpload";
@@ -40,25 +41,10 @@ export const ProfileSummary = ({ userProfileData }: ProfileSummaryProps) => {
   return (
     <div className="flex w-full max-w-[440px] flex-col items-center">
       <div className="mt-[11px] flex flex-col items-center">
-        <div className="relative flex h-40 w-40 items-center justify-center overflow-hidden rounded-[36px]">
-          {currentProfileImage ? (
-            <Image
-              src={currentProfileImage}
-              alt={`${nickname}의 프로필 이미지`}
-              fill
-              className="object-cover"
-            />
-          ) : (
-            <OnboardingProfileIcon className="h-full w-full" />
-          )}
-        </div>
-        <button
-          type="button"
-          className="absolute top-[120px] right-[125px] cursor-pointer"
+        <ProfileImagePicker
+          imageUrl={currentProfileImage}
           onClick={() => setIsUploadOpen(true)}
-        >
-          <PhotoIcon className="h-[45px] w-[45px]" />
-        </button>
+        />
 
         <div className="border-mint-01 mt-4 rounded-2xl border px-4 py-2">
           <span className="text-d3 text-neutral-01">{nickname}</span>
