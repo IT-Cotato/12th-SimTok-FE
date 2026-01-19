@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 import { BackHeader } from "@/components/common/BackHeader";
 import { NavBar } from "@/components/common/NavBar";
-import { MenuItem } from "@/components/mypage/MenuItem";
+import { ListItem } from "@/components/mypage/ListItem";
 import { MyProfileCard } from "@/components/mypage/MyProfileCard";
 
 import { MY_PAGE_MENU_ITEMS } from "@/constants/mypage";
@@ -27,7 +27,7 @@ const MyPage = () => {
           </section>
           <section className="mt-10 flex flex-col gap-[26px]">
             {MY_PAGE_MENU_ITEMS.map(item => (
-              <MenuItem
+              <ListItem
                 key={item.label}
                 label={item.label}
                 Icon={item.Icon}
