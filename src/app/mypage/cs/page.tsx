@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 
 import { BackHeader } from "@/components/common/BackHeader";
-import { MenuItem } from "@/components/mypage/MenuItem";
+import { ListItem } from "@/components/mypage/ListItem";
 
 import { CS_MENU_ITEMS } from "@/constants/cs";
 
@@ -14,7 +14,7 @@ const CustomerServicePage = () => {
         <BackHeader title="고객센터" />
         <section className="mt-[43.5px] flex flex-col gap-[26px]">
           {CS_MENU_ITEMS.map(item => (
-            <MenuItem
+            <ListItem
               key={item.label}
               label={item.label}
               onClick={() => router.push(item.path)}

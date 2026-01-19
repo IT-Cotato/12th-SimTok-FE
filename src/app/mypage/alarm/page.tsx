@@ -1,5 +1,5 @@
 import { BackHeader } from "@/components/common/BackHeader";
-import { AlarmItem } from "@/components/mypage/AlarmItem";
+import { ListItem } from "@/components/mypage/ListItem";
 
 import { ALARM_MENU_ITEMS } from "@/constants/alarm";
 
@@ -10,7 +10,12 @@ const AlarmPage = () => {
         <BackHeader title="알림설정" />
         <section className="mt-[43.5px] flex flex-col gap-[26px] px-4">
           {ALARM_MENU_ITEMS.map(item => (
-            <AlarmItem key={item.id} label={item.label} />
+            <ListItem
+              key={item.id}
+              label={item.label}
+              hasToggle
+              toggleDefaultOn
+            />
           ))}
         </section>
       </div>
