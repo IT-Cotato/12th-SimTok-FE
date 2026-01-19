@@ -6,9 +6,9 @@ import { ALARM_MENU_ITEMS } from "@/constants/alarm";
 const AlarmPage = () => {
   return (
     <main className="flex min-h-dvh w-full justify-center">
-      <div className="mt-[13px] flex h-full w-110 flex-col px-4">
+      <div className="flex h-full w-110 flex-col">
         <BackHeader title="알림설정" />
-        <section className="mt-[18.5px]">
+        <section className="mt-[43.5px] flex flex-col gap-[26px] px-4">
           {ALARM_MENU_ITEMS.map(item => (
             <AlarmItem key={item.id} label={item.label} />
           ))}

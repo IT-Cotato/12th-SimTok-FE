@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
+import { BackHeader } from "@/components/common/BackHeader";
 import { FullButton } from "@/components/common/FullButton";
 import { ProfileSummary } from "@/components/profile/ProfileSummary";
 
@@ -21,9 +22,10 @@ const ProfileSettingPage = () => {
 
   return (
     <main className="flex min-h-dvh w-full justify-center bg-white">
-      <div className="mt-[13px] flex h-full w-110 flex-col">
+      <div className="flex h-full w-110 flex-col">
+        <BackHeader title="프로필 설정" />
         <ProfileSummary userProfileData={userProfileData} />
-        <div className="mt-252px] fixed flex w-full justify-center px-4">
+        <div className="mt-[167px] flex w-full justify-center px-4">
           <FullButton onClick={() => router.push("/mypage")}>
             설정완료
           </FullButton>
