@@ -56,13 +56,13 @@ export const ProfileSummary = ({
 
   return (
     <div className="flex w-full max-w-[440px] flex-col items-center">
-      <div className="mt-[11px] flex flex-col items-center">
+      <div className="mt-[11px] flex flex-col items-center gap-4">
         <ProfileImagePicker
           imageUrl={currentProfileImage}
           onClick={handleOpenModal}
         />
 
-        <div className="border-mint-01 mt-4 rounded-2xl border px-4 py-2">
+        <div className="border-mint-01 rounded-2xl border px-4 py-2">
           <span className="text-d3 text-neutral-01">{nickname}</span>
         </div>
       </div>

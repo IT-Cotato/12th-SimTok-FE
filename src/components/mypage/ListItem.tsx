@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import React from "react";
 
 import { Toggle } from "@/components/common/Toggle";
 
@@ -22,14 +22,14 @@ export const ListItem = ({
   Icon,
 }: ListItemProps) => {
   const isClickable = Boolean(onClick);
+
   return (
-    <div className="text-sub0-sb text-neutral-03 flex h-8 w-full items-center justify-between">
+    <div className="flex h-18 w-full items-center justify-between transition-colors">
       <button
         type="button"
         onClick={onClick}
         disabled={!isClickable}
-        aria-disabled={!isClickable}
-        className={`flex flex-1 items-center gap-2.5 px-4 ${isClickable ? "cursor-pointer" : "cursor-default"}`}
+        className={`text-sub0-sb text-neutral-03 flex h-full flex-1 items-center gap-2.5 px-4 transition-colors ${isClickable ? "hover:bg-neutral-10 active:bg-neutral-09 cursor-pointer" : "cursor-default"} `}
       >
         {Icon && <Icon className="h-6 w-6" />}
         <span>{label}</span>
