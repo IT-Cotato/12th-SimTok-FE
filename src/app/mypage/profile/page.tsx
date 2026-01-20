@@ -12,14 +12,6 @@ const ProfileSettingPage = () => {
   const router = useRouter();
   const { userProfileData, error } = useUserProfile();
 
-  if (error || !userProfileData) {
-    return (
-      <div className="flex min-h-dvh items-center justify-center">
-        프로필을 불러올 수 없습니다.
-      </div>
-    );
-  }
-
   return (
     <main className="relative flex min-h-dvh w-full justify-center bg-white">
       <div className="flex h-full w-110 flex-1 flex-col pb-20">
