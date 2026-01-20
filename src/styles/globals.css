@@ -15,7 +15,7 @@
 
   --color-red-00: #ff3c00;
   --color-blue-00: #39a8fd;
-  
+
   --color-orange-00: #ff6700;
   --color-orange-01: #ff9100;
   --color-orange-02: #fbc223;
@@ -65,6 +65,14 @@
         rgba(66, 240, 158, 0.66) 21.15%,
         rgba(255, 255, 255, 0.87) 93.53%
       );
+  }
+
+  .bg-radial-mint {
+    background: radial-gradient(
+      338.52% 151.74% at 12.05% 153.19%,
+      rgba(0, 255, 98, 0.106) 30.5%,
+      rgba(255, 255, 255, 0.106) 100%
+    );
   }
 
   .bg-onboarding-circle-mint {

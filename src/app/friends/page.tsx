@@ -1,4 +1,6 @@
 "use client";
+import { useRouter } from "next/navigation";
+
 import { useState } from "react";
 
 import FriendAddIcon from "@/assets/person-plus.svg";
@@ -11,6 +13,8 @@ import { FriendList } from "@/components/friends/FrinedList";
 import { FriendProfile } from "@/types/friendProfile.type";
 
 const FriendsListPage = () => {
+  const router = useRouter();
+
   const [searchText, setSearchText] = useState(""); // 서치필드에 입력된 텍스트
   const [modalOpen, setModalOpen] = useState(false); // 친구프로필 모달
   const [isEditMode, setIsEditMode] = useState(false); // 편집모드 전환
@@ -62,7 +66,10 @@ const FriendsListPage = () => {
       ) : (
         <div className="fixed inset-x-0 bottom-[33px] z-50">
           <div className="mx-auto w-full max-w-[440px]">
-            <button className="bg-mint-01 mr-4 ml-auto flex h-[70px] w-[70px] items-center justify-center rounded-full shadow-[0_0_10px_0_rgba(0,0,0,0.10)]">
+            <button
+              className="bg-mint-01 mr-4 ml-auto flex h-[70px] w-[70px] cursor-pointer items-center justify-center rounded-full shadow-[0_0_10px_0_rgba(0,0,0,0.10)]"
+              onClick={() => router.push("/friends/invite")}
+            >
               <FriendAddIcon className="h-10 w-10 text-white" />
             </button>
           </div>
