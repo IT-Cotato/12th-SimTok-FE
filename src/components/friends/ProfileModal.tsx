@@ -1,19 +1,54 @@
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+
+import CloseIcon from "@/assets/close.svg";
+import SettingIcon from "@/assets/setting.svg";
+
+import { FullButton } from "../common/FullButton";
 
 interface ProfileModalProps {
   profileImg: string;
+  userId: number;
   userName: string;
+  onClose: () => void;
 }
-export const ProfileModal = ({ profileImg, userName }: ProfileModalProps) => {
+export const ProfileModal = ({
+  profileImg,
+  userId,
+  userName,
+  onClose,
+}: ProfileModalProps) => {
+  const router = useRouter();
   return (
-    <div>
-      <Image
-        src={profileImg}
-        alt={`${userName}의 프로필이미지`}
-        width={174}
-        height={174}
-        className="object-cover"
-      />
-    </div>
+    <section className="fixed inset-0 z-100">
+      <div className="bg-neutral-01/83 relative mx-auto h-full w-full max-w-[440px]">
+        <div className="flex items-center justify-between px-4 py-[10px] pt-[8.5px]">
+          <CloseIcon
+            onClick={onClose}
+            className="text-neutral-09 h-5 w-5 cursor-pointer"
+          />
+          <SettingIcon
+            className="text-neutral-09 h-6 w-6 cursor-pointer"
+            onClick={() => router.push(`/friends/settings/${userId}`)}
+          />
+        </div>
+        <div className="absolute bottom-0 flex w-full flex-col bg-white">
+          <div className="absolute -top-[79px] left-1/2 flex -translate-x-1/2 flex-col items-center gap-4">
+            <Image
+              src={profileImg}
+              alt={`${userName}의 프로필이미지`}
+              width={174}
+              height={174}
+              className="h-[174px] w-[174px] rounded-3xl object-cover"
+            />
+            <p className="text-d2 text-neutral-01">{userName}</p>
+          </div>
+
+          <div className="mt-[158px] mb-[42px] px-4 py-[10px]">
+            <FullButton>대화하기</FullButton>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
