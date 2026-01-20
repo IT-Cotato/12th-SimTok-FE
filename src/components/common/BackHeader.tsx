@@ -11,6 +11,8 @@ interface HeaderProps {
   menuIcon?: boolean; // 채팅페이지에서 사용
   titleColor?: string; //하루한컷 업로드에서 사용
   subtext?: string; // 친구목록에서 사용
+  isEditMode?: boolean; //친구목록에서 사용;
+  onClickEdit?: () => void;
 }
 
 export const BackHeader = ({
@@ -19,6 +21,8 @@ export const BackHeader = ({
   menuIcon,
   titleColor = "black",
   subtext,
+  isEditMode,
+  onClickEdit,
 }: HeaderProps) => {
   const router = useRouter();
 
@@ -47,8 +51,11 @@ export const BackHeader = ({
         </button>
       )}
       {subtext && (
-        <button className="text-h3 text-neutral-04 absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer">
-          {subtext}
+        <button
+          className={` ${isEditMode ? "text-neutral-07" : "text-neutral-04"} text-h3 absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer`}
+          onClick={onClickEdit}
+        >
+          {isEditMode ? "선택해제" : subtext}
         </button>
       )}
     </header>

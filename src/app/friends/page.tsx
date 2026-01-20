@@ -10,11 +10,27 @@ import { FriendList } from "@/components/friends/FrinedList";
 const FriendsListPage = () => {
   const [searchText, setSearchText] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [isButtonClick, setIsButtonClick] = useState(false);
+
+  const toggleFriend = (userId: number) => {
+    setSelectedIds(prev =>
+      prev.includes(userId)
+        ? prev.filter(id => id !== userId)
+        : [...prev, userId],
+    );
+  };
+
   return (
     <main className="relative w-full">
       {!modalOpen && (
         <div className="mt-[8.5px]">
-          <BackHeader title="친구목록" subtext="편집하기" />
+          <BackHeader
+            title="친구목록"
+            subtext="편집하기"
+            onClickEdit={() => setIsEditMode(prev => !prev)}
+          />
         </div>
       )}
 
@@ -22,7 +38,13 @@ const FriendsListPage = () => {
         className={`${modalOpen ? "mt-[95px]" : "mt-[30.5px]"} flex flex-col gap-5`}
       >
         <SearchField onChangeSearchText={setSearchText} />
-        <FriendList searchText={searchText} setModalOpen={setModalOpen} />
+        <FriendList
+          searchText={searchText}
+          setModalOpen={setModalOpen}
+          isEditMode={isEditMode}
+          selectedIds={selectedIds}
+          onToggleFriend={toggleFriend}
+        />
       </div>
       <div className="fixed inset-x-0 bottom-[33px] z-50">
         <div className="mx-auto w-full max-w-[440px]">
