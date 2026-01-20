@@ -12,7 +12,8 @@ interface HeaderProps {
   titleColor?: string; //하루한컷 업로드에서 사용
   subtext?: string; // 친구목록에서 사용
   isEditMode?: boolean; //친구목록에서 사용;
-  onClickEdit?: () => void;
+  onClickEdit?: () => void; //친구목록에서 사용;
+  selectedCount?: number; //친구목록에서 사용;
 }
 
 export const BackHeader = ({
@@ -23,6 +24,7 @@ export const BackHeader = ({
   subtext,
   isEditMode,
   onClickEdit,
+  selectedCount,
 }: HeaderProps) => {
   const router = useRouter();
 
@@ -55,7 +57,20 @@ export const BackHeader = ({
           className={` ${isEditMode ? "text-neutral-07" : "text-neutral-04"} text-h3 absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer`}
           onClick={onClickEdit}
         >
-          {isEditMode ? "선택해제" : subtext}
+          {isEditMode ? (
+            <div className="flex gap-1">
+              {selectedCount !== undefined && selectedCount > 0 && (
+                <p className="text-mint-01">{selectedCount}</p>
+              )}
+              <p
+                className={`${selectedCount != undefined && selectedCount > 0 && "text-neutral-04"}`}
+              >
+                선택해제
+              </p>
+            </div>
+          ) : (
+            subtext
+          )}
         </button>
       )}
     </header>
