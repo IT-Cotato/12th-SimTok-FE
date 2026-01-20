@@ -1,4 +1,5 @@
 export type MyProfile = () => {
+  userId: number;
   profileImg: string;
   userName: string;
   phoneNumber: string; //01012345678
