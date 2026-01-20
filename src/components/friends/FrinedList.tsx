@@ -10,7 +10,10 @@ export const FriendList = () => {
         <p className="text-sub1-r text-neutral-04">{friendListData.length}</p>
       </div>
       {friendListData.map(friend => (
-        <div key={friend.userId} className="flex gap-4 px-4 py-[10px]">
+        <div
+          key={friend.userId}
+          className="hover:bg-neutral-10 flex cursor-pointer gap-4 px-4 py-[10px]"
+        >
           <Image
             src={friend.profileImg}
             alt={friend.userName}
