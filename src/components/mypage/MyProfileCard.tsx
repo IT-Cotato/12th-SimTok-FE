@@ -31,7 +31,7 @@ export const MyProfileCard = ({ userProfileData }: MyProfileCardProps) => {
       <button
         type="button"
         onClick={() => router.push("/mypage/profile")}
-        className="border-neutral-08 text-body3 text-neutral-04 rounded-2xl border px-4 py-1.5"
+        className="border-neutral-08 text-body3 text-neutral-04 cursor-pointer rounded-2xl border px-4 py-1.5"
       >
         편집
       </button>
