@@ -1,8 +1,10 @@
 "use client";
 
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 
 import EyeIcon from "@/assets/eye.svg";
+
+import { formatPhone } from "@/utils/formatPhone";
 
 interface InputFieldProps {
   type?: "text" | "password" | "tel";
@@ -26,25 +28,27 @@ export const InputField = ({
 
   const inputType = isPassword && showPassword ? "text" : type;
 
+  const displayValue = type === "tel" ? formatPhone(value) : value;
+
   return (
     <div
       className={`bg-neutral-11 flex h-[55px] w-full items-center rounded-2xl border px-2.5 py-2 transition-colors ${
         isFocused || value.length > 0 ? "border-mint-01" : "border-neutral-08"
       }`}
     >
-      <div className="text-neutral-05 pr-2.5">
+      <div className="text-neutral-07 pr-2.5">
         <Icon />
       </div>
       <input
         type={inputType}
-        value={value}
+        value={displayValue}
         onChange={onChange}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         placeholder={placeholder}
         className="placeholder:text-neutral-07 text-h2 w-full bg-transparent text-black outline-none"
       />
-      {isPassword && value.length > 0 && (
+      {/* {isPassword && value.length > 0 && (
         <button
           type="button"
           onClick={() => setShowPassword(prev => !prev)}
@@ -56,7 +60,7 @@ export const InputField = ({
             }`}
           />
         </button>
-      )}
+      )} */}
     </div>
   );
 };
