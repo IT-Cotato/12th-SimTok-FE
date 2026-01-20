@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import DateIcon from "@/assets/date.svg";
 import OnboardingProfileIcon from "@/assets/onboarding_profile.svg";
@@ -20,12 +20,28 @@ import type { UserProfile } from "@/types/user.type";
 
 interface ProfileSummaryProps {
   userProfileData: UserProfile | null;
+  onModalStateChange?: (isOpen: boolean) => void;
 }
 
-export const ProfileSummary = ({ userProfileData }: ProfileSummaryProps) => {
+export const ProfileSummary = ({
+  userProfileData,
+  onModalStateChange,
+}: ProfileSummaryProps) => {
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const { profileImage, isLoading, uploadImage, resetImage, cancelUpload } =
     useProfileImageUpload();
+
+  useEffect(() => {
+    onModalStateChange?.(isUploadOpen || isLoading);
+  }, [isUploadOpen, isLoading, onModalStateChange]);
+
+  const handleOpenModal = () => {
+    setIsUploadOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsUploadOpen(false);
+  };
 
   if (!userProfileData) return null;
 
@@ -43,7 +59,7 @@ export const ProfileSummary = ({ userProfileData }: ProfileSummaryProps) => {
       <div className="mt-[11px] flex flex-col items-center">
         <ProfileImagePicker
           imageUrl={currentProfileImage}
-          onClick={() => setIsUploadOpen(true)}
+          onClick={handleOpenModal}
         />
 
         <div className="border-mint-01 mt-4 rounded-2xl border px-4 py-2">
@@ -59,18 +75,18 @@ export const ProfileSummary = ({ userProfileData }: ProfileSummaryProps) => {
 
       <UploadButton
         isOpen={isUploadOpen}
-        onClose={() => setIsUploadOpen(false)}
+        onClose={handleCloseModal}
         onSelectAlbum={async file => {
           try {
             await uploadImage(file);
-            setIsUploadOpen(false);
+            handleCloseModal();
           } catch (error) {
             console.error("이미지 업로드 실패:", error);
           }
         }}
         onSelectDefault={() => {
           resetImage();
-          setIsUploadOpen(false);
+          handleCloseModal();
         }}
       />
 
