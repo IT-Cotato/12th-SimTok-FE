@@ -4,22 +4,25 @@ import { useState } from "react";
 import FriendAddIcon from "@/assets/person-plus.svg";
 
 import { BackHeader } from "@/components/common/BackHeader";
+import { SearchField } from "@/components/common/SearchField";
 import { FriendList } from "@/components/friends/FrinedList";
-import { SearchField } from "@/components/friends/SearchField";
 
 const FriendsListPage = () => {
   const [searchText, setSearchText] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
   return (
     <main className="relative w-full">
-      <div className="mt-[8.5px]">
-        <BackHeader title="친구목록" subtext="편집하기" />
-      </div>
-      <div className="mt-[30.5px] flex flex-col gap-5">
-        <SearchField
-          searchText={searchText}
-          onChangeSearchText={setSearchText}
-        />
-        <FriendList searchText={searchText} />
+      {!modalOpen && (
+        <div className="mt-[8.5px]">
+          <BackHeader title="친구목록" subtext="편집하기" />
+        </div>
+      )}
+
+      <div
+        className={`${modalOpen ? "mt-[95px]" : "mt-[30.5px]"} flex flex-col gap-5`}
+      >
+        <SearchField onChangeSearchText={setSearchText} />
+        <FriendList searchText={searchText} setModalOpen={setModalOpen} />
       </div>
       <div className="fixed inset-x-0 bottom-[33px] z-50">
         <div className="mx-auto w-full max-w-[440px]">
