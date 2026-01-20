@@ -14,32 +14,33 @@ interface FriendListProps {
   searchText: string;
   setModalOpen: (open: boolean) => void;
   isEditMode: boolean;
-  selectedIds: number[];
-  onToggleFriend: (userId: number) => void;
+  selectedFriends: FriendProfile[];
+  onToggleFriend: (friend: FriendProfile) => void;
 }
 export const FriendList = ({
   searchText,
   setModalOpen,
   isEditMode = false,
-  selectedIds,
+  selectedFriends,
   onToggleFriend,
 }: FriendListProps) => {
   const filteredFriends = searchText
     ? friendListData.filter(user => user.userName.includes(searchText))
     : friendListData;
 
-  const [selectedFriend, setSelectedFriend] = useState<FriendProfile | null>(
-    null,
-  );
+  const [modalFriend, setModalFriend] = useState<FriendProfile | null>(null);
+
+  const isSelected = (userId: number) =>
+    selectedFriends.some(f => f.userId === userId);
 
   const profileModalOpen = (friend: FriendProfile) => {
     if (isEditMode) return;
-    setSelectedFriend(friend);
+    setModalFriend(friend);
     setModalOpen(true);
   };
 
   const profileModalClose = () => {
-    setSelectedFriend(null);
+    setModalFriend(null);
     setModalOpen(false);
   };
 
@@ -51,55 +52,56 @@ export const FriendList = ({
           <p className="text-sub1-r text-neutral-04">{friendListData.length}</p>
         </div>
       )}
+      {filteredFriends.map(friend => {
+        const selected = isSelected(friend.userId);
 
-      {filteredFriends.map(friend => (
-        <div
-          key={friend.userId}
-          className="hover:bg-neutral-10 flex cursor-pointer gap-4 px-4 py-[10px]"
-          onClick={() => {
-            if (isEditMode) {
-              onToggleFriend(friend.userId);
-              return;
-            }
-            profileModalOpen(friend);
-          }}
-        >
-          <Image
-            src={friend.profileImg}
-            alt={friend.userName}
-            width={80}
-            height={80}
-            className="h-20 w-20 rounded-2xl object-cover"
-          />
+        return (
           <div
-            className={`${isEditMode ? "flex-1 justify-between" : ""} flex items-center`}
+            key={friend.userId}
+            className="hover:bg-neutral-10 flex cursor-pointer gap-4 px-4 py-[10px]"
+            onClick={() => {
+              if (isEditMode) {
+                onToggleFriend(friend);
+                return;
+              }
+              profileModalOpen(friend);
+            }}
           >
-            <p className="text-h2 text-neutral-01">{friend.userName}</p>
-            {isEditMode && (
-              <button
-                className={`${
-                  selectedIds.includes(friend.userId)
-                    ? "bg-mint-01 flex items-center justify-center"
-                    : "border-neutral-06 border-[1.75px]"
-                } h-[22px] w-[22px] cursor-pointer rounded-full`}
-                onClick={e => {
-                  e.stopPropagation();
-                  onToggleFriend(friend.userId);
-                }}
-              >
-                {selectedIds.includes(friend.userId) && (
-                  <CheckIcon className="h-5 w-5 text-white" />
-                )}
-              </button>
-            )}
+            <Image
+              src={friend.profileImg}
+              alt={friend.userName}
+              width={80}
+              height={80}
+              className="h-20 w-20 rounded-2xl object-cover"
+            />
+            <div
+              className={`${isEditMode ? "flex-1 justify-between" : ""} flex items-center`}
+            >
+              <p className="text-h2 text-neutral-01">{friend.userName}</p>
+              {isEditMode && (
+                <button
+                  className={`${
+                    selected
+                      ? "bg-mint-01 flex items-center justify-center"
+                      : "border-neutral-06 border-[1.75px]"
+                  } h-[22px] w-[22px] cursor-pointer rounded-full`}
+                  onClick={e => {
+                    e.stopPropagation();
+                    onToggleFriend(friend);
+                  }}
+                >
+                  {selected && <CheckIcon className="h-5 w-5 text-white" />}
+                </button>
+              )}
+            </div>
           </div>
-        </div>
-      ))}
-      {selectedFriend && (
+        );
+      })}
+      {modalFriend && (
         <ProfileModal
-          userId={selectedFriend.userId}
-          userName={selectedFriend.userName}
-          profileImg={selectedFriend.profileImg}
+          userId={modalFriend.userId}
+          userName={modalFriend.userName}
+          profileImg={modalFriend.profileImg}
           onClose={profileModalClose}
         />
       )}

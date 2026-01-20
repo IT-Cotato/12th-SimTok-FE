@@ -4,20 +4,23 @@ import { useState } from "react";
 import FriendAddIcon from "@/assets/person-plus.svg";
 
 import { BackHeader } from "@/components/common/BackHeader";
+import { FullButton } from "@/components/common/FullButton";
 import { SearchField } from "@/components/common/SearchField";
 import { FriendList } from "@/components/friends/FrinedList";
+
+import { FriendProfile } from "@/types/friendProfile.type";
 
 const FriendsListPage = () => {
   const [searchText, setSearchText] = useState(""); // 서치필드에 입력된 텍스트
   const [modalOpen, setModalOpen] = useState(false); // 친구프로필 모달
   const [isEditMode, setIsEditMode] = useState(false); // 편집모드 전환
-  const [selectedIds, setSelectedIds] = useState<number[]>([]); // 편집모드에서 선택한 friendId
+  const [selectedFriends, setSelectedFriends] = useState<FriendProfile[]>([]); // 편집모드에서 선택한 friendId
 
-  const toggleFriend = (userId: number) => {
-    setSelectedIds(prev =>
-      prev.includes(userId)
-        ? prev.filter(id => id !== userId)
-        : [...prev, userId],
+  const toggleFriend = (friend: FriendProfile) => {
+    setSelectedFriends(prev =>
+      prev.some(f => f.userId === friend.userId)
+        ? prev.filter(f => f.userId !== friend.userId)
+        : [...prev, friend],
     );
   };
 
@@ -31,9 +34,9 @@ const FriendsListPage = () => {
             isEditMode={isEditMode}
             onClickEdit={() => {
               setIsEditMode(prev => !prev);
-              if (isEditMode) setSelectedIds([]);
+              if (isEditMode) setSelectedFriends([]);
             }}
-            selectedCount={selectedIds.length}
+            selectedCount={selectedFriends.length}
           />
         </div>
       )}
@@ -46,12 +49,16 @@ const FriendsListPage = () => {
           searchText={searchText}
           setModalOpen={setModalOpen}
           isEditMode={isEditMode}
-          selectedIds={selectedIds}
+          selectedFriends={selectedFriends}
           onToggleFriend={toggleFriend}
         />
       </div>
       {isEditMode ? (
-        <div className="fixed"></div>
+        selectedFriends.length > 0 && (
+          <div className="fixed bottom-0 z-50 w-full max-w-[440px] bg-white px-4 py-[10px] pb-[42px]">
+            <FullButton>삭제하기</FullButton>
+          </div>
+        )
       ) : (
         <div className="fixed inset-x-0 bottom-[33px] z-50">
           <div className="mx-auto w-full max-w-[440px]">
