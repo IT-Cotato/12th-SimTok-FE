@@ -6,7 +6,7 @@ import BackIcon from "@/assets/left-arrow.svg";
 import ListIcon from "@/assets/list.svg";
 
 interface HeaderProps {
-  title: string;
+  title?: string;
   timeAgo?: string; // 하루한컷보기에서 사용
   menuIcon?: boolean; // 채팅페이지에서 사용
   titleColor?: string; //하루한컷 업로드에서 사용
@@ -29,7 +29,9 @@ export const BackHeader = ({
   const router = useRouter();
 
   return (
-    <header className="relative mt-[13px] flex px-4 py-[10px]">
+    <header
+      className={`relative mt-[13px] flex px-4 py-[10px] ${!title && "h-9"}`}
+    >
       <button
         type="button"
         onClick={() => router.back()}
