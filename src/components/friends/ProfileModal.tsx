@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import CloseIcon from "@/assets/close.svg";
+import CloseIcon from "@/assets/close-thin.svg";
 import SettingIcon from "@/assets/setting.svg";
 
 import { FullButton } from "../common/FullButton";
@@ -39,7 +39,7 @@ export const ProfileModal = ({
               alt={`${userName}의 프로필이미지`}
               width={174}
               height={174}
-              className="h-[174px] w-[174px] rounded-3xl object-cover"
+              className="h-[174px] w-[174px] rounded-[36px] object-cover"
             />
             <p className="text-d2 text-neutral-01">{userName}</p>
           </div>
