@@ -23,6 +23,8 @@ export const SearchField = ({ onChangeSearchText }: SearchFieldProps) => {
           type="text"
           placeholder="친구이름을 검색해보세요"
           className="text-sub0 text-neutral-01 w-full focus:outline-none"
+          onFocus={() => setIsClick(true)}
+          onBlur={() => setIsClick(false)}
           onChange={e => onChangeSearchText(e.target.value)}
         ></input>
       </div>
