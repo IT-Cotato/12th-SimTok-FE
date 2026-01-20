@@ -1,7 +1,11 @@
-export const phoneChangeHandler =
-  (setPhone: (value: string) => void) =>
-  (e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value;
-    const onlyNumber = raw.replace(/\D/g, "");
-    setPhone(onlyNumber);
+export const phoneChangeHandler = (setPhone: (val: string) => void) => {
+  return (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+
+    const rawValue = value.replace(/\D/g, "");
+
+    if (rawValue.length > 0 && !rawValue.startsWith("010")) return;
+
+    setPhone(rawValue);
   };
+};
