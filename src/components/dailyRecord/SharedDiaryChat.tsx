@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useEffect } from "react";
 
-import CloseIcon from "@/assets/close.svg";
+import CloseIcon from "@/assets/close-bold.svg";
 
 import { MessageInput } from "@/components/common/MessageInput";
 
