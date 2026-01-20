@@ -4,15 +4,12 @@ import MicIcon from "@/assets/mic-stroke.svg";
 import SearchIcon from "@/assets/search.svg";
 
 interface SearchFieldProps {
-  searchText: string;
   onChangeSearchText: (value: string) => void;
 }
 
-export const SearchField = ({
-  searchText,
-  onChangeSearchText,
-}: SearchFieldProps) => {
+export const SearchField = ({ onChangeSearchText }: SearchFieldProps) => {
   const [isClick, setIsClick] = useState(false);
+
   return (
     <div
       className={`${isClick ? "border-mint-01 border bg-white" : "bg-neutral-11"} relative flex w-full items-center rounded-2xl px-4 py-2`}
