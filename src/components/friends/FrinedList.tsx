@@ -2,14 +2,21 @@ import Image from "next/image";
 
 import friendListData from "@/mock/friendList.json";
 
-export const FriendList = () => {
+interface FriendListProps {
+  searchText: string;
+}
+export const FriendList = ({ searchText }: FriendListProps) => {
+  const filteredFriends = searchText
+    ? friendListData.filter(user => user.userName.includes(searchText))
+    : friendListData;
+
   return (
     <section>
       <div className="flex gap-1 px-4">
         <p className="text-sub1-r text-neutral-04">친구</p>
         <p className="text-sub1-r text-neutral-04">{friendListData.length}</p>
       </div>
-      {friendListData.map(friend => (
+      {filteredFriends.map(friend => (
         <div
           key={friend.userId}
           className="hover:bg-neutral-10 flex cursor-pointer gap-4 px-4 py-[10px]"
