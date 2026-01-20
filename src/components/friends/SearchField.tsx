@@ -3,7 +3,15 @@ import { useState } from "react";
 import MicIcon from "@/assets/mic-stroke.svg";
 import SearchIcon from "@/assets/search.svg";
 
-export const SearchField = () => {
+interface SearchFieldProps {
+  searchText: string;
+  onChangeSearchText: (value: string) => void;
+}
+
+export const SearchField = ({
+  searchText,
+  onChangeSearchText,
+}: SearchFieldProps) => {
   const [isClick, setIsClick] = useState(false);
   return (
     <div
@@ -18,6 +26,7 @@ export const SearchField = () => {
           type="text"
           placeholder="친구이름을 검색해보세요"
           className="text-sub0 text-neutral-01 w-full focus:outline-none"
+          onChange={e => onChangeSearchText(e.target.value)}
         ></input>
       </div>
       <MicIcon
