@@ -1,5 +1,13 @@
+import { BackHeader } from "@/components/common/BackHeader";
+
 const FriendSetting = () => {
-  return <div>친구설정하기</div>;
+  return (
+    <main>
+      <section>
+        <BackHeader title="친구설정" />
+      </section>
+    </main>
+  );
 };
 
 export default FriendSetting;
