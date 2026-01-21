@@ -1,22 +1,11 @@
 "use client";
 
-//import { useState } from "react";
-
 interface ToggleProps {
-  //defaultOn?: boolean;
   on: boolean;
   onChange?: (value: boolean) => void;
 }
 
 export const Toggle = ({ on, onChange }: ToggleProps) => {
-  //const [on, setOn] = useState(defaultOn);
-
-  // const handleClick = () => {
-  //   const next = !on;
-  //   setOn(next);
-  //   onChange?.(next);
-  // };
-
   return (
     <button
       type="button"

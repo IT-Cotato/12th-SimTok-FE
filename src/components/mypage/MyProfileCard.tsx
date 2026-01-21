@@ -11,11 +11,17 @@ interface MyProfileCardProps {
 
 export const MyProfileCard = ({ userProfileData }: MyProfileCardProps) => {
   const router = useRouter();
-
   const { profileImg, nickname } = userProfileData;
 
+  const handleEditRedirect = () => {
+    router.push("/mypage/profile");
+  };
+
   return (
-    <div className="border-neutral-10 flex w-full items-center justify-between border-b px-4 py-2">
+    <div
+      onClick={handleEditRedirect}
+      className="border-neutral-10 flex w-full items-center justify-between border-b px-4 py-2"
+    >
       <div className="flex items-center gap-4">
         <div className="relative h-16 w-16 overflow-hidden rounded-2xl">
           <Image
