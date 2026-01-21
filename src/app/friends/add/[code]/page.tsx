@@ -24,7 +24,7 @@ const FriendAddPage = () => {
           alt="프로필 이미지"
           width={174}
           height={174}
-          className="rounded-[36px] object-cover"
+          className="h-[174px] w-[174px] rounded-[36px] object-cover"
         />
         <p className="text-h2 text-neutral-01">{profileData.userName}</p>
       </section>
