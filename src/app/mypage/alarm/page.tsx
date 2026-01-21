@@ -8,7 +8,7 @@ const AlarmPage = () => {
     <main className="flex min-h-dvh w-full justify-center">
       <div className="flex h-full w-110 flex-col">
         <BackHeader title="알림설정" />
-        <section className="mt-[43.5px] flex flex-col px-4">
+        <section className="mt-[43.5px] flex flex-col">
           {ALARM_MENU_ITEMS.map(item => (
             <ListItem
               key={item.id}
