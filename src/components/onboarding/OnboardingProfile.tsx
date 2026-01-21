@@ -7,7 +7,7 @@ import { useState } from "react";
 import { FullButton } from "@/components/common/FullButton";
 import LoadingModal from "@/components/common/LoadingModal";
 import { NameInput } from "@/components/common/NameInput";
-import ProfileImagePicker from "@/components/onboarding/ProfileImagePicker";
+import ProfileImagePicker from "@/components/common/ProfileImagePicker";
 import UploadButton from "@/components/onboarding/UploadButton";
 
 import { useProfileImageUpload } from "@/hooks/useProfileImageUpload";
