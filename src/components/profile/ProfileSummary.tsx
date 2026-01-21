@@ -1,22 +1,19 @@
 "use client";
-import Image from "next/image";
-
 import { useEffect, useState } from "react";
 
 import DateIcon from "@/assets/date.svg";
-import OnboardingProfileIcon from "@/assets/onboarding_profile.svg";
 import PhoneIcon from "@/assets/phone.svg";
-import PhotoIcon from "@/assets/photo.svg";
 import ProfileIcon from "@/assets/profile.svg";
 
 import LoadingModal from "@/components/common/LoadingModal";
 import { InfoRow } from "@/components/mypage/InfoRow";
-import ProfileImagePicker from "@/components/onboarding/ProfileImagePicker";
 import UploadButton from "@/components/onboarding/UploadButton";
 
 import { useProfileImageUpload } from "@/hooks/useProfileImageUpload";
 
 import type { UserProfile } from "@/types/user.type";
+
+import { ProfileWrapper } from "../common/ProfileWrapper";
 
 interface ProfileSummaryProps {
   userProfileData: UserProfile | null;
@@ -28,6 +25,11 @@ export const ProfileSummary = ({
   onModalStateChange,
 }: ProfileSummaryProps) => {
   const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const originalNickname = userProfileData?.nickname ?? "";
+  const [editedNickname, setEditedNickname] = useState<string | null>(null);
+
+  const nickname = editedNickname ?? originalNickname;
+
   const { profileImage, isLoading, uploadImage, resetImage, cancelUpload } =
     useProfileImageUpload();
 
@@ -35,37 +37,30 @@ export const ProfileSummary = ({
     onModalStateChange?.(isUploadOpen || isLoading);
   }, [isUploadOpen, isLoading, onModalStateChange]);
 
-  const handleOpenModal = () => {
-    setIsUploadOpen(true);
-  };
+  if (!userProfileData) return null;
 
   const handleCloseModal = () => {
     setIsUploadOpen(false);
   };
 
-  if (!userProfileData) return null;
-
   const {
     profileImg: originalProfileImg,
-    nickname,
     userName,
     phoneNumber,
     birthDate,
   } = userProfileData;
+
   const currentProfileImage = profileImage ?? originalProfileImg;
 
   return (
     <div className="flex w-full max-w-[440px] flex-col items-center">
-      <div className="mt-[11px] flex flex-col items-center gap-4">
-        <ProfileImagePicker
-          imageUrl={currentProfileImage}
-          onClick={handleOpenModal}
-        />
-
-        <div className="border-mint-01 rounded-2xl border px-4 py-2">
-          <span className="text-d3 text-neutral-01">{nickname}</span>
-        </div>
-      </div>
+      <ProfileWrapper
+        imageUrl={currentProfileImage}
+        name={nickname}
+        onChangeName={setEditedNickname}
+        onProfileClick={() => setIsUploadOpen(true)}
+        canEdit
+      />
 
       <div className="mt-[68px] flex w-full flex-col gap-2.5 px-4 py-2.5">
         <InfoRow Icon={ProfileIcon} value={userName} />

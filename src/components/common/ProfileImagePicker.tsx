@@ -7,14 +7,19 @@ import PhotoIcon from "@/assets/photo.svg";
 
 type ProfileImagePickerProps = {
   imageUrl: string | null;
-  onClick: () => void;
+  onClick?: () => void;
+  canEdit: boolean;
 };
 
-const ProfileImagePicker = ({ imageUrl, onClick }: ProfileImagePickerProps) => {
+const ProfileImagePicker = ({
+  imageUrl,
+  onClick,
+  canEdit,
+}: ProfileImagePickerProps) => {
   return (
     <div
-      className="relative flex cursor-pointer items-center justify-center"
-      onClick={onClick}
+      className={`relative flex items-center justify-center ${canEdit ? "cursor-pointer" : "cursor-default"} `}
+      onClick={canEdit ? onClick : undefined}
     >
       {imageUrl ? (
         <Image
@@ -28,12 +33,14 @@ const ProfileImagePicker = ({ imageUrl, onClick }: ProfileImagePickerProps) => {
         <ProfileIcon className="h-40 w-40" />
       )}
 
-      <button
-        type="button"
-        className="absolute top-[120px] left-[129.5px] cursor-pointer object-cover"
-      >
-        <PhotoIcon className="h-[45px] w-[45px]" />
-      </button>
+      {canEdit && (
+        <button
+          type="button"
+          className="absolute top-[120px] left-[129.5px] z-10 cursor-pointer object-cover"
+        >
+          <PhotoIcon className="h-[45px] w-[45px]" />
+        </button>
+      )}
     </div>
   );
 };
