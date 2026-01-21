@@ -35,14 +35,17 @@ export const QRCodeWrapper = ({ textCodeMode = false }: QRCodeWrapperProps) => {
       >
         <div className="flex items-center justify-between px-[29px] pt-[20.05px]">
           <div className="flex gap-2">
-            <Image
-              src={MyProfileData.profileImg}
-              alt="내 프로필이미지"
-              width={60}
-              height={60}
-              className="rounded-2xl object-cover"
-            />
-            <p className="text-h2 text-neutral-04 p-[10px]">
+            <div className="">
+              <Image
+                src={MyProfileData.profileImg}
+                alt="내 프로필이미지"
+                width={60}
+                height={60}
+                className="h-15 w-15 rounded-2xl object-cover"
+              />
+            </div>
+
+            <p className="text-h2 text-neutral-04 flex items-center justify-center p-[10px]">
               {MyProfileData.userName}
             </p>
           </div>
