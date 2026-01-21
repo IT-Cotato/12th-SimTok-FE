@@ -11,6 +11,7 @@ interface ListItemProps {
   toggleOnChange?: (value: boolean) => void;
   toggleDefaultOn?: boolean;
   Icon?: React.ElementType;
+  hoverBg?: boolean;
 }
 
 export const ListItem = ({
@@ -20,19 +21,20 @@ export const ListItem = ({
   toggleOnChange,
   toggleDefaultOn = false,
   Icon,
+  hoverBg = false,
 }: ListItemProps) => {
   const isClickable = Boolean(onClick);
 
   return (
-    <div className="flex h-18 w-full items-center justify-between transition-colors">
+    <div className="flex w-full items-center justify-between transition-colors">
       <button
         type="button"
         onClick={onClick}
         disabled={!isClickable}
-        className={`text-sub0-sb text-neutral-03 flex h-full flex-1 items-center gap-2.5 px-4 transition-colors ${isClickable ? "hover:bg-neutral-10 active:bg-neutral-09 cursor-pointer" : "cursor-default"} `}
+        className={`flex flex-1 items-center gap-2.5 px-4 py-5 transition-colors ${isClickable ? "hover:bg-neutral-10 active:bg-neutral-09 cursor-pointer" : "cursor-default"} `}
       >
         {Icon && <Icon className="h-6 w-6" />}
-        <span>{label}</span>
+        <span className="text-neutral-03 text-sub0-sb">{label}</span>
       </button>
       {hasToggle && (
         <div className="flex items-center">

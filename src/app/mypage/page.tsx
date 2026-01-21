@@ -32,6 +32,7 @@ const MyPage = () => {
                 label={item.label}
                 Icon={item.Icon}
                 onClick={() => router.push(item.path)}
+                hoverBg={true}
               />
             ))}
           </section>
