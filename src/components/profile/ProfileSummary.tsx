@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 
 import DateIcon from "@/assets/date.svg";
@@ -25,10 +26,7 @@ export const ProfileSummary = ({
   onModalStateChange,
 }: ProfileSummaryProps) => {
   const [isUploadOpen, setIsUploadOpen] = useState(false);
-  const originalNickname = userProfileData?.nickname ?? "";
   const [editedNickname, setEditedNickname] = useState<string | null>(null);
-
-  const nickname = editedNickname ?? originalNickname;
 
   const { profileImage, isLoading, uploadImage, resetImage, cancelUpload } =
     useProfileImageUpload();
@@ -39,24 +37,27 @@ export const ProfileSummary = ({
 
   if (!userProfileData) return null;
 
-  const handleCloseModal = () => {
-    setIsUploadOpen(false);
-  };
-
   const {
     profileImg: originalProfileImg,
     userName,
     phoneNumber,
     birthDate,
+    nickname: originalNickname,
   } = userProfileData;
 
+  const handleCloseModal = () => {
+    setIsUploadOpen(false);
+  };
+
   const currentProfileImage = profileImage ?? originalProfileImg;
+  const currentNickname = editedNickname ?? originalNickname;
 
   return (
     <div className="flex w-full max-w-[440px] flex-col items-center">
       <ProfileWrapper
+        key={originalNickname}
         imageUrl={currentProfileImage}
-        name={nickname}
+        name={currentNickname}
         onChangeName={setEditedNickname}
         onProfileClick={() => setIsUploadOpen(true)}
         canEdit
