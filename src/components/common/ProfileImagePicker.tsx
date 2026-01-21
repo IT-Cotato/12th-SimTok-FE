@@ -11,7 +11,7 @@ type ProfileImagePickerProps = {
   canEdit: boolean;
 };
 
-const ProfileImagePicker = ({
+export const ProfileImagePicker = ({
   imageUrl,
   onClick,
   canEdit,
@@ -44,5 +44,3 @@ const ProfileImagePicker = ({
     </div>
   );
 };
-
-export default ProfileImagePicker;
