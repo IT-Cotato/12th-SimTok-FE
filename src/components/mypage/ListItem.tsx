@@ -36,15 +36,16 @@ export const ListItem = ({
     toggleOnChange?.(nextValue);
   };
 
-  const handleClick = (e: React.MouseEvent) => {
+  const handleClick = () => {
     if (hasToggle) {
       handleToggleAction();
     }
     onClick?.();
   };
 
-  const commonClasses = `flex flex-1 items-center justify-between w-full px-4 py-5 transition-colors text-left
-    ${isClickable ? "hover:bg-neutral-10 active:bg-neutral-09 cursor-pointer" : "cursor-default"}`;
+  const commonClasses = `flex w-full items-center justify-between px-4 py-5 transition-colors text-left outline-none
+    ${isClickable && hoverBg ? "hover:bg-neutral-10" : ""} 
+    ${isClickable ? "active:bg-neutral-09 cursor-pointer" : "cursor-default"}`;
 
   const renderInnerContent = () => (
     <>
