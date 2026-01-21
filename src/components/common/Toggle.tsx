@@ -20,10 +20,10 @@ export const Toggle = ({ defaultOn = true, onChange }: ToggleProps) => {
     <button
       type="button"
       onClick={handleClick}
-      className={`relative flex h-6 w-11 items-center rounded-full border border-transparent transition-colors ${on ? "bg-green-500" : "bg-neutral-06"}`}
+      className={`relative flex h-[31px] w-[51px] items-center rounded-full border border-transparent transition-colors ${on ? "bg-mint-01" : "bg-neutral-06"}`}
     >
       <span
-        className={`inline-block h-5 w-5 rounded-full bg-white shadow transition-transform ${on ? "translate-x-5" : "translate-x-1"}`}
+        className={`relative mx-[1px] h-[27px] w-[27px] rounded-full bg-white shadow transition-transform ${on ? "translate-x-5" : "translate-x-0"} `}
       />
     </button>
   );
