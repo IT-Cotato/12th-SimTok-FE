@@ -1,25 +1,29 @@
 "use client";
 
-import { useState } from "react";
+//import { useState } from "react";
 
 interface ToggleProps {
-  defaultOn?: boolean;
+  //defaultOn?: boolean;
+  on: boolean;
   onChange?: (value: boolean) => void;
 }
 
-export const Toggle = ({ defaultOn = true, onChange }: ToggleProps) => {
-  const [on, setOn] = useState(defaultOn);
+export const Toggle = ({ on, onChange }: ToggleProps) => {
+  //const [on, setOn] = useState(defaultOn);
 
-  const handleClick = () => {
-    const next = !on;
-    setOn(next);
-    onChange?.(next);
-  };
+  // const handleClick = () => {
+  //   const next = !on;
+  //   setOn(next);
+  //   onChange?.(next);
+  // };
 
   return (
     <button
       type="button"
-      onClick={handleClick}
+      onClick={e => {
+        e.stopPropagation();
+        onChange?.(!on);
+      }}
       className={`relative flex h-[31px] w-[51px] items-center rounded-full border border-transparent transition-colors ${on ? "bg-mint-01" : "bg-neutral-06"}`}
     >
       <span
