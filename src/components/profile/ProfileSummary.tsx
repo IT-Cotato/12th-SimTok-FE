@@ -60,6 +60,7 @@ export const ProfileSummary = ({
         onChangeName={setEditedNickname}
         onProfileClick={() => setIsUploadOpen(true)}
         canEdit
+        placeholder="닉네임을 입력해주세요"
       />
 
       <div className="mt-[68px] flex w-full flex-col gap-2.5 px-4 py-2.5">

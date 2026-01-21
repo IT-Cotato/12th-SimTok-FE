@@ -6,16 +6,21 @@ interface ProfileWrapperProps {
 
   name: string;
   onChangeName: (value: string) => void;
+  placeholder?: string;
 
   onProfileClick?: () => void;
   canEdit?: boolean;
 }
+
+const DEFAULT_PLACEHOLDER = "이름을 입력해주세요";
+
 export const ProfileWrapper = ({
   imageUrl,
   name,
   onChangeName,
   onProfileClick,
   canEdit = false,
+  placeholder = DEFAULT_PLACEHOLDER,
 }: ProfileWrapperProps) => {
   return (
     <section className="flex flex-col items-center gap-4">
@@ -26,7 +31,11 @@ export const ProfileWrapper = ({
       />
 
       <div className="w-full px-[118px]">
-        <NameInput value={name} onChange={onChangeName} />
+        <NameInput
+          value={name}
+          onChange={onChangeName}
+          placeholder={placeholder}
+        />
       </div>
     </section>
   );
