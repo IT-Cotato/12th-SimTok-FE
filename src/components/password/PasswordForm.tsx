@@ -74,6 +74,11 @@ export const PasswordForm = () => {
     }
   };
 
+  const getPlaceholder = () => {
+    if (isCodeRequested && timeLeft === 0) return "인증시간초과";
+    return "인증번호입력";
+  };
+
   const isConfirmActive =
     isNameFilled && code.length > 0 && isCodeRequested && timeLeft > 0;
 
@@ -110,10 +115,10 @@ export const PasswordForm = () => {
       </div>
       <div className="flex w-full gap-2.5 px-4">
         <div
-          className={`bg-neutral-11 flex h-[55px] flex-1 items-center gap-2.5 rounded-2xl border-transparent px-[10px] py-2 ${
+          className={`bg-neutral-11 flex h-[55px] flex-1 items-center gap-2.5 rounded-2xl border px-[10px] py-2 transition-colors ${
             focused === "phone" || phone.length > 0
               ? "border-mint-01"
-              : "border-neutral-08"
+              : "border-transparent"
           }`}
         >
           <div
@@ -153,10 +158,10 @@ export const PasswordForm = () => {
       </div>
       <div className="flex flex-col gap-2.5 px-4">
         <InputField
-          placeholder="인증번호입력"
+          placeholder={getPlaceholder()}
           value={code}
           onChange={e => setCode(e.target.value)}
-          disabled={!isCodeRequested}
+          disabled={!isCodeRequested || timeLeft === 0}
           suffix={
             isCodeRequested &&
             timeLeft > 0 && (
