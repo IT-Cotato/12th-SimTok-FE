@@ -19,7 +19,7 @@ const LoginPage = () => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-  const isActive = phone.length > 0 && password.length > 0;
+  const isActive = phone.length === 11 && password.length > 0;
   const handlePhoneChange = phoneChangeHandler(setPhone);
 
   return (
