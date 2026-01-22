@@ -8,7 +8,7 @@ import { FullButton } from "../common/FullButton";
 import { ProfileImagePicker } from "../common/ProfileImagePicker";
 
 interface ProfileModalProps {
-  profileImg: string;
+  profileImg?: string;
   userId: number;
   userName: string;
   onClose: () => void;
