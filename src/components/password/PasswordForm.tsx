@@ -111,9 +111,7 @@ export const PasswordForm = () => {
         />
       </div>
 
-      {/* 전화번호 + 인증번호 받기 */}
       <div className="flex w-full gap-[13px]">
-        {/* 전화번호 입력 */}
         <div
           className={`bg-neutral-11 flex h-[55px] flex-1 items-center gap-[12px] rounded-2xl border px-[10px] py-[8px] ${
             focused === "phone" || phone.length > 0
@@ -133,7 +131,6 @@ export const PasswordForm = () => {
           />
         </div>
 
-        {/* 인증번호 받기 버튼 */}
         <button
           type="button"
           onClick={handleRequestCode}
@@ -150,13 +147,11 @@ export const PasswordForm = () => {
         </button>
       </div>
 
-      {/* 인증번호 + 인증하기 */}
       <div className="flex w-full gap-[13px]">
-        {/* 인증번호 입력 */}
         <div className="flex flex-1 items-center gap-[10px]">
           <div
             className={`bg-neutral-11 flex h-[55px] flex-1 items-center gap-[13px] rounded-2xl border px-[10px] py-[8px] ${
-              focused === "code" || code.length > 0
+              (focused === "code" || code.length > 0) && isCodeRequested
                 ? "border-mint-01"
                 : "border-neutral-08"
             }`}
@@ -168,6 +163,7 @@ export const PasswordForm = () => {
               onFocus={() => setFocused("code")}
               onBlur={() => setFocused(prev => (prev === "code" ? null : prev))}
               placeholder="인증번호"
+              disabled={!isCodeRequested}
               className="placeholder:text-neutral-07 text-h2 w-full bg-transparent text-black outline-none"
             />
             {isCodeRequested && timeLeft > 0 && (
