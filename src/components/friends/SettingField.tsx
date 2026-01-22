@@ -34,7 +34,8 @@ interface SettingFieldProps {
 }
 
 const getChatFrequencyLabel = (goalDays?: number) =>
-  CHAT_FREQUENCY_OPTIONS.find(o => o.value === goalDays)?.label ?? "";
+  CHAT_FREQUENCY_OPTIONS.find(o => o.value === goalDays)?.label ??
+  "대화하고 싶은 정도를 선택해주세요";
 
 export const SettingField = (props: SettingFieldProps) => {
   const {
