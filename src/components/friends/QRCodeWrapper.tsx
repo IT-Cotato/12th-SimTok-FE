@@ -62,7 +62,7 @@ export const QRCodeWrapper = ({ textCodeMode = false }: QRCodeWrapperProps) => {
           />
         </div>
         <div className="h-[330px] w-full px-[38.5px] pb-[27.23px]">
-          {/* QR 코드가 들어갈 자리 */}
+          {/* TODO: QR 코드가 들어갈 자리, 배포되면 실제 주소로 만들기 */}
           <div className="flex h-full w-full items-center justify-center rounded-xl bg-neutral-100 text-neutral-400">
             QR Code Area
             {textCodeMode && (
