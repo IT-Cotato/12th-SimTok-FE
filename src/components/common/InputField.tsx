@@ -4,8 +4,6 @@ import { useState } from "react";
 
 import EyeIcon from "@/assets/eye.svg";
 
-import { formatPhone } from "@/utils/formatPhone";
-
 interface InputFieldProps {
   type?: "text" | "password" | "tel";
   value: string;
@@ -28,7 +26,7 @@ export const InputField = ({
 
   const inputType = isPassword && showPassword ? "text" : type;
 
-  const displayValue = type === "tel" ? formatPhone(value) : value;
+  const displayValue = value;
 
   return (
     <div

@@ -3,12 +3,11 @@
 import { useMemo } from "react";
 
 const isValidPhoneNumber = (value: string) => {
-  // 10~11자리 숫자
-  if (!/^\d{10,11}$/.test(value)) return false;
+  if (value.length !== 11) return false;
 
-  const prefix = value.slice(0, 3);
-  // 010~019
-  return /^01[0-9]$/.test(prefix);
+  if (!/^\d+$/.test(value)) return false;
+
+  return value.startsWith("010");
 };
 
 export const usePhoneValidation = (phone: string) => {
