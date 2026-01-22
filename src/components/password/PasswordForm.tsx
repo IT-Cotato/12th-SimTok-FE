@@ -8,6 +8,7 @@ import PhoneIcon from "@/assets/phone.svg";
 import ProfileIcon from "@/assets/profile.svg";
 
 import { FullButton } from "@/components/common/FullButton";
+import { InputField } from "@/components/common/InputField";
 import LoadingModal from "@/components/common/LoadingModal";
 
 import { useCountdown } from "@/hooks/useCountdown";
@@ -37,7 +38,6 @@ export const PasswordForm = () => {
   const isNameFilled = name.trim().length > 0;
 
   const canRequestCode = isValidPhone;
-  const isConfirmActive = isNameFilled && isVerified;
 
   const handleRequestCode = () => {
     if (!canRequestCode) return;
@@ -66,6 +66,17 @@ export const PasswordForm = () => {
     }
   };
 
+  const handleFullButtonClick = () => {
+    if (!isVerified) {
+      handleVerify();
+    } else {
+      router.push("/password/find/result");
+    }
+  };
+
+  const isConfirmActive =
+    isNameFilled && code.length > 0 && isCodeRequested && timeLeft > 0;
+
   const handleModalConfirm = () => {
     if (modalType === "success") {
       setModalType(null);
@@ -88,38 +99,32 @@ export const PasswordForm = () => {
   };
 
   return (
-    <div className="mt-[75px] flex w-full flex-col gap-[17px] px-4">
-      {/* 이름 */}
-      <div
-        className={`bg-neutral-11 flex h-[55px] w-full items-center rounded-2xl border px-[10px] py-[8px] ${
-          focused === "name" || name.length > 0
-            ? "border-mint-01"
-            : "border-neutral-08"
-        }`}
-      >
-        <div className="pr-2.5">
-          <ProfileIcon />
-        </div>
-        <input
-          type="text"
+    <div className="mt-[29px] flex w-full flex-col gap-4">
+      <div className="px-4">
+        <InputField
+          Icon={ProfileIcon}
+          placeholder="이름"
           value={name}
           onChange={e => setName(e.target.value)}
-          onFocus={() => setFocused("name")}
-          onBlur={() => setFocused(prev => (prev === "name" ? null : prev))}
-          placeholder="이름"
-          className="placeholder:text-neutral-07 text-h2 w-full bg-transparent text-black outline-none"
         />
       </div>
-
-      <div className="flex w-full gap-[13px]">
+      <div className="flex w-full gap-2.5 px-4">
         <div
-          className={`bg-neutral-11 flex h-[55px] flex-1 items-center gap-[12px] rounded-2xl border px-[10px] py-[8px] ${
+          className={`bg-neutral-11 flex h-[55px] flex-1 items-center gap-2.5 rounded-2xl border-transparent px-[10px] py-2 ${
             focused === "phone" || phone.length > 0
               ? "border-mint-01"
               : "border-neutral-08"
           }`}
         >
-          <PhoneIcon />
+          <div
+            className={`transition-colors ${
+              focused === "phone" || phone.length > 0
+                ? "text-mint-01"
+                : "text-neutral-07"
+            }`}
+          >
+            <PhoneIcon className="h-6 w-6" />
+          </div>
           <input
             type="tel"
             value={formatPhone(phone)}
@@ -137,75 +142,49 @@ export const PasswordForm = () => {
           disabled={!isValidPhone || isCodeRequested}
           className={`text-h2 flex h-[55px] cursor-pointer items-center justify-center rounded-2xl border px-[10px] py-[8px] whitespace-nowrap ${
             !isValidPhone
-              ? "border-neutral-08 text-neutral-06 border bg-white"
+              ? "text-neutral-07 bg-neutral-11 border-transparent"
               : isCodeRequested
                 ? "border-neutral-07 bg-neutral-07 text-white"
                 : "bg-mint-01 text-white"
           }`}
         >
-          인증번호받기
+          인증요청
         </button>
       </div>
-
-      <div className="flex w-full gap-[13px]">
-        <div className="flex flex-1 items-center gap-[10px]">
-          <div
-            className={`bg-neutral-11 flex h-[55px] flex-1 items-center gap-[13px] rounded-2xl border px-[10px] py-[8px] ${
-              (focused === "code" || code.length > 0) && isCodeRequested
-                ? "border-mint-01"
-                : "border-neutral-08"
-            }`}
-          >
-            <input
-              type="text"
-              value={code}
-              onChange={e => setCode(e.target.value)}
-              onFocus={() => setFocused("code")}
-              onBlur={() => setFocused(prev => (prev === "code" ? null : prev))}
-              placeholder="인증번호"
-              disabled={!isCodeRequested}
-              className="placeholder:text-neutral-07 text-h2 w-full bg-transparent text-black outline-none"
-            />
-            {isCodeRequested && timeLeft > 0 && (
+      <div className="flex flex-col gap-2.5 px-4">
+        <InputField
+          placeholder="인증번호입력"
+          value={code}
+          onChange={e => setCode(e.target.value)}
+          disabled={!isCodeRequested}
+          suffix={
+            isCodeRequested &&
+            timeLeft > 0 && (
               <span className="text-sub1-sb text-orange-00">
                 {formatTime(timeLeft)}
               </span>
-            )}
+            )
+          }
+        />
+        {isCodeRequested && (
+          <div className="flex w-full justify-start">
+            <button
+              type="button"
+              onClick={handleResendClick}
+              className="text-orange-00 text-sub1-r cursor-pointer underline"
+            >
+              인증번호가 오지 않나요?
+            </button>
           </div>
-        </div>
-
-        <button
-          type="button"
-          onClick={handleVerify}
-          disabled={!code || !isCodeRequested || timeLeft === 0}
-          className={`text-h2 flex h-[55px] w-[125px] cursor-pointer items-center justify-center rounded-2xl border px-[10px] py-[8px] ${
-            !code || !isCodeRequested || timeLeft === 0
-              ? "border-neutral-08 text-neutral-06 bg-white"
-              : "border-mint-01 bg-mint-01 text-white"
-          }`}
-        >
-          인증하기
-        </button>
+        )}
       </div>
 
-      {isCodeRequested && (
-        <div className="flex w-full justify-end">
-          <button
-            type="button"
-            onClick={handleResendClick}
-            className="text-orange-00 cursor-pointer text-[10px] leading-[150%] underline"
-          >
-            인증번호가 오지 않나요?
-          </button>
-        </div>
-      )}
-
-      <div className="mt-[270px] flex w-full justify-center">
+      <div className="mt-[270px] flex w-full justify-center px-4">
         <FullButton
-          isActive={isConfirmActive}
-          onClick={() => router.push("/password/find/result")}
+          isActive={isConfirmActive || isVerified}
+          onClick={handleFullButtonClick}
         >
-          확인
+          인증하기
         </FullButton>
       </div>
 

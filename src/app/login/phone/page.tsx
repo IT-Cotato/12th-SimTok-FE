@@ -19,7 +19,7 @@ const LoginPage = () => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-  const isActive = phone.length === 11 && password.length > 0;
+  const isActive = phone.length === 11 && password.length >= 8;
   const handlePhoneChange = phoneChangeHandler(setPhone);
 
   return (
@@ -28,13 +28,13 @@ const LoginPage = () => {
         isActive ? "bg-radial-yellowgreen-mintgreen" : "bg-white"
       }`}
     >
-      <div className="mt-[13px] flex h-full w-full flex-col px-4">
+      <div className="flex h-full w-full flex-col px-4">
         <BackHeader title="로그인" />
         <PageTitle>
           로그인하고 <br /> 심톡을 시작해볼까요?{" "}
         </PageTitle>
 
-        <div className="mt-[29px] flex w-full flex-col gap-[10px] pt-[11px]">
+        <div className="mt-[29px] flex w-full flex-col gap-4">
           <InputField
             type="tel"
             Icon={PhoneIcon}
