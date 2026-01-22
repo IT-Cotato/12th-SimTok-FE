@@ -1,5 +1,5 @@
 "use client";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 import { useState } from "react";
 
@@ -15,6 +15,8 @@ import { ChatStyle, ChatTopic } from "@/types/friendProfile.type";
 
 const FriendSetting = () => {
   const params = useParams();
+  const router = useRouter();
+
   const friendId = Number(params.userId);
   const myUserId = 101; // TODO: 임의로 설정, 추후에 내 아이디 받아오는 로직 추가필요
 
@@ -51,7 +53,10 @@ const FriendSetting = () => {
   }
 
   const isValid =
-    nickname.trim().length > 0 && !!chatStyle && chatTopic.length > 0;
+    nickname.trim().length > 0 &&
+    !!chatStyle &&
+    chatTopic.length > 0 &&
+    goalDays != undefined;
 
   return (
     <main className="w-full">
@@ -85,7 +90,9 @@ const FriendSetting = () => {
       </section>
 
       <div className="fixed bottom-0 w-full max-w-[440px] bg-white px-4 pt-[10px] pb-[52px]">
-        <FullButton isActive={isValid}>추가하기</FullButton>
+        <FullButton isActive={isValid} onClick={() => router.push("/friends")}>
+          추가하기
+        </FullButton>
       </div>
     </main>
   );

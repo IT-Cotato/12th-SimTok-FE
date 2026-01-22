@@ -8,13 +8,14 @@ export const FRIENDS_SETTINGS_MENU = [
 export type SettingsMenuKey = (typeof FRIENDS_SETTINGS_MENU)[number]["key"];
 
 export const CHAT_FREQUENCY_OPTIONS = [
-  { value: 7, label: "매일" },
   { value: 1, label: "주 1일" },
   { value: 2, label: "주 2일" },
   { value: 3, label: "주 3일" },
   { value: 4, label: "주 4일" },
   { value: 5, label: "주 5일" },
   { value: 6, label: "주 6일" },
+  { value: 7, label: "매일" },
+  { value: 0, label: "선택하지않음" },
 ] as const;
 
 export const CHAT_STYLE = [
