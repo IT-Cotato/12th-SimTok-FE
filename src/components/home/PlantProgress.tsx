@@ -4,11 +4,13 @@ import "swiper/css";
 import { Keyboard } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
+import ClockIcon from "@/assets/clock.svg";
+
 import { PLANT_BG_BY_STATUS, PlantWaterStatus } from "@/constants/plantStatus";
 
 import plantProgressData from "@/mock/plantProgress.json";
 
-import { getPlantStatus } from "@/utils/getPlantStatus";
+import { getPlantStatus, getPlantStatusMinutes } from "@/utils/getPlantStatus";
 
 import { FullButton } from "../common/FullButton";
 import { InfoMessage } from "../dailyRecord/InfoMessage";
@@ -64,11 +66,28 @@ export const PlantProgress = () => {
                 >
                   <div className="flex flex-col items-center">
                     <ProgressDots total={plantLength} current={index} />
-                    <h1 className="text-h1">
-                      {plantStatus === "WATERED_RECENTLY"
-                        ? "오늘은 물주기를 완료했어요🥳"
-                        : ""}
-                    </h1>
+
+                    {plantStatus === "WATERED_RECENTLY" ? (
+                      <div className="text-h1 text-neutral-03">
+                        오늘은 물주기를 완료했어요🥳
+                      </div>
+                    ) : plantStatus === "WATERABLE" ? (
+                      <div className="flex items-center">
+                        <ClockIcon className="text-blue-01 h-9 w-9" />
+                        <h1 className="text-h1 text-blue-01">
+                          {getPlantStatusMinutes(plant.recentWateredTime)}
+                        </h1>
+                      </div>
+                    ) : plantStatus === "WITHERED" ? (
+                      <div className="flex items-center">
+                        <ClockIcon className="text-red-00 h-9 w-9" />
+                        <h1 className="text-red-00 text-h1">
+                          {getPlantStatusMinutes(plant.recentWateredTime)}
+                        </h1>
+                      </div>
+                    ) : (
+                      ""
+                    )}
 
                     <Bubble status={plantStatus} />
                     <div className="bg-blur absolute bottom-0 z-10 h-[329px] w-full max-w-[440px]" />
