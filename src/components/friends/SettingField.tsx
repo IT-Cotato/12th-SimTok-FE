@@ -23,8 +23,11 @@ import {
 interface SettingFieldProps {
   userName: string;
   goalDays?: number | undefined;
-  chatStyle: ChatStyle;
+  chatStyle?: ChatStyle;
   chatTopic: ChatTopic[];
+  onChangeGoalDays: (value?: number) => void;
+  onChangeChatStyle: (style: ChatStyle) => void;
+  onToggleChatTopic: (topic: ChatTopic) => void;
 }
 
 const getChatFrequencyLabel = (goalDays?: number) =>
@@ -42,7 +45,7 @@ const SETTINGS_SECTION_RENDERER: Record<
     </div>
   ),
 
-  chatFrequency: ({ goalDays }) => (
+  chatFrequency: ({ goalDays, onChangeGoalDays }) => (
     <div className="bg-neutral-11 flex h-[55px] cursor-pointer items-center justify-between rounded-2xl px-[10px] py-2">
       <span className="text-neutral-07 text-h2">
         {getChatFrequencyLabel(goalDays)}
@@ -51,7 +54,7 @@ const SETTINGS_SECTION_RENDERER: Record<
     </div>
   ),
 
-  chatStyle: ({ chatStyle }) => (
+  chatStyle: ({ chatStyle, onChangeChatStyle }) => (
     <div className="flex gap-[45px]">
       {CHAT_STYLE.map(({ key, label }) => (
         <div key={key} className="flex items-center gap-[10px]">
@@ -59,22 +62,28 @@ const SETTINGS_SECTION_RENDERER: Record<
             className={`relative h-6 w-6 cursor-pointer rounded-full ${
               chatStyle === key ? "bg-mint-01" : "border-neutral-08 border"
             }`}
+            onClick={() => onChangeChatStyle(key)}
           >
             {chatStyle === key && (
               <CheckIcon className="absolute inset-0 m-auto h-5 w-5 text-white" />
             )}
           </button>
-          <span className="text-h2 text-neutral-07">{label}</span>
+          <span
+            className={`${chatStyle === key ? "text-neutral-03" : "text-neutral-07"} text-h2`}
+          >
+            {label}
+          </span>
         </div>
       ))}
     </div>
   ),
-  chatTopic: ({ chatTopic }) => (
+  chatTopic: ({ chatTopic, onToggleChatTopic }) => (
     <div className="grid grid-cols-3 gap-[10px]">
       {CHAT_TOPIC.map(({ key, label, icon }: ChatTopicItem) => (
         <button
           key={key}
           className={`flex h-[55px] w-[127px] cursor-pointer items-center justify-center rounded-2xl border ${chatTopic.includes(key) ? "border-mint-01" : "border-neutral-08"}`}
+          onClick={() => onToggleChatTopic(key)}
         >
           {key === "custom" ? (
             <PlusIcon className="h-6 w-6" />
@@ -90,23 +99,15 @@ const SETTINGS_SECTION_RENDERER: Record<
   ),
 };
 
-export const SettingField = ({
-  userName,
-  goalDays,
-  chatStyle,
-  chatTopic,
-}: SettingFieldProps) => {
+export const SettingField = (props: SettingFieldProps) => {
+  const { userName, goalDays, chatStyle, chatTopic } = props;
+
   return (
     <section className="flex flex-col gap-5">
       {FRIENDS_SETTINGS_MENU.map(({ key, title }) => (
         <div key={key} className="flex flex-col gap-[6px] px-4">
           <h1 className="text-h3 text-neutral-05">{title}</h1>
-          {SETTINGS_SECTION_RENDERER[key]({
-            userName,
-            goalDays,
-            chatStyle,
-            chatTopic,
-          })}
+          {SETTINGS_SECTION_RENDERER[key](props)}
         </div>
       ))}
     </section>
