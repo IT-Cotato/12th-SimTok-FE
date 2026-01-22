@@ -8,6 +8,7 @@ import friendListData from "@/mock/friendList.json";
 
 import { FriendProfile } from "@/types/friendProfile.type";
 
+import { ProfileImagePicker } from "../common/ProfileImagePicker";
 import { ProfileModal } from "./ProfileModal";
 
 interface FriendListProps {
@@ -67,12 +68,12 @@ export const FriendList = ({
               profileModalOpen(friend);
             }}
           >
-            <Image
-              src={friend.profileImg}
-              alt={friend.userName}
+            <ProfileImagePicker
+              imageUrl={friend.profileImg || null}
               width={80}
               height={80}
-              className="h-20 w-20 rounded-2xl object-cover"
+              radius={16}
+              canEdit={false}
             />
             <div
               className={`${isEditMode ? "flex-1 justify-between" : ""} flex items-center`}
