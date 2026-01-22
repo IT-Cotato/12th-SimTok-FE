@@ -5,6 +5,7 @@ import CloseIcon from "@/assets/close-thin.svg";
 import SettingIcon from "@/assets/setting.svg";
 
 import { FullButton } from "../common/FullButton";
+import { ProfileImagePicker } from "../common/ProfileImagePicker";
 
 interface ProfileModalProps {
   profileImg: string;
@@ -34,12 +35,12 @@ export const ProfileModal = ({
         </div>
         <div className="absolute bottom-0 flex w-full flex-col bg-white">
           <div className="absolute -top-[79px] left-1/2 flex -translate-x-1/2 flex-col items-center gap-4">
-            <Image
-              src={profileImg}
-              alt={`${userName}의 프로필이미지`}
+            <ProfileImagePicker
+              imageUrl={profileImg || null}
               width={174}
               height={174}
-              className="h-[174px] w-[174px] rounded-[36px] object-cover"
+              radius={36}
+              canEdit={false}
             />
             <p className="text-d2 text-neutral-01">{userName}</p>
           </div>
