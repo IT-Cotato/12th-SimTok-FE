@@ -38,7 +38,7 @@ const LoginPage = () => {
           <InputField
             type="tel"
             Icon={PhoneIcon}
-            value={phone}
+            value={formatPhone(phone)}
             onChange={handlePhoneChange}
             placeholder="전화번호"
           />
