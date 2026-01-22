@@ -6,11 +6,11 @@ import { useState } from "react";
 
 import { FullButton } from "@/components/common/FullButton";
 import LoadingModal from "@/components/common/LoadingModal";
-import { NameInput } from "@/components/common/NameInput";
-import ProfileImagePicker from "@/components/onboarding/ProfileImagePicker";
 import UploadButton from "@/components/onboarding/UploadButton";
 
 import { useProfileImageUpload } from "@/hooks/useProfileImageUpload";
+
+import { ProfileWrapper } from "../common/ProfileWrapper";
 
 const OnboardingProfileClient = () => {
   const router = useRouter();
@@ -54,15 +54,13 @@ const OnboardingProfileClient = () => {
             </p>
           </section>
           <section className="mt-[86px] flex flex-col items-center">
-            <div className="flex flex-col items-center gap-4">
-              <ProfileImagePicker
-                imageUrl={profileImage}
-                onClick={() => setIsUploadOpen(true)}
-              />
-              <div className="w-full px-[118px]">
-                <NameInput value={name} onChange={setName} />
-              </div>
-            </div>
+            <ProfileWrapper
+              imageUrl={profileImage}
+              name={name}
+              onChangeName={setName}
+              onProfileClick={() => setIsUploadOpen(true)}
+              canEdit={true}
+            />
           </section>
 
           <section className="mt-[210px] px-4 py-2.5">

@@ -5,12 +5,12 @@ import { useEffect, useRef, useState } from "react";
 interface NameInputProps {
   value: string;
   onChange: (value: string) => void;
+  placeholder: string;
 }
 
-const PLACEHOLDER = "이름을 입력해주세요";
 const INITIAL_WIDTH = 204;
 
-export const NameInput = ({ value, onChange }: NameInputProps) => {
+export const NameInput = ({ value, onChange, placeholder }: NameInputProps) => {
   const spanRef = useRef<HTMLSpanElement>(null);
   const [inputWidth, setInputWidth] = useState<number>(INITIAL_WIDTH);
 
@@ -24,14 +24,14 @@ export const NameInput = ({ value, onChange }: NameInputProps) => {
   return (
     <div className="flex justify-center">
       <span ref={spanRef} className="text-d3 invisible absolute whitespace-pre">
-        {value || PLACEHOLDER}
+        {value || placeholder}
       </span>
 
       <input
         type="text"
         value={value}
         onChange={e => onChange(e.target.value)}
-        placeholder={PLACEHOLDER}
+        placeholder={placeholder}
         style={{ width: inputWidth }}
         className="border-mint-01 text-d3 text-neutral-01 placeholder:text-neutral-07 rounded-2xl border px-4 py-2 text-center transition-[width] duration-150 ease-out outline-none"
       />
