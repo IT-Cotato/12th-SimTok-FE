@@ -10,6 +10,7 @@ import { BackHeader } from "@/components/common/BackHeader";
 import { FullButton } from "@/components/common/FullButton";
 import { ProfileImagePicker } from "@/components/common/ProfileImagePicker";
 import { SearchField } from "@/components/common/SearchField";
+import { DeleteFriendModal } from "@/components/friends/DeleteFriendModal";
 import { FriendList } from "@/components/friends/FrinedList";
 
 import { FriendProfile } from "@/types/friendProfile.type";
@@ -21,6 +22,7 @@ const FriendsListPage = () => {
   const [modalOpen, setModalOpen] = useState(false); // 친구프로필 모달
   const [isEditMode, setIsEditMode] = useState(false); // 편집모드 전환
   const [selectedFriends, setSelectedFriends] = useState<FriendProfile[]>([]); // 편집모드에서 선택한 friendId
+  const [clickDelete, setClickDelete] = useState(false);
 
   const toggleFriend = (friend: FriendProfile) => {
     setSelectedFriends(prev =>
@@ -28,6 +30,10 @@ const FriendsListPage = () => {
         ? prev.filter(f => f.userId !== friend.userId)
         : [...prev, friend],
     );
+  };
+
+  const clickDeleteButton = () => {
+    setClickDelete(prev => !prev);
   };
 
   return (
@@ -92,7 +98,7 @@ const FriendsListPage = () => {
       {isEditMode ? (
         selectedFriends.length > 0 && (
           <div className="fixed bottom-0 z-50 w-full max-w-[440px] bg-white px-4 py-[10px] pb-[42px]">
-            <FullButton>삭제하기</FullButton>
+            <FullButton onClick={clickDeleteButton}>삭제하기</FullButton>
           </div>
         )
       ) : (
@@ -106,6 +112,14 @@ const FriendsListPage = () => {
             </button>
           </div>
         </div>
+      )}
+      {clickDelete && (
+        <DeleteFriendModal
+          selectedCount={selectedFriends.length}
+          selectedProfileImg={selectedFriends[0].profileImg}
+          selectedName={selectedFriends[0].userName}
+          onClose={clickDeleteButton}
+        />
       )}
     </main>
   );
