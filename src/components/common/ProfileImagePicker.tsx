@@ -18,6 +18,7 @@ export const ProfileImagePicker = ({
   imageUrl,
   onClick,
   canEdit = true,
+  radius = 36,
   width = 160,
   height = 160,
 }: ProfileImagePickerProps) => {
@@ -32,8 +33,8 @@ export const ProfileImagePicker = ({
           alt="프로필 이미지"
           width={width}
           height={height}
-          style={{ width, height }}
-          className="rounded-2xl object-cover"
+          style={{ borderRadius: radius, width, height }}
+          className="object-cover"
         />
       ) : (
         <ProfileIcon style={{ width, height }} />
