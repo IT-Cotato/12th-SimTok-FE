@@ -3,30 +3,30 @@
     "plantId": 1,
     "plantName": "두쫀쿠",
     "plantSort": "데이지",
-    "recentWateredTime": "2026-01-15T08:30:00"
+    "recentWateredTime": "2026-01-22T08:30:00"
   },
   {
     "plantId": 2,
     "plantName": "맥모닝",
     "plantSort": "튤립",
-    "recentWateredTime": "2026-01-13T21:10:00"
+    "recentWateredTime": "2026-01-21T21:10:00"
   },
   {
     "plantId": 3,
     "plantName": "믿음소망",
     "plantSort": "은방울",
-    "recentWateredTime": "2026-01-12T09:00:00"
+    "recentWateredTime": "2026-01-21T09:00:00"
   },
   {
     "plantId": 4,
     "plantName": "사랑",
     "plantSort": "해바라기",
-    "recentWateredTime": "2026-01-15T18:45:00"
+    "recentWateredTime": "2026-01-21T18:45:00"
   },
   {
     "plantId": 5,
     "plantName": "딸기모찌",
     "plantSort": "안개",
-    "recentWateredTime": "2026-01-14T07:05:00"
+    "recentWateredTime": "2026-01-20T07:05:00"
   }
 ]
