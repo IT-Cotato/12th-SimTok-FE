@@ -8,6 +8,7 @@ import chatProgressData from "@/mock/chatProgress.json";
 import { getPercentage } from "@/utils/getPercentage";
 import { sortChatProgress } from "@/utils/sortChatProgress";
 
+import { ProfileImagePicker } from "../common/ProfileImagePicker";
 import { ProgressBar } from "./ProgressBar";
 
 export const ChatProgress = () => {
@@ -27,12 +28,12 @@ export const ChatProgress = () => {
           const chatPercentage = getPercentage(data.totalDays, data.goalDays);
           return (
             <div className="flex gap-[15px] py-[10px]" key={data.userId}>
-              <Image
-                src={data.profileImg}
-                alt={data.userName}
+              <ProfileImagePicker
+                imageUrl={data.profileImg ?? null}
+                canEdit={false}
                 width={72}
                 height={72}
-                className="h-18 w-18 rounded-2xl object-cover"
+                radius={16}
               />
 
               <div className="flex flex-1 flex-col gap-[6px]">
