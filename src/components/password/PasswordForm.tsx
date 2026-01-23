@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
+import ErrorIcon from "@/assets/modal_error.svg";
+import SuccessIcon from "@/assets/modal_success.svg";
 import PhoneIcon from "@/assets/phone.svg";
 import ProfileIcon from "@/assets/profile.svg";
 
@@ -196,13 +198,13 @@ export const PasswordForm = () => {
       {modalType && (
         <LoadingModal
           isOpen={!!modalType}
-          title={modalType === "success" ? "인증완료" : "인증오류"}
+          title={modalType === "success" ? "인증성공" : "인증오류"}
           message={
             modalType === "success"
-              ? "인증이 완료되었습니다."
-              : "인증번호를 확인할 수 없습니다."
+              ? "인증이 완료되었어요"
+              : "인증번호가 올바르지 않아요"
           }
-          backdrop="default"
+          icon={modalType === "success" ? <SuccessIcon /> : <ErrorIcon />}
           onClose={handleModalConfirm}
         />
       )}
