@@ -52,14 +52,14 @@ const LoadingModal = ({
           )}
         </div>
 
-        <div className="flex flex-col items-center justify-center pt-[21px] pb-3">
-          {isLoading ? (
-            <span className="loader" />
-          ) : (
-            <div className="flex items-center justify-center pt-[21px] pb-3">
-              {icon}
-            </div>
-          )}
+        <div className="flex flex-col items-center justify-center">
+          <div className="flex items-center justify-center pt-[21px] pb-3">
+            {isLoading ? (
+              <span className="loader" />
+            ) : (
+              <div className="flex items-center justify-center">{icon}</div>
+            )}
+          </div>
         </div>
 
         <div className="flex w-full">
