@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import EyeIcon from "@/assets/eye.svg";
+//import EyeIcon from "@/assets/eye.svg";
 
 interface InputFieldProps {
   type?: "text" | "password" | "tel";
@@ -13,6 +13,7 @@ interface InputFieldProps {
   isPassword?: boolean;
   disabled?: boolean;
   suffix?: React.ReactNode;
+  state?: "default" | "invalid" | "valid";
 }
 
 export const InputField = ({
@@ -24,34 +25,68 @@ export const InputField = ({
   isPassword = false,
   disabled = false,
   suffix,
+  state = "default",
 }: InputFieldProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const isActive = isFocused || value.length > 0;
-  const inputType = isPassword && showPassword ? "text" : type;
+  // const getBorderColor = () => {
+  //   if (state === "invalid") return "border-orange-00";
+  //   if (state === "valid") return "border-mint-01";
+  //   return isFocused ? "border-mint-01" : "border-transparent";
+  // };
+  const getBorderColor = () => {
+    if (state === "invalid") return "border-orange-00";
+    if (state === "valid" || value.length > 0 || isFocused)
+      return "border-mint-01";
+    return "border-transparent";
+  };
 
-  const displayValue = value;
+  // const getIconColor = () => {
+  //   if (state === "invalid") return "text-orange-00";
+  //   if (state === "valid") return "text-mint-01";
+  //   return value.length > 0 ? "text-mint-01" : "text-neutral-07";
+  // };
+  const getIconColor = () => {
+    if (state === "invalid") return "text-orange-00";
+    if (state === "valid" || value.length > 0 || isFocused)
+      return "text-mint-01";
+    return "text-neutral-07";
+  };
+  const inputType = isPassword && !showPassword ? "password" : "text";
+
+  // const isActive = isFocused || value.length > 0;
+  // const inputType = isPassword && showPassword ? "text" : type;
+
+  // const displayValue = value;
 
   return (
+    // <div
+    //   className={`bg-neutral-11 flex h-[55px] w-full items-center rounded-2xl border px-2.5 py-2 transition-colors ${
+    //     isFocused || value.length > 0 ? "border-mint-01" : "border-transparent"
+    //   }`}
+    // >
+    //   {Icon && (
+    //     <div
+    //       className={`pr-2.5 transition-colors ${
+    //         isActive ? "text-mint-01" : "text-neutral-07"
+    //       }`}
+    //     >
+    //       <Icon className="h-6 w-6" />
+    //     </div>
+    //   )}
     <div
-      className={`bg-neutral-11 flex h-[55px] w-full items-center rounded-2xl border px-2.5 py-2 transition-colors ${
-        isFocused || value.length > 0 ? "border-mint-01" : "border-transparent"
-      }`}
+      className={`bg-neutral-11 flex h-[55px] w-full items-center rounded-2xl border px-2.5 py-2 transition-colors ${getBorderColor()}`}
     >
       {Icon && (
-        <div
-          className={`pr-2.5 transition-colors ${
-            isActive ? "text-mint-01" : "text-neutral-07"
-          }`}
-        >
+        <div className={`pr-2.5 transition-colors ${getIconColor()}`}>
           <Icon className="h-6 w-6" />
         </div>
       )}
 
       <input
         type={inputType}
-        value={displayValue}
+        value={value}
         onChange={onChange}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}

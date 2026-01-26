@@ -2,7 +2,6 @@ import { ElementType } from "react";
 
 import BellIcon from "@/assets/fi_bell.svg";
 import FileIcon from "@/assets/file.svg";
-// 아이콘 에셋 임포트 (경로는 프로젝트 구조에 따라 조정)
 import LockIcon from "@/assets/lock.svg";
 import LogoutIcon from "@/assets/logout.svg";
 import ResignIcon from "@/assets/resign.svg";
