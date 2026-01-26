@@ -54,8 +54,13 @@ const LoginPage = () => {
 
         <div className="mt-[319px] flex flex-col items-center py-2.5">
           <button
-            className="text-sub1-r text-orange-00 cursor-pointer"
-            onClick={() => router.push("/password/find")}
+            disabled={isActive}
+            className={`text-sub1-r transition-colors ${
+              isActive
+                ? "text-neutral-08 cursor-default"
+                : "text-orange-00 cursor-pointer"
+            }`}
+            onClick={() => !isActive && router.push("/password/find")}
           >
             비밀번호를 잊으셨나요?
           </button>
