@@ -80,9 +80,6 @@ export const PasswordForm = () => {
     return "인증번호입력";
   };
 
-  // const isConfirmActive =
-  //   isNameFilled && code.length > 0 && isCodeRequested && timeLeft > 0;
-
   const isConfirmActive =
     !isVerified &&
     isNameFilled &&
