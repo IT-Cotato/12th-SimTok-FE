@@ -20,34 +20,53 @@ const FindPage = () => {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
-  const { isValidPassword, getState, getBorderColor, getTextColor } =
-    usePasswordValidation();
+  const { isValidPassword, getState, getTextColor } = usePasswordValidation();
 
   const isPasswordValid = isValidPassword(password);
   const isPasswordConfirmValid =
     isValidPassword(passwordConfirm) && password === passwordConfirm;
 
-  const passwordState = getState(password, isPasswordValid);
-  const passwordConfirmState = getState(
-    passwordConfirm,
-    isPasswordConfirmValid,
-  );
+  const passwordState =
+    getState(password, isPasswordValid) === "empty"
+      ? "default"
+      : (getState(password, isPasswordValid) as
+          | "default"
+          | "invalid"
+          | "valid");
+
+  // const passwordState = getState(password, isPasswordValid) === "empty"
+  //   ? "default"
+  //   : getState(password, isPasswordValid);
+
+  // const passwordConfirmState = getState(passwordConfirm, isPasswordConfirmValid) === "empty"
+  //   ? "default"
+  //   : getState(passwordConfirm, isPasswordConfirmValid);
+
+  const passwordConfirmState =
+    getState(passwordConfirm, isPasswordConfirmValid) === "empty"
+      ? "default"
+      : (getState(passwordConfirm, isPasswordConfirmValid) as
+          | "default"
+          | "invalid"
+          | "valid");
 
   return (
     <main className="flex h-screen w-full justify-center bg-white">
-      <div className="flex w-full flex-col whitespace-nowrap">
+      <div className="flex w-full flex-col">
         <BackHeader title="새 비밀번호 설정" />
         <PageTitle>새로운 비밀번호를 입력해주세요</PageTitle>
         <div className="mt-[76px] flex w-full flex-col gap-2.5 px-4">
           <div className="flex flex-col">
             <InputField
-              type="password"
+              isPassword={true}
+              //type="password"
               value={password}
               onChange={e => setPassword(e.target.value)}
               placeholder="8자리 이상 입력"
               Icon={LockIcon}
+              state={passwordState}
               suffix={
-                <div className="flex items-center justify-center px-1">
+                <div className="flex items-center justify-center">
                   <Exclamation
                     className={`h-6 w-6 transition-colors ${
                       passwordState === "invalid"
@@ -59,7 +78,7 @@ const FindPage = () => {
               }
             />
             <div
-              className={`text-sub1-runderline ${getTextColor(passwordState)}`}
+              className={`text-sub1-r underline ${getTextColor(passwordState)}`}
             >
               비밀번호를 입력해주세요.
             </div>
@@ -67,11 +86,13 @@ const FindPage = () => {
 
           <div className="flex flex-col">
             <InputField
-              type="password"
+              isPassword={true}
+              //type="password"
               value={passwordConfirm}
               onChange={e => setPasswordConfirm(e.target.value)}
               placeholder="8자리 이상 입력"
               Icon={LockIcon}
+              state={passwordConfirmState}
               suffix={
                 <div className="flex items-center justify-center px-1">
                   <Exclamation
@@ -85,7 +106,7 @@ const FindPage = () => {
               }
             />
             <div
-              className={`text-sub1-runderline ${getTextColor(passwordConfirmState)}`}
+              className={`text-sub1-r underline ${getTextColor(passwordConfirmState)}`}
             >
               비밀번호를 입력해주세요.
             </div>
@@ -94,9 +115,9 @@ const FindPage = () => {
           <div className="mt-[320px] flex w-full justify-center">
             <FullButton
               isActive={isPasswordConfirmValid}
-              onClick={() => router.push("/onboarding")}
+              onClick={() => router.push("/login/phone")}
             >
-              완료
+              설정완료
             </FullButton>
           </div>
         </div>
