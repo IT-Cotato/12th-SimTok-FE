@@ -71,8 +71,6 @@ export const PasswordForm = () => {
   const handleFullButtonClick = () => {
     if (!isVerified) {
       handleVerify();
-    } else {
-      router.push("/password/find/result");
     }
   };
 
@@ -81,12 +79,20 @@ export const PasswordForm = () => {
     return "인증번호입력";
   };
 
+  // const isConfirmActive =
+  //   isNameFilled && code.length > 0 && isCodeRequested && timeLeft > 0;
+
   const isConfirmActive =
-    isNameFilled && code.length > 0 && isCodeRequested && timeLeft > 0;
+    !isVerified &&
+    isNameFilled &&
+    code.length > 0 &&
+    isCodeRequested &&
+    timeLeft > 0;
 
   const handleModalConfirm = () => {
     if (modalType === "success") {
       setModalType(null);
+      router.push("/password/find/result");
     } else {
       setModalType(null);
       stop();
@@ -187,10 +193,7 @@ export const PasswordForm = () => {
       </div>
 
       <div className="mt-[270px] flex w-full justify-center px-4">
-        <FullButton
-          isActive={isConfirmActive || isVerified}
-          onClick={handleFullButtonClick}
-        >
+        <FullButton isActive={isConfirmActive} onClick={handleFullButtonClick}>
           인증하기
         </FullButton>
       </div>

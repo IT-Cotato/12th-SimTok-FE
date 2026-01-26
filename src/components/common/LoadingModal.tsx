@@ -40,26 +40,19 @@ const LoadingModal = ({
           <p className="text-h3 text-neutral-01 text-center">{title}</p>
         </div>
 
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center px-5">
+          {message && (
+            <p className="text-sub2-r text-neutral-01 text-center whitespace-pre-wrap">
+              {message}
+            </p>
+          )}
+        </div>
+        <div className="flex flex-col items-center justify-center pt-[21px] pb-3">
           {isLoading ? (
             <span className="loader" />
           ) : (
-            message && (
-              <p className="text-sub2-r text-neutral-01 text-center">
-                {message}
-              </p>
-            )
+            <div className="flex items-center justify-center">{icon}</div>
           )}
-        </div>
-
-        <div className="flex flex-col items-center justify-center">
-          <div className="flex items-center justify-center pt-[21px] pb-3">
-            {isLoading ? (
-              <span className="loader" />
-            ) : (
-              <div className="flex items-center justify-center">{icon}</div>
-            )}
-          </div>
         </div>
 
         <div className="flex w-full">
