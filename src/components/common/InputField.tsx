@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-//import EyeIcon from "@/assets/eye.svg";
+import EyeIcon from "@/assets/eye.svg";
 
 interface InputFieldProps {
   type?: "text" | "password" | "tel";
@@ -13,7 +13,7 @@ interface InputFieldProps {
   isPassword?: boolean;
   disabled?: boolean;
   suffix?: React.ReactNode;
-  state?: "default" | "invalid" | "valid";
+  state?: "default" | "invalid" | "valid" | "empty";
 }
 
 export const InputField = ({
@@ -30,11 +30,18 @@ export const InputField = ({
   const [isFocused, setIsFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  // const getBorderColor = () => {
-  //   if (state === "invalid") return "border-orange-00";
-  //   if (state === "valid") return "border-mint-01";
-  //   return isFocused ? "border-mint-01" : "border-transparent";
-  // };
+  const isError = state === "invalid";
+  const isValid = state === "valid";
+
+  const getThemeColor = () => {
+    if (isError) return "border-orange-00 text-orange-00";
+    if (isValid || value.length > 0) return "border-mint-01 text-mint-01";
+    return "border-transparent text-neutral-07";
+  };
+
+  const themeClass = getThemeColor();
+  const inputType = isPassword && !showPassword ? "password" : "text";
+
   const getBorderColor = () => {
     if (state === "invalid") return "border-orange-00";
     if (state === "valid" || value.length > 0 || isFocused)
@@ -42,39 +49,15 @@ export const InputField = ({
     return "border-transparent";
   };
 
-  // const getIconColor = () => {
-  //   if (state === "invalid") return "text-orange-00";
-  //   if (state === "valid") return "text-mint-01";
-  //   return value.length > 0 ? "text-mint-01" : "text-neutral-07";
-  // };
   const getIconColor = () => {
     if (state === "invalid") return "text-orange-00";
     if (state === "valid" || value.length > 0 || isFocused)
       return "text-mint-01";
     return "text-neutral-07";
   };
-  const inputType = isPassword && !showPassword ? "password" : "text";
-
-  // const isActive = isFocused || value.length > 0;
-  // const inputType = isPassword && showPassword ? "text" : type;
-
-  // const displayValue = value;
+  //const inputType = isPassword && !showPassword ? "password" : "text";
 
   return (
-    // <div
-    //   className={`bg-neutral-11 flex h-[55px] w-full items-center rounded-2xl border px-2.5 py-2 transition-colors ${
-    //     isFocused || value.length > 0 ? "border-mint-01" : "border-transparent"
-    //   }`}
-    // >
-    //   {Icon && (
-    //     <div
-    //       className={`pr-2.5 transition-colors ${
-    //         isActive ? "text-mint-01" : "text-neutral-07"
-    //       }`}
-    //     >
-    //       <Icon className="h-6 w-6" />
-    //     </div>
-    //   )}
     <div
       className={`bg-neutral-11 flex h-[55px] w-full items-center rounded-2xl border px-2.5 py-2 transition-colors ${getBorderColor()}`}
     >
@@ -92,12 +75,30 @@ export const InputField = ({
         onBlur={() => setIsFocused(false)}
         placeholder={placeholder}
         disabled={disabled}
-        className="placeholder:text-neutral-07 text-h2 w-full bg-transparent text-black outline-none disabled:cursor-not-allowed"
+        className="placeholder:text-neutral-07 text-h2 w-full bg-transparent text-black outline-none"
       />
 
-      {suffix && (
+      <div className="flex items-center justify-center">
+        {isValid && isPassword ? (
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className={`transition-colors ${
+              showPassword ? "text-mint-01" : "text-neutral-07"
+            }`}
+          >
+            <EyeIcon className="h-6 w-6" />
+          </button>
+        ) : (
+          <div className={`${isError ? "text-orange-00" : "text-neutral-07"}`}>
+            {suffix}
+          </div>
+        )}
+      </div>
+
+      {/* {suffix && (
         <div className="flex items-center justify-center">{suffix}</div>
-      )}
+      )} */}
 
       {/* {isPassword && value.length > 0 && (
         <button
