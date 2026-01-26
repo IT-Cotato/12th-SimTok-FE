@@ -52,6 +52,7 @@ export const PasswordForm = () => {
     stop();
     setIsVerified(false);
     setCode("");
+    handleRequestCode();
   };
 
   const handleVerify = () => {
