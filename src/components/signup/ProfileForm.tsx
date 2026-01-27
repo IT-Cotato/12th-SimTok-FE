@@ -43,9 +43,7 @@ export const ProfileForm = () => {
   const isCodeRequested = isRunning;
   const isNameFilled = name.trim().length > 0;
   const canRequestCode = isValidPhone;
-
   const isBirthValid = isValidBirth(birth);
-  //const isConfirmActive = isNameFilled && isVerified && isBirthValid;
 
   const handleRequestCode = () => {
     if (!canRequestCode) return;
@@ -74,17 +72,6 @@ export const ProfileForm = () => {
       setModalType("error");
     }
   };
-
-  // const handleModalConfirm = () => {
-  //   if (modalType === "success") {
-  //     setModalType(null);
-  //   } else {
-  //     setModalType(null);
-  //     stop();
-  //     setCode("");
-  //     setIsVerified(false);
-  //   }
-  // };
 
   const handlePhoneChange = phoneChangeHandler(setPhone);
   const handlePhoneInput: React.ChangeEventHandler<HTMLInputElement> = e => {
@@ -119,6 +106,7 @@ export const ProfileForm = () => {
   const isConfirmActive =
     !isVerified &&
     isNameFilled &&
+    isBirthValid &&
     code.length > 0 &&
     isCodeRequested &&
     timeLeft > 0;
