@@ -213,7 +213,7 @@ export const ProfileForm = () => {
         )}
       </div>
 
-      <div className="mt-[270px] flex w-full justify-center px-4">
+      <div className="flex w-full justify-center px-4">
         <FullButton isActive={isConfirmActive} onClick={handleFullButtonClick}>
           인증하기
         </FullButton>
