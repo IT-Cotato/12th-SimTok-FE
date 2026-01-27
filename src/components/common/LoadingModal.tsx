@@ -36,17 +36,16 @@ const LoadingModal = ({
         className="flex w-[316px] flex-col rounded-2xl bg-white"
         onClick={e => e.stopPropagation()}
       >
-        <div className="flex h-[47px] items-center justify-center">
+        <div className="mt-[9px] flex flex-col items-center justify-center gap-[2px]">
           <p className="text-h3 text-neutral-01 text-center">{title}</p>
-        </div>
 
-        <div className="flex items-center justify-center px-5">
           {message && (
             <p className="text-sub2-r text-neutral-01 text-center whitespace-pre-wrap">
               {message}
             </p>
           )}
         </div>
+
         <div className="flex flex-col items-center justify-center pt-[21px] pb-3">
           {isLoading ? (
             <span className="loader" />
@@ -59,7 +58,7 @@ const LoadingModal = ({
           <button
             type="button"
             onClick={onClose}
-            className="bg-mint-01 text-sub1-sb flex h-[66px] w-full items-center justify-center rounded-b-2xl text-white"
+            className="bg-mint-01 text-sub1-sb flex h-[66px] w-full cursor-pointer items-center justify-center rounded-b-2xl text-white"
           >
             {confirmLabel}
           </button>
