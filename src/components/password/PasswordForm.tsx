@@ -119,9 +119,9 @@ export const PasswordForm = () => {
           onChange={e => setName(e.target.value)}
         />
       </div>
-      <div className="flex w-full gap-2.5 px-4">
+      <div className="flex w-full justify-between px-4">
         <div
-          className={`bg-neutral-11 flex h-[55px] flex-1 items-center gap-2.5 rounded-2xl border px-[10px] py-2 transition-colors ${
+          className={`bg-neutral-11 flex h-[55px] max-w-[284px] items-center gap-2.5 rounded-2xl border px-[10px] py-2 transition-colors ${
             focused === "phone" || phone.length > 0
               ? "border-mint-01"
               : "border-transparent"
@@ -151,7 +151,7 @@ export const PasswordForm = () => {
           type="button"
           onClick={handleRequestCode}
           disabled={!isValidPhone || isCodeRequested}
-          className={`text-h2 flex h-[55px] cursor-pointer items-center justify-center rounded-2xl border px-[10px] py-[8px] whitespace-nowrap ${
+          className={`text-h2 flex h-[55px] min-w-[108px] cursor-pointer items-center justify-center rounded-2xl border px-[10px] py-[8px] whitespace-nowrap ${
             !isValidPhone
               ? "text-neutral-07 bg-neutral-11 border-transparent"
               : isCodeRequested
@@ -190,7 +190,7 @@ export const PasswordForm = () => {
         )}
       </div>
 
-      <div className="mt-[270px] flex w-full justify-center px-4">
+      <div className="flex w-full justify-center px-4">
         <FullButton isActive={isConfirmActive} onClick={handleFullButtonClick}>
           인증하기
         </FullButton>

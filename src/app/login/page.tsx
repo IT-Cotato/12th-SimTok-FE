@@ -11,14 +11,14 @@ const AuthStartPage = () => {
 
   return (
     <main className="flex min-h-dvh w-full justify-center">
-      <div className="flex h-full w-110 flex-col gap-[197px]">
-        <div className="mt-[289px] flex w-full items-center justify-center px-4 py-2.5">
+      <div className="flex h-full w-110 flex-col">
+        <div className="flex w-full flex-1 items-center justify-center px-4 py-2.5">
           <span className="text-d1 text-mint-01 flex items-center justify-center">
             SIMTOK
           </span>
         </div>
 
-        <div className="flex flex-col gap-[10px] py-[10px]">
+        <div className="mb-13 flex flex-col py-[10px]">
           <div className="px-4">
             <button
               type="button"
@@ -32,7 +32,7 @@ const AuthStartPage = () => {
           <div className="px-4">
             <button
               type="button"
-              className="text-button-sb text-mint-01 flex h-14.5 w-full cursor-pointer items-center justify-center rounded-2xl bg-white px-3.5"
+              className="text-button-sb border-mint-01 text-mint-01 flex h-14.5 w-full cursor-pointer items-center justify-center rounded-2xl border bg-white px-3.5"
               onClick={() => router.push("/signup/agree")}
             >
               회원가입
