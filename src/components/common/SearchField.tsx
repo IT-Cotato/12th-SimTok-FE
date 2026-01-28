@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 
 import MicIcon from "@/assets/mic-stroke.svg";
