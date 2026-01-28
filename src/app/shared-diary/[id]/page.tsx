@@ -21,7 +21,7 @@ const SharedDiaryPage = () => {
   }
 
   return (
-    <div className="flex w-full flex-col justify-center">
+    <div className="flex w-full flex-col">
       <Header />
       <SharedDiaryItem key={diaryData.id} item={diaryData} commentMode />
     </div>

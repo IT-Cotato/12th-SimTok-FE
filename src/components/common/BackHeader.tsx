@@ -11,29 +11,30 @@ interface HeaderProps {
   menuIcon?: boolean; // 채팅페이지에서 사용
   showBackIcon?: boolean; //뒤로가기 아이콘 표시 여부 추가
   children?: React.ReactNode; //채팅목록에서 사용
+  titleColor?: string; //하루한컷 업로드에서 사용
 }
 
 export const BackHeader = ({
   title,
   timeAgo,
   menuIcon,
-  showBackIcon = true,
   children,
+  titleColor = "black",
 }: HeaderProps) => {
   const router = useRouter();
 
   return (
     <header className="relative mt-[13px] flex px-4 py-[10px]">
-      {showBackIcon && (
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="absolute top-1/2 left-4 -translate-y-1/2 cursor-pointer"
-        >
-          <BackIcon className="h-6 w-6" />
-        </button>
-      )}
-      <h1 className="text-h1 flex w-full items-center justify-center whitespace-nowrap text-black">
+      <button
+        type="button"
+        onClick={() => router.back()}
+        className="absolute top-1/2 left-4 -translate-y-1/2 cursor-pointer"
+      >
+        <BackIcon className={`text-${titleColor} h-6 w-6`} />
+      </button>
+      <h1
+        className={`text-h1 flex w-full items-center justify-center whitespace-nowrap text-${titleColor}`}
+      >
         {title}
       </h1>
       <div className="flex flex-1 items-center justify-end pr-4">

@@ -7,6 +7,6 @@ export type Diary = {
   profile: string;
   emotion: Emotion;
   text: string;
-  image: string;
+  image?: string;
   createdAt: string;
 };
