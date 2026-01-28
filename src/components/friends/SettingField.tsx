@@ -122,7 +122,7 @@ export const SettingField = (props: SettingFieldProps) => {
         {CHAT_TOPIC.map(({ key, label, icon }: ChatTopicItem) => (
           <button
             key={key}
-            className={`flex h-[55px] w-[127px] items-center justify-center rounded-2xl border ${
+            className={`flex h-[55px] max-w-[127px] items-center justify-center rounded-2xl border ${
               chatTopic.includes(key) ? "border-mint-01" : "border-neutral-08"
             }`}
             onClick={() => onToggleChatTopic(key)}

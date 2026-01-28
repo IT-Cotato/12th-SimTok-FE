@@ -11,7 +11,7 @@ import { FullButton } from "@/components/common/FullButton";
 import { ProfileImagePicker } from "@/components/common/ProfileImagePicker";
 import { SearchField } from "@/components/common/SearchField";
 import { DeleteFriendModal } from "@/components/friends/DeleteFriendModal";
-import { FriendList } from "@/components/friends/FrinedList";
+import { FriendList } from "@/components/friends/FriendList";
 
 import { FriendProfile } from "@/types/friendProfile.type";
 
