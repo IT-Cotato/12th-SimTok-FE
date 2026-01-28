@@ -1,0 +1,53 @@
+{
+  "101": [
+    {
+      "userId": 102,
+      "userName": "나무희",
+      "profileImg": "",
+      "nickNameByMe": "초코",
+      "nickNameByFriend": "푸딩",
+      "goalDays": 7,
+      "chatStyle": "casual",
+      "chatTopic": ["weather", "mood", "meal"]
+    },
+    {
+      "userId": 103,
+      "userName": "김잇다",
+      "profileImg": "/images/1.jpg",
+      "nickNameByMe": "라떼",
+      "nickNameByFriend": "민수",
+      "goalDays": 6,
+      "chatStyle": "formal",
+      "chatTopic": ["health", "mood"]
+    },
+    {
+      "userId": 104,
+      "userName": "차무희",
+      "profileImg": "/images/3.jpg",
+      "nickNameByMe": "쿠키",
+      "nickNameByFriend": "쿠키봇",
+      "chatStyle": "casual",
+      "chatTopic": ["hobby", "meal", "mood"]
+    },
+    {
+      "userId": 105,
+      "userName": "김경도",
+      "profileImg": "/images/5.jpg",
+      "nickNameByMe": "마카롱",
+      "nickNameByFriend": "영희",
+      "goalDays": 4,
+      "chatStyle": "casual",
+      "chatTopic": ["weather"]
+    },
+    {
+      "userId": 106,
+      "userName": "나영석",
+      "profileImg": "/images/6.jpg",
+      "nickNameByMe": "젤리",
+      "nickNameByFriend": "철수",
+      "goalDays": 3,
+      "chatStyle": "formal",
+      "chatTopic": ["health", "hobby", "mood"]
+    }
+  ]
+}

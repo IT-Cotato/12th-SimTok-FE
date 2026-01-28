@@ -18,8 +18,12 @@ export default function RootLayout({
       lang="ko"
       className={`${pretendard.className} scrollbar-hide flex items-center justify-center`}
     >
-      <body className="flex h-screen w-full max-w-[440px] overflow-y-scroll shadow-2xl">
-        {children}
+      <body className="flex w-full justify-center bg-white">
+        <div className="w-full max-w-[440px] shadow-2xl">
+          <div className="scrollbar-hide h-screen overflow-y-scroll">
+            {children}
+          </div>
+        </div>
       </body>
     </html>
   );

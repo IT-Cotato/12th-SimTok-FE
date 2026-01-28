@@ -50,7 +50,7 @@ export const ProfileSummary = ({
   };
 
   const currentProfileImage = profileImage ?? originalProfileImg;
-  const currentNickname = editedNickname ?? originalNickname;
+  const currentNickname = editedNickname ?? originalNickname ?? userName;
 
   return (
     <div className="flex w-full max-w-[440px] flex-col items-center">

@@ -41,10 +41,10 @@
   --text-sub-number--line-height: 150%;
   --text-sub-number--letter-spacing: -0.03125rem;
 
-  --text-sub0: 2.02125rem; /* 32.34px */
+  --text-sub0: 1.375rem;
   --text-sub0--font-weight: 400;
   --text-sub0--line-height: 147%;
-  --text-sub0--letter-spacing: 0.01375rem;
+  --text-sub0-letter-spacing: 0.01375rem;
 
   --text-sub1-sb: 1.0625rem; /* 17px */
   --text-sub1-sb--font-weight: 600;
