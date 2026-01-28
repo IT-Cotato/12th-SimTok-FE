@@ -6,6 +6,7 @@ const MINUTE = 60 * 1000;
 export const getPlantStatus = (recentWateredTime: string) => {
   if (!recentWateredTime) return PlantWaterStatus.EMPTY;
   const wateredAt = new Date(recentWateredTime).getTime();
+  if (Number.isNaN(wateredAt)) return PlantWaterStatus.EMPTY;
 
   const now = new Date();
   const diffHours = (now.getTime() - wateredAt) / HOUR;
@@ -30,8 +31,9 @@ export const getPlantStatusMinutes = (
   recentWateredTime?: string,
 ): string | null => {
   if (!recentWateredTime) return null;
-
   const wateredAt = new Date(recentWateredTime).getTime();
+  if (Number.isNaN(wateredAt)) return PlantWaterStatus.EMPTY;
+
   const now = Date.now();
   const diffMs = now - wateredAt;
 

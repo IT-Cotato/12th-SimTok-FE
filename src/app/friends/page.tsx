@@ -113,7 +113,7 @@ const FriendsListPage = () => {
           </div>
         </div>
       )}
-      {clickDelete && (
+      {clickDelete && selectedFriends.length > 0 && (
         <DeleteFriendModal
           selectedCount={selectedFriends.length}
           selectedProfileImg={selectedFriends[0].profileImg}

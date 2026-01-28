@@ -19,7 +19,7 @@ export const ChatProgress = () => {
         <p className="text-h1 text-neutral-01 flex items-center">
           이번주에 대화를 이만큼 나눴어요
           <span>
-            <EyesIcon className="w- h-[29px]" />
+            <EyesIcon className="h-[29px] w-[29px]" />
           </span>
         </p>
       </div>

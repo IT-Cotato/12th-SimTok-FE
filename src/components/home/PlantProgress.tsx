@@ -25,7 +25,7 @@ export const PlantProgress = () => {
       <Swiper
         modules={[Keyboard]}
         keyboard={{ enabled: true }}
-        loop={true}
+        loop={plantLength > 1}
         spaceBetween={16}
         slidesPerView={1}
       >
@@ -33,7 +33,7 @@ export const PlantProgress = () => {
           <SwiperSlide>
             <div className="bg-plant-yellow relative h-[551px] w-full overflow-hidden">
               <div className="flex h-full flex-col items-center justify-center px-4">
-                <Bubble status={"EMPTY"} />
+                <Bubble status={PlantWaterStatus.EMPTY} />
                 <div className="bg-blur absolute bottom-0 z-10 h-[329px] w-full max-w-[440px]" />
                 <div className="absolute bottom-[91px] z-20 flex w-full items-center justify-center px-4">
                   <InfoMessage
@@ -67,18 +67,18 @@ export const PlantProgress = () => {
                   <div className="flex flex-col items-center">
                     <ProgressDots total={plantLength} current={index} />
 
-                    {plantStatus === "WATERED_RECENTLY" ? (
+                    {plantStatus === PlantWaterStatus.WATERED_RECENTLY ? (
                       <div className="text-h1 text-neutral-03">
                         오늘은 물주기를 완료했어요🥳
                       </div>
-                    ) : plantStatus === "WATERABLE" ? (
+                    ) : plantStatus === PlantWaterStatus.WATERABLE ? (
                       <div className="flex items-center">
                         <ClockIcon className="text-blue-01 h-9 w-9" />
                         <h1 className="text-h1 text-blue-01">
                           {getPlantStatusMinutes(plant.recentWateredTime)}
                         </h1>
                       </div>
-                    ) : plantStatus === "WITHERED" ? (
+                    ) : plantStatus === PlantWaterStatus.WITHERED ? (
                       <div className="flex items-center">
                         <ClockIcon className="text-red-00 h-9 w-9" />
                         <h1 className="text-red-00 text-h1">
@@ -102,7 +102,9 @@ export const PlantProgress = () => {
                     </div>
                     <div className="absolute bottom-[13px] z-99 w-full px-4 py-[10px]">
                       <FullButton
-                        isActive={!(plantStatus === "WATERED_RECENTLY")}
+                        isActive={
+                          !(plantStatus === PlantWaterStatus.WATERED_RECENTLY)
+                        }
                         colorScheme={
                           (plantStatus === "WATERABLE" && "blue") ||
                           (plantStatus === "WITHERED" && "orange") ||
