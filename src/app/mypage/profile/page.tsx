@@ -21,23 +21,23 @@ const ProfileSettingPage = () => {
       <div className="flex h-full w-110 flex-1 flex-col pb-20">
         <BackHeader title="프로필 설정" />
 
-        <section className="flex flex-col items-center">
-          <ProfileSummary
-            userProfileData={userProfileData}
-            onModalStateChange={setIsModalOpen}
-          />
-        </section>
-      </div>
+        <div className="flex flex-1 flex-col items-center">
+          <section className="w-full">
+            <ProfileSummary
+              userProfileData={userProfileData}
+              onModalStateChange={setIsModalOpen}
+            />
+          </section>
+        </div>
 
-      {!isModalOpen && (
-        <div className="fixed right-0 bottom-0 left-0 z-10 px-4 pb-4">
-          <div className="mx-auto max-w-110">
+        {!isModalOpen && (
+          <div className="mb-13 w-full px-4 py-[10px]">
             <FullButton onClick={() => router.push("/mypage")}>
               설정완료
             </FullButton>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </main>
   );
 };
