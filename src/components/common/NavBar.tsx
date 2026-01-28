@@ -18,8 +18,8 @@ export const NavBar = () => {
 
         return (
           <Link key={key} href={href}>
-            <div className="flex flex-col items-center justify-center">
-              {/* 디자인추가해야함 */}
+            <div className="flex flex-col items-center justify-center gap-[5px]">
+              {/* box-shadow 디자인추가해야함 */}
               <Icon className="h-6 w-6" />
               <p className="text-neutral-04 text-navigation">{label}</p>
             </div>

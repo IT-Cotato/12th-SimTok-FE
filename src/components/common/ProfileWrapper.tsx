@@ -1,12 +1,13 @@
-import { ProfileImagePicker } from "@/components/common/ProfileImagePicker";
-
 import { NameInput } from "./NameInput";
+import { ProfileImagePicker } from "./ProfileImagePicker";
 
 interface ProfileWrapperProps {
   imageUrl: string | null;
+
   name: string;
   onChangeName: (value: string) => void;
   placeholder?: string;
+
   onProfileClick?: () => void;
   canEdit?: boolean;
 }
