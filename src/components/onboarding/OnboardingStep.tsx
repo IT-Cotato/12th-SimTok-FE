@@ -45,14 +45,14 @@ const OnboardingStep = ({ stepName, isLastStep, onNext, onPrev }: Props) => {
 
   return (
     <div
-      className="relative flex h-full w-full flex-col"
+      className="relative flex min-h-screen w-full flex-col"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
       {background.type === "image" && (
         <Image
           src={background.src}
-          alt=""
+          alt="온보딩 배경이미지"
           fill
           priority
           className="pointer-events-none object-cover object-top"
@@ -66,16 +66,19 @@ const OnboardingStep = ({ stepName, isLastStep, onNext, onPrev }: Props) => {
         />
       )}
 
-      <section className="fixed inset-x-0 bottom-0 z-20 px-4 pb-[32px]">
-        <div className="mx-auto w-full max-w-[440px] space-y-[23px]">
-          <p className="text-d2 text-neutral-02">
+      <section className="fixed inset-x-0 bottom-0 z-20 mx-auto max-w-[440px]">
+        <div className="flex w-full flex-col gap-[23px]">
+          <p className="text-d2 text-neutral-02 px-4 py-[10px]">
             <span className="block whitespace-nowrap">{firstLine}</span>
             <span className="block whitespace-nowrap">{secondLine}</span>
           </p>
-
-          <FullButton type="button" onClick={onNext} isActive>
-            {isLastStep ? "시작하기" : "다음"}
-          </FullButton>
+          <div className="mb-[42px] px-4 py-[10px]">
+            <div className="rounded-2xl shadow-[0_0_15px_0_rgba(79,255,144,0.57)]">
+              <FullButton type="button" onClick={onNext} isActive>
+                {isLastStep ? "시작하기" : "다음"}
+              </FullButton>
+            </div>
+          </div>
         </div>
       </section>
     </div>
