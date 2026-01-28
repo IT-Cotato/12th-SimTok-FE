@@ -55,7 +55,7 @@ const OnboardingStep = ({ stepName, isLastStep, onNext, onPrev }: Props) => {
           alt="온보딩 배경이미지"
           fill
           priority
-          className="pointer-events-none object-cover object-top"
+          className="pointer-events-none -translate-y-30 object-cover object-center"
         />
       )}
 
