@@ -26,7 +26,10 @@ export const InputField = ({ onChangeInputText }: InputFieldProps) => {
           className="text-h2 text-neutral-01 w-full focus:outline-none"
           onFocus={() => setIsClick(true)}
           onBlur={() => setIsClick(false)}
-          onChange={e => onChangeInputText(e.target.value)}
+          onChange={e => {
+            onChangeInputText(e.target.value);
+            setInputValue(e.target.value);
+          }}
         ></input>
       </div>
     </div>

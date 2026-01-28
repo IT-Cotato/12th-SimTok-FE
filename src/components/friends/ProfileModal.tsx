@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import CloseIcon from "@/assets/close-thin.svg";
@@ -24,14 +23,22 @@ export const ProfileModal = ({
     <section className="fixed inset-0 z-100">
       <div className="bg-neutral-01/83 relative mx-auto h-full w-full max-w-[440px]">
         <div className="flex items-center justify-between px-4 py-[10px] pt-[8.5px]">
-          <CloseIcon
+          <button
+            type="button"
+            aria-label="닫기"
             onClick={onClose}
-            className="text-neutral-09 h-5 w-5 cursor-pointer"
-          />
-          <SettingIcon
-            className="text-neutral-09 h-6 w-6 cursor-pointer"
+            className="text-neutral-09 h-5 w-5"
+          >
+            <CloseIcon className="h-5 w-5" />
+          </button>
+          <button
+            type="button"
+            aria-label="설정"
             onClick={() => router.push(`/friends/settings/${userId}`)}
-          />
+            className="text-neutral-09 h-6 w-6"
+          >
+            <SettingIcon className="h-6 w-6" />
+          </button>
         </div>
         <div className="absolute bottom-0 flex w-full flex-col bg-white">
           <div className="absolute -top-[79px] left-1/2 flex -translate-x-1/2 flex-col items-center gap-4">
