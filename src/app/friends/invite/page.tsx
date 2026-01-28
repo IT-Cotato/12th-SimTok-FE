@@ -21,7 +21,7 @@ const FriendInvitePage = () => {
 
   return (
     <main
-      className={`${selectTitle === "left" ? "bg-radial-mint" : inputCode.length > 0 ? "bg-radial-yellowgreen-mintgreen" : "bg-white"} w-full`}
+      className={`${selectTitle === "left" ? "bg-radial-mint" : inputCode.length > 0 ? "bg-radial-yellowgreen-mintgreen" : "bg-white"} flex w-full flex-col`}
     >
       <GlassStyleHeader
         backHeader={true}
@@ -42,14 +42,16 @@ const FriendInvitePage = () => {
         </section>
       )}
       {selectTitle === "right" && (
-        <section className="flex flex-col gap-[30px]">
-          <div className="mt-[44.5px] px-4 py-[10px]">
-            <InputField onChangeInputText={setInputCode} />
-          </div>
-          <div className="relative mb-[125px] px-4">
-            <QRCodeWrapper textCodeMode={textCodeMode} />
-          </div>
-          <div className="fixed bottom-0 w-full max-w-[440px] bg-white px-4 pt-[10px] pb-[52px]">
+        <>
+          <section className="flex flex-1 flex-col gap-[30px]">
+            <div className="mt-[44.5px] px-4 py-[10px]">
+              <InputField onChangeInputText={setInputCode} />
+            </div>
+            <div className="relative px-4">
+              <QRCodeWrapper textCodeMode={textCodeMode} />
+            </div>
+          </section>
+          <div className="mb-[42px] w-full bg-white px-4 py-[10px]">
             <FullButton
               isActive={inputCode.length > 0}
               onClick={() => router.push(`/friends/add/${inputCode}`)}
@@ -57,7 +59,7 @@ const FriendInvitePage = () => {
               입력완료
             </FullButton>
           </div>
-        </section>
+        </>
       )}
     </main>
   );
