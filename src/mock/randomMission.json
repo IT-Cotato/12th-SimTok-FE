@@ -1,0 +1,13 @@
+[
+  { "kind": "food", "mission": "오늘의 점심식사를 공유해주세요" },
+  { "kind": "plant", "mission": "오늘의 꽃을 공유해주세요" },
+  {
+    "kind": "color",
+    "mission": "오늘의 빨간색을 공유해주세요"
+  },
+  {
+    "kind": "time",
+    "mission": "오늘 행복한 순간을 공유해주세요"
+  },
+  { "kind": "tv", "mission": "오늘의 드라마를 공유해주세요" }
+]
