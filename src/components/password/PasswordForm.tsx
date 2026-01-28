@@ -6,7 +6,6 @@ import { useState } from "react";
 
 import ErrorIcon from "@/assets/modal_error.svg";
 import SuccessIcon from "@/assets/modal_success.svg";
-import PhoneIcon from "@/assets/phone.svg";
 import ProfileIcon from "@/assets/profile.svg";
 
 import { FullButton } from "@/components/common/FullButton";
@@ -16,8 +15,6 @@ import LoadingModal from "@/components/common/LoadingModal";
 import { useCountdown } from "@/hooks/useCountdown";
 import { usePhoneValidation } from "@/hooks/usePhoneValidation";
 
-import { formatPhone } from "@/utils/formatPhone";
-import { formatTime } from "@/utils/formatTime";
 import { phoneChangeHandler } from "@/utils/phoneHandlers";
 
 import { PhoneAuthSection } from "../auth/PhoneAuthSection";
