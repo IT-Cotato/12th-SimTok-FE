@@ -26,52 +26,51 @@ const OnboardingProfileClient = () => {
   const handleCreateProfile = async () => {
     if (!isNameValid) return;
 
-    // 1) 프로필 데이터 저장 (지금은 임시로 localStorage 예시)
     const profile = {
       name: name.trim(),
       imageUrl: profileImage ?? null,
     };
     try {
-      // TODO: 실제 API로 교체
-      // await fetch("/api/profile", { method: "POST", body: JSON.stringify(profile) });
       localStorage.setItem("onboardingProfile", JSON.stringify(profile));
     } catch (e) {
-      // 에러 처리
       console.error(e);
       return;
     }
-    // 2) 저장이 끝난 뒤에만 페이지 이동
     router.replace("/login");
   };
 
   return (
     <>
-      <main className="flex h-screen min-h-dvh w-full justify-center">
-        <div className="relative mt-[13px] flex h-full w-full flex-col">
-          <section className="mt-[123px] px-4 py-2.5">
-            <p className="text-d2 text-neutral-02 whitespace-pre-line">
-              가족들에게 보여줄{"\n"}내 프로필을 만들어주세요
-            </p>
-          </section>
-          <section className="mt-[86px] flex flex-col items-center">
-            <ProfileWrapper
-              imageUrl={profileImage}
-              name={name}
-              onChangeName={setName}
-              onProfileClick={() => setIsUploadOpen(true)}
-              canEdit={true}
-            />
-          </section>
+      <main className="flex min-h-dvh w-full justify-center">
+        <div className="flex w-full max-w-110 flex-col">
+          <div className="flex flex-1 flex-col">
+            <section className="mt-[123px] px-4 py-2.5">
+              <p className="text-d2 text-neutral-02 whitespace-pre-line">
+                가족들에게 보여줄{"\n"}내 프로필을 만들어주세요
+              </p>
+            </section>
 
-          <section className="mt-[210px] px-4 py-2.5">
-            {!isUploadOpen && (
+            <section className="mt-[86px] flex flex-col items-center">
+              <ProfileWrapper
+                imageUrl={profileImage}
+                name={name}
+                onChangeName={setName}
+                onProfileClick={() => setIsUploadOpen(true)}
+                canEdit={true}
+              />
+            </section>
+          </div>
+
+          {!isUploadOpen && (
+            <section className="mb-13 px-4 py-[10px]">
               <FullButton isActive={isNameValid} onClick={handleCreateProfile}>
                 프로필생성하기
               </FullButton>
-            )}
-          </section>
+            </section>
+          )}
         </div>
       </main>
+
       <UploadButton
         isOpen={isUploadOpen}
         onClose={() => setIsUploadOpen(false)}

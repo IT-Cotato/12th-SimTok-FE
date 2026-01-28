@@ -39,10 +39,10 @@ const AgreePage = () => {
     };
 
   return (
-    <main className="flex min-h-dvh w-full justify-center bg-white">
-      <div className="mt-[13px] flex h-full w-110 flex-col">
-        <BackHeader title="회원가입" />
+    <main className="flex min-h-dvh w-full flex-col justify-center">
+      <BackHeader title="회원가입" />
 
+      <div className="flex flex-1 flex-col">
         <PageTitle>
           반가워요! 가입하려면
           <br />
@@ -50,37 +50,39 @@ const AgreePage = () => {
         </PageTitle>
 
         {/* 전체동의 영역 */}
-        <div className="mt-[31px] flex w-full flex-col px-4 py-2.5">
+        <ul className="mt-[41px] flex w-full flex-col gap-[10px]">
           {/* 전체동의 */}
-          <div className="border-neutral-09 border-b pb-5">
+          <li className="border-neutral-09 border-b px-4 py-[10px]">
             <Checkbox
               label="전체동의"
               checked={allChecked}
               onChange={handleAllChange}
             />
-          </div>
-        </div>
-        {/* 개별 약관들 */}
-        <div className="px-4 py-2.5">
-          {AGREEMENTS.map(item => (
-            <div key={item.key} className="py-2.5">
-              <Checkbox
-                label={item.label}
-                checked={agreements[item.key]}
-                onChange={handleChange(item.key)}
-              />
-            </div>
-          ))}
-        </div>
+          </li>
+          {/* 개별 약관들 */}
+          <li>
+            <ul>
+              {AGREEMENTS.map(item => (
+                <li key={item.key} className="px-4 py-2.5">
+                  <Checkbox
+                    label={item.label}
+                    checked={agreements[item.key]}
+                    onChange={handleChange(item.key)}
+                  />
+                </li>
+              ))}
+            </ul>
+          </li>
+        </ul>
+      </div>
 
-        <div className="mt-29 flex w-full justify-center">
-          <FullButton
-            isActive={isConfirmActive}
-            onClick={() => router.push("/signup/profile")}
-          >
-            동의하기
-          </FullButton>
-        </div>
+      <div className="mb-[42px] flex w-full justify-center px-4 py-[10px]">
+        <FullButton
+          isActive={isConfirmActive}
+          onClick={() => router.push("/signup/profile")}
+        >
+          동의하기
+        </FullButton>
       </div>
     </main>
   );

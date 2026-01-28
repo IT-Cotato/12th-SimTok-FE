@@ -16,8 +16,7 @@ export const FullButton = ({
   const baseClass =
     "flex h-14.5 w-full cursor-pointer items-center justify-center rounded-2xl px-3.5";
   const activeClass = "bg-mint-01 text-white text-button-sb";
-  const inactiveClass =
-    "border border-neutral-08 bg-neutral-11 text-neutral-06 text-button-sb";
+  const inactiveClass = "bg-neutral-11 text-neutral-06 text-button-sb";
 
   const stateClass = isActive ? activeClass : inactiveClass;
 

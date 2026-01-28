@@ -4,11 +4,9 @@ import { NameInput } from "./NameInput";
 
 interface ProfileWrapperProps {
   imageUrl: string | null;
-
   name: string;
   onChangeName: (value: string) => void;
   placeholder?: string;
-
   onProfileClick?: () => void;
   canEdit?: boolean;
 }

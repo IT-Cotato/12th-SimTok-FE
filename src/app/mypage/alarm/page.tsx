@@ -8,16 +8,13 @@ const AlarmPage = () => {
     <main className="flex min-h-dvh w-full justify-center">
       <div className="flex h-full w-110 flex-col">
         <BackHeader title="알림설정" />
-        <section className="mt-[43.5px] flex flex-col">
+        <ul className="mt-[43.5px] flex flex-col">
           {ALARM_MENU_ITEMS.map(item => (
-            <ListItem
-              key={item.id}
-              label={item.label}
-              hasToggle
-              toggleDefaultOn
-            />
+            <li key={item.id}>
+              <ListItem label={item.label} hasToggle toggleDefaultOn />
+            </li>
           ))}
-        </section>
+        </ul>
       </div>
     </main>
   );
