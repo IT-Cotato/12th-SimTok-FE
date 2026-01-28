@@ -2,33 +2,116 @@
 
 import { useRouter } from "next/navigation";
 
+import { useState } from "react";
+
+import Exclamation from "@/assets/exclamation-circle.svg";
+import LockIcon from "@/assets/lock.svg";
+
 import { BackHeader } from "@/components/common/BackHeader";
 import { FullButton } from "@/components/common/FullButton";
+import { InputField } from "@/components/common/InputField";
 import { PageTitle } from "@/components/common/PageTitle";
-import { PasswordBox } from "@/components/password/PasswordBox";
+
+import { usePasswordValidation } from "@/hooks/usePasswordValidation";
 
 const FindPage = () => {
-  //임시 비밀번호
-  const password = "password";
   const router = useRouter();
 
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+
+  const { isValidPassword, getState, getTextColor } = usePasswordValidation();
+
+  const isPasswordValid = isValidPassword(password);
+  const isPasswordConfirmValid =
+    isValidPassword(passwordConfirm) && password === passwordConfirm;
+
+  const passwordState =
+    getState(password, isPasswordValid) === "empty"
+      ? "default"
+      : (getState(password, isPasswordValid) as
+          | "default"
+          | "invalid"
+          | "valid");
+
+  const passwordConfirmState =
+    getState(passwordConfirm, isPasswordConfirmValid) === "empty"
+      ? "default"
+      : (getState(passwordConfirm, isPasswordConfirmValid) as
+          | "default"
+          | "invalid"
+          | "valid");
+
   return (
-    <main className="flex h-screen min-h-dvh w-full justify-center bg-white">
-      <div className="mt-[13px] flex w-full flex-col whitespace-nowrap">
-        <BackHeader title="비밀번호 찾기" />
+    <main className="flex min-h-dvh w-full justify-center bg-white">
+      <div className="flex w-full flex-col">
+        <BackHeader title="새 비밀번호 설정" />
+        <div className="flex flex-1 flex-col">
+          <PageTitle>새로운 비밀번호를 입력해주세요</PageTitle>
 
-        <PageTitle>기존에 사용하셨던 비밀번호예요.</PageTitle>
+          <div className="mt-[76px] flex flex-col gap-2.5 px-4">
+            <div className="flex flex-col">
+              <InputField
+                isPassword={true}
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                placeholder="8자리 이상 입력"
+                Icon={LockIcon}
+                state={passwordState}
+                suffix={
+                  <div className="flex items-center justify-center">
+                    <Exclamation
+                      className={`h-6 w-6 transition-colors ${
+                        passwordState === "invalid"
+                          ? "text-orange-00"
+                          : "text-neutral-07"
+                      }`}
+                    />
+                  </div>
+                }
+              />
+              <div
+                className={`text-sub1-r underline ${getTextColor(passwordState)}`}
+              >
+                비밀번호를 입력해주세요.
+              </div>
+            </div>
 
-        <div className="mt-[76px] flex w-full flex-col px-4 py-[10px]">
-          <PasswordBox password={password} />
+            <div className="flex flex-col">
+              <InputField
+                isPassword={true}
+                value={passwordConfirm}
+                onChange={e => setPasswordConfirm(e.target.value)}
+                placeholder="8자리 이상 입력"
+                Icon={LockIcon}
+                state={passwordConfirmState}
+                suffix={
+                  <div className="flex items-center justify-center px-1">
+                    <Exclamation
+                      className={`h-6 w-6 transition-colors ${
+                        passwordConfirmState === "invalid"
+                          ? "text-orange-00"
+                          : "text-neutral-07"
+                      }`}
+                    />
+                  </div>
+                }
+              />
+              <div
+                className={`text-sub1-r underline ${getTextColor(passwordConfirmState)}`}
+              >
+                비밀번호를 입력해주세요.
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className="mt-[415px] flex w-full justify-center px-4">
+        <div className="mb-13 flex w-full justify-center px-4 py-[10px]">
           <FullButton
-            isActive={true}
+            isActive={isPasswordConfirmValid}
             onClick={() => router.push("/login/phone")}
           >
-            확인
+            설정완료
           </FullButton>
         </div>
       </div>
