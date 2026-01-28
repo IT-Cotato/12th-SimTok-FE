@@ -60,17 +60,19 @@ const AgreePage = () => {
             />
           </li>
           {/* 개별 약관들 */}
-          <ul>
-            {AGREEMENTS.map(item => (
-              <li key={item.key} className="px-4 py-2.5">
-                <Checkbox
-                  label={item.label}
-                  checked={agreements[item.key]}
-                  onChange={handleChange(item.key)}
-                />
-              </li>
-            ))}
-          </ul>
+          <li>
+            <ul>
+              {AGREEMENTS.map(item => (
+                <li key={item.key} className="px-4 py-2.5">
+                  <Checkbox
+                    label={item.label}
+                    checked={agreements[item.key]}
+                    onChange={handleChange(item.key)}
+                  />
+                </li>
+              ))}
+            </ul>
+          </li>
         </ul>
       </div>
 

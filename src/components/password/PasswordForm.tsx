@@ -119,7 +119,7 @@ export const PasswordForm = () => {
           onChange={e => setName(e.target.value)}
         />
       </div>
-      <div className="flex w-full justify-between px-4">
+      <div className="flex w-full justify-between gap-2.5 px-4">
         <div
           className={`bg-neutral-11 flex h-[55px] max-w-[284px] items-center gap-2.5 rounded-2xl border px-[10px] py-2 transition-colors ${
             focused === "phone" || phone.length > 0
@@ -190,7 +190,7 @@ export const PasswordForm = () => {
         )}
       </div>
 
-      <div className="flex w-full justify-center px-4">
+      <div className="mb-13 flex w-full justify-center px-4">
         <FullButton isActive={isConfirmActive} onClick={handleFullButtonClick}>
           인증하기
         </FullButton>
