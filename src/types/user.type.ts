@@ -1,8 +1,9 @@
 export interface UserProfile {
-  id: string;
+  userId: number;
   profileImg: string | null;
-  nickname: string;
-  userName: string; // name -> userName
-  phoneNumber: string; // phone -> phoneNumber
-  birthDate: string; // birth -> birthDate
+  nickname?: string;
+  userName: string;
+  phoneNumber: string;
+  birthDate: string;
+  inviteCode: string;
 }
