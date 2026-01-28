@@ -9,28 +9,35 @@ type ProfileImagePickerProps = {
   imageUrl: string | null;
   onClick?: () => void;
   canEdit: boolean;
+  width?: number;
+  height?: number;
+  radius?: number;
 };
 
 export const ProfileImagePicker = ({
   imageUrl,
   onClick,
-  canEdit,
+  canEdit = true,
+  radius = 36,
+  width = 160,
+  height = 160,
 }: ProfileImagePickerProps) => {
   return (
     <div
-      className={`relative flex items-center justify-center ${canEdit ? "cursor-pointer" : "cursor-default"} `}
+      className={`relative ${canEdit ? "cursor-pointer" : "cursor-default"} `}
       onClick={canEdit ? onClick : undefined}
     >
       {imageUrl ? (
         <Image
           src={imageUrl}
           alt="프로필 이미지"
-          width={160}
-          height={160}
-          className="h-40 w-40 rounded-[36px] object-cover"
+          width={width}
+          height={height}
+          style={{ borderRadius: radius, width, height }}
+          className="object-cover"
         />
       ) : (
-        <ProfileIcon className="h-40 w-40" />
+        <ProfileIcon style={{ width, height }} />
       )}
 
       {canEdit && (

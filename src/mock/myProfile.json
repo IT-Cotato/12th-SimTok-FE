@@ -1,8 +1,9 @@
 {
-  "id": "temp",
-  "profileImg": "/images/profile.jpg",
-  "nickname": "심톡이",
+  "userId": 101,
+  "profileImg": "/images/1.jpg",
   "userName": "김잇다",
-  "phoneNumber": "010-1234-5678",
-  "birthDate": "1999/12/19"
+  "nickName": "두쫀쿠",
+  "phoneNumber": "01012345678",
+  "birthDate": "0000.00.00",
+  "inviteCode": "Dc2kd0"
 }

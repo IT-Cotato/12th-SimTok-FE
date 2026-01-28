@@ -13,6 +13,10 @@
   --color-mint-03: #f0fff4;
   --color-mint-04: #f7fdfa;
 
+  --color-red-00: #ff3c00;
+  --color-blue-00: #39a8fd;
+  --color-blue-01: #5ac9ff;
+
   --color-orange-00: #ff6700;
   --color-orange-01: #ff9100;
   --color-orange-02: #fbc223;
@@ -64,6 +68,14 @@
       );
   }
 
+  .bg-radial-mint {
+    background: radial-gradient(
+      338.52% 151.74% at 12.05% 153.19%,
+      rgba(0, 255, 98, 0.106) 30.5%,
+      rgba(255, 255, 255, 0.106) 100%
+    );
+  }
+
   .bg-onboarding-circle-mint {
     border-radius: 146px;
     background: linear-gradient(
@@ -80,6 +92,45 @@
       rgba(103, 103, 103, 0.1) 80.56%
     );
   }
+  .bg-plant-blue {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.1) -5.63%,
+      #85f3ff 91.94%
+    );
+  }
+  .bg-plant-yellow {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 9.05%,
+      #f9eea4 91.94%
+    );
+  }
+  .bg-plant-red {
+    background:
+      linear-gradient(
+        143deg,
+        rgba(255, 255, 255, 0.04) 4.45%,
+        rgba(255, 218, 150, 0.38) 94.97%
+      ),
+      linear-gradient(188deg, rgba(255, 255, 255, 0.1) 13.21%, #ff9b7c 97.84%);
+  }
+  .bg-plant-green {
+    background:
+      linear-gradient(188deg, rgba(255, 255, 255, 0.1) 13.21%, #98ffc0 97.84%),
+      linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.04) 5.17%,
+        rgba(254, 255, 230, 0.38) 79.52%
+      );
+  }
+  .bg-blur {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 36.82%,
+      #fff 74.32%
+    );
+  }
   .bg-gradient-orange {
     background: linear-gradient(180deg, #f9cb4c 0%, #fdbb05 100%);
   }
@@ -93,12 +144,29 @@
     box-sizing: border-box;
     animation: rotation 1s linear infinite;
   }
-}
-@keyframes rotation {
-  0% {
-    transform: rotate(0deg);
+  .bg-glass-style {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.1)
+    );
+
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+
+    box-shadow:
+      inset 1px 1px 0 rgb(255, 255, 255),
+      inset -1px -1px 0 rgb(255, 255, 255),
+      inset 0 0 34px rgba(255, 255, 255, 0.55),
+      inset 0 6px 12px rgba(255, 255, 255, 0.12);
   }
-  100% {
-    transform: rotate(360deg);
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 }
