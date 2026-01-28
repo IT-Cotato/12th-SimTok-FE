@@ -43,77 +43,80 @@ const SettingPage = () => {
           | "valid");
 
   return (
-    <main className="flex h-screen w-full justify-center bg-white">
+    <main className="flex min-h-dvh w-full justify-center bg-white">
       <div className="flex w-full flex-col">
         <BackHeader title="비밀번호 설정" />
-        <PageTitle>
-          로그인에 사용할 비밀번호를
-          <br />
-          설정해주세요
-        </PageTitle>
-        <div className="mt-[29px] flex w-full flex-col gap-2.5 px-4">
-          <div className="flex flex-col">
-            <InputField
-              isPassword={true}
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              placeholder="8자리 이상 입력"
-              Icon={LockIcon}
-              state={passwordState}
-              suffix={
-                <div className="flex items-center justify-center">
-                  <Exclamation
-                    className={`h-6 w-6 transition-colors ${
-                      passwordState === "invalid"
-                        ? "text-orange-00"
-                        : "text-neutral-07"
-                    }`}
-                  />
-                </div>
-              }
-            />
-            <div
-              className={`text-sub1-r underline ${getTextColor(passwordState)}`}
-            >
-              비밀번호를 입력해주세요.
+        <div className="flex flex-1 flex-col">
+          <PageTitle>
+            로그인에 사용할 비밀번호를
+            <br />
+            설정해주세요
+          </PageTitle>
+
+          <div className="mt-[29px] flex flex-col gap-2.5 px-4">
+            <div className="flex flex-col">
+              <InputField
+                isPassword={true}
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                placeholder="8자리 이상 입력"
+                Icon={LockIcon}
+                state={passwordState}
+                suffix={
+                  <div className="flex items-center justify-center">
+                    <Exclamation
+                      className={`h-6 w-6 transition-colors ${
+                        passwordState === "invalid"
+                          ? "text-orange-00"
+                          : "text-neutral-07"
+                      }`}
+                    />
+                  </div>
+                }
+              />
+              <div
+                className={`text-sub1-r underline ${getTextColor(passwordState)}`}
+              >
+                비밀번호를 입력해주세요.
+              </div>
+            </div>
+
+            <div className="flex flex-col">
+              <InputField
+                isPassword={true}
+                value={passwordConfirm}
+                onChange={e => setPasswordConfirm(e.target.value)}
+                placeholder="8자리 이상 입력"
+                Icon={LockIcon}
+                state={passwordConfirmState}
+                suffix={
+                  <div className="flex items-center justify-center px-1">
+                    <Exclamation
+                      className={`h-6 w-6 transition-colors ${
+                        passwordConfirmState === "invalid"
+                          ? "text-orange-00"
+                          : "text-neutral-07"
+                      }`}
+                    />
+                  </div>
+                }
+              />
+              <div
+                className={`text-sub1-r underline ${getTextColor(passwordConfirmState)}`}
+              >
+                비밀번호를 입력해주세요.
+              </div>
             </div>
           </div>
+        </div>
 
-          <div className="flex flex-col">
-            <InputField
-              isPassword={true}
-              value={passwordConfirm}
-              onChange={e => setPasswordConfirm(e.target.value)}
-              placeholder="8자리 이상 입력"
-              Icon={LockIcon}
-              state={passwordConfirmState}
-              suffix={
-                <div className="flex items-center justify-center px-1">
-                  <Exclamation
-                    className={`h-6 w-6 transition-colors ${
-                      passwordConfirmState === "invalid"
-                        ? "text-orange-00"
-                        : "text-neutral-07"
-                    }`}
-                  />
-                </div>
-              }
-            />
-            <div
-              className={`text-sub1-r underline ${getTextColor(passwordConfirmState)}`}
-            >
-              비밀번호를 입력해주세요.
-            </div>
-          </div>
-
-          <div className="mt-[320px] flex w-full justify-center">
-            <FullButton
-              isActive={isPasswordConfirmValid}
-              onClick={() => router.push("/onboarding")}
-            >
-              설정완료
-            </FullButton>
-          </div>
+        <div className="mb-13 flex w-full justify-center px-4 py-[10px]">
+          <FullButton
+            isActive={isPasswordConfirmValid}
+            onClick={() => router.push("/onboarding")}
+          >
+            설정완료
+          </FullButton>
         </div>
       </div>
     </main>
