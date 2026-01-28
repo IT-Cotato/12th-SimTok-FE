@@ -1,7 +1,7 @@
 "use client";
 
 import CheckIcon from "@/assets/check.svg";
-import CrossIcon from "@/assets/close.svg";
+import CrossIcon from "@/assets/close-bold.svg";
 import QuestionIcon from "@/assets/questionMark.svg";
 
 import { MISSION_STATUS } from "@/constants/missionCard";
