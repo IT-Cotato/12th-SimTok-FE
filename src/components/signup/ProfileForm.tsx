@@ -18,8 +18,6 @@ import { useCountdown } from "@/hooks/useCountdown";
 import { usePhoneValidation } from "@/hooks/usePhoneValidation";
 
 import { formatBirthInput, isValidBirth } from "@/utils/formatBirth";
-import { formatPhone } from "@/utils/formatPhone";
-import { formatTime } from "@/utils/formatTime";
 import { phoneChangeHandler } from "@/utils/phoneHandlers";
 
 import { PhoneAuthSection } from "../auth/PhoneAuthSection";
@@ -126,7 +124,7 @@ export const ProfileForm = () => {
   };
 
   return (
-    <div className="mt-[18px] flex w-full flex-col gap-4">
+    <div className="mt-[18px] flex flex-1 flex-col gap-4">
       <div className="px-4">
         <InputField
           Icon={ProfileIcon}
@@ -160,7 +158,7 @@ export const ProfileForm = () => {
         onResend={handleResendClick}
       />
 
-      <div className="mb-13 flex w-full justify-center px-4">
+      <div className="mt-auto mb-13 flex w-full justify-center px-4 py-[10px]">
         <FullButton isActive={isConfirmActive} onClick={handleFullButtonClick}>
           인증하기
         </FullButton>
