@@ -34,14 +34,6 @@ const SettingPage = () => {
           | "invalid"
           | "valid");
 
-  // const passwordState = getState(password, isPasswordValid) === "empty"
-  //   ? "default"
-  //   : getState(password, isPasswordValid);
-
-  // const passwordConfirmState = getState(passwordConfirm, isPasswordConfirmValid) === "empty"
-  //   ? "default"
-  //   : getState(passwordConfirm, isPasswordConfirmValid);
-
   const passwordConfirmState =
     getState(passwordConfirm, isPasswordConfirmValid) === "empty"
       ? "default"
@@ -63,7 +55,6 @@ const SettingPage = () => {
           <div className="flex flex-col">
             <InputField
               isPassword={true}
-              //type="password"
               value={password}
               onChange={e => setPassword(e.target.value)}
               placeholder="8자리 이상 입력"
@@ -91,7 +82,6 @@ const SettingPage = () => {
           <div className="flex flex-col">
             <InputField
               isPassword={true}
-              //type="password"
               value={passwordConfirm}
               onChange={e => setPasswordConfirm(e.target.value)}
               placeholder="8자리 이상 입력"

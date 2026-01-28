@@ -55,14 +55,13 @@ export const InputField = ({
       return "text-mint-01";
     return "text-neutral-07";
   };
-  //const inputType = isPassword && !showPassword ? "password" : "text";
 
   return (
     <div
-      className={`bg-neutral-11 flex h-[55px] w-full items-center rounded-2xl border px-2.5 py-2 transition-colors ${getBorderColor()}`}
+      className={`bg-neutral-11 flex h-[55px] w-full items-center gap-[10px] rounded-2xl border px-2.5 py-2 transition-colors ${getBorderColor()}`}
     >
       {Icon && (
-        <div className={`pr-2.5 transition-colors ${getIconColor()}`}>
+        <div className={`transition-colors ${getIconColor()}`}>
           <Icon className="h-6 w-6" />
         </div>
       )}
@@ -95,24 +94,6 @@ export const InputField = ({
           </div>
         )}
       </div>
-
-      {/* {suffix && (
-        <div className="flex items-center justify-center">{suffix}</div>
-      )} */}
-
-      {/* {isPassword && value.length > 0 && (
-        <button
-          type="button"
-          onClick={() => setShowPassword(prev => !prev)}
-          className="flex items-center justify-center pl-2"
-        >
-          <EyeIcon
-            className={`cursor-pointer transition-colors ${
-              showPassword ? "text-mint-01" : "text-neutral-05"
-            }`}
-          />
-        </button>
-      )} */}
     </div>
   );
 };
