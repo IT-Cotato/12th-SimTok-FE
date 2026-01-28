@@ -36,7 +36,7 @@ const OnboardingProfileClient = () => {
       console.error(e);
       return;
     }
-    router.replace("/login");
+    router.replace("/");
   };
 
   return (
