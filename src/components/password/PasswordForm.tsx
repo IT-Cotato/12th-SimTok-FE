@@ -20,6 +20,8 @@ import { formatPhone } from "@/utils/formatPhone";
 import { formatTime } from "@/utils/formatTime";
 import { phoneChangeHandler } from "@/utils/phoneHandlers";
 
+import { PhoneAuthSection } from "../auth/PhoneAuthSection";
+
 export const PasswordForm = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -114,81 +116,27 @@ export const PasswordForm = () => {
       <div className="px-4">
         <InputField
           Icon={ProfileIcon}
-          placeholder="이름"
           value={name}
           onChange={e => setName(e.target.value)}
+          placeholder="이름"
         />
       </div>
-      <div className="flex w-full justify-between gap-2.5 px-4">
-        <div
-          className={`bg-neutral-11 flex h-[55px] max-w-[284px] items-center gap-2.5 rounded-2xl border px-[10px] py-2 transition-colors ${
-            focused === "phone" || phone.length > 0
-              ? "border-mint-01"
-              : "border-transparent"
-          }`}
-        >
-          <div
-            className={`transition-colors ${
-              focused === "phone" || phone.length > 0
-                ? "text-mint-01"
-                : "text-neutral-07"
-            }`}
-          >
-            <PhoneIcon className="h-6 w-6" />
-          </div>
-          <input
-            type="tel"
-            value={formatPhone(phone)}
-            onChange={handlePhoneInput}
-            onFocus={() => setFocused("phone")}
-            onBlur={() => setFocused(prev => (prev === "phone" ? null : prev))}
-            placeholder="전화번호"
-            className="placeholder:text-neutral-07 text-h2 w-full bg-transparent text-black outline-none"
-          />
-        </div>
 
-        <button
-          type="button"
-          onClick={handleRequestCode}
-          disabled={!isValidPhone || isCodeRequested}
-          className={`text-h2 flex h-[55px] min-w-[108px] cursor-pointer items-center justify-center rounded-2xl border px-[10px] py-[8px] whitespace-nowrap ${
-            !isValidPhone
-              ? "text-neutral-07 bg-neutral-11 border-transparent"
-              : isCodeRequested
-                ? "border-neutral-07 bg-neutral-07 text-white"
-                : "bg-mint-01 text-white"
-          }`}
-        >
-          인증요청
-        </button>
-      </div>
-      <div className="flex flex-col gap-2.5 px-4">
-        <InputField
-          placeholder={getPlaceholder()}
-          value={code}
-          onChange={e => setCode(e.target.value)}
-          disabled={!isCodeRequested || timeLeft === 0}
-          suffix={
-            isCodeRequested &&
-            timeLeft > 0 && (
-              <span className="text-sub1-sb text-orange-00">
-                {formatTime(timeLeft)}
-              </span>
-            )
-          }
-        />
-        {isCodeRequested && (
-          <div className="flex w-full justify-start">
-            <button
-              type="button"
-              onClick={handleResendClick}
-              className="text-orange-00 text-sub1-r cursor-pointer underline"
-            >
-              인증번호가 오지 않나요?
-            </button>
-          </div>
-        )}
-      </div>
+      <PhoneAuthSection
+        phone={phone}
+        onPhoneInput={handlePhoneInput}
+        focused={focused === "phone"}
+        onFocus={() => setFocused("phone")}
+        onBlur={() => setFocused(null)}
+        onRequest={handleRequestCode}
+        canRequest={canRequestCode}
+        isRequested={isCodeRequested}
+        code={code}
+        onCodeChange={e => setCode(e.target.value)}
+        timeLeft={timeLeft}
+        placeholder={getPlaceholder()}
+        onResend={handleResendClick}
+      />
 
       <div className="mb-13 flex w-full justify-center px-4">
         <FullButton isActive={isConfirmActive} onClick={handleFullButtonClick}>
