@@ -27,6 +27,7 @@ export const PlantCarousel = ({
 
   const handleSlideChange = (swiper: SwiperClass) => {
     setActiveIndex(swiper.activeIndex);
+    onPlantClick("");
   };
 
   return (
@@ -38,7 +39,7 @@ export const PlantCarousel = ({
         spaceBetween={16}
         slidesPerView={1}
         onSlideChange={handleSlideChange}
-        className="w-102 !overflow-visible"
+        className="mx-auto w-full max-w-[408px] !overflow-visible"
       >
         {PlantSort.map(plant => (
           <SwiperSlide key={plant.id} className="!overflow-visible">
