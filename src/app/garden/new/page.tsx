@@ -1,5 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+
+import { useGardenStore } from "@/stores/useGardenStore";
 
 import { BackHeader } from "@/components/common/BackHeader";
 import { FullButton } from "@/components/common/FullButton";
@@ -7,12 +9,19 @@ import { PageTitle } from "@/components/common/PageTitle";
 import { PlantCarousel } from "@/components/garden/PlantCarousel";
 
 const PlantGuidePage = () => {
-  const [selectedPlantId, setSelectedPlantId] = useState<string | null>(null);
+  const { selectedPlantId, setSelectedPlant } = useGardenStore();
 
-  const handlePlantSelect = (id: string) => {
-    setSelectedPlantId(prev => (prev === id ? null : id));
-    console.log("선택된 식물 ID:", id);
+  const handlePlantSelect = (id: string | null) => {
+    const nextId = selectedPlantId === id ? null : id;
+    setSelectedPlant(nextId);
   };
+
+  const handleNextStep = () => {
+    if (!selectedPlantId) return;
+    router.push("/garden/new/nickname");
+  };
+
+  const router = useRouter();
 
   return (
     <main className="flex h-full w-full flex-col">
@@ -31,7 +40,13 @@ const PlantGuidePage = () => {
       </div>
 
       <div className="mb-[42px] px-4 py-[10px]">
-        <FullButton isActive={!!selectedPlantId}>선택완료</FullButton>
+        <FullButton
+          disabled={!selectedPlantId}
+          isActive={!!selectedPlantId}
+          onClick={handleNextStep}
+        >
+          선택완료
+        </FullButton>
       </div>
     </main>
   );
