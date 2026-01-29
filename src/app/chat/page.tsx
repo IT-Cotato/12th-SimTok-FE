@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { useState } from "react";
 
 import BellIcon from "@/assets/bell_chat.svg";
@@ -23,6 +25,7 @@ interface ChatItemType {
 }
 
 const ChatListPage = () => {
+  const router = useRouter();
   const [chats, setChats] = useState(chatListData);
   const [searchText, setSearchText] = useState("");
 
@@ -84,7 +87,7 @@ const ChatListPage = () => {
           <div className="flex w-full max-w-[440px] justify-end px-4">
             <button
               className="pointer-events-auto transition-transform active:scale-95"
-              onClick={() => console.log("클릭")}
+              onClick={() => router.push("chat/create")}
             >
               <FloatingButtonIcon />
             </button>
