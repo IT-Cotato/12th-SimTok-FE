@@ -3,13 +3,13 @@ import { useState } from "react";
 
 import { BackHeader } from "@/components/common/BackHeader";
 import { FullButton } from "@/components/common/FullButton";
+import { PageTitle } from "@/components/common/PageTitle";
 import { PlantCarousel } from "@/components/garden/PlantCarousel";
 
 const PlantGuidePage = () => {
   const [selectedPlantId, setSelectedPlantId] = useState<string | null>(null);
 
   const handlePlantSelect = (id: string) => {
-    // 이미 선택된 걸 누르면 해제(null), 아니면 선택
     setSelectedPlantId(prev => (prev === id ? null : id));
     console.log("선택된 식물 ID:", id);
   };
@@ -18,6 +18,12 @@ const PlantGuidePage = () => {
     <main className="flex h-full w-full flex-col">
       <div className="flex flex-1 flex-col">
         <BackHeader title="식물도감" />
+        <div className="mt-[51.5px]">
+          <PageTitle>
+            친구와 함께 키울 식물을
+            <br /> 골라보세요!
+          </PageTitle>
+        </div>
         <PlantCarousel
           selectedId={selectedPlantId}
           onPlantClick={handlePlantSelect}
