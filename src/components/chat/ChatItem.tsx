@@ -14,6 +14,7 @@ interface ChatItemProps {
   unreadCount?: number;
   profileImg?: string;
   onDelete?: (id: number) => void;
+  onClick?: () => void;
 }
 
 export const ChatItem = ({

@@ -11,7 +11,7 @@ interface MyProfileCardProps {
 
 export const MyProfileCard = ({ userProfileData }: MyProfileCardProps) => {
   const router = useRouter();
-  const { profileImg, nickname } = userProfileData;
+  const { profileImg, nickName } = userProfileData;
 
   const handleEditRedirect = () => {
     router.push("/mypage/profile");
@@ -26,12 +26,12 @@ export const MyProfileCard = ({ userProfileData }: MyProfileCardProps) => {
         <div className="relative h-16 w-16 overflow-hidden rounded-2xl">
           <Image
             src={profileImg || "/images/default-profile.png"}
-            alt={`${nickname} 프로필`}
+            alt={`${nickName} 프로필`}
             fill
             className="object-cover"
           />
         </div>
-        <span className="text-h2 text-neutral-01">{nickname}</span>
+        <span className="text-h2 text-neutral-01">{nickName}</span>
       </div>
 
       <button

@@ -1,17 +1,35 @@
 "use client";
 
+import { useParams, useRouter } from "next/navigation";
+
 import AiIcon from "@/assets/AI.svg";
 import MenuIcon from "@/assets/list.svg";
 
 import { MessageInput } from "@/components/chat/ChatField";
 import { BackHeader } from "@/components/common/BackHeader";
 
+import friendListData from "@/mock/friendList.json";
+
 const Chatting = () => {
+  const router = useRouter();
+
+  const params = useParams();
+  const id = params?.id;
+
+  const targetFriend = friendListData.find(
+    friend => friend.userId === Number(id),
+  );
+
+  const displayName = targetFriend ? targetFriend.userName : "...";
+
   return (
     <main className="relative flex min-h-dvh w-full justify-center bg-white">
       <div className="flex h-full w-full flex-col">
-        <BackHeader title="나문희">
-          <button className="flex items-center justify-center">
+        <BackHeader title={displayName}>
+          <button
+            className="flex items-center justify-center"
+            onClick={() => router.push(`/chat/${params.id}/setting`)}
+          >
             <MenuIcon />
           </button>
         </BackHeader>
