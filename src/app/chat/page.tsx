@@ -30,7 +30,7 @@ const ChatListPage = () => {
   const [searchText, setSearchText] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [targetChat, setTargetChat] = useState<{
+  const [targetChat] = useState<{
     id: number;
     name: string;
     profileImg: string;
@@ -79,6 +79,7 @@ const ChatListPage = () => {
               date={chat.date}
               unreadCount={chat.unreadCount}
               profileImg={chat.profileImg}
+              onClick={() => router.push(`/chat/${chat.id}`)}
             />
           ))}
         </section>

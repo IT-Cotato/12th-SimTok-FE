@@ -20,7 +20,6 @@ const CreateChatPage = () => {
   const [modalOpen, setModalOpen] = useState(false); // 친구프로필 모달
   const [isEditMode, setIsEditMode] = useState(true); // 편집모드 전환
   const [selectedFriends, setSelectedFriends] = useState<FriendProfile[]>([]); // 편집모드에서 선택한 friendId
-  const [clickDelete, setClickDelete] = useState(false);
 
   const toggleFriend = (friend: FriendProfile) => {
     setSelectedFriends(prev =>
@@ -32,7 +31,8 @@ const CreateChatPage = () => {
 
   const handleStartChat = () => {
     if (selectedFriends.length > 0) {
-      router.push("/chat/chatting");
+      const targetId = selectedFriends[0].userId;
+      router.push(`/chat/${targetId}`);
     }
   };
 

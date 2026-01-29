@@ -42,7 +42,7 @@ export const ProfileSummary = ({
     userName,
     phoneNumber,
     birthDate,
-    nickname: originalNickname,
+    nickName: originalNickname,
   } = userProfileData;
 
   const handleCloseModal = () => {
