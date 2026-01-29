@@ -8,7 +8,8 @@ export const PlantSort = [
     meanings: ["새로운시작", "순수한마음", "기다림의기쁨"],
     bgColor: "bg-mint-02",
     textColor: "text-green-01",
-    img: "/images/garden/daisy",
+    shadow: "0 0 30px 0 #4EFFA7",
+    img: "/images/garden/daisy.svg",
   },
   {
     id: "tulip",
@@ -19,7 +20,8 @@ export const PlantSort = [
     meanings: ["애정", "희망", "행복한사랑"],
     bgColor: "bg-blue-01",
     textColor: "text-blue-00",
-    img: "/images/garden/tulip",
+    shadow: "0 0 30px 0 #65BEFF",
+    img: "/images/garden/tulip.svg",
   },
   {
     id: "lily",
@@ -30,7 +32,8 @@ export const PlantSort = [
     meanings: ["겸손", "순수함", "행복의방문"],
     bgColor: "bg-blue-01",
     textColor: "text-blue-00",
-    img: "/images/garden/lily",
+    shadow: "0 0 30px 0 #65BEFF",
+    img: "/images/garden/lily.svg",
   },
   {
     id: "sunflower",
@@ -41,7 +44,8 @@ export const PlantSort = [
     meanings: ["존경", "동경", "사랑의고백"],
     bgColor: "bg-pink-00",
     textColor: "text-red-01",
-    img: "/images/garden/sunflower",
+    shadow: "0 0 30px 0 #FF3C00",
+    img: "/images/garden/sunflower.svg",
   },
   {
     id: "baby-breath",
@@ -52,6 +56,7 @@ export const PlantSort = [
     meanings: ["배려", "맑은마음", "순수한사랑"],
     bgColor: "bg-pink-00",
     textColor: "text-red-01",
-    img: "/images/garden/baby-breath",
+    shadow: "0 0 30px 0 #FF3C00",
+    img: "/images/garden/baby-breath.svg",
   },
 ];
