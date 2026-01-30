@@ -86,7 +86,7 @@ const Chatting = () => {
             <MenuIcon />
           </button>
         </BackHeader>
-        <section className="flex-1 overflow-y-auto">
+        <section className="flex-1 overflow-y-auto px-[10px] py-[10px]">
           <ChatDateDivider date="2025년 12월 18일 목요일" />
         </section>
         <div className="flex flex-col">
