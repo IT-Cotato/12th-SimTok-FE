@@ -112,9 +112,10 @@ const Chatting = () => {
             <ChatField
               value={inputValue}
               onChange={setInputValue}
+              isDimmed={isTopicOpen && Boolean(selectedTopicKey)}
               onSend={msg => {
                 console.log("메시지 전송:", msg);
-                // 추가적인 전송 로직(API 호출 등) 작성
+                setInputValue("");
               }}
             />
           </div>

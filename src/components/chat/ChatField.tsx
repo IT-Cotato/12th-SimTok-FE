@@ -11,10 +11,15 @@ interface ChatFieldProps {
   value: string;
   onChange: (val: string) => void;
   onSend?: (msg: string) => void;
+  isDimmed?: boolean;
 }
 
-export const ChatField = ({ value, onChange, onSend }: ChatFieldProps) => {
-  //const [message, setMessage] = useState("");
+export const ChatField = ({
+  value,
+  onChange,
+  onSend,
+  isDimmed,
+}: ChatFieldProps) => {
   const isNotEmpty = value.trim().length > 0;
 
   const handleSend = () => {
@@ -25,7 +30,9 @@ export const ChatField = ({ value, onChange, onSend }: ChatFieldProps) => {
 
   return (
     <div className="flex w-full justify-center px-4">
-      <div className="bg-neutral-10 flex min-h-[50px] w-full max-w-[440px] items-center rounded-2xl px-[5px]">
+      <div
+        className={`flex min-h-[50px] w-full max-w-[440px] items-center rounded-2xl px-[5px] transition-colors ${isDimmed ? "bg-neutral-04" : "bg-neutral-10"}`}
+      >
         <div className="flex flex-shrink-0 items-center justify-center">
           <CameraIcon
             className={`h-10 w-10 transition-colors ${
