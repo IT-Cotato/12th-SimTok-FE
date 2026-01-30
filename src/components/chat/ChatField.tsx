@@ -7,10 +7,21 @@ import ImageIcon from "@/assets/image.svg";
 import MicIcon from "@/assets/mic.svg";
 import SendIcon from "@/assets/send.svg";
 
-export const MessageInput = () => {
-  const [message, setMessage] = useState("");
+interface ChatFieldProps {
+  value: string;
+  onChange: (val: string) => void;
+  onSend?: (msg: string) => void;
+}
 
-  const isNotEmpty = message.trim().length > 0;
+export const ChatField = ({ value, onChange, onSend }: ChatFieldProps) => {
+  //const [message, setMessage] = useState("");
+  const isNotEmpty = value.trim().length > 0;
+
+  const handleSend = () => {
+    if (!isNotEmpty) return;
+    onSend?.(value);
+    onChange(""); // 전송 후 부모 상태 초기화
+  };
 
   return (
     <div className="flex w-full justify-center px-4">
@@ -26,10 +37,13 @@ export const MessageInput = () => {
         <div className="ml-[10px] flex flex-1 items-center">
           <input
             type="text"
-            value={message}
-            onChange={e => setMessage(e.target.value)}
+            value={value}
+            onChange={e => onChange(e.target.value)}
             placeholder="대화를 보내보세요"
             className="text-sub1-r text-neutral-01 placeholder:text-neutral-07 w-full bg-transparent focus:outline-none"
+            onKeyDown={e => {
+              if (e.key === "Enter") handleSend();
+            }}
           />
         </div>
 
@@ -37,7 +51,7 @@ export const MessageInput = () => {
           {isNotEmpty ? (
             <button
               className="flex h-10 w-14 items-center justify-center transition-transform active:scale-95"
-              onClick={() => setMessage("")} //전송 시 필드 초기화
+              onClick={handleSend}
             >
               <SendIcon className="h-full w-full object-contain" />
             </button>
