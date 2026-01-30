@@ -8,7 +8,10 @@ import AiIcon from "@/assets/AI.svg";
 import BackToKeywordIcon from "@/assets/backtokeyword.svg";
 import MenuIcon from "@/assets/list.svg";
 
+import { ChatDateDivider } from "@/components/chat/ChatDateDivider";
 import { ChatField } from "@/components/chat/ChatField";
+import { FriendMessage } from "@/components/chat/FriendMessage";
+import { MyMessage } from "@/components/chat/MyMessage";
 import TopicKeyword from "@/components/chat/TopicKeyword";
 import { BackHeader } from "@/components/common/BackHeader";
 
@@ -17,6 +20,21 @@ import { CHAT_TOPIC } from "@/constants/friendsSettings";
 import friendListData from "@/mock/friendList.json";
 
 const Chatting = () => {
+  const [messages, setMessages] = useState([
+    {
+      id: 1,
+      type: "mine",
+      content: "오늘 반찬은 뭐 드셨어요?",
+      time: "오후 12:11",
+    },
+    {
+      id: 2,
+      type: "friend",
+      content: "어제 할아버지가 키운 당근 볶아서 맛있는 비빔밥 해먹었어^^",
+      time: "오후 12:11",
+    },
+  ]);
+
   const router = useRouter();
   const params = useParams();
   const id = params?.id;
@@ -34,6 +52,20 @@ const Chatting = () => {
   const handleRecommendationClick = (text: string) => {
     setInputValue(text);
     setSelectedTopicKey(null); // Dim 배경 닫기 및 키워드 목록으로 복귀
+  };
+
+  const handleSend = (text: string) => {
+    const newMessage = {
+      id: Date.now(),
+      type: "mine",
+      content: text,
+      time: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    };
+    setMessages([...messages, newMessage]);
+    setInputValue("");
   };
 
   return (
@@ -54,10 +86,24 @@ const Chatting = () => {
             <MenuIcon />
           </button>
         </BackHeader>
-
-        <section className="flex-1 overflow-y-auto px-4 pt-4 pb-32">
-          <div className="flex flex-col gap-4">{/* 메시지 내용 렌더링 */}</div>
+        <section className="flex-1 overflow-y-auto">
+          <ChatDateDivider date="2025년 12월 18일 목요일" />
         </section>
+        <div className="flex flex-col">
+          {messages.map(msg =>
+            msg.type === "mine" ? (
+              <MyMessage key={msg.id} content={msg.content} time={msg.time} />
+            ) : (
+              <FriendMessage
+                key={msg.id}
+                userName={displayName}
+                profileImage={targetFriend?.profileImg}
+                content={msg.content}
+                time={msg.time}
+              />
+            ),
+          )}
+        </div>
 
         <div className="fixed bottom-0 z-40 w-full max-w-[440px] pb-[52px]">
           <div className="relative w-full">
@@ -113,10 +159,7 @@ const Chatting = () => {
               value={inputValue}
               onChange={setInputValue}
               isDimmed={isTopicOpen && Boolean(selectedTopicKey)}
-              onSend={msg => {
-                console.log("메시지 전송:", msg);
-                setInputValue("");
-              }}
+              onSend={handleSend}
             />
           </div>
         </div>
