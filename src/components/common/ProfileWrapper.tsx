@@ -3,24 +3,22 @@ import { ProfileImagePicker } from "./ProfileImagePicker";
 
 interface ProfileWrapperProps {
   imageUrl: string | null;
-
-  name: string;
-  onChangeName: (value: string) => void;
+  name?: string;
+  onChangeName?: (value: string) => void;
   placeholder?: string;
-
   onProfileClick?: () => void;
   canEdit?: boolean;
+  showInput?: boolean;
 }
-
-const DEFAULT_PLACEHOLDER = "이름을 입력해주세요";
 
 export const ProfileWrapper = ({
   imageUrl,
-  name,
-  onChangeName,
+  name = "",
+  onChangeName = () => {},
   onProfileClick,
   canEdit = false,
-  placeholder = DEFAULT_PLACEHOLDER,
+  placeholder = "이름을 입력해주세요",
+  showInput = true,
 }: ProfileWrapperProps) => {
   return (
     <section className="flex flex-col items-center gap-4">
@@ -30,13 +28,15 @@ export const ProfileWrapper = ({
         canEdit={canEdit}
       />
 
-      <div className="w-full px-[118px]">
-        <NameInput
-          value={name}
-          onChange={onChangeName}
-          placeholder={placeholder}
-        />
-      </div>
+      {showInput && (
+        <div className="w-full px-[118px]">
+          <NameInput
+            value={name}
+            onChange={onChangeName}
+            placeholder={placeholder}
+          />
+        </div>
+      )}
     </section>
   );
 };

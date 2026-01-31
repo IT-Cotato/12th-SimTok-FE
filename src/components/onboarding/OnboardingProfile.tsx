@@ -15,7 +15,8 @@ import { ProfileWrapper } from "../common/ProfileWrapper";
 const OnboardingProfileClient = () => {
   const router = useRouter();
 
-  const [name, setName] = useState("");
+  //추후에 실제 데이터 소스에 따라 이름 변경할거임
+  const [name, setName] = useState("김잇다"); //회원가입 데이터 기반
   const [isUploadOpen, setIsUploadOpen] = useState(false);
 
   const isNameValid = name.trim().length > 0;
@@ -54,9 +55,10 @@ const OnboardingProfileClient = () => {
               <ProfileWrapper
                 imageUrl={profileImage}
                 name={name}
-                onChangeName={setName}
+                //onChangeName={setName}
                 onProfileClick={() => setIsUploadOpen(true)}
                 canEdit={true}
+                showInput={true}
               />
             </section>
           </div>
