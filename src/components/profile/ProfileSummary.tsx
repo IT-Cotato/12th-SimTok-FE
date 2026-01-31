@@ -26,7 +26,6 @@ export const ProfileSummary = ({
   onModalStateChange,
 }: ProfileSummaryProps) => {
   const [isUploadOpen, setIsUploadOpen] = useState(false);
-  //  const [editedNickname, setEditedNickname] = useState<string | null>(null);
 
   const { profileImage, isLoading, uploadImage, resetImage, cancelUpload } =
     useProfileImageUpload();
@@ -42,25 +41,18 @@ export const ProfileSummary = ({
     userName,
     phoneNumber,
     birthDate,
-    //nickname: originalNickname,
   } = userProfileData;
 
   const handleCloseModal = () => setIsUploadOpen(false);
 
   const currentProfileImage = profileImage ?? originalProfileImg;
-  // const currentNickname = editedNickname ?? originalNickname ?? userName;
 
   return (
     <div className="flex w-full max-w-[440px] flex-col items-center">
       <ProfileWrapper
-        //key={originalNickname}
         imageUrl={currentProfileImage}
-        //name=""
-        //onChangeName={() => {}}
-        //onChangeName={setEditedNickname}
         onProfileClick={() => setIsUploadOpen(true)}
         canEdit
-        //placeholder="닉네임을 입력해주세요"
         showInput={false}
       />
 
