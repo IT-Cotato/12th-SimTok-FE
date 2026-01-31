@@ -17,7 +17,7 @@ const AuthStartPage = () => {
         </span>
       </div>
 
-      <div className="mb-13 flex flex-col py-[10px]">
+      <div className="mb-13 flex flex-col gap-6 py-[10px]">
         <div className="px-4">
           <button
             type="button"
