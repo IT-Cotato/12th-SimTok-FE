@@ -39,7 +39,7 @@ export const InputField = ({
     return "border-transparent text-neutral-07";
   };
 
-  const themeClass = getThemeColor();
+  // const themeClass = getThemeColor();
   const inputType = isPassword && !showPassword ? "password" : "text";
 
   const getBorderColor = () => {
@@ -78,12 +78,16 @@ export const InputField = ({
       />
 
       <div className="flex items-center justify-center">
-        {isValid && isPassword ? (
+        {value.length > 0 && isPassword ? (
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
             className={`transition-colors ${
-              showPassword ? "text-mint-01" : "text-neutral-07"
+              isError
+                ? "text-orange-00"
+                : isValid || showPassword
+                  ? "text-mint-01"
+                  : "text-neutral-07"
             }`}
           >
             <EyeIcon className="h-6 w-6" />
