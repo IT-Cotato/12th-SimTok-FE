@@ -1,4 +1,6 @@
 "use client";
+import { useRouter } from "next/navigation";
+
 import { useEffect, useState } from "react";
 
 import { useGardenStore } from "@/stores/useGardenStore";
@@ -12,9 +14,18 @@ import ProgressDots from "@/components/onboarding/ProgressDots";
 import { PlantSort } from "@/constants/plantList";
 
 const PlantNicknamePage = () => {
+  const router = useRouter();
   const selectedPlantId = useGardenStore(state => state.selectedPlantId);
+  const setPlantNickname = useGardenStore(state => state.setNickname);
+
   const selectedPlant = PlantSort.find(plant => plant.id === selectedPlantId);
+
   const [nickname, setNickname] = useState("");
+
+  const handleNextStep = () => {
+    setPlantNickname(nickname.trim());
+    router.push("/garden/new/invite");
+  };
 
   return (
     <main className="flex h-full flex-col">
@@ -38,7 +49,9 @@ const PlantNicknamePage = () => {
         )}
       </section>
       <section className="mb-[42px] px-4 py-[10px]">
-        <FullButton isActive={!!nickname}>입력완료</FullButton>
+        <FullButton isActive={!!nickname} onClick={handleNextStep}>
+          입력완료
+        </FullButton>
       </section>
     </main>
   );
