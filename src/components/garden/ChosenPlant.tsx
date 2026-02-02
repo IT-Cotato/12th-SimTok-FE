@@ -9,13 +9,15 @@ export type Plant = (typeof PlantSort)[number];
 interface ChosenPlantProps {
   plant: Plant;
   nickname: string;
-  onChangeNickname: (value: string) => void;
+  onChangeNickname?: (value: string) => void;
+  isNicknameEditable?: boolean;
 }
 
 export const ChosenPlant = ({
   nickname,
   plant,
   onChangeNickname,
+  isNicknameEditable = false,
 }: ChosenPlantProps) => {
   return (
     <section className="flex flex-col gap-4">
@@ -36,6 +38,7 @@ export const ChosenPlant = ({
         value={nickname}
         onChange={onChangeNickname}
         placeholder={plant.name}
+        changeable={isNicknameEditable}
       />
     </section>
   );
