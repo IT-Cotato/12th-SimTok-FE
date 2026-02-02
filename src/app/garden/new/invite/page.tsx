@@ -1,4 +1,6 @@
 "use client";
+import { useRouter } from "next/navigation";
+
 import { useState } from "react";
 
 import { useGardenStore } from "@/stores/useGardenStore";
@@ -13,11 +15,15 @@ import ProgressDots from "@/components/onboarding/ProgressDots";
 import { FriendProfile } from "@/types/friendProfile.type";
 
 const PlantInvite = () => {
+  const router = useRouter();
   const isEditMode = true;
-  const setInvitedFriendId = useGardenStore(state => state.setInvitedFriendId);
 
   const [selectedFriends, setSelectedFriends] = useState<FriendProfile[]>([]); // 편집모드에서 선택한 friendId
   const [searchText, setSearchText] = useState(""); // 서치필드에 입력된 텍스트
+  const setInvitedFriendId = useGardenStore(state => state.setInvitedFriendId);
+  const handleNext = () => {
+    router.push("/garden/new/invite/message");
+  };
 
   const toggleFriend = (friend: FriendProfile) => {
     setSelectedFriends(prev => {
@@ -73,7 +79,9 @@ const PlantInvite = () => {
       </div>
 
       <div className="fixed bottom-0 z-50 w-full max-w-[440px] bg-white px-4 py-[10px] pb-[42px]">
-        <FullButton isActive={selectedFriends.length > 0}>선택완료</FullButton>
+        <FullButton isActive={selectedFriends.length > 0} onClick={handleNext}>
+          선택완료
+        </FullButton>
       </div>
     </main>
   );
