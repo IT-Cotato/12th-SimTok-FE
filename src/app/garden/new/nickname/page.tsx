@@ -44,6 +44,7 @@ const PlantNicknamePage = () => {
               nickname={nickname}
               plant={selectedPlant}
               onChangeNickname={setNickname}
+              isNicknameEditable={true}
             />
           </div>
         )}
