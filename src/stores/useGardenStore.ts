@@ -4,11 +4,11 @@ import { createJSONStorage, persist } from "zustand/middleware";
 interface GardenState {
   selectedPlantId: string | null;
   nickname: string;
-  invitedFriendId: string | null;
+  invitedFriendId: number | null;
 
   setSelectedPlant: (id: string | null) => void;
   setNickname: (name: string) => void;
-  setInvitedFriend: (friendId: string | null) => void;
+  setInvitedFriendId: (friendId: number | null) => void;
   resetForm: () => void;
 }
 
@@ -21,7 +21,7 @@ export const useGardenStore = create<GardenState>()(
 
       setSelectedPlant: id => set({ selectedPlantId: id }),
       setNickname: name => set({ nickname: name }),
-      setInvitedFriend: friendId => set({ invitedFriendId: friendId }),
+      setInvitedFriendId: friendId => set({ invitedFriendId: friendId }),
       resetForm: () =>
         set({ selectedPlantId: null, nickname: "", invitedFriendId: null }),
     }),
