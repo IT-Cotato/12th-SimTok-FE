@@ -39,7 +39,7 @@ const PlantGuidePage = () => {
         />
       </div>
 
-      <div className="mb-[42px] px-4 py-[10px]">
+      <div className="z-99 mb-[42px] px-4 py-[10px]">
         <FullButton
           disabled={!selectedPlantId}
           isActive={!!selectedPlantId}
