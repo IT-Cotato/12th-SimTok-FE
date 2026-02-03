@@ -43,7 +43,9 @@ export const NameInput = ({
           className="border-mint-01 text-d3 text-neutral-01 placeholder:text-neutral-07 rounded-2xl border px-4 py-2 text-center transition-[width] duration-150 ease-out outline-none"
         />
       ) : (
-        <span className="text-d3 text-neutral-01 px-4 py-2">{value}</span>
+        <span className="border-mint-01 text-d3 text-neutral-01 rounded-2xl border px-4 py-2 text-center">
+          {value}
+        </span>
       )}
     </div>
   );
