@@ -19,6 +19,7 @@
 
   --color-blue-00: #39a8fd;
   --color-blue-01: #d2ecff;
+  --color-blue-02: #84c7f9;
 
   --color-orange-00: #ff6700;
   --color-orange-01: #ff9100;
@@ -97,6 +98,7 @@
       rgba(103, 103, 103, 0.1) 80.56%
     );
   }
+  /* 정원 */
   .bg-plant-blue {
     background: linear-gradient(
       180deg,
@@ -129,6 +131,7 @@
         rgba(254, 255, 230, 0.38) 79.52%
       );
   }
+  /* 정원 */
   .bg-blur {
     background: linear-gradient(
       180deg,
@@ -136,6 +139,7 @@
       #fff 74.32%
     );
   }
+  /* 하루기록 */
   .bg-gradient-orange {
     background: linear-gradient(180deg, #f9cb4c 0%, #fdbb05 100%);
   }
@@ -164,6 +168,16 @@
       inset -1px -1px 0 rgb(255, 255, 255),
       inset 0 0 34px rgba(255, 255, 255, 0.55),
       inset 0 6px 12px rgba(255, 255, 255, 0.12);
+  }
+
+  .bg-brown-gradient {
+    background: linear-gradient(
+      359deg,
+      #251a13 0.71%,
+      #593924 44.37%,
+      #9f6742 73.83%,
+      #e99762 110.13%
+    );
   }
 
   @keyframes rotation {

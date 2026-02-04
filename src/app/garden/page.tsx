@@ -6,6 +6,7 @@ import { useState } from "react";
 import SupportIcon from "@/assets/support.svg";
 
 import { GlassStyleHeader } from "@/components/common/GlassStyleHeader";
+import { GardenBackground } from "@/components/garden/BackGround";
 import { GardenRules } from "@/components/garden/GardenRules";
 
 const Garden = () => {
@@ -22,7 +23,7 @@ const Garden = () => {
     }
   };
   return (
-    <main className="relative h-full w-full bg-[#84C7F9]">
+    <GardenBackground noPlant={false}>
       <div className="relative w-full items-center justify-center">
         <GlassStyleHeader
           backHeader={false}
@@ -52,7 +53,7 @@ const Garden = () => {
           </div>
         </div>
       )}
-    </main>
+    </GardenBackground>
   );
 };
 export default Garden;
