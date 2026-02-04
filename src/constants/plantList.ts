@@ -1,3 +1,30 @@
+export const PLANT_SORT_SIMPLE = [
+  { id: "daisy", name: "데이지" },
+  { id: "tulip", name: "튤립" },
+  { id: "lily", name: "은방울꽃" },
+  { id: "sunflower", name: "해바라기" },
+  { id: "baby-breath", name: "안개" },
+] as const;
+
+export const PLANT_IMAGE_MAP = {
+  SEED: {
+    good: "/images/garden/seed.svg",
+    bad: "/images/garden/seed_bad.svg",
+  },
+  SPROUT: {
+    good: "/images/garden/sprout.svg",
+    bad: "/images/garden/sprout_bad.svg",
+  },
+  STEM: {
+    good: "/images/garden/stem.svg",
+    bad: "/images/garden/stem_bad.svg",
+  },
+  BUD: {
+    good: "/images/garden/bud.svg",
+    bad: "/images/garden/bud_bad.svg",
+  },
+} as const;
+
 export const PlantSort = [
   {
     id: "daisy",

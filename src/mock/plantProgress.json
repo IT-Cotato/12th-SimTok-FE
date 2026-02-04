@@ -1,32 +1,37 @@
 [
   {
-    "plantId": 1,
-    "plantName": "두쫀쿠",
-    "plantSort": "데이지",
+    "id": 1,
+    "nickname": "두쫀쿠",
+    "plantSort": "daisy",
+    "growthStatus": "SPROUT",
     "recentWateredTime": "2026-01-22T08:30:00"
   },
   {
-    "plantId": 2,
-    "plantName": "맥모닝",
-    "plantSort": "튤립",
+    "id": 2,
+    "nickname": "맥모닝",
+    "plantSort": "tulip",
+    "growthStatus": "STEM",
     "recentWateredTime": "2026-01-21T21:10:00"
   },
   {
-    "plantId": 3,
-    "plantName": "믿음소망",
-    "plantSort": "은방울",
+    "id": 3,
+    "nickname": "믿음소망",
+    "plantSort": "lily",
+    "growthStatus": "BUD",
     "recentWateredTime": "2026-01-21T09:00:00"
   },
   {
-    "plantId": 4,
-    "plantName": "사랑",
-    "plantSort": "해바라기",
+    "id": 4,
+    "nickname": "사랑",
+    "plantSort": "sunflower",
+    "growthStatus": "FULL_GROWN",
     "recentWateredTime": "2026-01-21T18:45:00"
   },
   {
-    "plantId": 5,
-    "plantName": "딸기모찌",
-    "plantSort": "안개",
+    "id": 5,
+    "nickname": "딸기모찌",
+    "plantSort": "baby-breath",
+    "growthStatus": "SEED",
     "recentWateredTime": "2026-01-20T07:05:00"
   }
 ]
