@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 export const useProfileImageUpload = () => {
-  const DEFAULT_IMAGE_PATH = "/assets/onboarding_profile.svg";
+  const DEFAULT_IMAGE_PATH = "/images/onboarding_profile.svg";
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
