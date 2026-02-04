@@ -10,8 +10,7 @@ export type PlantSort =
 export type GardenPlant = {
   id: number;
   nickname: string;
-  plantSort: PlantSort;
-  growthStatus: GrowthStatus;
+  plantSort: string;
+  growthStatus: string;
   recentWateredTime: string; // ISO string
-  withered: boolean; // 시듬여부
 };
