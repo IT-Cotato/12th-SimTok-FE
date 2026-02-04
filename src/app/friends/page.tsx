@@ -3,13 +3,12 @@ import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
-import CloseIcon from "@/assets/close-thin.svg";
 import FriendAddIcon from "@/assets/person-plus.svg";
 
 import { BackHeader } from "@/components/common/BackHeader";
 import { FullButton } from "@/components/common/FullButton";
-import { ProfileImagePicker } from "@/components/common/ProfileImagePicker";
 import { SearchField } from "@/components/common/SearchField";
+import { SelectedFriendsBar } from "@/components/common/SelectFriendsBar";
 import { DeleteFriendModal } from "@/components/friends/DeleteFriendModal";
 import { FriendList } from "@/components/friends/FriendList";
 
@@ -58,35 +57,12 @@ const FriendsListPage = () => {
       >
         <SearchField onChangeSearchText={setSearchText} />
         {isEditMode && (
-          <section className="flex items-start gap-2 px-4">
-            {selectedFriends.map(({ userId, profileImg, userName }) => (
-              <div
-                key={userId}
-                className="flex flex-col items-center justify-center"
-              >
-                <div className="relative">
-                  <ProfileImagePicker
-                    imageUrl={profileImg ?? null}
-                    canEdit={false}
-                    width={80}
-                    height={80}
-                    radius={18}
-                  />
-                  <button
-                    className="bg-neutral-11 absolute bottom-[58px] left-[63px] h-[22px] w-[22px] cursor-pointer rounded-full"
-                    onClick={() =>
-                      toggleFriend({ userId, profileImg, userName })
-                    }
-                  >
-                    <CloseIcon className="inset-0 mx-auto h-2 w-2" />
-                  </button>
-                </div>
-
-                <p className="text-body3 text-neutral-06">{userName}</p>
-              </div>
-            ))}
-          </section>
+          <SelectedFriendsBar
+            selectedFriends={selectedFriends}
+            onToggleFriend={toggleFriend}
+          />
         )}
+
         <FriendList
           searchText={searchText}
           setModalOpen={setModalOpen}
