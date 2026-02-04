@@ -10,14 +10,19 @@ import { PLANT_BG_BY_STATUS, PlantWaterStatus } from "@/constants/plantStatus";
 
 import plantProgressData from "@/mock/plantProgress.json";
 
+import { GardenPlant } from "@/types/plant.type";
+
+import { getGrowthImage } from "@/utils/getGrowthImage";
 import { getPlantStatus, getPlantStatusMinutes } from "@/utils/getPlantStatus";
 
 import { FullButton } from "../common/FullButton";
 import { InfoMessage } from "../dailyRecord/InfoMessage";
 import ProgressDots from "../onboarding/ProgressDots";
 import { Bubble } from "./Bubble";
+import { PlantWithBubble } from "./PlantWithBubble";
 
 export const PlantProgress = () => {
+  const plants = plantProgressData as GardenPlant[];
   const plantLength = plantProgressData.length;
 
   return (
@@ -49,8 +54,13 @@ export const PlantProgress = () => {
             </div>
           </SwiperSlide>
         ) : (
-          plantProgressData.map((plant, index) => {
+          plants.map((plant, index) => {
             const plantStatus = getPlantStatus(plant.recentWateredTime);
+
+            const growthImage =
+              plant.growthStatus === "FULL_GROWN"
+                ? ""
+                : getGrowthImage(plant.growthStatus, plantStatus);
 
             const BG = PLANT_BG_BY_STATUS[plantStatus];
 
@@ -73,8 +83,8 @@ export const PlantProgress = () => {
                       </div>
                     ) : plantStatus === PlantWaterStatus.WATERABLE ? (
                       <div className="flex items-center">
-                        <ClockIcon className="text-blue-01 h-9 w-9" />
-                        <h1 className="text-h1 text-blue-01">
+                        <ClockIcon className="text-blue-00 h-9 w-9" />
+                        <h1 className="text-h1 text-blue-00">
                           {getPlantStatusMinutes(plant.recentWateredTime)}
                         </h1>
                       </div>
@@ -88,10 +98,17 @@ export const PlantProgress = () => {
                     ) : (
                       ""
                     )}
+                    <div className="absolute bottom-[85px]">
+                      <PlantWithBubble
+                        plantWaterStatus={plantStatus}
+                        plantGrowthStatus={plant.growthStatus}
+                        plantSort={plant.plantSort}
+                        growthImage={growthImage}
+                      />
+                    </div>
 
-                    <Bubble status={plantStatus} />
                     <div className="bg-blur absolute bottom-0 z-10 h-[329px] w-full max-w-[440px]" />
-                    <div className="absolute bottom-[84px] z-30 flex w-full items-center justify-center px-4 py-[10px]">
+                    <div className="absolute bottom-[73px] z-30 flex w-full items-center justify-center px-4 py-[10px]">
                       {plantLength > 1 ? (
                         <p className="text-h3 text-neutral-05 bg-glass-style z-99 rounded-2xl p-[10px]">
                           {plant.nickname}
@@ -100,7 +117,7 @@ export const PlantProgress = () => {
                         <InfoMessage text="원하는 식물을 골라보세요!" />
                       )}
                     </div>
-                    <div className="absolute bottom-[13px] z-99 w-full px-4 py-[10px]">
+                    <div className="absolute bottom-0 z-99 w-full bg-white px-4 py-[10px]">
                       <FullButton
                         isActive={
                           !(plantStatus === PlantWaterStatus.WATERED_RECENTLY)
