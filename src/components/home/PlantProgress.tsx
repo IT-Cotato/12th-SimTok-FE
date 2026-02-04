@@ -60,7 +60,7 @@ export const PlantProgress = () => {
                 : "물주기";
 
             return (
-              <SwiperSlide key={plant.plantId}>
+              <SwiperSlide key={plant.id}>
                 <div
                   className={`${BG} relative h-[551px] w-full overflow-hidden`}
                 >
@@ -94,7 +94,7 @@ export const PlantProgress = () => {
                     <div className="absolute bottom-[84px] z-30 flex w-full items-center justify-center px-4 py-[10px]">
                       {plantLength > 1 ? (
                         <p className="text-h3 text-neutral-05 bg-glass-style z-99 rounded-2xl p-[10px]">
-                          {plant.plantName}
+                          {plant.nickname}
                         </p>
                       ) : (
                         <InfoMessage text="원하는 식물을 골라보세요!" />
