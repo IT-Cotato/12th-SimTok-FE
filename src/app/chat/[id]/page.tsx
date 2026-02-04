@@ -17,23 +17,11 @@ import { BackHeader } from "@/components/common/BackHeader";
 
 import { CHAT_TOPIC } from "@/constants/friendsSettings";
 
+import chatData from "@/mock/chatdata.json";
 import friendListData from "@/mock/friendList.json";
 
 const Chatting = () => {
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      type: "mine",
-      content: "오늘 반찬은 뭐 드셨어요?",
-      time: "오후 12:11",
-    },
-    {
-      id: 2,
-      type: "friend",
-      content: "어제 할아버지가 키운 당근 볶아서 맛있는 비빔밥 해먹었어^^",
-      time: "오후 12:11",
-    },
-  ]);
+  const [messages, setMessages] = useState(chatData);
 
   const router = useRouter();
   const params = useParams();
