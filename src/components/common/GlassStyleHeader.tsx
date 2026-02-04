@@ -37,7 +37,7 @@ export const GlassStyleHeader = ({
       )}
       <div className={`bg-${bgColor} flex gap-[5px] rounded-3xl px-4 py-[6px]`}>
         <button
-          className={`${selectTitle === "left" ? "bg-glass-style rounded-[53px] text-white" : "text-neutral-03"} text-sub-number px-[10px]`}
+          className={`${selectTitle === "left" ? "bg-glass-style rounded-[53px] text-white" : bgColor === "neutral-01" ? "text-neutral-03" : "text-neutral-04"}text-sub-number px-[10px]`}
           onClick={() => onChangeSelectTitle("left")}
         >
           {leftText}
