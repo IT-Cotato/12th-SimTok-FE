@@ -33,5 +33,40 @@
     "plantSort": "baby-breath",
     "growthStatus": "SEED",
     "recentWateredTime": "2026-02-05T07:05:00"
+  },
+  {
+    "id": 6,
+    "nickname": "초코송이",
+    "plantSort": "daisy",
+    "growthStatus": "STEM",
+    "recentWateredTime": "2026-02-05T09:40:00"
+  },
+  {
+    "id": 7,
+    "nickname": "해바라기씨",
+    "plantSort": "sunflower",
+    "growthStatus": "SPROUT",
+    "recentWateredTime": "2026-02-03T22:15:00"
+  },
+  {
+    "id": 8,
+    "nickname": "봄비",
+    "plantSort": "tulip",
+    "growthStatus": "BUD",
+    "recentWateredTime": "2026-02-04T06:20:00"
+  },
+  {
+    "id": 9,
+    "nickname": "포근이",
+    "plantSort": "baby-breath",
+    "growthStatus": "STEM",
+    "recentWateredTime": "2026-02-02T11:55:00"
+  },
+  {
+    "id": 10,
+    "nickname": "루루",
+    "plantSort": "lily",
+    "growthStatus": "FULL_GROWN",
+    "recentWateredTime": "2026-02-05T10:10:00"
   }
 ]
