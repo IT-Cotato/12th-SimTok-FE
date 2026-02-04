@@ -61,6 +61,8 @@ export const ChatField = ({
           <div className="flex flex-shrink-0 items-center justify-end">
             {isNotEmpty ? (
               <button
+                type="button"
+                aria-label="메시지 전송"
                 className="flex h-10 w-14 items-center justify-center transition-transform active:scale-95"
                 onClick={handleSend}
               >
@@ -68,10 +70,16 @@ export const ChatField = ({
               </button>
             ) : (
               <div className="flex items-center">
-                <button className="flex h-8 w-8 flex-shrink-0 items-center justify-center">
+                <button
+                  type="button"
+                  aria-label="이미지 첨부"
+                  className="flex h-8 w-8 flex-shrink-0 items-center justify-center"
+                >
                   <ImageIcon className="text-neutral-02 h-7 w-7" />
                 </button>
                 <button
+                  type="button"
+                  aria-label="음성 녹음"
                   onClick={() => setIsVoiceOpen(true)}
                   className="flex h-8 w-8 items-center justify-center"
                 >

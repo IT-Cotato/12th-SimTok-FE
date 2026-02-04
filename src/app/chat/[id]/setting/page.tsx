@@ -60,13 +60,17 @@ const SettingChatPage = () => {
               {CHAT_LIST_ITEMS.map(item => {
                 const isToggleItem =
                   item.label === "채팅방 알림" || item.label === "AI 모드";
+                const hasRoute = !isToggleItem && item.path !== "/chat/";
 
                 return (
                   <li key={item.label}>
                     <ListItem
                       label={item.label}
+                      // onClick={
+                      //   !isToggleItem ? () => router.push(item.path) : undefined
+                      // }
                       onClick={
-                        !isToggleItem ? () => router.push(item.path) : undefined
+                        hasRoute ? () => router.push(item.path) : undefined
                       }
                       hasToggle={isToggleItem}
                       toggleDefaultOn={true}

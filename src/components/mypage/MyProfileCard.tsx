@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 import type { UserProfile } from "@/types/user.type";
 
@@ -14,16 +13,24 @@ export const MyProfileCard = ({
   userProfileData,
   onEdit,
 }: MyProfileCardProps) => {
-  //const router = useRouter();
   const { profileImg, nickName } = userProfileData;
 
-  // const handleEditRedirect = () => {
-  //   router.push("/mypage/profile");
-  // };
-
   return (
+    // <div
+    //   onClick={onEdit}
+    //   className="border-neutral-10 flex w-full items-center justify-between border-b px-4 py-2"
+    // >
     <div
-      onClick={onEdit}
+      role={onEdit ? "button" : undefined}
+      tabIndex={onEdit ? 0 : undefined}
+      onKeyDown={e => {
+        if (!onEdit) return;
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onEdit();
+        }
+      }}
+      onClick={() => onEdit?.()}
       className="border-neutral-10 flex w-full items-center justify-between border-b px-4 py-2"
     >
       <div className="flex items-center gap-4">

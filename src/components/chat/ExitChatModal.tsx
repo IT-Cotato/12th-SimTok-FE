@@ -26,12 +26,16 @@ export const ExitChatModal = ({
           <h3 className="text-h3 text-neutral-01">채팅방 나가기</h3>
 
           <div className="relative mb-2 h-[80px] w-[80px] overflow-hidden rounded-[24px]">
-            <Image
-              src={profileImg}
-              alt={userName}
-              fill
-              className="object-cover"
-            />
+            {profileImg ? (
+              <Image
+                src={profileImg}
+                alt={userName}
+                fill
+                className="object-cover"
+              />
+            ) : (
+              <div className="bg-neutral-08 h-full w-full" />
+            )}
           </div>
 
           <div className="flex flex-col items-center">
