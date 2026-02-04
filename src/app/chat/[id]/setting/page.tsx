@@ -52,7 +52,7 @@ const SettingChatPage = () => {
                 birthDate: "",
                 inviteCode: "",
               }}
-              onEdit={() => router.push(`/chat/${id}/edit`)}
+              onEdit={() => router.push(`/friends/settings/${id}`)}
             />
           </section>
           <nav className="mt-10">
