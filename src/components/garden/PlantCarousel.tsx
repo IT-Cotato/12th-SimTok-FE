@@ -27,7 +27,9 @@ export const PlantCarousel = ({
 
   const handleSlideChange = (swiper: SwiperClass) => {
     setActiveIndex(swiper.activeIndex);
-    onPlantClick("");
+    if (selectedId !== "") {
+      onPlantClick("");
+    }
   };
 
   return (
