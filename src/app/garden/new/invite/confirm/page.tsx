@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import { useGardenStore } from "@/stores/useGardenStore";
@@ -24,7 +25,12 @@ const InvitePlantConfirm = () => {
           수락 후 키우기가 시작돼요🙌
         </h1>
         <div className="flex justify-center">
-          <MailBox className="h-[370px] w-[326px]" />
+          <Image
+            src={"/images/garden/red-message-box.svg"}
+            width={326}
+            height={370}
+            alt="전송완료 이미지"
+          />
         </div>
       </section>
 
