@@ -11,7 +11,7 @@ import { ProfileModal } from "./ProfileModal";
 
 interface FriendListProps {
   searchText: string;
-  setModalOpen: (open: boolean) => void;
+  setModalOpen?: (open: boolean) => void;
   isEditMode: boolean;
   selectedFriends: FriendProfile[];
   onToggleFriend: (friend: FriendProfile) => void;
@@ -35,12 +35,12 @@ export const FriendList = ({
   const profileModalOpen = (friend: FriendProfile) => {
     if (isEditMode) return;
     setModalFriend(friend);
-    setModalOpen(true);
+    setModalOpen?.(true);
   };
 
   const profileModalClose = () => {
     setModalFriend(null);
-    setModalOpen(false);
+    setModalOpen?.(false);
   };
 
   return (
