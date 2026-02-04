@@ -42,7 +42,7 @@ const AgreePage = () => {
     <main className="flex min-h-dvh w-full flex-col justify-center">
       <BackHeader title="회원가입" />
 
-      <div className="flex flex-1 flex-col">
+      <div className="mt-13.5 flex flex-1 flex-col">
         <PageTitle>
           반가워요! 가입하려면
           <br />

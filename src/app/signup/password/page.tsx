@@ -46,7 +46,7 @@ const SettingPage = () => {
     <main className="flex min-h-dvh w-full justify-center bg-white">
       <div className="flex w-full flex-col">
         <BackHeader title="비밀번호 설정" />
-        <div className="flex flex-1 flex-col">
+        <div className="mt-13.5 flex flex-1 flex-col">
           <PageTitle>
             로그인에 사용할 비밀번호를
             <br />

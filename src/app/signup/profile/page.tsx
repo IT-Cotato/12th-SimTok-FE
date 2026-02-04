@@ -7,7 +7,7 @@ const RegisterPage = () => {
     <main className="flex h-dvh w-full justify-center bg-white">
       <div className="flex w-110 flex-col">
         <BackHeader title="회원가입" />
-        <div className="flex flex-1 flex-col">
+        <div className="mt-13.5 flex flex-1 flex-col">
           <PageTitle>
             회원가입을 위해 아래 정보를
             <br />
