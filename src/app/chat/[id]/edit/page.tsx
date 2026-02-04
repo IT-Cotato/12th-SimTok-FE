@@ -49,7 +49,7 @@ const EditPage = () => {
   );
 
   if (!friendData && !userData) {
-    return;
+    return null;
   }
 
   const isValid =

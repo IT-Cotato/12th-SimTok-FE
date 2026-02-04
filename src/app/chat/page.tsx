@@ -88,34 +88,21 @@ const ChatListPage = () => {
           <div className="flex w-full max-w-[440px] justify-end px-4">
             <button
               className="pointer-events-auto transition-transform active:scale-95"
-              onClick={() => router.push("chat/create")}
+              onClick={() => router.push("/chat/create")}
             >
               <FloatingButtonIcon />
             </button>
           </div>
         </div>
-
-        {targetChat && (
-          <ExitChatModal
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            onConfirm={handleConfirmDelete}
-            userName={targetChat.name}
-            profileImg={targetChat.profileImg}
-          />
-        )}
         <NavBar />
       </div>
-      {isModalOpen && selectedChat && (
+      {selectedChat && (
         <ExitChatModal
           isOpen={isModalOpen}
           userName={selectedChat.name}
           profileImg={selectedChat.profileImg}
           onClose={() => setIsModalOpen(false)}
-          onConfirm={() => {
-            setChats(prev => prev.filter(c => c.id !== selectedChat.id));
-            setIsModalOpen(false);
-          }}
+          onConfirm={handleConfirmDelete}
         />
       )}
     </main>

@@ -64,7 +64,8 @@ const Chatting = () => {
         minute: "2-digit",
       }),
     };
-    setMessages([...messages, newMessage]);
+    // setMessages([...messages, newMessage]);
+    setMessages(prev => [...prev, newMessage]);
     setInputValue("");
   };
 
@@ -80,6 +81,8 @@ const Chatting = () => {
       <div className="flex h-full w-full flex-col">
         <BackHeader title={displayName}>
           <button
+            type="button"
+            aria-label="채팅방 설정"
             className="flex items-center justify-center"
             onClick={() => router.push(`/chat/${params.id}/setting`)}
           >
