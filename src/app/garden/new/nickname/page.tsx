@@ -22,6 +22,12 @@ const PlantNicknamePage = () => {
 
   const [nickname, setNickname] = useState("");
 
+  useEffect(() => {
+    if (!selectedPlantId) {
+      router.replace("/garden/new");
+    }
+  }, [selectedPlantId, router]);
+
   const handleNextStep = () => {
     setPlantNickname(nickname.trim());
     router.push("/garden/new/invite");
@@ -50,7 +56,7 @@ const PlantNicknamePage = () => {
         )}
       </section>
       <section className="mb-[42px] px-4 py-[10px]">
-        <FullButton isActive={!!nickname} onClick={handleNextStep}>
+        <FullButton isActive={!!nickname.trim()} onClick={handleNextStep}>
           입력완료
         </FullButton>
       </section>

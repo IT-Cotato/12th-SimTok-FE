@@ -27,8 +27,7 @@ const PlantInvite = () => {
 
   const toggleFriend = (friend: FriendProfile) => {
     setSelectedFriends(prev => {
-      const isSameFriend =
-        prev.length === 1 && prev[0].userId === friend.userId;
+      const isSameFriend = prev[0]?.userId === friend.userId;
 
       // 같은 친구 누르면 해제
       if (isSameFriend) {
@@ -51,7 +50,7 @@ const PlantInvite = () => {
       <div className="mt-[8.5px]">
         <BackHeader
           title="친구목록"
-          subtext="선택헤제"
+          subtext="선택해제"
           isEditMode={isEditMode}
           onClickEdit={clearSelection}
           selectedCount={selectedFriends.length}

@@ -1,6 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
 
+import { useEffect } from "react";
+
 import { useGardenStore } from "@/stores/useGardenStore";
 
 import { BackHeader } from "@/components/common/BackHeader";
@@ -25,7 +27,15 @@ const InviteMessagePage = () => {
   const friendName = FriendData.find(
     data => data.userId === friendId,
   )?.userName;
-  if (!selectedPlant) return null;
+
+  useEffect(() => {
+    if (!selectedPlant || !friendName) {
+      router.replace("/garden/new");
+    }
+  }, [selectedPlant, friendName, router]);
+
+  if (!selectedPlant || !friendName) return null;
+
   return (
     <main className="flex h-full w-full flex-col justify-center">
       <div className="mt-[8.5px] flex flex-1 flex-col">
@@ -52,6 +62,7 @@ const InviteMessagePage = () => {
               className="text-h2 scrollbar-hide placeholder:text-neutral-07 text-neutral-02 w-full resize-none focus:outline-none"
               rows={4}
               onChange={e => setMessage(e.target.value)}
+              value={message}
             />
           </div>
         </section>

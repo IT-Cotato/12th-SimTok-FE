@@ -9,6 +9,7 @@ import { PageTitle } from "@/components/common/PageTitle";
 import { PlantCarousel } from "@/components/garden/PlantCarousel";
 
 const PlantGuidePage = () => {
+  const router = useRouter();
   const { selectedPlantId, setSelectedPlant } = useGardenStore();
 
   const handlePlantSelect = (id: string | null) => {
@@ -20,8 +21,6 @@ const PlantGuidePage = () => {
     if (!selectedPlantId) return;
     router.push("/garden/new/nickname");
   };
-
-  const router = useRouter();
 
   return (
     <main className="flex h-full w-full flex-col">
