@@ -6,6 +6,7 @@ import { useState } from "react";
 import SupportIcon from "@/assets/support.svg";
 
 import { GlassStyleHeader } from "@/components/common/GlassStyleHeader";
+import { NavBar } from "@/components/common/NavBar";
 import { GardenBackground } from "@/components/garden/BackGround";
 import { GardenRules } from "@/components/garden/GardenRules";
 
@@ -53,6 +54,7 @@ const Garden = () => {
           </div>
         </div>
       )}
+      <NavBar />
     </GardenBackground>
   );
 };
