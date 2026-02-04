@@ -35,7 +35,7 @@ export const PlantCarousel = ({
   return (
     <section className="flex w-full flex-col items-center justify-center gap-4">
       <ProgressDots total={PlantSort.length} current={activeIndex + 1} />
-      <div className="-my-5 w-full overflow-hidden py-5">
+      <div className="-my-5 w-full overflow-hidden px-4 py-5">
         <Swiper
           modules={[Keyboard]}
           keyboard={{ enabled: true }}
