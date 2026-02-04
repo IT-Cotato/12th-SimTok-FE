@@ -4,12 +4,15 @@ import { PlantSort } from "@/constants/plantList";
 
 import { GardenPlant } from "@/types/plant.type";
 
-interface PlantPositionProps {
+interface PlantColletctionProps {
   plantList: GardenPlant[];
   pageIndex: number;
 }
 
-export const PlantPosition = ({ plantList, pageIndex }: PlantPositionProps) => {
+export const PlantColletction = ({
+  plantList,
+  pageIndex,
+}: PlantColletctionProps) => {
   const PLANTS_PER_PAGE = 7;
   const FRONT_MAX = 4;
 

@@ -16,7 +16,7 @@ import { PageTitle } from "@/components/common/PageTitle";
 import { ProgressDots } from "@/components/common/ProgressDot";
 import { GardenBackground } from "@/components/garden/BackGround";
 import { GardenRules } from "@/components/garden/GardenRules";
-import { PlantPosition } from "@/components/garden/PlantPosition";
+import { PlantColletction } from "@/components/garden/PlantColletction";
 
 import plantList from "@/mock/plantProgress.json";
 
@@ -86,7 +86,10 @@ const Garden = () => {
                 length: carouselPage,
               }).map((_, pageIndex) => (
                 <SwiperSlide key={pageIndex}>
-                  <PlantPosition plantList={plantList} pageIndex={pageIndex} />
+                  <PlantColletction
+                    plantList={plantList}
+                    pageIndex={pageIndex}
+                  />
                 </SwiperSlide>
               ))}
             </Swiper>
