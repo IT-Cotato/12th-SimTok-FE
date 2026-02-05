@@ -6,7 +6,7 @@ import { useSignupStore } from "@/stores/useSignupStore";
 
 const AuthStartPage = () => {
   const router = useRouter();
-  const { setDraftKey, setCurrentStep } = useSignupStore();
+  const { setSignupData } = useSignupStore();
 
   const handleClickLogin = () => {
     router.push("/login/phone");
@@ -19,27 +19,16 @@ const AuthStartPage = () => {
 
       const draftKey =
         result.data?.draftKey || response.headers.get("signup-draft-key");
-      if (draftKey) {
-        setDraftKey(draftKey); // 스토어에 키 저장
-        setCurrentStep(result.data.step); // 현재 단계 저장 (TERMS_REQUIRED)
+      const terms = result.data?.terms || result.data?.data?.terms || [];
+
+      console.log("받아온 약관 데이터:", terms);
+
+      if (draftKey && terms.length > 0) {
+        setSignupData(draftKey, terms);
         router.push("/signup/agree");
-      }
-      // 1. 응답 바디의 데이터 구조에 따른 키 추출 (가장 권장)
-      // result.data 안의 draftKey 확인
-      const bodyKey = result?.data?.draftKey;
-
-      // 2. 응답 헤더에서 키 추출
-      const headerKey = response.headers.get("signup-draft-key");
-
-      const finalKey = bodyKey || headerKey;
-
-      if (finalKey) {
-        console.log("확인된 드래프트 키:", finalKey);
-        sessionStorage.setItem("signup_draft_key", finalKey);
-        router.push("/signup/agree");
+        console.log("드래프트 키:", draftKey);
       } else {
-        console.error("키 추출 실패: 응답 바디와 헤더 모두에 키가 없음");
-        console.log("분석된 바디 구조:", result);
+        console.warn("데이터 부족: Key나 Terms가 없음", { draftKey, terms });
       }
     } catch (error) {
       console.error("네트워크 에러:", error);
