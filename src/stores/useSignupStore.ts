@@ -1,26 +1,29 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
+interface Term {
+  code: string;
+  version: string;
+  title: string;
+  required: boolean;
+}
+
 interface SignupState {
   draftKey: string | null;
-  currentStep: string;
-  setDraftKey: (key: string) => void;
-  setCurrentStep: (step: string) => void;
-  resetSignup: () => void;
+  terms: Term[];
+  setSignupData: (draftKey: string, terms: Term[]) => void;
 }
 
 export const useSignupStore = create<SignupState>()(
   persist(
     set => ({
       draftKey: null,
-      currentStep: "START",
-      setDraftKey: key => set({ draftKey: key }),
-      setCurrentStep: step => set({ currentStep: step }),
-      resetSignup: () => set({ draftKey: null, currentStep: "START" }),
+      terms: [],
+      setSignupData: (draftKey, terms) => set({ draftKey, terms }),
     }),
     {
       name: "signup-storage",
-      storage: createJSONStorage(() => sessionStorage), // 세션 종료 시 초기화
+      storage: createJSONStorage(() => sessionStorage),
     },
   ),
 );
