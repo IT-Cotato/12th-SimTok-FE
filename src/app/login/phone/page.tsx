@@ -18,9 +18,44 @@ import { phoneChangeHandler } from "@/utils/phoneHandlers";
 const LoginPage = () => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const isActive = phone.length === 11 && password.length >= 8;
   const handlePhoneChange = phoneChangeHandler(setPhone);
+
+  const handleLogin = async () => {
+    if (!isActive || isLoading) return;
+
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          phoneNumber: phone,
+          password: password,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        const { accessToken, refreshToken } = result.data;
+
+        localStorage.setItem("access_token", accessToken.accessToken);
+        localStorage.setItem("refresh_token", refreshToken.refreshToken);
+
+        router.push("/");
+      } else {
+        alert(result.message || "로그인 정보가 일치하지 않습니다.");
+      }
+    } catch (error) {
+      console.error("로그인 에러:", error);
+      alert("네트워크 오류가 발생했습니다.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <main
@@ -30,7 +65,7 @@ const LoginPage = () => {
     >
       <div className="flex h-full w-full flex-1 flex-col">
         <BackHeader title="로그인" />
-        <div className="mt-13.5 flex flex-col gap-[29px]">
+        <div className="flex flex-col gap-[29px]">
           <PageTitle>
             로그인하고 <br /> 심톡을 시작해볼까요?
           </PageTitle>
@@ -68,8 +103,11 @@ const LoginPage = () => {
         </button>
 
         <div className="mb-[42px] px-4 py-[10px]">
-          <FullButton isActive={isActive} onClick={() => router.push("/")}>
+          {/* <FullButton isActive={isActive} onClick={() => router.push("/")}>
             로그인
+          </FullButton> */}
+          <FullButton isActive={isActive && !isLoading} onClick={handleLogin}>
+            {isLoading ? "로그인 중..." : "로그인"}
           </FullButton>
         </div>
       </div>
