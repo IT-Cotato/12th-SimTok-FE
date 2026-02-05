@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
+import { signupApi } from "@/app/api/signup";
+
 import DateIcon from "@/assets/date.svg";
 import ErrorIcon from "@/assets/modal_error.svg";
 import SuccessIcon from "@/assets/modal_success.svg";
@@ -45,11 +47,29 @@ export const ProfileForm = () => {
   const canRequestCode = isValidPhone;
   const isBirthValid = isValidBirth(birth);
 
-  const handleRequestCode = () => {
-    if (!canRequestCode) return;
-    setIsVerified(false);
-    setCode("");
-    start(120);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleRequestCode = async () => {
+    if (!canRequestCode || isSubmitting) return;
+
+    setIsSubmitting(true);
+    try {
+      const res = await signupApi.sendSms(phone.replace(/-/g, ""));
+      const result = await res.json();
+
+      if (result.success) {
+        setIsVerified(false);
+        setCode("");
+        start(180);
+        console.log("SMS 발송 성공:", result.data.flags);
+      } else {
+        alert(result.message || "번호를 확인해주세요.");
+      }
+    } catch (error) {
+      console.error("SMS 요청 에러:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleResendClick = () => {
@@ -59,17 +79,74 @@ export const ProfileForm = () => {
     handleRequestCode();
   };
 
-  const handleVerify = () => {
-    if (!code || !isCodeRequested || timeLeft === 0) return;
-    const isSuccess = code === "1234";
+  // [STEP 4] 인증번호 확인 (OTP 검증)
+  const handleVerify = async () => {
+    if (!code || !isCodeRequested || timeLeft === 0 || isSubmitting) return;
 
-    if (isSuccess) {
-      setIsVerified(true);
-      setModalType("success");
-      stop();
-    } else {
-      setIsVerified(false);
+    setIsSubmitting(true);
+    try {
+      const res = await signupApi.verifyOtp(code);
+      const result = await res.json();
+
+      // 서버 응답 로그 확인 (중요)
+      console.log("OTP 검증 결과:", result);
+
+      if (result.success && result.data?.step !== "OTP_REQUIRED") {
+        setIsVerified(true);
+        setModalType("success");
+        stop();
+      } else {
+        // 인증번호가 틀린 경우 여기로 들어와야 함
+        setIsVerified(false);
+        setModalType("error");
+      }
+    } catch (error) {
+      console.error("OTP 검증 에러:", error);
       setModalType("error");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // [STEP 5] 프로필 정보 제출 및 다음 단계 이동
+  const handleModalConfirm = async () => {
+    if (modalType === "error") {
+      setModalType(null);
+      return;
+    }
+
+    if (modalType === "success") {
+      try {
+        // 1. 생년월일 포맷팅 검증 (입력값이 "2026.02.05" 혹은 "20260205"일 경우)
+        const cleanBirth = birth.replace(/\D/g, "");
+
+        if (cleanBirth.length !== 8) {
+          alert("생년월일 8자리를 정확히 입력해주세요.");
+          return;
+        }
+
+        const formattedBirth = `${cleanBirth.slice(0, 4)}-${cleanBirth.slice(4, 6)}-${cleanBirth.slice(6, 8)}`;
+        // 결과: "2026-02-05"
+
+        console.log("제출 데이터:", { name, birthDate: formattedBirth });
+
+        const res = await signupApi.submitProfile({
+          name,
+          birthDate: formattedBirth,
+        });
+        const result = await res.json();
+
+        if (result.success) {
+          setModalType(null);
+          router.push("/signup/password");
+        } else {
+          // 여기서 "유효하지 않은 요청" alert 발생 중
+          alert(result.message || "프로필 정보 등록에 실패했습니다.");
+          setModalType(null);
+        }
+      } catch (error) {
+        console.error("프로필 제출 에러:", error);
+      }
     }
   };
 
@@ -111,18 +188,6 @@ export const ProfileForm = () => {
     isCodeRequested &&
     timeLeft > 0;
 
-  const handleModalConfirm = () => {
-    if (modalType === "success") {
-      setModalType(null);
-      router.push("/signup/password");
-    } else {
-      setModalType(null);
-      stop();
-      setCode("");
-      setIsVerified(false);
-    }
-  };
-
   return (
     <div className="mt-[18px] flex flex-1 flex-col gap-4">
       <div className="px-4">
@@ -159,7 +224,11 @@ export const ProfileForm = () => {
       />
 
       <div className="mt-auto mb-13 flex w-full justify-center px-4 py-[10px]">
-        <FullButton isActive={isConfirmActive} onClick={handleFullButtonClick}>
+        <FullButton
+          isActive={isConfirmActive}
+          onClick={handleFullButtonClick}
+          disabled={isSubmitting}
+        >
           인증하기
         </FullButton>
       </div>
