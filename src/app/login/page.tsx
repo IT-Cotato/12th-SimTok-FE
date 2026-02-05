@@ -21,12 +21,9 @@ const AuthStartPage = () => {
         result.data?.draftKey || response.headers.get("signup-draft-key");
       const terms = result.data?.terms || result.data?.data?.terms || [];
 
-      console.log("받아온 약관 데이터:", terms);
-
       if (draftKey && terms.length > 0) {
         setSignupData(draftKey, terms);
         router.push("/signup/agree");
-        console.log("드래프트 키:", draftKey);
       } else {
         console.warn("데이터 부족: Key나 Terms가 없음", { draftKey, terms });
       }
