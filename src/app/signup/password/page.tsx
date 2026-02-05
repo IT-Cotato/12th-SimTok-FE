@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
+import { signupApi } from "@/app/api/signup";
+
 import Exclamation from "@/assets/exclamation-circle.svg";
 import LockIcon from "@/assets/lock.svg";
 
@@ -16,10 +18,9 @@ import { usePasswordValidation } from "@/hooks/usePasswordValidation";
 
 const SettingPage = () => {
   const router = useRouter();
-
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { isValidPassword, getState, getTextColor } = usePasswordValidation();
 
   const isPasswordValid = isValidPassword(password);
@@ -41,6 +42,36 @@ const SettingPage = () => {
           | "default"
           | "invalid"
           | "valid");
+
+  const handlePasswordSubmit = async () => {
+    if (!isPasswordConfirmValid || isSubmitting) return;
+
+    setIsSubmitting(true);
+    try {
+      const res = await signupApi.submitPassword({
+        password,
+        confirmPassword: passwordConfirm,
+      });
+      const result = await res.json();
+
+      console.log("회원가입 최종 결과:", result);
+
+      if (result.success) {
+        const { accessToken, refreshToken } = result.data.tokens;
+        localStorage.setItem("accessToken", accessToken.accessToken);
+        localStorage.setItem("refreshToken", refreshToken.refreshToken);
+
+        router.push("/onboarding");
+      } else {
+        alert(result.message || "비밀번호 설정 중 오류가 발생했습니다.");
+      }
+    } catch (error) {
+      console.error("비밀번호 제출 에러:", error);
+      alert("네트워크 오류가 발생했습니다.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <main className="flex min-h-dvh w-full justify-center bg-white">
@@ -113,7 +144,8 @@ const SettingPage = () => {
         <div className="mb-13 flex w-full justify-center px-4 py-[10px]">
           <FullButton
             isActive={isPasswordConfirmValid}
-            onClick={() => router.push("/onboarding")}
+            onClick={handlePasswordSubmit}
+            disabled={isSubmitting}
           >
             설정완료
           </FullButton>

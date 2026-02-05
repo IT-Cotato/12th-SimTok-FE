@@ -9,7 +9,6 @@ import { signupApi } from "@/app/api/signup";
 import DateIcon from "@/assets/date.svg";
 import ErrorIcon from "@/assets/modal_error.svg";
 import SuccessIcon from "@/assets/modal_success.svg";
-import PhoneIcon from "@/assets/phone.svg";
 import ProfileIcon from "@/assets/profile.svg";
 
 import { FullButton } from "@/components/common/FullButton";
@@ -88,7 +87,6 @@ export const ProfileForm = () => {
       const res = await signupApi.verifyOtp(code);
       const result = await res.json();
 
-      // 서버 응답 로그 확인 (중요)
       console.log("OTP 검증 결과:", result);
 
       if (result.success && result.data?.step !== "OTP_REQUIRED") {
@@ -117,7 +115,6 @@ export const ProfileForm = () => {
 
     if (modalType === "success") {
       try {
-        // 1. 생년월일 포맷팅 검증 (입력값이 "2026.02.05" 혹은 "20260205"일 경우)
         const cleanBirth = birth.replace(/\D/g, "");
 
         if (cleanBirth.length !== 8) {
@@ -126,7 +123,6 @@ export const ProfileForm = () => {
         }
 
         const formattedBirth = `${cleanBirth.slice(0, 4)}-${cleanBirth.slice(4, 6)}-${cleanBirth.slice(6, 8)}`;
-        // 결과: "2026-02-05"
 
         console.log("제출 데이터:", { name, birthDate: formattedBirth });
 
@@ -140,7 +136,6 @@ export const ProfileForm = () => {
           setModalType(null);
           router.push("/signup/password");
         } else {
-          // 여기서 "유효하지 않은 요청" alert 발생 중
           alert(result.message || "프로필 정보 등록에 실패했습니다.");
           setModalType(null);
         }
