@@ -58,8 +58,8 @@ const SettingPage = () => {
 
       if (result.success) {
         const { accessToken, refreshToken } = result.data.tokens;
-        localStorage.setItem("accessToken", accessToken.accessToken);
-        localStorage.setItem("refreshToken", refreshToken.refreshToken);
+        localStorage.setItem("access_token", accessToken.accessToken);
+        localStorage.setItem("refresh_token", refreshToken.refreshToken);
 
         router.push("/onboarding");
       } else {

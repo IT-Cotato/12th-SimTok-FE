@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    console.log("프론트에서 보낸 데이터:", body);
 
     const response = await fetch(
       "https://43.202.184.232.nip.io/api/auth/login",

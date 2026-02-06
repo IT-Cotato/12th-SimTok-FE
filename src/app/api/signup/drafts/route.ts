@@ -14,6 +14,7 @@ export async function POST() {
     const draftKey = response.headers.get("signup-draft-key");
 
     return NextResponse.json(body, {
+      status: response.status,
       headers: {
         "signup-draft-key": draftKey || "",
         "Access-Control-Expose-Headers": "signup-draft-key",
