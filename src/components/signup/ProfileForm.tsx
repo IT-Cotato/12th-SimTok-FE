@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { signupApi } from "@/app/api/signup";
 
@@ -114,6 +114,8 @@ export const ProfileForm = () => {
     }
 
     if (modalType === "success") {
+      if (isSubmitting) return;
+      setIsSubmitting(true);
       try {
         const cleanBirth = birth.replace(/\D/g, "");
 
@@ -141,6 +143,8 @@ export const ProfileForm = () => {
         }
       } catch (error) {
         console.error("프로필 제출 에러:", error);
+      } finally {
+        setIsSubmitting(false);
       }
     }
   };
