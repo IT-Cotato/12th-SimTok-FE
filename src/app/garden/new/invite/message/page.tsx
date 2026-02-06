@@ -10,7 +10,7 @@ import { FullButton } from "@/components/common/FullButton";
 import { ChosenPlant } from "@/components/garden/ChosenPlant";
 import ProgressDots from "@/components/onboarding/ProgressDots";
 
-import { PlantSort } from "@/constants/plantList";
+import { PlantSort } from "@/constants/garden/plantList";
 
 import FriendData from "@/mock/friendList.json";
 

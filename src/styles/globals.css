@@ -7,6 +7,7 @@
   --color-green-02: #50cd7a;
   --color-green-03: #bbecc8;
   --color-green-04: #ebf9ef;
+  --color-green-05: #002c04;
 
   --color-mint-01: #42f09e;
   --color-mint-02: #c1f8da;
@@ -98,7 +99,7 @@
       rgba(103, 103, 103, 0.1) 80.56%
     );
   }
-  /* 정원 */
+  /* 홈 */
   .bg-plant-blue {
     background: linear-gradient(
       180deg,
@@ -131,7 +132,7 @@
         rgba(254, 255, 230, 0.38) 79.52%
       );
   }
-  /* 정원 */
+  /* 홈 버블*/
   .bg-blur {
     background: linear-gradient(
       180deg,

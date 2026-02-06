@@ -11,7 +11,7 @@ import { PageTitle } from "@/components/common/PageTitle";
 import { ChosenPlant } from "@/components/garden/ChosenPlant";
 import ProgressDots from "@/components/onboarding/ProgressDots";
 
-import { PlantSort } from "@/constants/plantList";
+import { PlantSort } from "@/constants/garden/plantList";
 
 const PlantNicknamePage = () => {
   const router = useRouter();

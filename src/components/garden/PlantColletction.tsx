@@ -1,6 +1,6 @@
 "use client";
 
-import { PlantSort } from "@/constants/plantList";
+import { PlantSort } from "@/constants/garden/plantList";
 
 import { GardenPlant } from "@/types/plant.type";
 

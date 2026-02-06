@@ -6,7 +6,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import ClockIcon from "@/assets/clock.svg";
 
-import { PLANT_BG_BY_STATUS, PlantWaterStatus } from "@/constants/plantStatus";
+import {
+  PLANT_BG_BY_STATUS,
+  PlantWaterStatus,
+} from "@/constants/garden/plantStatus";
 
 import plantProgressData from "@/mock/plantProgress.json";
 
@@ -58,7 +61,7 @@ export const PlantProgress = () => {
             const plantStatus = getPlantStatus(plant.recentWateredTime);
 
             const growthImage =
-              plant.growthStatus === "FULL_GROWN"
+              plant.growthStatus === "BLOOM"
                 ? ""
                 : getGrowthImage(plant.growthStatus, plantStatus);
 

@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { PlantWaterStatusType } from "@/constants/plantStatus";
+import { PlantWaterStatusType } from "@/constants/garden/plantStatus";
 
 import { GrowthStatus, PlantSort } from "@/types/plant.type";
 
@@ -26,7 +26,7 @@ export const PlantWithBubble = ({
         <Bubble status={plantWaterStatus} />
       </div>
       <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
-        {plantGrowthStatus === "FULL_GROWN" ? (
+        {plantGrowthStatus === "BLOOM" ? (
           <div>
             <Image
               src={`/images/garden/${plantSort}.svg`}
