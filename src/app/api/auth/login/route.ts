@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     const data = await response.json();
     return NextResponse.json(data);
   } catch (error) {
-    console.error("Proxy 내부 에러 상세:", error); // 터미널(VSCode) 확인
+    console.error("Proxy 내부 에러 상세:", error);
     return NextResponse.json(
       { message: "서버 연결에 실패했습니다 (8080 확인 필요)" },
       { status: 500 },
