@@ -1,6 +1,6 @@
 import CloseIcon from "@/assets/close-thin.svg";
 
-import { GARDEN_RULES } from "@/constants/gardenRules";
+import { GARDEN_RULES } from "@/constants/garden/gardenRules";
 
 interface GardenRulesProps {
   modalClose: () => void;
@@ -13,7 +13,7 @@ export const GardenRules = ({ modalClose }: GardenRulesProps) => {
           <CloseIcon className="text-neutral-04 h-4 w-4 cursor-pointer" />
         </button>
       </header>
-      <ul className="scrollbar-hide flex max-h-[490px] flex-col gap-[16px] overflow-y-scroll px-4">
+      <ul className="flex max-h-[490px] flex-col gap-[16px] overflow-y-scroll px-4">
         {GARDEN_RULES.map(rule => (
           <li key={rule.index} className="flex gap-2">
             <div className="text-h3 text-neutral-01">{rule.index}</div>

@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { PlantSort } from "@/constants/plantList";
+import { PlantSort } from "@/constants/garden/plantList";
 
 import { NameInput } from "../common/NameInput";
 

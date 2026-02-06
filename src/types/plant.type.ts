@@ -1,4 +1,4 @@
-export type GrowthStatus = "SEED" | "SPROUT" | "STEM" | "BUD" | "FULL_GROWN";
+export type GrowthStatus = "SEED" | "SPROUT" | "STEM" | "BUD" | "BLOOM";
 
 export type PlantSort =
   | "daisy"
@@ -10,7 +10,7 @@ export type PlantSort =
 export type GardenPlant = {
   id: number;
   nickname: string;
-  plantSort: string;
-  growthStatus: string;
+  plantSort: PlantSort;
+  growthStatus: GrowthStatus;
   recentWateredTime: string; // ISO string
 };

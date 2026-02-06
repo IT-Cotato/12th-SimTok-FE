@@ -4,27 +4,27 @@
     "nickname": "두쫀쿠",
     "plantSort": "daisy",
     "growthStatus": "SPROUT",
-    "recentWateredTime": "2026-02-03T08:30:00"
+    "recentWateredTime": "2026-02-05T08:30:00"
   },
   {
     "id": 2,
     "nickname": "맥모닝",
     "plantSort": "tulip",
     "growthStatus": "STEM",
-    "recentWateredTime": "2026-02-02T21:10:00"
+    "recentWateredTime": "2026-02-06T21:10:00"
   },
   {
     "id": 3,
     "nickname": "믿음소망",
     "plantSort": "lily",
     "growthStatus": "BUD",
-    "recentWateredTime": "2026-02-01T09:00:00"
+    "recentWateredTime": "2026-02-06T09:00:00"
   },
   {
     "id": 4,
     "nickname": "사랑",
     "plantSort": "sunflower",
-    "growthStatus": "FULL_GROWN",
+    "growthStatus": "BLOOM",
     "recentWateredTime": "2026-02-04T18:45:00"
   },
   {
@@ -66,7 +66,7 @@
     "id": 10,
     "nickname": "루루",
     "plantSort": "lily",
-    "growthStatus": "FULL_GROWN",
+    "growthStatus": "BLOOM",
     "recentWateredTime": "2026-02-05T10:10:00"
   }
 ]

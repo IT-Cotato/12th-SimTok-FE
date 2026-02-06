@@ -10,7 +10,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import StarFill from "@/assets/garden/star-fill.svg";
 import StarStroke from "@/assets/garden/star-stroke.svg";
 
-import { PlantSort } from "@/constants/plantList";
+import { PlantSort } from "@/constants/garden/plantList";
 
 import { ProgressDots } from "../common/ProgressDot";
 
