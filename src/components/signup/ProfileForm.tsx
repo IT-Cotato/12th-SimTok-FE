@@ -224,9 +224,8 @@ export const ProfileForm = () => {
 
       <div className="mt-auto mb-13 flex w-full justify-center px-4 py-[10px]">
         <FullButton
-          isActive={isConfirmActive}
+          isActive={isConfirmActive && !isSubmitting}
           onClick={handleFullButtonClick}
-          disabled={isSubmitting}
         >
           인증하기
         </FullButton>
