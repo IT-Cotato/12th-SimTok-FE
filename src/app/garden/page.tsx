@@ -56,6 +56,12 @@ const Garden = () => {
         </button>
       </div>
       <div className="mt-[53.5px]">
+        {carouselPage > 1 && (
+          <div>
+            <ProgressDots total={carouselPage} current={currentPage + 1} />
+          </div>
+        )}
+
         <PageTitle>
           {havePlant ? (
             <>
@@ -68,9 +74,6 @@ const Garden = () => {
             </>
           )}
         </PageTitle>
-        {carouselPage > 1 && (
-          <ProgressDots total={carouselPage} current={currentPage + 1} />
-        )}
       </div>
       {havePlant && (
         <section className="absolute bottom-[180px] left-1/2 z-70 w-full -translate-x-1/2">
