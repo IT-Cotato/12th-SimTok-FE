@@ -2,17 +2,23 @@
 
 import { useRouter } from "next/navigation";
 
+import { useState } from "react";
+
 import { useSignupStore } from "@/stores/useSignupStore";
 
 const AuthStartPage = () => {
   const router = useRouter();
   const { setSignupData } = useSignupStore();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleClickLogin = () => {
     router.push("/login/phone");
   };
 
   const handleStartSignup = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+
     try {
       const response = await fetch("/api/signup/drafts", { method: "POST" });
       const result = await response.json();
@@ -31,6 +37,8 @@ const AuthStartPage = () => {
     } catch (error) {
       console.error("네트워크 에러:", error);
       alert("네트워크 오류가 발생했습니다.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
