@@ -57,9 +57,17 @@ const SettingPage = () => {
       console.log("회원가입 최종 결과:", result);
 
       if (result.success) {
-        const { accessToken, refreshToken } = result.data.tokens;
-        localStorage.setItem("access_token", accessToken.accessToken);
-        localStorage.setItem("refresh_token", refreshToken.refreshToken);
+        const tokens = result.data?.tokens;
+        const access = tokens?.accessToken?.accessToken;
+        const refresh = tokens?.refreshToken?.refreshToken;
+
+        if (!access || !refresh) {
+          alert("토큰 정보를 받아오지 못했습니다.");
+          return;
+        }
+
+        localStorage.setItem("access_token", access);
+        localStorage.setItem("refresh_token", refresh);
 
         router.push("/onboarding");
       } else {
