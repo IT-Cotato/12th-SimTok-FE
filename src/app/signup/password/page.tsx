@@ -151,9 +151,8 @@ const SettingPage = () => {
 
         <div className="mb-13 flex w-full justify-center px-4 py-[10px]">
           <FullButton
-            isActive={isPasswordConfirmValid}
+            isActive={isPasswordConfirmValid && !isSubmitting}
             onClick={handlePasswordSubmit}
-            disabled={isSubmitting}
           >
             설정완료
           </FullButton>
