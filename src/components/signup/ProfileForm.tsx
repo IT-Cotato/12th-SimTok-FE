@@ -66,6 +66,7 @@ export const ProfileForm = () => {
       }
     } catch (error) {
       console.error("SMS 요청 에러:", error);
+      alert("네트워크 오류가 발생했습니다.");
     } finally {
       setIsSubmitting(false);
     }
@@ -143,6 +144,8 @@ export const ProfileForm = () => {
         }
       } catch (error) {
         console.error("프로필 제출 에러:", error);
+        alert("네트워크 오류가 발생했습니다.");
+        setModalType(null);
       } finally {
         setIsSubmitting(false);
       }
