@@ -72,7 +72,7 @@ export const ProfileForm = () => {
         setIsVerified(false);
         setCode("");
         start(180);
-        console.log("SMS 발송 성공:", result.data.flags);
+        console.log("SMS 발송 성공:");
       } else {
         alert(result.message || "문자 발송 제한을 초과했습니다.");
       }
@@ -154,8 +154,6 @@ export const ProfileForm = () => {
         }
 
         const formattedBirth = `${cleanBirth.slice(0, 4)}-${cleanBirth.slice(4, 6)}-${cleanBirth.slice(6, 8)}`;
-
-        console.log("제출 데이터:", { name, birthDate: formattedBirth });
 
         const res = await signupApi.submitProfile({
           name,
