@@ -45,24 +45,36 @@ export const ProfileForm = () => {
   const isNameFilled = name.trim().length > 0;
   const canRequestCode = isValidPhone;
   const isBirthValid = isValidBirth(birth);
+  const [remainingResend, setRemainingResend] = useState(3);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleRequestCode = async () => {
     if (!canRequestCode || isSubmitting) return;
 
+    //재전송 횟수 체크
+    if (remainingResend === 0) {
+      alert(
+        "문자 재발송 횟수를 모두 사용하셨습니다. 처음부터 다시 시도해주세요.",
+      );
+      router.replace("/signup/agree"); // 처음으로 리다이렉트
+      return;
+    }
     setIsSubmitting(true);
     try {
       const res = await signupApi.sendSms(phone.replace(/-/g, ""));
       const result = await res.json();
 
       if (result.success) {
+        const { remainingResendCount } = result.data.flags;
+        setRemainingResend(remainingResendCount);
+
         setIsVerified(false);
         setCode("");
         start(180);
         console.log("SMS 발송 성공:", result.data.flags);
       } else {
-        alert(result.message || "번호를 확인해주세요.");
+        alert(result.message || "문자 발송 제한을 초과했습니다.");
       }
     } catch (error) {
       console.error("SMS 요청 에러:", error);
@@ -101,7 +113,9 @@ export const ProfileForm = () => {
         const remainingAttempts = result.data?.flags?.remainingOtpAttempts;
 
         if (remainingAttempts === 0) {
-          alert("인증 시도 횟수를 초과했습니다. 인증번호를 다시 요청해주세요.");
+          alert(
+            "인증 시도 횟수(3회)를 초과했습니다. 인증번호를 다시 요청해주세요.",
+          );
           stop();
           setIsVerified(false);
           setCode("");
