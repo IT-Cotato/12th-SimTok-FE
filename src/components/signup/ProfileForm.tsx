@@ -90,14 +90,28 @@ export const ProfileForm = () => {
 
       console.log("OTP 검증 결과:", result);
 
+      //검증 성공 시
       if (result.success && result.data?.step !== "OTP_REQUIRED") {
         setIsVerified(true);
         setModalType("success");
         stop();
-      } else {
-        // 인증번호가 틀린 경우 여기로 들어와야 함
-        setIsVerified(false);
-        setModalType("error");
+      }
+      //검증 실패 시
+      else {
+        const remainingAttempts = result.data?.flags?.remainingOtpAttempts;
+
+        if (remainingAttempts === 0) {
+          alert("인증 시도 횟수를 초과했습니다. 인증번호를 다시 요청해주세요.");
+          stop();
+          setIsVerified(false);
+          setCode("");
+        } else {
+          // 남은 횟수 안내 포함 에러 처리
+          alert(
+            `인증번호가 올바르지 않습니다. (남은 횟수: ${remainingAttempts}회)`,
+          );
+          setModalType("error");
+        }
       }
     } catch (error) {
       console.error("OTP 검증 에러:", error);
