@@ -4,69 +4,89 @@
     "nickname": "두쫀쿠",
     "plantSort": "daisy",
     "growthStatus": "SPROUT",
-    "recentWateredTime": "2026-02-05T08:30:00"
+    "recentWateredTime": "2026-02-05T08:30:00",
+    "gardenState": "WITHERED",
+    "lastWateredById": 101
   },
   {
     "id": 2,
     "nickname": "맥모닝",
     "plantSort": "tulip",
     "growthStatus": "STEM",
-    "recentWateredTime": "2026-02-06T21:10:00"
+    "recentWateredTime": "2026-02-06T21:10:00",
+    "gardenState": "WATERED_RECENTLY",
+    "lastWateredById": 102
   },
   {
     "id": 3,
     "nickname": "믿음소망",
     "plantSort": "lily",
     "growthStatus": "BUD",
-    "recentWateredTime": "2026-02-06T09:00:00"
+    "recentWateredTime": "2026-02-06T09:00:00",
+    "gardenState": "WATERABLE",
+    "lastWateredById": 103
   },
   {
     "id": 4,
     "nickname": "사랑",
     "plantSort": "sunflower",
     "growthStatus": "BLOOM",
-    "recentWateredTime": "2026-02-04T18:45:00"
+    "recentWateredTime": "2026-02-04T18:45:00",
+    "gardenState": "NUTRITION_AVAILABLE",
+    "lastWateredById": 101
   },
   {
     "id": 5,
     "nickname": "딸기모찌",
     "plantSort": "baby-breath",
     "growthStatus": "SEED",
-    "recentWateredTime": "2026-02-05T07:05:00"
+    "recentWateredTime": "2026-02-05T07:05:00",
+    "gardenState": "WITHERED",
+    "lastWateredById": 104
   },
   {
     "id": 6,
     "nickname": "초코송이",
     "plantSort": "daisy",
     "growthStatus": "STEM",
-    "recentWateredTime": "2026-02-05T09:40:00"
+    "recentWateredTime": "2026-02-05T09:40:00",
+    "gardenState": "WITHERED",
+    "lastWateredById": 102
   },
   {
     "id": 7,
     "nickname": "해바라기씨",
     "plantSort": "sunflower",
     "growthStatus": "SPROUT",
-    "recentWateredTime": "2026-02-03T22:15:00"
+    "recentWateredTime": "2026-02-03T22:15:00",
+    "gardenState": "NUTRITION_AVAILABLE",
+    "lastWateredById": 105
   },
   {
     "id": 8,
     "nickname": "봄비",
     "plantSort": "tulip",
     "growthStatus": "BUD",
-    "recentWateredTime": "2026-02-04T06:20:00"
+    "recentWateredTime": "2026-02-04T06:20:00",
+    "gardenState": "NUTRITION_AVAILABLE",
+    "lastWateredById": 103
   },
   {
     "id": 9,
     "nickname": "포근이",
     "plantSort": "baby-breath",
     "growthStatus": "STEM",
-    "recentWateredTime": "2026-02-02T11:55:00"
+    "recentWateredTime": "2026-02-02T11:55:00",
+    "gardenState": "NUTRITION_AVAILABLE",
+    "lastWateredById": 104
   },
   {
     "id": 10,
     "nickname": "루루",
     "plantSort": "lily",
     "growthStatus": "BLOOM",
-    "recentWateredTime": "2026-02-05T10:10:00"
+    "recentWateredTime": "2026-02-05T10:10:00",
+    "gardenState": "WITHERED",
+    "lastWateredById": 101
   }
 ]
