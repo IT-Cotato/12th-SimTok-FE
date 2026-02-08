@@ -34,7 +34,6 @@ export async function POST(request: Request) {
     const res = NextResponse.json(data);
     const cookieStore = await cookies();
 
-    // Access Token 쿠키 저장
     cookieStore.set("accessToken", token, {
       path: "/",
       httpOnly: true,
@@ -43,7 +42,6 @@ export async function POST(request: Request) {
       maxAge: 60 * 60 * 24, //일
     });
 
-    // Refresh Token 쿠키 저장
     if (refreshToken) {
       cookieStore.set("refreshToken", refreshToken, {
         path: "/",
@@ -54,7 +52,6 @@ export async function POST(request: Request) {
       });
     }
 
-    console.log("모든 토큰 쿠키 저장 완료");
     return res;
   } catch (error) {
     console.error("Login Proxy Error:", error);
