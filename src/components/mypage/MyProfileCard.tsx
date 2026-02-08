@@ -3,40 +3,51 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import type { UserProfile } from "@/types/user.type";
+import { useEffect, useState } from "react";
 
-interface MyProfileCardProps {
-  userProfileData: UserProfile;
-}
+import { type ProfileData, profileApi } from "@/app/api/profile";
 
-export const MyProfileCard = ({ userProfileData }: MyProfileCardProps) => {
+export const MyProfileCard = () => {
   const router = useRouter();
-  const { profileImg, nickname } = userProfileData;
+  const [profile, setProfile] = useState<ProfileData | null>(null);
 
-  const handleEditRedirect = () => {
-    router.push("/mypage/profile");
-  };
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const result = await profileApi.getProfile();
+        if (result.success) setProfile(result.data);
+      } catch (err) {
+        console.error("프로필 로드 실패:", err);
+      }
+    };
+    fetchProfile();
+  }, []);
 
+  if (!profile)
+    return (
+      <div className="bg-neutral-10 h-24 w-full animate-pulse rounded-2xl" />
+    );
+
+  const defaultImage = "/images/default-profile.png";
   return (
     <div
-      onClick={handleEditRedirect}
-      className="border-neutral-10 flex w-full items-center justify-between border-b px-4 py-2"
+      onClick={() => router.push("/mypage/profile")}
+      className="border-neutral-10 flex w-full cursor-pointer items-center justify-between border-b px-4 py-2"
     >
       <div className="flex items-center gap-4">
         <div className="relative h-16 w-16 overflow-hidden rounded-2xl">
           <Image
-            src={profileImg || "/images/default-profile.png"}
-            alt={`${nickname} 프로필`}
+            src={profile.profileImageUrl || defaultImage}
+            alt={`${profile.name} 프로필`}
             fill
             className="object-cover"
           />
         </div>
-        <span className="text-h2 text-neutral-01">{nickname}</span>
+        <span className="text-h2 text-neutral-01">{profile.name}</span>
       </div>
 
       <button
         type="button"
-        onClick={() => router.push("/mypage/profile")}
         className="border-neutral-08 text-body3 text-neutral-04 cursor-pointer rounded-2xl border px-4 py-1.5"
       >
         편집

@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import { type ProfileData, profileApi } from "@/app/api/profile";
+
 import DateIcon from "@/assets/date.svg";
 import PhoneIcon from "@/assets/phone.svg";
 import ProfileIcon from "@/assets/profile.svg";
@@ -12,21 +14,15 @@ import UploadButton from "@/components/onboarding/UploadButton";
 
 import { useProfileImageUpload } from "@/hooks/useProfileImageUpload";
 
-import type { UserProfile } from "@/types/user.type";
-
 import { ProfileWrapper } from "../common/ProfileWrapper";
 
-interface ProfileSummaryProps {
-  userProfileData: UserProfile | null;
-  onModalStateChange?: (isOpen: boolean) => void;
-}
-
 export const ProfileSummary = ({
-  userProfileData,
   onModalStateChange,
-}: ProfileSummaryProps) => {
+}: {
+  onModalStateChange?: (open: boolean) => void;
+}) => {
+  const [data, setData] = useState<ProfileData | null>(null);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
-
   const { profileImage, isLoading, uploadImage, resetImage, cancelUpload } =
     useProfileImageUpload();
 
@@ -34,18 +30,22 @@ export const ProfileSummary = ({
     onModalStateChange?.(isUploadOpen || isLoading);
   }, [isUploadOpen, isLoading, onModalStateChange]);
 
-  if (!userProfileData) return null;
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const result = await profileApi.getProfile();
+        if (result.success) setData(result.data);
+      } catch (error) {
+        console.error("데이터 조회 실패:", error);
+      }
+    };
+    loadData();
+  }, []);
 
-  const {
-    profileImg: originalProfileImg,
-    userName,
-    phoneNumber,
-    birthDate,
-  } = userProfileData;
+  if (!data) return null;
 
   const handleCloseModal = () => setIsUploadOpen(false);
-
-  const currentProfileImage = profileImage ?? originalProfileImg;
+  const currentProfileImage = profileImage ?? data.profileImageUrl;
 
   return (
     <div className="flex w-full max-w-[440px] flex-col items-center">
@@ -57,9 +57,9 @@ export const ProfileSummary = ({
       />
 
       <div className="mt-[35px] flex w-full flex-col gap-2.5 px-4 py-2.5">
-        <InfoRow Icon={ProfileIcon} value={userName} />
-        <InfoRow Icon={DateIcon} value={birthDate} />
-        <InfoRow Icon={PhoneIcon} value={phoneNumber} />
+        <InfoRow Icon={ProfileIcon} value={data.name} />
+        <InfoRow Icon={DateIcon} value={data.birthDate} />
+        <InfoRow Icon={PhoneIcon} value={data.phoneNumber} />
       </div>
 
       <UploadButton
@@ -81,7 +81,7 @@ export const ProfileSummary = ({
 
       <LoadingModal
         isOpen={isLoading}
-        title="프로필 사진 업로드 중"
+        title="업로드 중"
         confirmLabel="취소하기"
         isLoading
         backdrop="blur"
