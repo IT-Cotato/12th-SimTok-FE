@@ -49,16 +49,13 @@ export const ProfileSummary = ({
 
   const handleImageUpload = async (file: File) => {
     try {
-      // 1. 훅 내부의 로딩 상태 및 미리보기 처리를 위해 호출 (선택 사항)
-      // await uploadImage(file);
-
-      // 2. Presigned URL 발급 받기
+      // Presigned URL 발급 받기
       const preRes = await profileApi.getPresignedUrl(file.name);
       if (!preRes.success) throw new Error("URL 발급 실패");
 
       const { presignedUrl, imageUrl, contentType } = preRes.data;
 
-      // 3. S3에 파일 직접 업로드
+      // S3에 파일 직접 업로드
       const isS3Success = await profileApi.uploadToS3(
         presignedUrl,
         file,
@@ -66,16 +63,14 @@ export const ProfileSummary = ({
       );
       if (!isS3Success) throw new Error("S3 업로드 실패");
 
-      // 4. 백엔드 DB에 최종 S3 이미지 경로 저장
+      // 백엔드 DB에 최종 S3 이미지 경로 저장
       const updateRes = await profileApi.updateProfile(imageUrl);
 
       if (updateRes.success) {
         setData(updateRes.data); // 프로필 정보 갱신 (이미지 포함)
-        alert("프로필 사진이 업데이트되었습니다.");
       }
     } catch (error) {
       console.error("업로드 과정 중 에러:", error);
-      alert("사진 업데이트에 실패했습니다.");
     } finally {
       handleCloseModal();
     }

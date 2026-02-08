@@ -10,7 +10,6 @@ import { FullButton } from "@/components/common/FullButton";
 import LoadingModal from "@/components/common/LoadingModal";
 import UploadButton from "@/components/onboarding/UploadButton";
 
-//import { useProfileImageUpload } from "@/hooks/useProfileImageUpload";
 import { ProfileWrapper } from "../common/ProfileWrapper";
 
 const OnboardingProfileClient = () => {
@@ -31,29 +30,10 @@ const OnboardingProfileClient = () => {
 
   const isNameValid = name.trim().length > 0;
 
-  // const { profileImage, isLoading, uploadImage, resetImage, cancelUpload } =
-  //   useProfileImageUpload();
-
-  // const handleCreateProfile = async () => {
-  //   if (!isNameValid) return;
-
-  //   const profile = {
-  //     name: name.trim(),
-  //     imageUrl: profileImage ?? null,
-  //   };
-  //   try {
-  //     localStorage.setItem("onboardingProfile", JSON.stringify(profile));
-  //   } catch (e) {
-  //     console.error(e);
-  //     return;
-  //   }
-  //   router.replace("/");
-  // };
   const handleCreateProfile = async () => {
     if (!isNameValid) return;
 
     try {
-      // POST API 호출 (S3 업로드된 URL 또는 null 전송)
       const result = await profileApi.createProfile(uploadedImageUrl);
 
       if (result.success) {
@@ -101,10 +81,8 @@ const OnboardingProfileClient = () => {
 
             <section className="mt-[86px] flex flex-col items-center">
               <ProfileWrapper
-                //imageUrl={profileImage}
                 imageUrl={uploadedImageUrl}
                 name={name}
-                //onChangeName={setName}
                 onProfileClick={() => setIsUploadOpen(true)}
                 canEdit={true}
                 showInput={true}
