@@ -40,4 +40,13 @@ export const profileApi = {
     });
     return res.json();
   },
+
+  createProfile: async (profileImageUrl: string | null) => {
+    const res = await fetch("/api/profile", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ profileImageUrl }),
+    });
+    return res.json();
+  },
 };
