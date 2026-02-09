@@ -3,6 +3,9 @@ import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
+import "swiper/css";
+import { Swiper, SwiperSlide } from "swiper/react";
+
 import { ProgressDots } from "@/components/common/ProgressDot";
 import { EmptyPlant } from "@/components/garden/care/EmptyPlant";
 import { GardenBackgroundColor } from "@/components/garden/care/GardenBackgrounColor";
@@ -99,24 +102,39 @@ const GardenCare = () => {
 
   return (
     <main className="relative flex min-h-screen flex-col overflow-hidden">
+      {/* 배경 */}
       <GardenBackgroundColor
-        gardenState={currentStep.gardenState as GardenState}
+        gardenState={displayGardenState}
         viewPhase={viewPhase}
       />
+
+      {/* 헤더 */}
       <GardenCareHeader
         selectTitle={selectTitle}
         onChangeSelectTitle={handleChangeSelectTitle}
       />
-      {PlantData ? (
-        PlantData.map((data, idx) => (
-          <section key={idx}>
-            <ProgressDots total={PlantData.length} current={idx} />
-            <GardenCareContent
-              growthStatus={data.growthStatus as GrowthStage}
-              gardenState={data.gardenState as GardenState}
-            />
-          </section>
-        ))
+
+      {/* ProgressDots: PlantData 있을 때만 */}
+      {PlantData && PlantData.length > 0 && (
+        <ProgressDots total={PlantData.length} current={currentIndex} />
+      )}
+
+      {PlantData && PlantData.length > 0 ? (
+        <Swiper
+          onSlideChange={swiper => setCurrentIndex(swiper.activeIndex)}
+          keyboard={true}
+          spaceBetween={0}
+          slidesPerView={1}
+        >
+          {PlantData.map((data, idx) => (
+            <SwiperSlide key={idx}>
+              <GardenCareContent
+                growthStatus={data.growthStatus as GrowthStage}
+                gardenState={displayGardenState}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
       ) : (
         <>
           <section className="flex flex-1 flex-col pb-[17px]">
