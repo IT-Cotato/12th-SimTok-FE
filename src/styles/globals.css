@@ -181,6 +181,74 @@
     );
   }
 
+  /* 정원 배경 */
+  .bg-waterable {
+    background:
+      radial-gradient(
+        87.99% 89.07% at 123.07% 13.91%,
+        rgba(19, 153, 255, 0.53) 30.5%,
+        rgba(255, 255, 255, 0.53) 100%
+      ),
+      radial-gradient(
+        111.68% 73.28% at -16.48% 5.81%,
+        #0cefff 35.08%,
+        #ffffff 100%
+      );
+  }
+
+  .bg-withered {
+    background:
+      radial-gradient(136.93% 71.84% at 0% -1.83%, #ffaf1d 50.96%, #fff 100%),
+      radial-gradient(
+        87.99% 89.07% at 123.07% 13.91%,
+        rgba(255, 98, 98, 0.53) 30.5%,
+        rgba(255, 255, 255, 0.53) 100%
+      );
+  }
+
+  .bg-watering {
+    background:
+      radial-gradient(
+        87.99% 89.07% at 123.07% 13.91%,
+        rgba(140, 243, 255, 0.53) 30.5%,
+        rgba(255, 255, 255, 0.53) 100%
+      ),
+      radial-gradient(131.98% 70.44% at -7.39% -2.25%, #03f 0%, #fff 100%);
+  }
+
+  .bg-after-watering {
+    background:
+      radial-gradient(152.95% 106.25% at -43.75% 0%, #00ff62 0%, #fff 100%),
+      radial-gradient(
+        338.52% 151.74% at 187.95% -53.19%,
+        rgba(0, 255, 98, 0.53) 30.5%,
+        rgba(255, 255, 255, 0.53) 100%
+      );
+  }
+
+  .bg-nutrition-available {
+    background:
+      radial-gradient(
+        153.07% 86.8% at -15.11% -6.85%,
+        #004a15 56.25%,
+        #fff 100%
+      ),
+      radial-gradient(
+        87.99% 89.07% at 123.07% 13.91%,
+        rgba(222, 115, 0, 0.53) 30.5%,
+        rgba(255, 255, 255, 0.53) 100%
+      );
+  }
+  .bg-after-nutrition {
+    background:
+      radial-gradient(131.98% 70.44% at -7.39% -2.25%, #f9ff00 0%, #fff 100%),
+      radial-gradient(
+        87.99% 89.07% at 123.07% 13.91%,
+        rgba(253, 255, 171, 0.53) 30.5%,
+        rgba(255, 255, 255, 0.53) 100%
+      );
+  }
+
   @keyframes rotation {
     0% {
       transform: rotate(0deg);
