@@ -79,6 +79,22 @@ export const ProfileSummary = ({
     }
   };
 
+  const handleDefaultImage = async () => {
+    try {
+      setIsUploading(true);
+      const result = await profileApi.updateProfile(""); // 빈 값 혹은 null 전달
+      if (result.success) {
+        resetImage(); // 로컬 미리보기 초기화
+        setData(result.data); // 서버 데이터 동기화
+        handleCloseModal();
+      }
+    } catch (error) {
+      alert("기본 이미지 변경 실패");
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   return (
     <div className="flex w-full max-w-[440px] flex-col items-center">
       <ProfileWrapper
@@ -98,10 +114,7 @@ export const ProfileSummary = ({
         isOpen={isUploadOpen}
         onClose={handleCloseModal}
         onSelectAlbum={handleImageUpload}
-        onSelectDefault={() => {
-          resetImage();
-          handleCloseModal();
-        }}
+        onSelectDefault={handleDefaultImage}
       />
 
       <LoadingModal
