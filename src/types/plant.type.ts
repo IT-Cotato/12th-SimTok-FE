@@ -23,11 +23,13 @@ export type GardenState =
   // 완료
   | "COMPLETED";
 
+export type GardenAction = "WATER" | "NUTRITION";
 /* 정원 상태, 제목 매핑 */
 export interface GardenTitleItem {
   state: GardenState;
   growthStage: GrowthStage | null;
   title: string;
+  action: GardenAction;
 }
 
 /* 정원 식물 정보 */
@@ -39,4 +41,5 @@ export type GardenPlant = {
   recentWateredTime: string;
   lastWateredById: number;
   gardenState: GardenState;
+  percentage: number;
 };
