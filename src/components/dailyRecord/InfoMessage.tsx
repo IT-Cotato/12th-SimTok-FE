@@ -4,7 +4,7 @@ interface InfoMessageProps {
 }
 export const InfoMessage = ({ text, triangleUp = true }: InfoMessageProps) => {
   return (
-    <section className="inline-flex flex-col">
+    <section className="inline-flex w-fit flex-col">
       {triangleUp && (
         <div className="border-b-neutral-01 mx-[10px] -mb-[6px] h-0 w-0 self-end border-t-0 border-r-[9px] border-b-[18px] border-l-[9px] border-solid border-t-transparent border-r-transparent border-l-transparent"></div>
       )}
