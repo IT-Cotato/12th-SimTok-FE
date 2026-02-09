@@ -16,13 +16,18 @@ const OnboardingProfileClient = () => {
   const router = useRouter();
   const [name, setName] = useState("");
   const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   useEffect(() => {
     const loadInitialData = async () => {
-      const result = await profileApi.getProfile();
-      if (result.success) {
-        setName(result.data.name);
+      try {
+        const result = await profileApi.getProfile();
+        if (result.success) {
+          setName(result.data.name);
+        }
+      } catch (err) {
+        console.error("초기 프로필 로드 실패:", err);
       }
     };
     loadInitialData();
@@ -31,7 +36,8 @@ const OnboardingProfileClient = () => {
   const isNameValid = name.trim().length > 0;
 
   const handleCreateProfile = async () => {
-    if (!isNameValid) return;
+    if (!isNameValid || isSubmitting) return; // 중복 클릭 방지
+    setIsSubmitting(true);
 
     try {
       const result = await profileApi.createProfile(
@@ -97,7 +103,10 @@ const OnboardingProfileClient = () => {
 
           {!isUploadOpen && (
             <section className="mb-13 px-4 py-[10px]">
-              <FullButton isActive={isNameValid} onClick={handleCreateProfile}>
+              <FullButton
+                isActive={isNameValid && !isSubmitting}
+                onClick={handleCreateProfile}
+              >
                 프로필생성하기
               </FullButton>
             </section>

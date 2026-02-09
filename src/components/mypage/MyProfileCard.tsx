@@ -11,13 +11,16 @@ export const MyProfileCard = () => {
   const router = useRouter();
   const [profile, setProfile] = useState<ProfileData | null>(null);
 
+  const [error, setError] = useState(false);
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const result = await profileApi.getProfile();
         if (result.success) setProfile(result.data);
+        else setError(true);
       } catch (err) {
         console.error("프로필 로드 실패:", err);
+        setError(true);
       }
     };
     fetchProfile();
