@@ -22,6 +22,22 @@ const nextConfig: NextConfig = {
 
     return config;
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "symtalk-image.s3.ap-northeast-2.amazonaws.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "43.202.184.232.nip.io",
+        port: "",
+        pathname: "/**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;
