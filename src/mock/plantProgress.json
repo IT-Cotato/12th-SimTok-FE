@@ -6,7 +6,8 @@
     "growthStatus": "SPROUT",
     "recentWateredTime": "2026-02-05T08:30:00",
     "gardenState": "WITHERED",
-    "lastWateredById": 101
+    "lastWateredById": 101,
+    "percentage": 12
   },
   {
     "id": 2,
@@ -15,7 +16,8 @@
     "growthStatus": "STEM",
     "recentWateredTime": "2026-02-06T21:10:00",
     "gardenState": "WATERED_RECENTLY",
-    "lastWateredById": 102
+    "lastWateredById": 102,
+    "percentage": 12
   },
   {
     "id": 3,
@@ -24,7 +26,8 @@
     "growthStatus": "BUD",
     "recentWateredTime": "2026-02-06T09:00:00",
     "gardenState": "WATERABLE",
-    "lastWateredById": 103
+    "lastWateredById": 103,
+    "percentage": 12
   },
   {
     "id": 4,
@@ -33,7 +36,8 @@
     "growthStatus": "BLOOM",
     "recentWateredTime": "2026-02-04T18:45:00",
     "gardenState": "NUTRITION_AVAILABLE",
-    "lastWateredById": 101
+    "lastWateredById": 101,
+    "percentage": 12
   },
   {
     "id": 5,
@@ -42,7 +46,8 @@
     "growthStatus": "SEED",
     "recentWateredTime": "2026-02-05T07:05:00",
     "gardenState": "WITHERED",
-    "lastWateredById": 104
+    "lastWateredById": 104,
+    "percentage": 12
   },
   {
     "id": 6,
@@ -51,7 +56,8 @@
     "growthStatus": "STEM",
     "recentWateredTime": "2026-02-05T09:40:00",
     "gardenState": "WITHERED",
-    "lastWateredById": 102
+    "lastWateredById": 102,
+    "percentage": 12
   },
   {
     "id": 7,
@@ -60,7 +66,8 @@
     "growthStatus": "SPROUT",
     "recentWateredTime": "2026-02-03T22:15:00",
     "gardenState": "NUTRITION_AVAILABLE",
-    "lastWateredById": 105
+    "lastWateredById": 105,
+    "percentage": 12
   },
   {
     "id": 8,
@@ -69,7 +76,8 @@
     "growthStatus": "BUD",
     "recentWateredTime": "2026-02-04T06:20:00",
     "gardenState": "NUTRITION_AVAILABLE",
-    "lastWateredById": 103
+    "lastWateredById": 103,
+    "percentage": 12
   },
   {
     "id": 9,
@@ -78,7 +86,8 @@
     "growthStatus": "STEM",
     "recentWateredTime": "2026-02-02T11:55:00",
     "gardenState": "NUTRITION_AVAILABLE",
-    "lastWateredById": 104
+    "lastWateredById": 104,
+    "percentage": 12
   },
   {
     "id": 10,
@@ -87,6 +96,7 @@
     "growthStatus": "BLOOM",
     "recentWateredTime": "2026-02-05T10:10:00",
     "gardenState": "WITHERED",
-    "lastWateredById": 101
+    "lastWateredById": 101,
+    "percentage": 12
   }
 ]
