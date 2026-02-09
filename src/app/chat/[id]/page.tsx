@@ -42,19 +42,15 @@ const Chatting = () => {
     setSelectedTopicKey(null);
   };
 
-  // const handleRecommendationClick = (text: string) => {
-  //   setInputValue(text);
-  //   setSelectedTopicKey(null); // Dim 배경 닫기 및 키워드 목록으로 복귀
-  // };
   const handleRecommendationClick = (text: string) => {
-    setClickedText(text); // 1. 초록색 배경 활성화
+    setClickedText(text);
 
     setTimeout(() => {
-      setInputValue(text); // 2. 입력창 텍스트 복사
-      setIsTopicOpen(false); // 3. 모달 닫기
-      setSelectedTopicKey(null); // 4. 키워드 초기화
-      setClickedText(null); // 5. 클릭 상태 초기화
-    }, 150); // 짧은 딜레이로 클릭 느낌 제공
+      setInputValue(text);
+      setIsTopicOpen(false);
+      setSelectedTopicKey(null);
+      setClickedText(null);
+    }, 150);
   };
 
   const handleSend = (text: string) => {
