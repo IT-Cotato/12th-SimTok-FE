@@ -28,7 +28,6 @@ const ChatListPage = () => {
   const router = useRouter();
   const [chats, setChats] = useState(chatListData);
   const [searchText, setSearchText] = useState("");
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [targetChat] = useState<{
     id: number;
@@ -96,6 +95,7 @@ const ChatListPage = () => {
         </div>
         <NavBar />
       </div>
+
       {selectedChat && (
         <ExitChatModal
           isOpen={isModalOpen}
