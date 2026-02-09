@@ -47,7 +47,7 @@ const FindPage = () => {
       <div className="flex w-full flex-col">
         <BackHeader title="새 비밀번호 설정" />
         <div className="mt-13.5 flex flex-1 flex-col">
-          <PageTitle>새로운 비밀번호를 입력해주세요</PageTitle>
+          <PageTitle title={["새로운 비밀번호를 입력해주세요"]} />
 
           <div className="mt-[76px] flex flex-col gap-2.5 px-4">
             <div className="flex flex-col">

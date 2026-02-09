@@ -43,11 +43,9 @@ const AgreePage = () => {
       <BackHeader title="회원가입" />
 
       <div className="mt-13.5 flex flex-1 flex-col">
-        <PageTitle>
-          반가워요! 가입하려면
-          <br />
-          약관에 동의가 필요해요.
-        </PageTitle>
+        <PageTitle
+          title={[" 반가워요! 가입하려면", " 약관에 동의가 필요해요."]}
+        />
 
         {/* 전체동의 영역 */}
         <ul className="mt-[41px] flex w-full flex-col gap-[10px]">
