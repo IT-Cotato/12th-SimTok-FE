@@ -31,9 +31,7 @@ const LoginPage = () => {
       <div className="flex h-full w-full flex-1 flex-col">
         <BackHeader title="로그인" />
         <div className="mt-13.5 flex flex-col gap-[29px]">
-          <PageTitle>
-            로그인하고 <br /> 심톡을 시작해볼까요?
-          </PageTitle>
+          <PageTitle title={["로그인하고", "심톡을 시작해볼까요?"]} />
 
           <div className="flex w-full flex-col gap-4 px-4 py-[10px]">
             <InputField

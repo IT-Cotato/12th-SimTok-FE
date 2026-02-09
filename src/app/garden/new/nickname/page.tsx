@@ -39,10 +39,9 @@ const PlantNicknamePage = () => {
         <BackHeader title="식물이름변경" />
         <ProgressDots total={3} current={0} />
         <div className="mt-[29px]">
-          <PageTitle>
-            친구와 함께 키울 <br />
-            식물의 이름을 만들어보세요.
-          </PageTitle>
+          <PageTitle
+            title={["친구와 함께 키울", "식물의 이름을 만들어보세요."]}
+          />
         </div>
         {selectedPlant && (
           <div className="absolute bottom-[271px] left-1/2 flex -translate-x-1/2 justify-center">
