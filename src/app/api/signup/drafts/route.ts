@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 
 export async function POST() {
-  console.log("API Route 도달 성공");
   try {
     const response = await fetch(
       "https://43.202.184.232.nip.io/api/signup/drafts",

@@ -2,42 +2,81 @@
 
 import { useRouter } from "next/navigation";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { type ProfileData, profileApi } from "@/app/api/profile";
 
 import { FullButton } from "@/components/common/FullButton";
 import LoadingModal from "@/components/common/LoadingModal";
 import UploadButton from "@/components/onboarding/UploadButton";
 
-import { useProfileImageUpload } from "@/hooks/useProfileImageUpload";
-
 import { ProfileWrapper } from "../common/ProfileWrapper";
 
 const OnboardingProfileClient = () => {
   const router = useRouter();
-
-  //추후에 실제 데이터 소스에 따라 이름 변경할거임
-  const [name, setName] = useState("김잇다"); //회원가입 데이터 기반
+  const [name, setName] = useState("");
   const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  useEffect(() => {
+    const loadInitialData = async () => {
+      try {
+        const result = await profileApi.getProfile();
+        if (result.success) {
+          setName(result.data.name);
+        }
+      } catch (err) {
+        console.error("초기 프로필 로드 실패:", err);
+      }
+    };
+    loadInitialData();
+  }, []);
 
   const isNameValid = name.trim().length > 0;
 
-  const { profileImage, isLoading, uploadImage, resetImage, cancelUpload } =
-    useProfileImageUpload();
-
   const handleCreateProfile = async () => {
-    if (!isNameValid) return;
+    if (!isNameValid || isSubmitting) return; // 중복 클릭 방지
+    setIsSubmitting(true);
 
-    const profile = {
-      name: name.trim(),
-      imageUrl: profileImage ?? null,
-    };
     try {
-      localStorage.setItem("onboardingProfile", JSON.stringify(profile));
+      const result = await profileApi.createProfile(
+        name.trim(),
+        uploadedImageUrl,
+      );
+
+      if (result.success) {
+        router.replace("/");
+      } else {
+        alert("프로필 생성에 실패했습니다.");
+      }
     } catch (e) {
-      console.error(e);
-      return;
+      console.error("프로필 생성 에러:", e);
     }
-    router.replace("/");
+  };
+
+  const handleImageUpload = async (file: File) => {
+    setIsUploading(true);
+    try {
+      const preRes = await profileApi.getPresignedUrl(file.name);
+      if (!preRes.success) return;
+
+      const { presignedUrl, imageUrl, contentType } = preRes.data;
+      const isS3Success = await profileApi.uploadToS3(
+        presignedUrl,
+        file,
+        contentType,
+      );
+
+      if (isS3Success) {
+        setUploadedImageUrl(imageUrl); // 최종 S3 주소 저장
+      }
+    } catch (error) {
+      console.error("이미지 업로드 실패:", error);
+    } finally {
+      setIsUploading(false);
+      setIsUploadOpen(false);
+    }
   };
 
   return (
@@ -53,9 +92,8 @@ const OnboardingProfileClient = () => {
 
             <section className="mt-[86px] flex flex-col items-center">
               <ProfileWrapper
-                imageUrl={profileImage}
+                imageUrl={uploadedImageUrl}
                 name={name}
-                //onChangeName={setName}
                 onProfileClick={() => setIsUploadOpen(true)}
                 canEdit={true}
                 showInput={true}
@@ -65,7 +103,10 @@ const OnboardingProfileClient = () => {
 
           {!isUploadOpen && (
             <section className="mb-13 px-4 py-[10px]">
-              <FullButton isActive={isNameValid} onClick={handleCreateProfile}>
+              <FullButton
+                isActive={isNameValid && !isSubmitting}
+                onClick={handleCreateProfile}
+              >
                 프로필생성하기
               </FullButton>
             </section>
@@ -76,27 +117,20 @@ const OnboardingProfileClient = () => {
       <UploadButton
         isOpen={isUploadOpen}
         onClose={() => setIsUploadOpen(false)}
-        onSelectAlbum={async file => {
-          try {
-            await uploadImage(file);
-            setIsUploadOpen(false);
-          } catch (error) {
-            console.error("이미지 업로드 실패:", error);
-          }
-        }}
+        onSelectAlbum={handleImageUpload}
         onSelectDefault={() => {
-          resetImage();
+          setUploadedImageUrl(null);
           setIsUploadOpen(false);
         }}
       />
 
       <LoadingModal
-        isOpen={isLoading}
+        isOpen={isUploading}
         title="로딩중"
         confirmLabel="취소하기"
         isLoading
         backdrop="blur"
-        onClose={cancelUpload}
+        onClose={() => setIsUploading(false)}
       />
     </>
   );
