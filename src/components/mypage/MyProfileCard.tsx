@@ -1,56 +1,57 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
-import type { UserProfile } from "@/types/user.type";
+import { useEffect, useState } from "react";
 
-interface MyProfileCardProps {
-  userProfileData: UserProfile;
-  onEdit?: () => void;
-}
+import { type ProfileData, profileApi } from "@/app/api/profile";
 
-export const MyProfileCard = ({
-  userProfileData,
-  onEdit,
-}: MyProfileCardProps) => {
-  const { profileImg, nickName } = userProfileData;
+export const MyProfileCard = () => {
+  const router = useRouter();
+  const [profile, setProfile] = useState<ProfileData | null>(null);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const result = await profileApi.getProfile();
+        if (result.success) setProfile(result.data);
+        else setError(true);
+      } catch (err) {
+        console.error("프로필 로드 실패:", err);
+        setError(true);
+      }
+    };
+    fetchProfile();
+  }, []);
+
+  if (!profile)
+    return (
+      <div className="bg-neutral-10 h-24 w-full animate-pulse rounded-2xl" />
+    );
+
+  const defaultImage = "/images/onboarding_profile.svg";
 
   return (
-    // <div
-    //   onClick={onEdit}
-    //   className="border-neutral-10 flex w-full items-center justify-between border-b px-4 py-2"
-    // >
     <div
-      role={onEdit ? "button" : undefined}
-      tabIndex={onEdit ? 0 : undefined}
-      onKeyDown={e => {
-        if (!onEdit) return;
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          onEdit();
-        }
-      }}
-      onClick={() => onEdit?.()}
-      className="border-neutral-10 flex w-full items-center justify-between border-b px-4 py-2"
+      onClick={() => router.push("/mypage/profile")}
+      className="border-neutral-10 flex w-full cursor-pointer items-center justify-between border-b px-4 py-2"
     >
       <div className="flex items-center gap-4">
         <div className="relative h-16 w-16 overflow-hidden rounded-2xl">
           <Image
-            src={profileImg || "/images/default-profile.png"}
-            alt={`${nickName} 프로필`}
+            src={profile.profileImageUrl || defaultImage}
+            alt={`${profile.name} 프로필`}
             fill
             className="object-cover"
           />
         </div>
-        <span className="text-h2 text-neutral-01">{nickName}</span>
+        <span className="text-h2 text-neutral-01">{profile.name}</span>
       </div>
 
       <button
         type="button"
-        onClick={e => {
-          e.stopPropagation();
-          onEdit?.();
-        }}
         className="border-neutral-08 text-body3 text-neutral-04 cursor-pointer rounded-2xl border px-4 py-1.5"
       >
         편집
