@@ -1,0 +1,33 @@
+import EmptyPod from "@/assets/garden/pot_blank.svg";
+
+import { PageTitle } from "@/components/common/PageTitle";
+import { InfoMessage } from "@/components/dailyRecord/InfoMessage";
+
+import { GardenTitle } from "@/constants/garden/gardenCare";
+
+import { GardenState } from "@/types/plant.type";
+
+export const EmptyPlant = () => {
+  const emptyTitle = GardenTitle.find(
+    item => item.state === ("EMPTY" satisfies GardenState),
+  )?.title;
+
+  return (
+    <div className="flex flex-1 flex-col items-center justify-between">
+      <section className="mt-[50.5px]">
+        <PageTitle title={emptyTitle} />
+      </section>
+
+      <section className="relative flex w-[239px] flex-col gap-[22.8px]">
+        <div className="self-end">
+          <InfoMessage
+            text="친구와 원하는 식물을 키울 수 있어요."
+            triangleUp={false}
+          />
+        </div>
+
+        <EmptyPod />
+      </section>
+    </div>
+  );
+};
