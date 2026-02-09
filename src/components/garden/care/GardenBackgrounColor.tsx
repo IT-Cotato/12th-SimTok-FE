@@ -1,3 +1,5 @@
+import { GardenTitle } from "@/constants/garden/gardenCare";
+
 import { GardenState, ViewPhase } from "@/types/plant.type";
 
 interface GardenBackgroundColorProps {
@@ -8,6 +10,10 @@ export const GardenBackgroundColor = ({
   gardenState,
   viewPhase,
 }: GardenBackgroundColorProps) => {
-  const GARDEN_BG_BASE = "absolute inset-0 z-0 transition-colors duration-500";
-  return <div></div>;
+  const backgroundColor =
+    GardenTitle.find(item => item.state === gardenState)?.background ??
+    "bg-white";
+
+  const GARDEN_BG_BASE = "absolute inset-0 z-0 transition-colors";
+  return <div className={`${backgroundColor} ${GARDEN_BG_BASE}`}></div>;
 };
