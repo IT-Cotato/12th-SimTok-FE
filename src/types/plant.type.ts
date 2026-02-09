@@ -24,12 +24,21 @@ export type GardenState =
   | "COMPLETED";
 
 export type GardenAction = "WATER" | "NUTRITION";
+
+// 화면 인터렉션용 상태
+export type ViewPhase =
+  | "IDLE" // 기본 (gardenState 그대로 보여줌)
+  | "NUTRITION_BLACK" // 영양제 투여중
+  | "NUTRITION_AFTER_SHORTLY" // 영양제 투여 직후
+  | "WATERING"; // 물주는 중
+
 /* 정원 상태, 제목 매핑 */
 export interface GardenTitleItem {
   state: GardenState;
   growthStage: GrowthStage | null;
   title: string[];
   action: GardenAction[];
+  background?: string;
 }
 
 /* 정원 식물 정보 */
