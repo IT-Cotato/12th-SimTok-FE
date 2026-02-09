@@ -20,6 +20,8 @@ import { PlantColletction } from "@/components/garden/PlantColletction";
 
 import plantList from "@/mock/plantProgress.json";
 
+import { GardenPlant } from "@/types/plant.type";
+
 const Garden = () => {
   const router = useRouter();
 
@@ -62,18 +64,13 @@ const Garden = () => {
           </div>
         )}
 
-        <PageTitle>
-          {havePlant ? (
-            <>
-              정원이 한층 더 풍성해졌네요! <br />
-              다른 식물도 키워볼까요?
-            </>
-          ) : (
-            <>
-              친구와 함께 식물도 키우고 <br /> 정원도 꾸며볼까요?
-            </>
-          )}
-        </PageTitle>
+        <PageTitle
+          title={
+            havePlant
+              ? ["정원이 한층 더 풍성해졌네요!", "다른 식물도 키워볼까요?"]
+              : ["친구와 함께 식물도 키우고", "정원도 꾸며볼까요?"]
+          }
+        />
       </div>
       {havePlant && (
         <section className="absolute bottom-[180px] left-1/2 z-70 w-full -translate-x-1/2">
@@ -90,7 +87,7 @@ const Garden = () => {
               }).map((_, pageIndex) => (
                 <SwiperSlide key={pageIndex}>
                   <PlantColletction
-                    plantList={plantList}
+                    plantList={plantList as GardenPlant[]}
                     pageIndex={pageIndex}
                   />
                 </SwiperSlide>
