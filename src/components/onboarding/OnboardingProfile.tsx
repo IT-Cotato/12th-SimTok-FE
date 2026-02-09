@@ -34,7 +34,10 @@ const OnboardingProfileClient = () => {
     if (!isNameValid) return;
 
     try {
-      const result = await profileApi.createProfile(uploadedImageUrl);
+      const result = await profileApi.createProfile(
+        name.trim(),
+        uploadedImageUrl,
+      );
 
       if (result.success) {
         router.replace("/");
@@ -47,6 +50,7 @@ const OnboardingProfileClient = () => {
   };
 
   const handleImageUpload = async (file: File) => {
+    setIsUploading(true);
     try {
       const preRes = await profileApi.getPresignedUrl(file.name);
       if (!preRes.success) return;
@@ -64,6 +68,7 @@ const OnboardingProfileClient = () => {
     } catch (error) {
       console.error("이미지 업로드 실패:", error);
     } finally {
+      setIsUploading(false);
       setIsUploadOpen(false);
     }
   };

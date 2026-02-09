@@ -21,10 +21,7 @@ export async function POST(request: Request) {
     const refreshToken = data.data?.refreshToken?.refreshToken;
 
     if (!token || typeof token !== "string") {
-      console.error(
-        "토큰 추출 실패. 백엔드 응답 구조 확인:",
-        JSON.stringify(data.data, null, 2),
-      );
+      console.error("토큰 추출 실패.");
       return NextResponse.json(
         { message: "인증 토큰을 생성할 수 없습니다." },
         { status: 500 },
@@ -32,9 +29,8 @@ export async function POST(request: Request) {
     }
 
     const res = NextResponse.json(data);
-    const cookieStore = await cookies();
 
-    cookieStore.set("accessToken", token, {
+    res.cookies.set("accessToken", token, {
       path: "/",
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -43,7 +39,7 @@ export async function POST(request: Request) {
     });
 
     if (refreshToken) {
-      cookieStore.set("refreshToken", refreshToken, {
+      res.cookies.set("refreshToken", refreshToken, {
         path: "/",
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",

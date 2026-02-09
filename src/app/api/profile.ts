@@ -41,11 +41,14 @@ export const profileApi = {
     return res.json();
   },
 
-  createProfile: async (profileImageUrl: string | null) => {
+  createProfile: async (name: string, profileImageUrl: string | null) => {
     const res = await fetch("/api/profile", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ profileImageUrl }),
+      body: JSON.stringify({
+        name,
+        profileImageUrl,
+      }),
     });
     return res.json();
   },
