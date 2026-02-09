@@ -28,7 +28,7 @@ const Chatting = () => {
   const id = params?.id;
   const [isTopicOpen, setIsTopicOpen] = useState(false);
   const [selectedTopicKey, setSelectedTopicKey] = useState<string | null>(null);
-
+  const [clickedText, setClickedText] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState<string>("");
 
   const selectedTopic = CHAT_TOPIC.find(t => t.key === selectedTopicKey);
@@ -37,9 +37,24 @@ const Chatting = () => {
   );
   const displayName = targetFriend ? targetFriend.userName : "...";
 
+  const handleCloseTopic = () => {
+    setIsTopicOpen(false);
+    setSelectedTopicKey(null);
+  };
+
+  // const handleRecommendationClick = (text: string) => {
+  //   setInputValue(text);
+  //   setSelectedTopicKey(null); // Dim 배경 닫기 및 키워드 목록으로 복귀
+  // };
   const handleRecommendationClick = (text: string) => {
-    setInputValue(text);
-    setSelectedTopicKey(null); // Dim 배경 닫기 및 키워드 목록으로 복귀
+    setClickedText(text); // 1. 초록색 배경 활성화
+
+    setTimeout(() => {
+      setInputValue(text); // 2. 입력창 텍스트 복사
+      setIsTopicOpen(false); // 3. 모달 닫기
+      setSelectedTopicKey(null); // 4. 키워드 초기화
+      setClickedText(null); // 5. 클릭 상태 초기화
+    }, 150); // 짧은 딜레이로 클릭 느낌 제공
   };
 
   const handleSend = (text: string) => {
@@ -52,21 +67,28 @@ const Chatting = () => {
         minute: "2-digit",
       }),
     };
-    // setMessages([...messages, newMessage]);
     setMessages(prev => [...prev, newMessage]);
     setInputValue("");
   };
 
   return (
     <main className="relative flex min-h-dvh w-full justify-center bg-white">
-      {isTopicOpen && selectedTopicKey && (
+      {/* {isTopicOpen && selectedTopicKey && (
         <div
           className="fixed inset-0 z-30 bg-black/50 transition-opacity"
-          onClick={() => setSelectedTopicKey(null)}
+          onClick={handleCloseTopic}
+        />
+      )} */}
+      {isTopicOpen && (
+        <div
+          className={`fixed inset-0 z-30 transition-opacity ${
+            selectedTopicKey ? "bg-black/50" : "bg-transparent"
+          }`}
+          onClick={handleCloseTopic}
         />
       )}
 
-      <div className="flex h-full w-full flex-col">
+      <div className="flex h-full w-full flex-col overflow-hidden">
         <BackHeader title={displayName}>
           <button
             type="button"
@@ -77,24 +99,24 @@ const Chatting = () => {
             <MenuIcon />
           </button>
         </BackHeader>
-        <section className="flex-1 overflow-y-auto px-[10px] py-[10px]">
+        <section className="mb-[120px] flex-1 overflow-y-auto px-[10px] py-[10px]">
           <ChatDateDivider date="2025년 12월 18일 목요일" />
+          <div className="flex flex-col">
+            {messages.map(msg =>
+              msg.type === "mine" ? (
+                <MyMessage key={msg.id} content={msg.content} time={msg.time} />
+              ) : (
+                <FriendMessage
+                  key={msg.id}
+                  userName={displayName}
+                  profileImage={targetFriend?.profileImg}
+                  content={msg.content}
+                  time={msg.time}
+                />
+              ),
+            )}
+          </div>
         </section>
-        <div className="flex flex-col">
-          {messages.map(msg =>
-            msg.type === "mine" ? (
-              <MyMessage key={msg.id} content={msg.content} time={msg.time} />
-            ) : (
-              <FriendMessage
-                key={msg.id}
-                userName={displayName}
-                profileImage={targetFriend?.profileImg}
-                content={msg.content}
-                time={msg.time}
-              />
-            ),
-          )}
-        </div>
 
         <div className="fixed bottom-0 z-40 w-full max-w-[440px] pb-[52px]">
           <div className="relative w-full">
