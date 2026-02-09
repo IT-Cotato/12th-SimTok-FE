@@ -19,6 +19,7 @@
   "dependencies": {
     "@use-funnel/browser": "^0.0.16",
     "axios": "^1.13.2",
+    "lottie-react": "^2.4.1",
     "next": "^16.1.6",
     "react": "19.2.1",
     "react-dom": "19.2.1",
