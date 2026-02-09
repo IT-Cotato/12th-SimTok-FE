@@ -70,6 +70,11 @@ export async function POST(req: NextRequest) {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get("accessToken")?.value;
+
+    if (!token) {
+      return NextResponse.json({ message: "인증 토큰 누락" }, { status: 401 });
+    }
+
     const body = await req.json();
 
     const res = await fetch("https://43.202.184.232.nip.io/api/profile", {

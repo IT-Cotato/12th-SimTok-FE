@@ -28,7 +28,7 @@ export const MyProfileCard = () => {
       <div className="bg-neutral-10 h-24 w-full animate-pulse rounded-2xl" />
     );
 
-  const defaultImage = "images/onboarding_profile.svg";
+  const defaultImage = "/images/onboarding_profile.svg";
 
   return (
     <div

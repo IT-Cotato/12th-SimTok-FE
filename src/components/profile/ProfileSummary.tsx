@@ -23,7 +23,8 @@ export const ProfileSummary = ({
 }) => {
   const [data, setData] = useState<ProfileData | null>(null);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
-  const { profileImage, isLoading, uploadImage, resetImage, cancelUpload } =
+  const [isUploading, setIsUploading] = useState(false);
+  const { profileImage, isLoading, resetImage, cancelUpload } =
     useProfileImageUpload();
 
   useEffect(() => {
@@ -48,6 +49,7 @@ export const ProfileSummary = ({
   const currentProfileImage = profileImage ?? data.profileImageUrl;
 
   const handleImageUpload = async (file: File) => {
+    setIsUploading(true);
     try {
       // Presigned URL 발급 받기
       const preRes = await profileApi.getPresignedUrl(file.name);
@@ -72,6 +74,7 @@ export const ProfileSummary = ({
     } catch (error) {
       console.error("업로드 과정 중 에러:", error);
     } finally {
+      setIsUploading(false);
       handleCloseModal();
     }
   };
@@ -102,7 +105,7 @@ export const ProfileSummary = ({
       />
 
       <LoadingModal
-        isOpen={isLoading}
+        isOpen={isLoading || isUploading}
         title="업로드 중"
         confirmLabel="취소하기"
         isLoading
