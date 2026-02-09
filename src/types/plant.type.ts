@@ -28,8 +28,8 @@ export type GardenAction = "WATER" | "NUTRITION";
 export interface GardenTitleItem {
   state: GardenState;
   growthStage: GrowthStage | null;
-  title: string;
-  action: GardenAction;
+  title: string[];
+  action: GardenAction[];
 }
 
 /* 정원 식물 정보 */
