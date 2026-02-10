@@ -36,6 +36,7 @@ const Chatting = () => {
     friend => friend.userId === Number(id),
   );
   const displayName = targetFriend ? targetFriend.userName : "...";
+  const isDimmed = isTopicOpen && Boolean(selectedTopicKey);
 
   const handleCloseTopic = () => {
     setIsTopicOpen(false);
@@ -82,7 +83,7 @@ const Chatting = () => {
   };
 
   return (
-    <main className="relative flex min-h-dvh w-full justify-center bg-white">
+    <main className="relative flex h-dvh w-full justify-center bg-white">
       {isTopicOpen && (
         <div
           className={`fixed inset-0 z-30 transition-opacity ${
@@ -92,53 +93,60 @@ const Chatting = () => {
         />
       )}
 
-      <div className="flex h-full w-full flex-col overflow-hidden">
+      <div className="flex h-full w-full flex-col">
         <BackHeader title={displayName}>
           <button
             type="button"
             aria-label="채팅방 설정"
-            className="flex items-center justify-center"
             onClick={() => router.push(`/chat/${params.id}/setting`)}
           >
             <MenuIcon />
           </button>
         </BackHeader>
-        <section className="mb-12 flex-1 overflow-y-auto px-[10px] py-[10px]">
+        <section className="scrollbar-hide flex-1 overflow-y-auto">
           <ChatDateDivider date="2025년 12월 18일 목요일" />
+          <div className="flex flex-col">
+            {messages.map((msg, index) => {
+              const isPrevSame =
+                index > 0 && messages[index - 1].type === msg.type;
+              const isNextSame =
+                index < messages.length - 1 &&
+                messages[index + 1].type === msg.type;
+
+              return msg.type === "mine" ? (
+                <MyMessage
+                  key={msg.id}
+                  content={msg.content}
+                  time={msg.time}
+                  isPrevSame={isPrevSame}
+                  isNextSame={isNextSame}
+                />
+              ) : (
+                <FriendMessage
+                  key={msg.id}
+                  userName={displayName}
+                  profileImage={targetFriend?.profileImg}
+                  content={msg.content}
+                  time={msg.time}
+                  isPrevSame={isPrevSame}
+                  isNextSame={isNextSame}
+                />
+              );
+            })}
+          </div>
         </section>
-        <div className="flex flex-col">
-          {messages.map((msg, index) => {
-            const isPrevSame =
-              index > 0 && messages[index - 1].type === msg.type;
-            const isNextSame =
-              index < messages.length - 1 &&
-              messages[index + 1].type === msg.type;
 
-            return msg.type === "mine" ? (
-              <MyMessage
-                key={msg.id}
-                content={msg.content}
-                time={msg.time}
-                isPrevSame={isPrevSame} // 이전 메시지와 같은지
-                isNextSame={isNextSame} // 다음 메시지와 같은지
-              />
-            ) : (
-              <FriendMessage
-                key={msg.id}
-                userName={displayName}
-                profileImage={targetFriend?.profileImg}
-                content={msg.content}
-                time={msg.time}
-                isPrevSame={isPrevSame}
-                isNextSame={isNextSame}
-              />
-            );
-          })}
-        </div>
-
-        <div className="fixed bottom-0 z-40 w-full max-w-[440px] pb-[52px]">
+        <div
+          className={`z-40 w-full max-w-[440px] flex-shrink-0 pb-[52px] transition-colors ${
+            isDimmed ? "bg-transparent" : "bg-white"
+          }`}
+        >
           <div className="relative w-full">
-            <div className="absolute bottom-full left-0 mb-4 w-full overflow-hidden px-4">
+            <div
+              className={`relative w-full overflow-hidden px-4 pb-4 transition-colors ${
+                isDimmed ? "bg-transparent" : "bg-white"
+              }`}
+            >
               {isTopicOpen && (
                 <div className="flex flex-col gap-[19px]">
                   {selectedTopic ? (
@@ -188,7 +196,7 @@ const Chatting = () => {
             <ChatField
               value={inputValue}
               onChange={setInputValue}
-              isDimmed={isTopicOpen && Boolean(selectedTopicKey)}
+              isDimmed={isDimmed}
               onSend={handleSend}
               onImageUpload={handleImageUpload}
             />
