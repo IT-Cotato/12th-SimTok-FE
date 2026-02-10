@@ -44,13 +44,10 @@ const Chatting = () => {
 
   const handleRecommendationClick = (text: string) => {
     setClickedText(text);
-
-    setTimeout(() => {
-      setInputValue(text);
-      setIsTopicOpen(false);
-      setSelectedTopicKey(null);
-      setClickedText(null);
-    }, 150);
+    setInputValue(text);
+    setIsTopicOpen(false);
+    setSelectedTopicKey(null);
+    setClickedText(null);
   };
 
   const handleSend = (text: string) => {
@@ -67,14 +64,25 @@ const Chatting = () => {
     setInputValue("");
   };
 
+  const handleImageUpload = (file: File) => {
+    const imageUrl = URL.createObjectURL(file);
+
+    const newMessage = {
+      id: Date.now(),
+      type: "mine",
+      content: imageUrl,
+      isImage: true,
+      time: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    };
+
+    setMessages(prev => [...prev, newMessage]);
+  };
+
   return (
     <main className="relative flex min-h-dvh w-full justify-center bg-white">
-      {/* {isTopicOpen && selectedTopicKey && (
-        <div
-          className="fixed inset-0 z-30 bg-black/50 transition-opacity"
-          onClick={handleCloseTopic}
-        />
-      )} */}
       {isTopicOpen && (
         <div
           className={`fixed inset-0 z-30 transition-opacity ${
@@ -163,12 +171,12 @@ const Chatting = () => {
                 </div>
               )}
             </div>
-
             <ChatField
               value={inputValue}
               onChange={setInputValue}
               isDimmed={isTopicOpen && Boolean(selectedTopicKey)}
               onSend={handleSend}
+              onImageUpload={handleImageUpload}
             />
           </div>
         </div>
