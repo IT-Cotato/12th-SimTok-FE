@@ -14,6 +14,7 @@ import { FriendMessage } from "@/components/chat/FriendMessage";
 import { MyMessage } from "@/components/chat/MyMessage";
 import TopicKeyword from "@/components/chat/TopicKeyword";
 import { BackHeader } from "@/components/common/BackHeader";
+import { InfoMessage } from "@/components/dailyRecord/InfoMessage";
 
 import { CHAT_TOPIC } from "@/constants/friendsSettings";
 
@@ -148,9 +149,9 @@ const Chatting = () => {
               }`}
             >
               {isTopicOpen && (
-                <div className="flex flex-col gap-[19px]">
+                <div className="flex flex-col">
                   {selectedTopic ? (
-                    <>
+                    <div className="flex flex-col gap-[19px]">
                       <div className="flex justify-center">
                         <button
                           onClick={() => setSelectedTopicKey(null)}
@@ -168,18 +169,27 @@ const Chatting = () => {
                           />
                         ))}
                       </div>
-                    </>
+                    </div>
                   ) : (
-                    <div className="scrollbar-hide flex w-full flex-nowrap gap-[12px] overflow-x-auto">
-                      {CHAT_TOPIC.map(topic => (
-                        <TopicKeyword
-                          key={topic.key}
-                          label={topic.label}
-                          icon={topic.icon}
-                          isActive={false}
-                          onClick={() => setSelectedTopicKey(topic.key)}
+                    <div className="flex flex-col">
+                      <div className="flex items-start">
+                        <InfoMessage
+                          text="대화하고 싶은 주제키워드를 골라보세요!"
+                          triangleUp={false}
                         />
-                      ))}
+                      </div>
+
+                      <div className="scrollbar-hide flex w-full flex-nowrap gap-[12px] overflow-x-auto">
+                        {CHAT_TOPIC.map(topic => (
+                          <TopicKeyword
+                            key={topic.key}
+                            label={topic.label}
+                            icon={topic.icon}
+                            isActive={false}
+                            onClick={() => setSelectedTopicKey(topic.key)}
+                          />
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
