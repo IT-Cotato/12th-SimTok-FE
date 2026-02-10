@@ -39,7 +39,9 @@ export const FriendMessage = ({
           <div className="bg-neutral-11 max-w-[300px] rounded-2xl px-4 py-[10px]">
             <p className="text-sub1-r text-neutral-01 break-all">{content}</p>
           </div>
-          <span className="text-sub2-r text-neutral-06">{time}</span>
+          {!isNextSame && (
+            <span className="text-sub2-r text-neutral-06">{time}</span>
+          )}
         </div>
       </div>
     </div>
