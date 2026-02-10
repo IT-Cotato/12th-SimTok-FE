@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import CameraIcon from "@/assets/camera.svg";
 import ImageIcon from "@/assets/image.svg";
@@ -13,6 +13,7 @@ interface ChatFieldProps {
   value: string;
   onChange: (val: string) => void;
   onSend?: (msg: string) => void;
+  onImageUpload?: (file: File) => void;
   isDimmed?: boolean;
 }
 
@@ -20,9 +21,11 @@ export const ChatField = ({
   value,
   onChange,
   onSend,
+  onImageUpload,
   isDimmed,
 }: ChatFieldProps) => {
   const [isVoiceOpen, setIsVoiceOpen] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const isNotEmpty = value.trim().length > 0;
 
   const handleSend = () => {
@@ -31,9 +34,28 @@ export const ChatField = ({
     onChange(""); // 전송 후 부모 상태 초기화
   };
 
+  const handleImageClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      onImageUpload?.(file);
+      e.target.value = "";
+    }
+  };
+
   return (
     <>
       <div className="flex w-full justify-center px-4">
+        <input
+          type="file"
+          ref={fileInputRef}
+          className="hidden"
+          accept="image/*"
+          onChange={handleFileChange}
+        />
         <div
           className={`flex min-h-[50px] w-full max-w-[440px] items-center rounded-2xl px-[5px] transition-colors ${isDimmed ? "bg-neutral-04" : "bg-neutral-10"}`}
         >
@@ -73,6 +95,7 @@ export const ChatField = ({
                 <button
                   type="button"
                   aria-label="이미지 첨부"
+                  onClick={handleImageClick}
                   className="flex h-8 w-8 flex-shrink-0 items-center justify-center"
                 >
                   <ImageIcon className="text-neutral-02 h-7 w-7" />
