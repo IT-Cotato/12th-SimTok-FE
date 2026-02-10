@@ -112,7 +112,8 @@ const Chatting = () => {
                 index > 0 && messages[index - 1].type === msg.type;
               const isNextSame =
                 index < messages.length - 1 &&
-                messages[index + 1].type === msg.type;
+                messages[index + 1].type === msg.type &&
+                messages[index + 1].time === msg.time;
 
               return msg.type === "mine" ? (
                 <MyMessage
