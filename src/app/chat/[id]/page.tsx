@@ -103,24 +103,38 @@ const Chatting = () => {
             <MenuIcon />
           </button>
         </BackHeader>
-        <section className="mb-[120px] flex-1 overflow-y-auto px-[10px] py-[10px]">
+        <section className="mb-12 flex-1 overflow-y-auto px-[10px] py-[10px]">
           <ChatDateDivider date="2025년 12월 18일 목요일" />
-          <div className="flex flex-col">
-            {messages.map(msg =>
-              msg.type === "mine" ? (
-                <MyMessage key={msg.id} content={msg.content} time={msg.time} />
-              ) : (
-                <FriendMessage
-                  key={msg.id}
-                  userName={displayName}
-                  profileImage={targetFriend?.profileImg}
-                  content={msg.content}
-                  time={msg.time}
-                />
-              ),
-            )}
-          </div>
         </section>
+        <div className="flex flex-col">
+          {messages.map((msg, index) => {
+            const isPrevSame =
+              index > 0 && messages[index - 1].type === msg.type;
+            const isNextSame =
+              index < messages.length - 1 &&
+              messages[index + 1].type === msg.type;
+
+            return msg.type === "mine" ? (
+              <MyMessage
+                key={msg.id}
+                content={msg.content}
+                time={msg.time}
+                isPrevSame={isPrevSame} // 이전 메시지와 같은지
+                isNextSame={isNextSame} // 다음 메시지와 같은지
+              />
+            ) : (
+              <FriendMessage
+                key={msg.id}
+                userName={displayName}
+                profileImage={targetFriend?.profileImg}
+                content={msg.content}
+                time={msg.time}
+                isPrevSame={isPrevSame}
+                isNextSame={isNextSame}
+              />
+            );
+          })}
+        </div>
 
         <div className="fixed bottom-0 z-40 w-full max-w-[440px] pb-[52px]">
           <div className="relative w-full">
