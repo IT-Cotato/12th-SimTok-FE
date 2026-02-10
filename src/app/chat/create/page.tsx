@@ -1,0 +1,109 @@
+"use client";
+import { useRouter } from "next/navigation";
+
+import { useState } from "react";
+
+import CloseIcon from "@/assets/close-thin.svg";
+
+import { BackHeader } from "@/components/common/BackHeader";
+import { FullButton } from "@/components/common/FullButton";
+import { ProfileImagePicker } from "@/components/common/ProfileImagePicker";
+import { SearchField } from "@/components/common/SearchField";
+import { FriendList } from "@/components/friends/FriendList";
+
+import { FriendProfile } from "@/types/friendProfile.type";
+
+const CreateChatPage = () => {
+  const router = useRouter();
+
+  const [searchText, setSearchText] = useState(""); // 서치필드에 입력된 텍스트
+  const [modalOpen, setModalOpen] = useState(false); // 친구프로필 모달
+  const [isEditMode, setIsEditMode] = useState(true); // 편집모드 전환
+  const [selectedFriends, setSelectedFriends] = useState<FriendProfile[]>([]); // 편집모드에서 선택한 friendId
+
+  const toggleFriend = (friend: FriendProfile) => {
+    setSelectedFriends(prev =>
+      prev.some(f => f.userId === friend.userId)
+        ? prev.filter(f => f.userId !== friend.userId)
+        : [...prev, friend],
+    );
+  };
+
+  const handleStartChat = () => {
+    if (selectedFriends.length > 0) {
+      const targetId = selectedFriends[0].userId;
+      router.push(`/chat/${targetId}`);
+    }
+  };
+
+  return (
+    <main className="relative w-full">
+      {!modalOpen && (
+        <div className="mt-[8.5px]">
+          <BackHeader
+            title="대화방 만들기"
+            subtext="선택해제"
+            isEditMode={isEditMode}
+            onClickEdit={() => {
+              setIsEditMode(prev => !prev);
+              if (isEditMode) setSelectedFriends([]);
+            }}
+            selectedCount={selectedFriends.length}
+          />
+        </div>
+      )}
+
+      <div
+        className={`${modalOpen ? "mt-[95px]" : "mt-[30.5px]"} flex flex-col gap-5`}
+      >
+        <SearchField onChangeSearchText={setSearchText} />
+        {isEditMode && (
+          <section className="flex items-start gap-2 px-4">
+            {selectedFriends.map(({ userId, profileImg, userName }) => (
+              <div
+                key={userId}
+                className="flex flex-col items-center justify-center"
+              >
+                <div className="relative">
+                  <ProfileImagePicker
+                    imageUrl={profileImg ?? null}
+                    canEdit={false}
+                    width={80}
+                    height={80}
+                    radius={18}
+                  />
+                  <button
+                    className="bg-neutral-11 absolute bottom-[58px] left-[63px] h-[22px] w-[22px] cursor-pointer rounded-full"
+                    onClick={() =>
+                      toggleFriend({ userId, profileImg, userName })
+                    }
+                  >
+                    <CloseIcon className="inset-0 mx-auto h-2 w-2" />
+                  </button>
+                </div>
+
+                <p className="text-body3 text-neutral-06">{userName}</p>
+              </div>
+            ))}
+          </section>
+        )}
+        <FriendList
+          searchText={searchText}
+          setModalOpen={setModalOpen}
+          isEditMode={isEditMode}
+          selectedFriends={selectedFriends}
+          onToggleFriend={toggleFriend}
+        />
+      </div>
+      <div className="fixed bottom-0 z-50 w-full max-w-[440px] bg-white px-4 py-[10px] pb-[42px] shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.05),0_-4px_6px_-4px_rgba(0,0,0,0.05)]">
+        <FullButton
+          onClick={handleStartChat}
+          isActive={selectedFriends.length > 0}
+        >
+          대화하기
+        </FullButton>
+      </div>
+    </main>
+  );
+};
+export default CreateChatPage;

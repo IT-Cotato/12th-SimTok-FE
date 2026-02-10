@@ -9,6 +9,8 @@ interface HeaderProps {
   title?: string;
   timeAgo?: string; // 하루한컷보기에서 사용
   menuIcon?: boolean; // 채팅페이지에서 사용
+  showBackIcon?: boolean; //뒤로가기 아이콘 표시 여부 추가
+  children?: React.ReactNode; //채팅목록에서 사용
   titleColor?: string; //하루한컷 업로드에서 사용
   subtext?: string; // 친구목록에서 사용
   isEditMode?: boolean; //친구목록에서 사용;
@@ -20,6 +22,7 @@ export const BackHeader = ({
   title,
   timeAgo,
   menuIcon,
+  children,
   titleColor = "black",
   subtext,
   isEditMode,
@@ -44,6 +47,10 @@ export const BackHeader = ({
       >
         {title}
       </h1>
+      <div className="flex flex-1 items-center justify-end pr-4">
+        {children}
+      </div>
+
       {timeAgo && (
         <p className="text-sub2-sb text-neutral-04 absolute right-4 bottom-[10px]">
           {timeAgo}

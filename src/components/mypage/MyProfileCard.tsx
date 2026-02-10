@@ -10,8 +10,8 @@ import { type ProfileData, profileApi } from "@/app/api/profile";
 export const MyProfileCard = () => {
   const router = useRouter();
   const [profile, setProfile] = useState<ProfileData | null>(null);
-
   const [error, setError] = useState(false);
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {

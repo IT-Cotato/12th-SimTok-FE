@@ -22,7 +22,10 @@ const MyPage = () => {
           <BackHeader title="마이페이지" />
           <section className="mt-[18.5px]">
             {userProfileData && (
-              <MyProfileCard userProfileData={userProfileData} />
+              <MyProfileCard
+                userProfileData={userProfileData}
+                onEdit={() => router.push("/mypage/profile")}
+              />
             )}
           </section>
           <nav className="mt-10">

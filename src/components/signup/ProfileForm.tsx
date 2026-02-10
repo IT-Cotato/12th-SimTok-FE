@@ -57,7 +57,7 @@ export const ProfileForm = () => {
       alert(
         "문자 재발송 횟수를 모두 사용하셨습니다. 처음부터 다시 시도해주세요.",
       );
-      router.replace("/signup/agree"); // 처음으로 리다이렉트
+      router.replace("/login"); // 처음으로 리다이렉트
       return;
     }
     setIsSubmitting(true);
