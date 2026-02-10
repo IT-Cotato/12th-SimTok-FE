@@ -1,5 +1,7 @@
+import RECOMMENDATIONS from "@/mock/recommendations.json";
+
 export const FRIENDS_SETTINGS_MENU = [
-  { key: "friendName", title: "친구 이름은 변경할 수 없어요" },
+  { key: "friendName", title: "친구의 이름은 변경할 수 없어요" },
   { key: "chatFrequency", title: "친구와 대화의 빈도를 설정할 수 있어요" },
   { key: "chatStyle", title: "대화 말투를 변경할 수 있어요" },
   { key: "chatTopic", title: "친구와 대화하고 싶은 주제를 골라주세요" },
@@ -24,10 +26,40 @@ export const CHAT_STYLE = [
 ] as const;
 
 export const CHAT_TOPIC = [
-  { key: "weather", label: "날씨", icon: "/images/chatTopic/weather.svg" },
-  { key: "health", label: "건강", icon: "/images/chatTopic/health.svg" },
-  { key: "meal", label: "식사", icon: "/images/chatTopic/meal.svg" },
-  { key: "mood", label: "기분", icon: "/images/chatTopic/mood.svg" },
-  { key: "hobby", label: "취미", icon: "/images/chatTopic/hobby.svg" },
-  { key: "custom", label: "추가입력" },
+  {
+    key: "weather",
+    label: "날씨",
+    icon: "/images/chatTopic/weather.svg",
+    recommendations: RECOMMENDATIONS.weather,
+  },
+  {
+    key: "health",
+    label: "건강",
+    icon: "/images/chatTopic/health.svg",
+    recommendations: RECOMMENDATIONS.health,
+  },
+  {
+    key: "meal",
+    label: "식사",
+    icon: "/images/chatTopic/meal.svg",
+    recommendations: RECOMMENDATIONS.meal,
+  },
+  {
+    key: "mood",
+    label: "기분",
+    icon: "/images/chatTopic/mood.svg",
+    recommendations: RECOMMENDATIONS.mood,
+  },
+  {
+    key: "hobby",
+    label: "취미",
+    icon: "/images/chatTopic/hobby.svg",
+    recommendations: RECOMMENDATIONS.hobby,
+  },
+  {
+    key: "joke",
+    label: "농담",
+    icon: "/images/chatTopic/joke.svg",
+    recommendations: RECOMMENDATIONS.joke,
+  },
 ] as const;
