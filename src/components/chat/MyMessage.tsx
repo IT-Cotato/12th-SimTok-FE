@@ -21,7 +21,9 @@ export const MyMessage = ({
       className={`flex w-full justify-end px-4 ${paddingTop} ${paddingBottom}`}
     >
       <div className="flex items-end gap-1">
-        <span className="text-sub2-r text-neutral-06">{time}</span>
+        {!isNextSame && (
+          <span className="text-sub2-r text-neutral-06">{time}</span>
+        )}
         {isImage ? (
           <div className="relative max-w-[240px] overflow-hidden rounded-2xl">
             <img
