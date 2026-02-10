@@ -34,7 +34,7 @@ export const ProgressSection = ({
         </div>
 
         {/* percentage text */}
-        <p className="text-sub1 text-neutral-01 whitespace-nowrap">
+        <p className="text-sub1-sb text-neutral-03 whitespace-nowrap">
           {percentage}%
         </p>
       </div>
