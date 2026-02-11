@@ -4,7 +4,7 @@ import Pot from "@/assets/garden/pot.svg";
 
 import { PageTitle } from "@/components/common/PageTitle";
 
-import { GardenTitle } from "@/constants/garden/gardenCare";
+import { GARDEN_STATE_ITEM } from "@/constants/garden/gardenCare";
 import { PLANT_IMAGE_MAP } from "@/constants/garden/plantList";
 
 import { GrowthStage } from "@/types/plant.type";
@@ -14,7 +14,7 @@ interface WaterRecentlyProps {
 }
 
 export const WaterRecently = ({ growthStage }: WaterRecentlyProps) => {
-  const pageTitle = GardenTitle.find(
+  const pageTitle = GARDEN_STATE_ITEM.find(
     item => item.state === "WATERED_RECENTLY",
   )?.title;
 

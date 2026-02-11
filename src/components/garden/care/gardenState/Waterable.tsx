@@ -5,7 +5,7 @@ import Pot from "@/assets/garden/pot.svg";
 import { PageTitle } from "@/components/common/PageTitle";
 import { InfoMessage } from "@/components/dailyRecord/InfoMessage";
 
-import { GardenTitle } from "@/constants/garden/gardenCare";
+import { GARDEN_STATE_ITEM } from "@/constants/garden/gardenCare";
 import { PLANT_IMAGE_MAP } from "@/constants/garden/plantList";
 
 import { GrowthStage } from "@/types/plant.type";
@@ -14,7 +14,9 @@ interface WaterableProps {
   growthStage: GrowthStage;
 }
 export const Waterable = ({ growthStage }: WaterableProps) => {
-  const pageTitle = GardenTitle.find(item => item.state === "WATERABLE")?.title;
+  const pageTitle = GARDEN_STATE_ITEM.find(
+    item => item.state === "WATERABLE",
+  )?.title;
 
   const plantImg =
     PLANT_IMAGE_MAP[growthStage as keyof typeof PLANT_IMAGE_MAP].good;

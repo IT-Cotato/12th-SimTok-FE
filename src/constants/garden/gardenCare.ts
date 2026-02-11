@@ -1,6 +1,6 @@
-import { GardenTitleItem } from "@/types/plant.type";
+import { GardenStateItem } from "@/types/plant.type";
 
-export const GardenTitle: readonly GardenTitleItem[] = [
+export const GARDEN_STATE_ITEM: readonly GardenStateItem[] = [
   // EMPTY
   {
     state: "EMPTY",

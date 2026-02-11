@@ -4,7 +4,7 @@ import { FullButton } from "@/components/common/FullButton";
 import { ActionButton } from "@/components/garden/care/ActionButton";
 import { ProgressSection } from "@/components/garden/care/ProgressSection";
 
-import { GardenTitle } from "@/constants/garden/gardenCare";
+import { GARDEN_STATE_ITEM } from "@/constants/garden/gardenCare";
 
 import { GardenState, GrowthStage, PlantSort } from "@/types/plant.type";
 
@@ -33,7 +33,7 @@ export const GardenCareContent = ({
   let Content: JSX.Element | null;
 
   const activeButtonList =
-    GardenTitle.find(item => item.state === gardenState)?.action ?? [];
+    GARDEN_STATE_ITEM.find(item => item.state === gardenState)?.action ?? [];
 
   switch (gardenState) {
     case "SEED_READY":

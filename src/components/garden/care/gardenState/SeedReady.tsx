@@ -5,10 +5,10 @@ import Circle from "@/assets/garden/seedCircle.svg";
 import { PageTitle } from "@/components/common/PageTitle";
 import { InfoMessage } from "@/components/dailyRecord/InfoMessage";
 
-import { GardenTitle } from "@/constants/garden/gardenCare";
+import { GARDEN_STATE_ITEM } from "@/constants/garden/gardenCare";
 
 export const SeedReady = () => {
-  const pageTitle = GardenTitle.find(
+  const pageTitle = GARDEN_STATE_ITEM.find(
     item => item.state === "SEED_READY",
   )?.title;
   return (
