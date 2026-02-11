@@ -42,7 +42,7 @@ export const NutritionAvailable = ({
               <div
                 className={
                   isBud
-                    ? "absolute top-[50px] -right-[92px] z-50 whitespace-nowrap" // BUD일 때: 우상단 이동
+                    ? "absolute top-[50px] -right-[92px] z-50 whitespace-nowrap"
                     : "relative"
                 }
               >

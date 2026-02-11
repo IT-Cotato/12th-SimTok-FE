@@ -11,14 +11,22 @@ import needWaterAnimation from "@/public/lotties/needWater.json";
 
 interface ActionButtonProps {
   activeButton: GardenAction[];
+  onWater?: () => void;
+  onNutrition?: () => void;
 }
-export const ActionButton = ({ activeButton }: ActionButtonProps) => {
+export const ActionButton = ({
+  activeButton,
+  onWater,
+  onNutrition,
+}: ActionButtonProps) => {
   const hasWater = activeButton.includes("WATER");
   const hasNutrition = activeButton.includes("NUTRITION");
   return (
     <section className="mb-[42px] flex w-full gap-4 px-4 py-[10px]">
       <button
+        disabled={!hasNutrition}
         className={`${hasNutrition ? "bg-mint-01 cursor-pointer" : "bg-neutral-11"} z-[90] flex h-[58px] flex-1 items-center justify-center gap-2 rounded-2xl`}
+        onClick={hasNutrition ? onNutrition : undefined}
       >
         <p className={`${!hasNutrition && "opacity-[32%]"} text-button-sb`}>
           💊
@@ -44,7 +52,9 @@ export const ActionButton = ({ activeButton }: ActionButtonProps) => {
         )}
 
         <button
+          disabled={!hasWater}
           className={`${hasWater ? "bg-blue-00 cursor-pointer" : "bg-neutral-11"} relative z-[90] flex h-[58px] w-full items-center justify-center gap-2 rounded-2xl`}
+          onClick={hasWater ? onWater : undefined}
         >
           <p className={`${!hasWater && "opacity-[32%]"} text-button-sb`}>☁️</p>
           <p

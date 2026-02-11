@@ -14,6 +14,7 @@ import { GardenCareContent } from "@/components/garden/care/GardenCareContent";
 import { GardenCareHeader } from "@/components/garden/care/GardenCareHeader";
 import { ProgressSection } from "@/components/garden/care/ProgressSection";
 import { EmptyPlant } from "@/components/garden/care/gardenState/EmptyPlant";
+import { Watering } from "@/components/garden/care/gardenState/viewPhase/Watering";
 
 import PlantData from "@/mock/plantProgress.json";
 
@@ -46,6 +47,7 @@ const GardenCare = () => {
     optimisticGardenState ??
     (currentStep?.gardenState as GardenState) ??
     "EMPTY";
+
   const handleChangeSelectTitle = (value: "left" | "right") => {
     setSelectTitle(value);
 
@@ -90,7 +92,7 @@ const GardenCare = () => {
 
     // 2. 연출
     await runPhaseSequence(
-      [{ phase: "WATERING", duration: 2000 }],
+      [{ phase: "WATERING", duration: 1000 }],
       setViewPhase,
     );
 
@@ -111,6 +113,8 @@ const GardenCare = () => {
   };
   console.log(currentIndex);
   console.log("slideGardenState: ", slideGardenState);
+  console.log("viewPhase:", viewPhase);
+  console.log("confirmed: ", confirmedGardenState);
   return (
     <main className="relative flex h-screen flex-col">
       {/* 배경 */}
@@ -125,46 +129,53 @@ const GardenCare = () => {
         onChangeSelectTitle={handleChangeSelectTitle}
       />
 
-      {/* ProgressDots: PlantData 있을 때만 */}
-      {PlantData && PlantData.length > 0 && (
-        <ProgressDots total={PlantData.length} current={currentIndex + 1} />
-      )}
-
-      {PlantData && PlantData.length > 0 ? (
-        <Swiper
-          onSlideChange={swiper => setCurrentIndex(swiper.activeIndex)}
-          modules={[Keyboard]}
-          keyboard={{ enabled: true }}
-          spaceBetween={0}
-          slidesPerView={1}
-          className="h-full w-full flex-1" // Swiper가 영역을 꽉 채우도록 설정
-        >
-          {PlantData.map((data, idx) => (
-            // 중요: SwiperSlide는 Swiper 바로 아래에 있어야 합니다.
-            <SwiperSlide key={idx}>
-              <div className="flex h-full flex-col">
-                <GardenCareContent
-                  growthStage={data.growthStatus as GrowthStage}
-                  gardenState={data.gardenState as GardenState}
-                  percentage={data.percentage}
-                  plantName={data.nickname}
-                  plantSort={data.plantSort as PlantSort}
-                />
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+      {viewPhase === "WATERING" ? (
+        <div className="flex flex-1 flex-col">
+          <Watering growthStage={currentStep?.growthStatus as GrowthStage} />
+        </div>
       ) : (
         <>
-          <section className="flex flex-1 flex-col pb-[17px]">
-            <EmptyPlant />
-          </section>
-          <section className="z-99 flex flex-col gap-[10px]">
-            <div className="px-4">
-              <ProgressSection />
-            </div>
-            <ActionButton activeButton={[]} />
-          </section>
+          {PlantData && PlantData.length > 0 && (
+            <ProgressDots total={PlantData.length} current={currentIndex + 1} />
+          )}
+          {PlantData && PlantData.length > 0 ? (
+            <Swiper
+              onSlideChange={swiper => setCurrentIndex(swiper.activeIndex)}
+              modules={[Keyboard]}
+              keyboard={{ enabled: true }}
+              spaceBetween={0}
+              slidesPerView={1}
+              className="h-full w-full flex-1"
+            >
+              {PlantData.map((data, idx) => (
+                <SwiperSlide key={idx}>
+                  <div className="flex h-full flex-col">
+                    <GardenCareContent
+                      growthStage={data.growthStatus as GrowthStage}
+                      gardenState={data.gardenState as GardenState}
+                      percentage={data.percentage}
+                      plantName={data.nickname}
+                      plantSort={data.plantSort as PlantSort}
+                      onWater={handleWater}
+                      onNutrition={handleNutrition}
+                    />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          ) : (
+            <>
+              <section className="flex flex-1 flex-col pb-[17px]">
+                <EmptyPlant />
+              </section>
+              <section className="z-99 flex flex-col gap-[10px]">
+                <div className="px-4">
+                  <ProgressSection />
+                </div>
+                <ActionButton activeButton={[]} />
+              </section>
+            </>
+          )}
         </>
       )}
     </main>
