@@ -64,14 +64,14 @@
   .bg-radial-yellowgreen-mintgreen {
     background:
       radial-gradient(
-        39.1% 31.12% at 80.25% 2.51%,
+        87.99% 89.07% at 123.07% 13.91%,
         rgba(246, 248, 173, 0.42) 57.26%,
         rgba(255, 255, 255, 0.42) 100%
       ),
       radial-gradient(
-        39.99% 49.21% at 23.64% 2.72%,
-        rgba(66, 240, 158, 0.66) 21.15%,
-        rgba(255, 255, 255, 0.87) 93.53%
+        131.98% 70.44% at -7.39% -2.25%,
+        #00ff62 0%,
+        rgb(255, 255, 255) 100%
       );
   }
 
@@ -198,12 +198,12 @@
 
   .bg-withered {
     background:
-      radial-gradient(136.93% 71.84% at 0% -1.83%, #ffaf1d 50.96%, #fff 100%),
       radial-gradient(
         87.99% 89.07% at 123.07% 13.91%,
         rgba(255, 98, 98, 0.53) 30.5%,
         rgba(255, 255, 255, 0.53) 100%
-      );
+      ),
+      radial-gradient(136.93% 71.84% at 0% -1.83%, #ffaf1d 50.96%, #fff 100%);
   }
 
   .bg-watering {
@@ -229,14 +229,14 @@
   .bg-nutrition-available {
     background:
       radial-gradient(
-        153.07% 86.8% at -15.11% -6.85%,
-        #004a15 56.25%,
-        #fff 100%
-      ),
-      radial-gradient(
         87.99% 89.07% at 123.07% 13.91%,
         rgba(222, 115, 0, 0.53) 30.5%,
         rgba(255, 255, 255, 0.53) 100%
+      ),
+      radial-gradient(
+        153.07% 86.8% at -15.11% -6.85%,
+        #004a15 56.25%,
+        #fff 100%
       );
   }
   .bg-shortly-after-nutrition {

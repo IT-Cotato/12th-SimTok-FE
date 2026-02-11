@@ -6,6 +6,14 @@ export const PLANT_SORT_SIMPLE = [
   { id: "baby-breath", name: "안개" },
 ] as const;
 
+export const PLANT_GROWTH_KOREAN = [
+  { id: "SEED", name: "씨앗" },
+  { id: "STEM", name: "줄기" },
+  { id: "SPROUT", name: "새싹" },
+  { id: "BUD", name: "꽃봉오리" },
+  { id: "BLOOM", name: "꽃" },
+] as const;
+
 export const PLANT_IMAGE_MAP = {
   SEED: {
     good: "/images/garden/seed.svg",
@@ -25,7 +33,7 @@ export const PLANT_IMAGE_MAP = {
   },
 } as const;
 
-export const PlantSort = [
+export const PLANT_SORT_INFO = [
   {
     id: "daisy",
     name: "데이지",
@@ -86,4 +94,4 @@ export const PlantSort = [
     shadow: "0 0 20px 0 #FF3C00",
     img: "/images/garden/baby-breath.svg",
   },
-];
+] as const;

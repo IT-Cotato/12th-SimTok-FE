@@ -1,24 +1,48 @@
-import { GrowthStage } from "@/types/plant.type";
+import clsx from "clsx";
+
+import { PLANT_GROWTH_KOREAN } from "@/constants/garden/plantList";
+
+import { GardenState, GrowthStage } from "@/types/plant.type";
 
 interface ProgressSectionProps {
   plantName?: string;
   growthStage?: GrowthStage;
+  gardenStatus?: GardenState;
   percentage?: number;
 }
 
 export const ProgressSection = ({
   plantName,
   growthStage,
+  gardenStatus,
   percentage = 0,
 }: ProgressSectionProps) => {
+  console.log(gardenStatus);
+  console.log(growthStage);
+
+  const growthStageToKorean = PLANT_GROWTH_KOREAN.find(
+    item => item.id === growthStage,
+  )?.name;
+  const progressBarColor = (() => {
+    switch (gardenStatus) {
+      case "NUTRITION_AVAILABLE":
+        return "bg-neutral-01";
+      case "WATERABLE":
+        return "bg-blue-00";
+      case "WITHERED":
+        return "bg-orange-00";
+      default:
+        return "bg-gradient-orange";
+    }
+  })();
   return (
     <section className="flex w-full flex-col gap-[7px] rounded-2xl bg-white p-4 shadow-[0_0_14px_0_rgba(0,0,0,0.08)]">
       {plantName ? (
-        <div className="flex gap-[3px]">
-          <p>🌱</p>
+        <div className="text-h3 text-neutral-01 flex gap-[3px]">
+          {growthStage === "BLOOM" ? <p>🌸</p> : <p>🌱</p>}
           <p>{plantName}</p>
-          <p> {growthStage}</p>
-          <p>🌱</p>
+          <p> {growthStageToKorean}</p>
+          {growthStage === "BLOOM" ? <p>🌸</p> : <p>🌱</p>}
         </div>
       ) : (
         <div>🌱</div>
@@ -28,7 +52,10 @@ export const ProgressSection = ({
         {/* progress bar 영역 */}
         <div className="bg-neutral-08 h-2 flex-1 overflow-hidden rounded-sm">
           <div
-            className="bg-orange-01 h-full rounded-sm transition-[width]"
+            className={clsx(
+              progressBarColor,
+              "h-full rounded-sm transition-[width]",
+            )}
             style={{ width: `${percentage}%` }}
           />
         </div>

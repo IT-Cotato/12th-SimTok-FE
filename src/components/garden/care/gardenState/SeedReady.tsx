@@ -12,7 +12,7 @@ export const SeedReady = () => {
     item => item.state === "SEED_READY",
   )?.title;
   return (
-    <section className="z-99 flex w-full flex-1 flex-col justify-between">
+    <section className="z-99 flex h-screen w-full flex-1 flex-col justify-between">
       <PageTitle title={pageTitle} />
       <div className="flex flex-col items-center justify-center gap-[17px]">
         <div className="relative flex h-[176px] w-full items-center justify-center">

@@ -1,4 +1,6 @@
-export const GardenTitle = [
+import { GardenTitleItem } from "@/types/plant.type";
+
+export const GardenTitle: readonly GardenTitleItem[] = [
   // EMPTY
   {
     state: "EMPTY",
@@ -80,28 +82,28 @@ export const GardenTitle = [
     state: "NUTRITION_AVAILABLE",
     growthStage: "SEED",
     title: ["씨앗이 말라버렸어요!", "영양제로 회복시켜주세요"],
-    actions: ["NUTRITION"],
+    action: ["NUTRITION"],
     background: "bg-nutrition-available",
   },
   {
     state: "NUTRITION_AVAILABLE",
     growthStage: "SPROUT",
     title: ["새싹이 말라버렸어요!", "영양제로 회복시켜주세요"],
-    actions: ["NUTRITION"],
+    action: ["NUTRITION"],
     background: "bg-nutrition-available",
   },
   {
     state: "NUTRITION_AVAILABLE",
     growthStage: "STEM",
     title: ["줄기가 말라버렸어요!", "영양제로 회복시켜주세요"],
-    actions: ["NUTRITION"],
+    action: ["NUTRITION"],
     background: "bg-nutrition-available",
   },
   {
     state: "NUTRITION_AVAILABLE",
     growthStage: "BUD",
     title: ["꽃봉오리가 말라버렸어요!", "영양제로 회복시켜주세요"],
-    actions: ["NUTRITION"],
+    action: ["NUTRITION"],
     background: "bg-nutrition-available",
   },
 
@@ -110,7 +112,7 @@ export const GardenTitle = [
     state: "AFTER_NUTRITION",
     growthStage: null,
     title: ["회복 후, 물까지 주셔야해요!", "아래 물주기를 눌러주세요"],
-    actions: ["WATER"],
+    action: ["WATER"],
     background: "bg-watering",
   },
 
@@ -119,14 +121,14 @@ export const GardenTitle = [
     state: "WATERABLE",
     growthStage: null,
     title: ["물을 줄 시간이에요!", "아래 물주기를 눌러보세요"],
-    actions: ["WATER"],
+    action: ["WATER"],
     background: "bg-watering",
   },
   {
     state: "WATERED_RECENTLY",
     growthStage: null,
     title: ["오늘은 물 주기를 완료했어요🥳"],
-    actions: ["WATER"],
+    action: ["WATER"],
     background: "bg-after-watering",
   },
 
