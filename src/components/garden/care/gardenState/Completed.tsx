@@ -4,18 +4,19 @@ import Pot from "@/assets/garden/pot.svg";
 
 import { PageTitle } from "@/components/common/PageTitle";
 
-import { GardenTitle } from "@/constants/garden/gardenCare";
+import { GARDEN_STATE_ITEM } from "@/constants/garden/gardenCare";
 import { PLANT_SORT_INFO } from "@/constants/garden/plantList";
 
 import { PlantSort } from "@/types/plant.type";
-import { GrowthStage } from "@/types/plant.type";
 
 interface CompletedProps {
   plantSort: PlantSort;
 }
 export const Completed = ({ plantSort }: CompletedProps) => {
   const plantImg = PLANT_SORT_INFO.find(item => item.id === plantSort)?.img;
-  const pageTitle = GardenTitle.find(item => item.state === "COMPLETED")?.title;
+  const pageTitle = GARDEN_STATE_ITEM.find(
+    item => item.state === "COMPLETED",
+  )?.title;
 
   return (
     <section className="z-99 flex flex-1 flex-col justify-between">

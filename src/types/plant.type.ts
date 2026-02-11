@@ -33,7 +33,7 @@ export type ViewPhase =
   | "WATERING"; // 물주는 중
 
 /* 정원 상태, 제목 매핑 */
-export interface GardenTitleItem {
+export interface GardenStateItem {
   state: GardenState;
   growthStage: GrowthStage | null;
   title: string[];

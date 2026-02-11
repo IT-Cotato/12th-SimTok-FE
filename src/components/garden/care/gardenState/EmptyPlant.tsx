@@ -3,12 +3,12 @@ import EmptyPod from "@/assets/garden/pot_blank.svg";
 import { PageTitle } from "@/components/common/PageTitle";
 import { InfoMessage } from "@/components/dailyRecord/InfoMessage";
 
-import { GardenTitle } from "@/constants/garden/gardenCare";
+import { GARDEN_STATE_ITEM } from "@/constants/garden/gardenCare";
 
 import { GardenState } from "@/types/plant.type";
 
 export const EmptyPlant = () => {
-  const emptyTitle = GardenTitle.find(
+  const emptyTitle = GARDEN_STATE_ITEM.find(
     item => item.state === ("EMPTY" satisfies GardenState),
   )?.title;
 

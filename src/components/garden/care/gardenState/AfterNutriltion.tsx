@@ -5,7 +5,7 @@ import Pot from "@/assets/garden/pot.svg";
 import { PageTitle } from "@/components/common/PageTitle";
 import { InfoMessage } from "@/components/dailyRecord/InfoMessage";
 
-import { GardenTitle } from "@/constants/garden/gardenCare";
+import { GARDEN_STATE_ITEM } from "@/constants/garden/gardenCare";
 import { PLANT_IMAGE_MAP } from "@/constants/garden/plantList";
 
 import { GrowthStage } from "@/types/plant.type";
@@ -14,7 +14,7 @@ interface AfterNutritionProps {
   growthStage: GrowthStage;
 }
 export const AfterNutrition = ({ growthStage }: AfterNutritionProps) => {
-  const pageTitle = GardenTitle.find(
+  const pageTitle = GARDEN_STATE_ITEM.find(
     item => item.state === "AFTER_NUTRITION",
   )?.title;
 
