@@ -35,9 +35,9 @@
     "plantSort": "sunflower",
     "growthStatus": "BLOOM",
     "recentWateredTime": "2026-02-06T18:45:00",
-    "gardenState": "NUTRITION_AVAILABLE",
+    "gardenState": "COMPLETED",
     "lastWateredById": 101,
-    "percentage": 12
+    "percentage": 100
   },
   {
     "id": 5,
@@ -95,8 +95,8 @@
     "plantSort": "lily",
     "growthStatus": "BLOOM",
     "recentWateredTime": "2026-02-07T10:10:00",
-    "gardenState": "WITHERED",
+    "gardenState": "COMPLETED",
     "lastWateredById": 101,
-    "percentage": 12
+    "percentage": 100
   }
 ]

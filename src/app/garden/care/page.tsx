@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import "swiper/css";
+import { Keyboard } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { ProgressDots } from "@/components/common/ProgressDot";
@@ -16,7 +17,12 @@ import { EmptyPlant } from "@/components/garden/care/gardenState/EmptyPlant";
 
 import PlantData from "@/mock/plantProgress.json";
 
-import { GardenState, GrowthStage, ViewPhase } from "@/types/plant.type";
+import {
+  GardenState,
+  GrowthStage,
+  PlantSort,
+  ViewPhase,
+} from "@/types/plant.type";
 
 import { runPhaseSequence } from "@/utils/runPhaseSequence";
 
@@ -36,7 +42,10 @@ const GardenCare = () => {
     useState<GardenState | null>(null);
 
   const displayGardenState = optimisticGardenState ?? confirmedGardenState;
-
+  const slideGardenState: GardenState =
+    optimisticGardenState ??
+    (currentStep?.gardenState as GardenState) ??
+    "EMPTY";
   const handleChangeSelectTitle = (value: "left" | "right") => {
     setSelectTitle(value);
 
@@ -101,12 +110,12 @@ const GardenCare = () => {
     }
   };
   console.log(currentIndex);
-
+  console.log("slideGardenState: ", slideGardenState);
   return (
-    <main className="relative flex min-h-screen flex-col">
+    <main className="relative flex h-screen flex-col">
       {/* 배경 */}
       <GardenBackgroundColor
-        gardenState={"AFTER_NUTRITION"}
+        gardenState={slideGardenState}
         viewPhase={viewPhase}
       />
 
@@ -122,30 +131,29 @@ const GardenCare = () => {
       )}
 
       {PlantData && PlantData.length > 0 ? (
-        // <Swiper
-        //   onSlideChange={swiper => setCurrentIndex(swiper.activeIndex)}
-        //   keyboard={true}
-        //   spaceBetween={0}
-        //   slidesPerView={1}
-        // >
-        //   {PlantData.map((data, idx) => (
-        //     <SwiperSlide key={idx}>
-        //       <GardenCareContent
-        //         growthStatus={data.growthStatus as GrowthStage}
-        //         gardenState={displayGardenState}
-        //       />
-        //     </SwiperSlide>
-        //   ))}
-        // </Swiper>
-        <div className="flex flex-1 flex-col">
-          <GardenCareContent
-            gardenState="COMPLETED"
-            growthStage="BLOOM"
-            percentage={30}
-            plantName="두쫀쿠"
-            plantSort="daisy"
-          />
-        </div>
+        <Swiper
+          onSlideChange={swiper => setCurrentIndex(swiper.activeIndex)}
+          modules={[Keyboard]}
+          keyboard={{ enabled: true }}
+          spaceBetween={0}
+          slidesPerView={1}
+          className="h-full w-full flex-1" // Swiper가 영역을 꽉 채우도록 설정
+        >
+          {PlantData.map((data, idx) => (
+            // 중요: SwiperSlide는 Swiper 바로 아래에 있어야 합니다.
+            <SwiperSlide key={idx}>
+              <div className="flex h-full flex-col">
+                <GardenCareContent
+                  growthStage={data.growthStatus as GrowthStage}
+                  gardenState={data.gardenState as GardenState}
+                  percentage={data.percentage}
+                  plantName={data.nickname}
+                  plantSort={data.plantSort as PlantSort}
+                />
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       ) : (
         <>
           <section className="flex flex-1 flex-col pb-[17px]">

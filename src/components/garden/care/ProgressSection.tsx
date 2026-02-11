@@ -17,9 +17,6 @@ export const ProgressSection = ({
   gardenStatus,
   percentage = 0,
 }: ProgressSectionProps) => {
-  console.log(gardenStatus);
-  console.log(growthStage);
-
   const growthStageToKorean = PLANT_GROWTH_KOREAN.find(
     item => item.id === growthStage,
   )?.name;
