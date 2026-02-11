@@ -29,10 +29,42 @@ const CreateChatPage = () => {
     );
   };
 
-  const handleStartChat = () => {
-    if (selectedFriends.length > 0) {
-      const targetId = selectedFriends[0].userId;
-      router.push(`/chat/${targetId}`);
+  // const handleStartChat = () => {
+  //   if (selectedFriends.length > 0) {
+  //     const targetId = selectedFriends[0].userId;
+  //     router.push(`/chat/${targetId}`);
+  //   }
+  // };
+
+  const handleStartChat = async () => {
+    if (selectedFriends.length === 0) return;
+    const opponentId = selectedFriends[0].userId;
+
+    // 추가: localStorage에서 토큰 확보
+    const token =
+      typeof window !== "undefined"
+        ? localStorage.getItem("accessToken")
+        : null;
+
+    try {
+      const res = await fetch(
+        `/api/chat/rooms/direct/resolve?opponentMemberId=${opponentId}`,
+        {
+          headers: {
+            // 수정: Bearer 토큰 주입
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      const data = await res.json();
+
+      if (data.exists) {
+        router.push(`/chat/${data.roomId}`);
+      } else {
+        router.push(`/chat/new?target=${opponentId}`);
+      }
+    } catch (error) {
+      console.error("방 생성 실패", error);
     }
   };
 

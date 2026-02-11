@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import BellIcon from "@/assets/bell_chat.svg";
 import FloatingButtonIcon from "@/assets/floating_button.svg";
@@ -13,45 +13,53 @@ import { BackHeader } from "@/components/common/BackHeader";
 import { NavBar } from "@/components/common/NavBar";
 import { SearchField } from "@/components/common/SearchField";
 
-import chatListData from "@/mock/chatList.json";
-
-interface ChatItemType {
-  id: number;
-  name: string;
-  lastMessage: string;
-  date: string;
-  unreadCount?: number;
-  profileImg: string;
+interface ChatRoomItem {
+  roomId: number;
+  roomName: string;
+  lastMessagePreview: string;
+  lastMessageAt: string;
+  unreadCount: number;
+  opponent: {
+    name: string;
+    profileImageUrl: string;
+  };
 }
 
 const ChatListPage = () => {
   const router = useRouter();
-  const [chats, setChats] = useState(chatListData);
+  const [chats, setChats] = useState<ChatRoomItem[]>([]);
   const [searchText, setSearchText] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [targetChat] = useState<{
-    id: number;
-    name: string;
-    profileImg: string;
-  } | null>(null);
+  const [selectedChat, setSelectedChat] = useState<ChatRoomItem | null>(null);
 
-  const [selectedChat, setSelectedChat] = useState<ChatItemType | null>(null);
+  useEffect(() => {
+    const fetchChatRooms = async () => {
+      try {
+        const res = await fetch("/api/chat/rooms");
 
-  const handleOpenModal = (chat: ChatItemType) => {
+        if (!res.ok) throw new Error(`HTTP 에러! 상태: ${res.status}`);
+
+        const result = await res.json();
+        if (result.success) {
+          setChats(result.data.items);
+          console.log(result);
+        }
+      } catch (error) {
+        console.error("목록 로드 실패:", error);
+      }
+    };
+
+    fetchChatRooms();
+  }, []);
+
+  const handleOpenModal = (chat: ChatRoomItem) => {
     setSelectedChat(chat);
     setIsModalOpen(true);
   };
 
-  const handleConfirmDelete = () => {
-    if (selectedChat) {
-      setChats(prev => prev.filter(c => c.id !== selectedChat.id));
-      setIsModalOpen(false);
-      setSelectedChat(null);
-    }
-  };
-
+  // 2. 검색 필터링 (방 이름 기준)
   const filteredChats = chats.filter(chat =>
-    chat.name.toLowerCase().includes(searchText.toLowerCase()),
+    chat.roomName.toLowerCase().includes(searchText.toLowerCase()),
   );
 
   return (
@@ -70,15 +78,15 @@ const ChatListPage = () => {
         <section className="mt-5 flex flex-col overflow-y-auto">
           {filteredChats.map(chat => (
             <ChatItem
-              key={chat.id}
-              {...chat}
-              onDelete={() => handleOpenModal(chat)}
-              name={chat.name}
-              lastMessage={chat.lastMessage}
-              date={chat.date}
+              key={chat.roomId}
+              id={chat.roomId}
+              name={chat.roomName}
+              lastMessage={chat.lastMessagePreview}
+              date={chat.lastMessageAt}
               unreadCount={chat.unreadCount}
-              profileImg={chat.profileImg}
-              onClick={() => router.push(`/chat/${chat.id}`)}
+              profileImg={chat.opponent.profileImageUrl}
+              onDelete={() => handleOpenModal(chat)}
+              onClick={() => router.push(`/chat/${chat.roomId}`)}
             />
           ))}
         </section>
@@ -99,10 +107,13 @@ const ChatListPage = () => {
       {selectedChat && (
         <ExitChatModal
           isOpen={isModalOpen}
-          userName={selectedChat.name}
-          profileImg={selectedChat.profileImg}
+          userName={selectedChat.roomName}
+          profileImg={selectedChat.opponent.profileImageUrl}
           onClose={() => setIsModalOpen(false)}
-          onConfirm={handleConfirmDelete}
+          onConfirm={() => {
+            /* 삭제 API 연동 필요 */
+            setIsModalOpen(false);
+          }}
         />
       )}
     </main>
