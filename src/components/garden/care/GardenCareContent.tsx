@@ -23,12 +23,16 @@ export const GardenCareContent = ({
   gardenState,
   growthStage,
   plantSort,
+  onWater,
+  onNutrition,
 }: {
   plantName?: string;
   percentage?: number;
   gardenState: GardenState;
   growthStage: GrowthStage;
   plantSort: PlantSort;
+  onWater: () => void;
+  onNutrition: () => void;
 }) => {
   let Content: JSX.Element | null;
   console.log("gardenState: ", gardenState);
@@ -83,7 +87,12 @@ export const GardenCareContent = ({
             <FullButton>정원에 심으러가기</FullButton>
           </div>
         ) : (
-          <ActionButton activeButton={activeButtonList} />
+          // TODO: WATER_RECENTLY 상태에서 마지막 물준 사람이 나인 경우에 액션 버튼 제거
+          <ActionButton
+            activeButton={activeButtonList}
+            onNutrition={onNutrition}
+            onWater={onWater}
+          />
         )}
       </div>
     </div>

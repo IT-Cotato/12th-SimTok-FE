@@ -10,10 +10,17 @@ export const GardenBackgroundColor = ({
   gardenState,
   viewPhase,
 }: GardenBackgroundColorProps) => {
-  const backgroundColor =
-    GARDEN_STATE_ITEM.find(item => item.state === gardenState)?.background ??
-    "bg-white";
+  const currentBg = (() => {
+    if (viewPhase === "WATERING") return "bg-watering";
+    if (viewPhase === "NUTRITION_BLACK") return "bg-black";
+    if (viewPhase === "NUTRITION_AFTER_SHORTLY")
+      return "bg-shortly-after-nutrition";
+    return (
+      GARDEN_STATE_ITEM.find(item => item.state === gardenState)?.background ??
+      "bg-white"
+    );
+  })();
 
   const GARDEN_BG_BASE = "absolute inset-0 z-0 transition-colors";
-  return <div className={`${backgroundColor} ${GARDEN_BG_BASE}`}></div>;
+  return <div className={`${currentBg} ${GARDEN_BG_BASE}`}></div>;
 };
