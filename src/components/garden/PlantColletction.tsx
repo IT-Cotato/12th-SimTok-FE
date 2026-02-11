@@ -1,6 +1,6 @@
 "use client";
 
-import { PlantSort } from "@/constants/garden/plantList";
+import { PLANT_SORT_INFO } from "@/constants/garden/plantList";
 
 import { GardenPlant } from "@/types/plant.type";
 
@@ -46,7 +46,7 @@ export const PlantColletction = ({
         >
           {frontPlants.map(plant => {
             const plantImg =
-              PlantSort.find(p => p.id === plant.plantSort)?.img ?? "";
+              PLANT_SORT_INFO.find(p => p.id === plant.plantSort)?.img ?? "";
             return (
               <div key={plant.id} className="flex justify-center">
                 {plantImg && (
@@ -66,7 +66,7 @@ export const PlantColletction = ({
           <div className="grid w-full max-w-lg grid-cols-3 justify-items-center gap-4 md:gap-6">
             {backPlants.map(plant => {
               const plantImg =
-                PlantSort.find(p => p.id === plant.plantSort)?.img ?? "";
+                PLANT_SORT_INFO.find(p => p.id === plant.plantSort)?.img ?? "";
               return (
                 <div key={plant.id} className="flex justify-center">
                   {plantImg && (
