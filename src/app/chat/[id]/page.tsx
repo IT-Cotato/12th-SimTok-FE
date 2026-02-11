@@ -1,8 +1,9 @@
 "use client";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 
-import { useParams, useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 
-import { useState } from "react";
+import { useStomp } from "@/context/StompContext";
 
 import AiIcon from "@/assets/AI.svg";
 import BackToKeywordIcon from "@/assets/backtokeyword.svg";
@@ -18,26 +19,148 @@ import { InfoMessage } from "@/components/dailyRecord/InfoMessage";
 
 import { CHAT_TOPIC } from "@/constants/friendsSettings";
 
-import chatData from "@/mock/chatdata.json";
 import friendListData from "@/mock/friendList.json";
 
-const Chatting = () => {
-  const [messages, setMessages] = useState(chatData);
+interface ChatMessage {
+  id: string | number;
+  type: "mine" | "friend";
+  content: string;
+  time: string;
+  messageSeq?: number;
+  isImage?: boolean;
+}
 
+interface ApiMessageItem {
+  messageId: number;
+  senderMemberId: number;
+  content: string;
+  createdAt: string;
+  messageSeq: number;
+}
+
+interface HistoryResponse {
+  success: boolean;
+  data: {
+    items: ApiMessageItem[];
+  };
+}
+
+const Chatting = () => {
+  const { client, isConnected } = useStomp();
   const router = useRouter();
   const params = useParams();
-  const id = params?.id;
+  const searchParams = useSearchParams();
+
+  const roomId = params?.id as string;
+  const targetId = searchParams.get("target");
+
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const myMemberId = 1;
   const [isTopicOpen, setIsTopicOpen] = useState(false);
   const [selectedTopicKey, setSelectedTopicKey] = useState<string | null>(null);
-  const [clickedText, setClickedText] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState<string>("");
 
+  const [prevRoomId, setPrevRoomId] = useState(roomId);
+  if (roomId !== prevRoomId) {
+    setPrevRoomId(roomId);
+    setMessages([]);
+  }
+
   const selectedTopic = CHAT_TOPIC.find(t => t.key === selectedTopicKey);
-  const targetFriend = friendListData.find(
-    friend => friend.userId === Number(id),
-  );
+  const targetFriend = friendListData.find(f => f.userId === Number(roomId));
   const displayName = targetFriend ? targetFriend.userName : "...";
   const isDimmed = isTopicOpen && Boolean(selectedTopicKey);
+
+  const formatTime = (dateStr: string) =>
+    new Date(dateStr).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+  // 초기 메시지 히스토리 로드
+  const fetchHistory = useCallback(
+    async (id: string) => {
+      if (!id || id === "new") return;
+      try {
+        const res = await fetch(`/api/chat/rooms/${id}/messages?limit=20`);
+        const result: HistoryResponse = await res.json();
+
+        if (result.success) {
+          const history: ChatMessage[] = result.data.items.map(msg => ({
+            id: msg.messageId,
+            type: msg.senderMemberId === myMemberId ? "mine" : "friend",
+            content: msg.content,
+            time: formatTime(msg.createdAt),
+            messageSeq: msg.messageSeq,
+          }));
+          setMessages(history.reverse());
+        }
+      } catch (err) {
+        console.error("히스토리 로드 실패", err);
+      }
+    },
+    [myMemberId],
+  );
+
+  // 초기화 및 실시간 메시지 구독
+  useEffect(() => {
+    if (!roomId || roomId === "new") return;
+
+    const timer = setTimeout(() => {
+      fetchHistory(roomId);
+    }, 0);
+
+    if (!client || !isConnected) {
+      return () => clearTimeout(timer);
+    }
+
+    const sub = client.subscribe(`/topic/chat/rooms/${roomId}`, msg => {
+      const body = JSON.parse(msg.body);
+      const formattedMsg: ChatMessage = {
+        id: body.messageId,
+        type: body.senderMemberId === myMemberId ? "mine" : "friend",
+        content: body.content,
+        time: new Date(body.createdAt).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+      };
+      setMessages(prev => [...prev, formattedMsg]);
+    });
+
+    return () => sub.unsubscribe();
+  }, [roomId, client, isConnected, fetchHistory, myMemberId]);
+
+  // 방 생성 리다이렉트 구독
+  useEffect(() => {
+    if (!client || !isConnected || roomId !== "new") return;
+
+    const sub = client.subscribe("/user/queue/chat/rooms", msg => {
+      const body = JSON.parse(msg.body);
+      if (body.roomId) router.replace(`/chat/${body.roomId}`);
+    });
+
+    return () => sub.unsubscribe();
+  }, [client, isConnected, roomId, router]);
+
+  // 메시지 전송
+  const handleSend = (text: string) => {
+    if (!client || !isConnected || !text.trim()) return;
+
+    const payload = {
+      clientMessageId: crypto.randomUUID(),
+      roomId: roomId === "new" ? null : Number(roomId),
+      targetMemberId: roomId === "new" ? Number(targetId) : null,
+      messageType: "TEXT",
+      content: text,
+    };
+
+    client.publish({
+      destination: "/app/chat/messages/send",
+      body: JSON.stringify(payload),
+    });
+    setInputValue("");
+  };
 
   const handleCloseTopic = () => {
     setIsTopicOpen(false);
@@ -45,31 +168,14 @@ const Chatting = () => {
   };
 
   const handleRecommendationClick = (text: string) => {
-    setClickedText(text);
     setInputValue(text);
     setIsTopicOpen(false);
     setSelectedTopicKey(null);
-    setClickedText(null);
-  };
-
-  const handleSend = (text: string) => {
-    const newMessage = {
-      id: Date.now(),
-      type: "mine",
-      content: text,
-      time: new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-    };
-    setMessages(prev => [...prev, newMessage]);
-    setInputValue("");
   };
 
   const handleImageUpload = (file: File) => {
     const imageUrl = URL.createObjectURL(file);
-
-    const newMessage = {
+    const newMessage: ChatMessage = {
       id: Date.now(),
       type: "mine",
       content: imageUrl,
@@ -79,7 +185,6 @@ const Chatting = () => {
         minute: "2-digit",
       }),
     };
-
     setMessages(prev => [...prev, newMessage]);
   };
 

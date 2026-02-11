@@ -1,5 +1,7 @@
 import localfont from "next/font/local";
 
+import { StompProvider } from "@/context/StompContext";
+
 import "@/styles/globals.css";
 
 const pretendard = localfont({
@@ -21,7 +23,7 @@ export default function RootLayout({
       <body className="flex w-full justify-center bg-white">
         <div className="w-full max-w-[440px] shadow-2xl">
           <div className="scrollbar-hide h-screen overflow-y-scroll">
-            {children}
+            <StompProvider>{children}</StompProvider>
           </div>
         </div>
       </body>
