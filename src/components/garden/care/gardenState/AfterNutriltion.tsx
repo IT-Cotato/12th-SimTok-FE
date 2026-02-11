@@ -27,9 +27,15 @@ export const AfterNutrition = ({ growthStage }: AfterNutritionProps) => {
       <div className="relative z-99 flex items-center justify-center">
         {/* 식물 이미지 */}
         <div className="relative flex items-center justify-center">
-          <div className="absolute bottom-[153px] left-1/2 -translate-x-1/2">
+          <div className="absolute bottom-[153px] left-1/2 flex -translate-x-1/2 flex-col gap-[10px]">
             <InfoMessage text="물이 필요해요!" triangleUp={false} />
-            <Image src={plantImg} alt="식물이미지" width={132} height={185} />
+            <Image
+              src={plantImg}
+              alt="식물이미지"
+              width={132}
+              height={185}
+              className="object-obtain h-auto"
+            />
           </div>
           {/* 화분 */}
           <Pot className="h-[187px] w-[203px]" />

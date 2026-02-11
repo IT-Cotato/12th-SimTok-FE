@@ -37,7 +37,7 @@ export const NutritionAvailable = ({
           <div
             className={`absolute ${isSeed ? "bottom-[143px]" : "bottom-[153px]"} left-1/2 flex -translate-x-1/2 flex-col items-center justify-center`}
           >
-            <div className="relative flex flex-col items-center">
+            <div className="relative flex flex-col items-center gap-[10px]">
               {/* 말풍선 배치 로직 */}
               <div
                 className={
@@ -57,7 +57,7 @@ export const NutritionAvailable = ({
                 alt="식물이미지"
                 width={isSeed ? "90" : "132"}
                 height={185}
-                className="block"
+                className="object-obtain h-auto"
               />
             </div>
           </div>
