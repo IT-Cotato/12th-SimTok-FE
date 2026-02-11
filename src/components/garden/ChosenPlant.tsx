@@ -1,10 +1,10 @@
 import Image from "next/image";
 
-import { PlantSort } from "@/constants/garden/plantList";
+import { PLANT_SORT_INFO } from "@/constants/garden/plantList";
 
 import { NameInput } from "../common/NameInput";
 
-export type Plant = (typeof PlantSort)[number];
+export type Plant = (typeof PLANT_SORT_INFO)[number];
 
 interface ChosenPlantProps {
   plant: Plant;

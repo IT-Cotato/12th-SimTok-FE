@@ -11,14 +11,16 @@ import { PageTitle } from "@/components/common/PageTitle";
 import { ChosenPlant } from "@/components/garden/ChosenPlant";
 import ProgressDots from "@/components/onboarding/ProgressDots";
 
-import { PlantSort } from "@/constants/garden/plantList";
+import { PLANT_SORT_INFO } from "@/constants/garden/plantList";
 
 const PlantNicknamePage = () => {
   const router = useRouter();
   const selectedPlantId = useGardenStore(state => state.selectedPlantId);
   const setPlantNickname = useGardenStore(state => state.setNickname);
 
-  const selectedPlant = PlantSort.find(plant => plant.id === selectedPlantId);
+  const selectedPlant = PLANT_SORT_INFO.find(
+    plant => plant.id === selectedPlantId,
+  );
 
   const [nickname, setNickname] = useState("");
 

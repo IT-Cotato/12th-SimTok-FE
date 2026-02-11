@@ -10,7 +10,7 @@ import { FullButton } from "@/components/common/FullButton";
 import { ChosenPlant } from "@/components/garden/ChosenPlant";
 import ProgressDots from "@/components/onboarding/ProgressDots";
 
-import { PlantSort } from "@/constants/garden/plantList";
+import { PLANT_SORT_INFO } from "@/constants/garden/plantList";
 
 import FriendData from "@/mock/friendList.json";
 
@@ -23,7 +23,7 @@ const InviteMessagePage = () => {
   const message = useGardenStore(state => state.message);
   const setMessage = useGardenStore(state => state.setMessage);
 
-  const selectedPlant = PlantSort.find(plant => plant.id === plantId);
+  const selectedPlant = PLANT_SORT_INFO.find(plant => plant.id === plantId);
   const friendName = FriendData.find(
     data => data.userId === friendId,
   )?.userName;
