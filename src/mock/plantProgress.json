@@ -1,21 +1,21 @@
 [
   {
     "id": 1,
-    "nickname": "두쫀쿠",
+    "nickname": "씨앗1",
     "plantSort": "daisy",
-    "growthStatus": "SPROUT",
-    "recentWateredTime": "2026-02-05T08:30:00",
-    "gardenState": "WITHERED",
+    "growthStatus": "SEED",
+    "recentWateredTime": "2026-02-10T08:30:00",
+    "gardenState": "WATERED_RECENTLY",
     "lastWateredById": 101,
-    "percentage": 12
+    "percentage": 5
   },
   {
     "id": 2,
     "nickname": "맥모닝",
     "plantSort": "tulip",
     "growthStatus": "STEM",
-    "recentWateredTime": "2026-02-06T21:10:00",
-    "gardenState": "WATERED_RECENTLY",
+    "recentWateredTime": "2026-02-09T21:10:00",
+    "gardenState": "WATERABLE",
     "lastWateredById": 102,
     "percentage": 12
   },
@@ -24,8 +24,8 @@
     "nickname": "믿음소망",
     "plantSort": "lily",
     "growthStatus": "BUD",
-    "recentWateredTime": "2026-02-06T09:00:00",
-    "gardenState": "WATERABLE",
+    "recentWateredTime": "2026-02-08T09:00:00",
+    "gardenState": "WITHERED",
     "lastWateredById": 103,
     "percentage": 12
   },
@@ -34,7 +34,7 @@
     "nickname": "사랑",
     "plantSort": "sunflower",
     "growthStatus": "BLOOM",
-    "recentWateredTime": "2026-02-04T18:45:00",
+    "recentWateredTime": "2026-02-06T18:45:00",
     "gardenState": "NUTRITION_AVAILABLE",
     "lastWateredById": 101,
     "percentage": 12
@@ -44,7 +44,7 @@
     "nickname": "딸기모찌",
     "plantSort": "baby-breath",
     "growthStatus": "SEED",
-    "recentWateredTime": "2026-02-05T07:05:00",
+    "recentWateredTime": "2026-02-08T07:05:00",
     "gardenState": "WITHERED",
     "lastWateredById": 104,
     "percentage": 12
@@ -55,7 +55,7 @@
     "plantSort": "daisy",
     "growthStatus": "STEM",
     "recentWateredTime": "2026-02-05T09:40:00",
-    "gardenState": "WITHERED",
+    "gardenState": "NUTRITION_AVAILABLE",
     "lastWateredById": 102,
     "percentage": 12
   },
@@ -64,8 +64,8 @@
     "nickname": "해바라기씨",
     "plantSort": "sunflower",
     "growthStatus": "SPROUT",
-    "recentWateredTime": "2026-02-03T22:15:00",
-    "gardenState": "NUTRITION_AVAILABLE",
+    "recentWateredTime": "2026-02-08T22:15:00",
+    "gardenState": "WATERABLE",
     "lastWateredById": 105,
     "percentage": 12
   },
@@ -74,8 +74,8 @@
     "nickname": "봄비",
     "plantSort": "tulip",
     "growthStatus": "BUD",
-    "recentWateredTime": "2026-02-04T06:20:00",
-    "gardenState": "NUTRITION_AVAILABLE",
+    "recentWateredTime": "2026-02-07T06:20:00",
+    "gardenState": "WITHERED",
     "lastWateredById": 103,
     "percentage": 12
   },
@@ -84,8 +84,8 @@
     "nickname": "포근이",
     "plantSort": "baby-breath",
     "growthStatus": "STEM",
-    "recentWateredTime": "2026-02-02T11:55:00",
-    "gardenState": "NUTRITION_AVAILABLE",
+    "recentWateredTime": "2026-02-09T11:55:00",
+    "gardenState": "WATERED_RECENTLY",
     "lastWateredById": 104,
     "percentage": 12
   },
@@ -94,7 +94,7 @@
     "nickname": "루루",
     "plantSort": "lily",
     "growthStatus": "BLOOM",
-    "recentWateredTime": "2026-02-05T10:10:00",
+    "recentWateredTime": "2026-02-07T10:10:00",
     "gardenState": "WITHERED",
     "lastWateredById": 101,
     "percentage": 12
