@@ -5,7 +5,7 @@ export const GARDEN_STATE_ITEM: readonly GardenStateItem[] = [
   {
     state: "EMPTY",
     growthStage: null,
-    title: ["아직 키우고 있는 식물이 없어요!", "정원에서 식물을 골라보세요"],
+    title: ["키우고 있는 식물이 없어요", "정원에서 식물을 골라보세요"],
     action: [],
   },
 
@@ -13,7 +13,7 @@ export const GARDEN_STATE_ITEM: readonly GardenStateItem[] = [
   {
     state: "SEED_READY",
     growthStage: "SEED",
-    title: ["친구와 함께 식물도 키우고", "정원도 꾸며볼까요?"],
+    title: ["씨앗을 심고", "시작해볼까요?"],
     action: [],
   },
 
@@ -21,7 +21,7 @@ export const GARDEN_STATE_ITEM: readonly GardenStateItem[] = [
   {
     state: "GROWING",
     growthStage: "SEED",
-    title: ["화분에 씨앗을 심었어요.", "씨앗에 작은 변화가 생겼어요🙂"],
+    title: ["씨앗을 심었어요", "이제 화분에 물을 주세요!"],
     action: ["WATER"],
     background: "bg-radial-yellowgreen-mintgreen",
   },
@@ -42,7 +42,7 @@ export const GARDEN_STATE_ITEM: readonly GardenStateItem[] = [
   {
     state: "GROWING",
     growthStage: "BUD",
-    title: ["우와 이제 꽃봉오리가 피었어요!", "곧 꽃이 필거예요🥰"],
+    title: ["꽃봉오리가 피었어요!🥰"],
     action: ["WATER"],
     background: "bg-radial-yellowgreen-mintgreen",
   },
@@ -51,28 +51,28 @@ export const GARDEN_STATE_ITEM: readonly GardenStateItem[] = [
   {
     state: "WITHERED",
     growthStage: "SEED",
-    title: ["씨앗이 말라버렸어요!", "아래 물주기를 눌러주세요"],
+    title: ["물이 부족해요!", "씨앗이 말랐어요"],
     action: ["WATER"],
     background: "bg-withered",
   },
   {
     state: "WITHERED",
     growthStage: "SPROUT",
-    title: ["새싹이 말라버렸어요!", "아래 물주기를 눌러주세요"],
+    title: ["물이 부족해요!", "새싹이 시들었어요"],
     action: ["WATER"],
     background: "bg-withered",
   },
   {
     state: "WITHERED",
     growthStage: "STEM",
-    title: ["줄기가 말라버렸어요!", "아래 물주기를 눌러주세요"],
+    title: ["물이 부족해요!", "줄기가 시들었어요"],
     action: ["WATER"],
     background: "bg-withered",
   },
   {
     state: "WITHERED",
     growthStage: "BUD",
-    title: ["꽃봉오리가 말라버렸어요!", "아래 물주기를 눌러주세요"],
+    title: ["물이 부족해요!", "꽃봉오리가 시들었어요"],
     action: ["WATER"],
     background: "bg-withered",
   },
@@ -111,7 +111,7 @@ export const GARDEN_STATE_ITEM: readonly GardenStateItem[] = [
   {
     state: "AFTER_NUTRITION",
     growthStage: null,
-    title: ["회복 후, 물까지 주셔야해요!", "아래 물주기를 눌러주세요"],
+    title: ["아직 물이 필요해요"],
     action: ["WATER"],
     background: "bg-watering",
   },
@@ -120,7 +120,7 @@ export const GARDEN_STATE_ITEM: readonly GardenStateItem[] = [
   {
     state: "WATERABLE",
     growthStage: null,
-    title: ["물을 줄 시간이에요!", "아래 물주기를 눌러보세요"],
+    title: ["물을 줄 시간이에요!"],
     action: ["WATER"],
     background: "bg-watering",
   },
