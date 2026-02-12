@@ -5,7 +5,7 @@
     "plantSort": "daisy",
     "growthStatus": "SEED",
     "recentWateredTime": "2026-02-10T08:30:00",
-    "gardenState": "WATERED_RECENTLY",
+    "gardenState": "NUTRITION_AVAILABLE",
     "lastWateredById": 101,
     "percentage": 5
   },
@@ -15,7 +15,7 @@
     "plantSort": "tulip",
     "growthStatus": "STEM",
     "recentWateredTime": "2026-02-09T21:10:00",
-    "gardenState": "WATERABLE",
+    "gardenState": "NUTRITION_AVAILABLE",
     "lastWateredById": 102,
     "percentage": 12
   },
@@ -25,7 +25,7 @@
     "plantSort": "lily",
     "growthStatus": "BUD",
     "recentWateredTime": "2026-02-08T09:00:00",
-    "gardenState": "WITHERED",
+    "gardenState": "NUTRITION_AVAILABLE",
     "lastWateredById": 103,
     "percentage": 12
   },

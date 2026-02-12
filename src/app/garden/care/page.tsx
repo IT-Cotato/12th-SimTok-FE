@@ -14,6 +14,7 @@ import { GardenCareContent } from "@/components/garden/care/GardenCareContent";
 import { GardenCareHeader } from "@/components/garden/care/GardenCareHeader";
 import { ProgressSection } from "@/components/garden/care/ProgressSection";
 import { EmptyPlant } from "@/components/garden/care/gardenState/EmptyPlant";
+import { Nutritioning } from "@/components/garden/care/gardenState/viewPhase/Nutritioning";
 import { Watering } from "@/components/garden/care/gardenState/viewPhase/Watering";
 
 import PlantData from "@/mock/plantProgress.json";
@@ -77,8 +78,8 @@ const GardenCare = () => {
     // 2. 연출 시퀀스
     await runPhaseSequence(
       [
-        { phase: "NUTRITION_BLACK", duration: 2000 },
-        { phase: "NUTRITION_AFTER_SHORTLY", duration: 2000 },
+        { phase: "NUTRITION_BLACK", duration: 1000 },
+        { phase: "NUTRITION_AFTER_SHORTLY", duration: 20000000 },
       ],
       setViewPhase,
     );
@@ -151,7 +152,11 @@ const GardenCare = () => {
           {viewPhase === "WATERING" && (
             <Watering growthStage={currentStep?.growthStatus as GrowthStage} />
           )}
-          {/* 이후 NUTRITION_BLACK, NUTRITION_AFTER_SHORTLY 등 추가 */}
+          {viewPhase === "NUTRITION_BLACK" && (
+            <Nutritioning
+              growthStage={currentStep?.growthStatus as GrowthStage}
+            />
+          )}
         </div>
       ) : (
         // 일반 상태
