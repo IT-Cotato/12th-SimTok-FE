@@ -71,10 +71,11 @@ const LoginPage = () => {
       if (result.success) {
         if (key) {
           sessionStorage.setItem("pw_reset_key", key);
+          router.push("/password/find");
         } else {
           console.warn("Draft Key가 헤더에 포함되지 않았습니다.");
+          alert("일시적인 오류가 발생했습니다. 다시 시도해주세요.");
         }
-        router.push("/password/find");
       } else {
         alert(result.message || "프로세스 시작 실패");
       }
