@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     const data = await res.json();
     const draftKey = res.headers.get("Password-Reset-Draft-Key");
 
-    const nextResponse = NextResponse.json(data);
+    const nextResponse = NextResponse.json(data, { status: res.status });
     if (draftKey) {
       nextResponse.headers.set("Password-Reset-Draft-Key", draftKey);
     }
