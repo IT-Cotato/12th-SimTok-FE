@@ -1,0 +1,29 @@
+import { NextResponse } from "next/server";
+
+export async function POST(request: Request) {
+  const BACKEND_URL =
+    "https://43.202.184.232.nip.io/api/password-reset/sms/send";
+
+  // 클라이언트 요청 헤더에서 키 추출 (키 이름은 백엔드 명세 확인 필요)
+  const draftKey = request.headers.get("Password-Reset-Draft-Key") || "";
+
+  try {
+    const body = await request.json();
+    const res = await fetch(BACKEND_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Password-Reset-Draft-Key": draftKey, // 이 부분이 핵심
+      },
+      body: JSON.stringify(body),
+    });
+
+    const data = await res.json();
+    return NextResponse.json(data, { status: res.status });
+  } catch (error) {
+    return NextResponse.json(
+      { success: false, message: "서버 연결 실패" },
+      { status: 500 },
+    );
+  }
+}

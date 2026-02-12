@@ -57,6 +57,33 @@ const LoginPage = () => {
     }
   };
 
+  const handleForgotPassword = async () => {
+    try {
+      const response = await fetch("/api/password-reset/drafts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({}),
+      });
+
+      const result = await response.json();
+      const key = response.headers.get("Password-Reset-Draft-Key");
+
+      if (result.success) {
+        if (key) {
+          sessionStorage.setItem("pw_reset_key", key);
+        } else {
+          console.warn("Draft Key가 헤더에 포함되지 않았습니다.");
+        }
+        router.push("/password/find");
+      } else {
+        alert(result.message || "프로세스 시작 실패");
+      }
+    } catch (error) {
+      console.error("Draft 생성 에러:", error);
+      router.push("/password/find");
+    }
+  };
+
   return (
     <main
       className={`flex min-h-dvh w-full flex-col justify-center ${
@@ -97,15 +124,12 @@ const LoginPage = () => {
               ? "text-neutral-08 cursor-default"
               : "text-orange-00 cursor-pointer"
           }`}
-          onClick={() => !isActive && router.push("/password/find")}
+          onClick={handleForgotPassword}
         >
           비밀번호를 잊으셨나요?
         </button>
 
         <div className="mb-[42px] px-4 py-[10px]">
-          {/* <FullButton isActive={isActive} onClick={() => router.push("/")}>
-            로그인
-          </FullButton> */}
           <FullButton isActive={isActive && !isLoading} onClick={handleLogin}>
             {isLoading ? "로그인 중..." : "로그인"}
           </FullButton>
