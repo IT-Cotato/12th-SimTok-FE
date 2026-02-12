@@ -1,17 +1,16 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
+import { BACKEND_BASE_URL } from "@/lib/constants";
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const response = await fetch(
-      "https://43.202.184.232.nip.io/api/auth/login",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      },
-    );
+    const response = await fetch(`${BACKEND_BASE_URL}/api/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
 
     const data = await response.json();
     if (!response.ok)
