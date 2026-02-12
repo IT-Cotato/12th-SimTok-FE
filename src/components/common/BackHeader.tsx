@@ -32,7 +32,7 @@ export const BackHeader = ({
 
   return (
     <header
-      className={`relative mt-[13px] flex px-4 py-[10px] ${!title && "h-9"}`}
+      className={`relative flex px-4 py-[10px] pt-[13px] ${!title && "h-9"}`}
     >
       <button
         type="button"
@@ -46,9 +46,6 @@ export const BackHeader = ({
       >
         {title}
       </h1>
-      <div className="flex flex-1 items-center justify-end pr-4">
-        {children}
-      </div>
 
       {timeAgo && (
         <p className="text-sub2-sb text-neutral-04 absolute right-4 bottom-[10px]">

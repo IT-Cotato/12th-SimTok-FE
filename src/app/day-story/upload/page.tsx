@@ -11,7 +11,7 @@ const DayStoryUpload = () => {
   const [status, setStatus] =
     useState<keyof typeof MISSION_STATUS>("NOT_STARTED");
   return (
-    <main className="w-full bg-black">
+    <main className="h-full w-full bg-black">
       <BackHeader title="하루한컷" titleColor="white" />
       <DailyMissionProgress status={status} />
       <div className="mt-[120px] flex items-center justify-center">
