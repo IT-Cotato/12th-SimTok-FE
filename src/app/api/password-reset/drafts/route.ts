@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 
+import { BACKEND_BASE_URL } from "@/lib/constants";
+
 export async function POST(request: Request) {
-  const BACKEND_URL = "https://43.202.184.232.nip.io/api/password-reset/drafts";
+  const BACKEND_URL = `${BACKEND_BASE_URL}/api/password-reset/drafts`;
 
   try {
     const body = await request.json();
