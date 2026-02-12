@@ -5,11 +5,10 @@ import { useRouter } from "next/navigation";
 import BackIcon from "@/assets/left-arrow.svg";
 import ListIcon from "@/assets/list.svg";
 
-interface HeaderProps {
+interface BackHeaderProps {
   title?: string;
   timeAgo?: string; // 하루한컷보기에서 사용
   menuIcon?: boolean; // 채팅페이지에서 사용
-  showBackIcon?: boolean; //뒤로가기 아이콘 표시 여부 추가
   children?: React.ReactNode; //채팅목록에서 사용
   titleColor?: string; //하루한컷 업로드에서 사용
   subtext?: string; // 친구목록에서 사용
@@ -28,7 +27,7 @@ export const BackHeader = ({
   isEditMode,
   onClickEdit,
   selectedCount,
-}: HeaderProps) => {
+}: BackHeaderProps) => {
   const router = useRouter();
 
   return (
@@ -57,7 +56,7 @@ export const BackHeader = ({
         </p>
       )}
       {menuIcon && (
-        <button className="absolute top-1/2 right-4 -translate-y-1/2">
+        <button className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer">
           <ListIcon />
         </button>
       )}

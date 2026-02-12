@@ -2,16 +2,19 @@ import { NextResponse } from "next/server";
 
 import { BACKEND_BASE_URL } from "@/lib/constants";
 
-export async function POST(req: Request) {
-  try {
-    const body = await req.json();
-    const draftKey = req.headers.get("Signup-Draft-Key") || "";
+export async function POST(request: Request) {
+  const BACKEND_URL = `${BACKEND_BASE_URL}/api/password-reset/sms/send`;
 
-    const res = await fetch(`${BACKEND_BASE_URL}/api/signup/profile`, {
+  // 클라이언트 요청 헤더에서 키 추출 (키 이름은 백엔드 명세 확인 필요)
+  const draftKey = request.headers.get("Password-Reset-Draft-Key") || "";
+
+  try {
+    const body = await request.json();
+    const res = await fetch(BACKEND_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Signup-Draft-Key": draftKey,
+        "Password-Reset-Draft-Key": draftKey, // 이 부분이 핵심
       },
       body: JSON.stringify(body),
     });
@@ -19,7 +22,6 @@ export async function POST(req: Request) {
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });
   } catch (error) {
-    console.error("Profile Proxy Error:", error);
     return NextResponse.json(
       { success: false, message: "서버 연결 실패" },
       { status: 500 },

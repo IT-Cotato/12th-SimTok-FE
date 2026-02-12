@@ -42,7 +42,7 @@ const SettingChatPage = () => {
         <div className="flex h-full w-110 flex-col pb-30">
           <BackHeader title="대화방 설정" />
           <section className="mt-[18.5px]">
-            <MyProfileCard
+            {/* <MyProfileCard
               userProfileData={{
                 userId: targetFriend.userId,
                 userName: targetFriend.userName,
@@ -53,7 +53,7 @@ const SettingChatPage = () => {
                 inviteCode: "",
               }}
               onEdit={() => router.push(`/friends/settings/${id}`)}
-            />
+            /> */}
           </section>
           <nav className="mt-10">
             <ul className="flex flex-col">
