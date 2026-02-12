@@ -7,7 +7,10 @@ import { InfoMessage } from "@/components/dailyRecord/InfoMessage";
 
 import { GARDEN_STATE_ITEM } from "@/constants/garden/gardenCare";
 
-export const SeedReady = () => {
+interface SeedReadyProps {
+  onPlant: () => void;
+}
+export const SeedReady = ({ onPlant }: SeedReadyProps) => {
   const pageTitle = GARDEN_STATE_ITEM.find(
     item => item.state === "SEED_READY",
   )?.title;
@@ -15,7 +18,10 @@ export const SeedReady = () => {
     <section className="z-99 flex h-screen w-full flex-1 flex-col justify-between">
       <PageTitle title={pageTitle} />
       <div className="flex flex-col items-center justify-center gap-[17px]">
-        <div className="relative flex h-[176px] w-full items-center justify-center">
+        <button
+          className="relative flex h-[176px] w-full cursor-pointer items-center justify-center"
+          onClick={onPlant}
+        >
           <Circle className="absolute h-[176px] w-[176px]" />
           <Seed className="absolute h-[78px] w-[55px]" />
 
@@ -23,7 +29,7 @@ export const SeedReady = () => {
           <div className="absolute right-[58px] bottom-[144.8px]">
             <InfoMessage text="씨앗을 눌러 심어주세요" triangleUp={false} />
           </div>
-        </div>
+        </button>
 
         <div className="z-99">
           <Pot className="h-[187px] w-[203px]" />
