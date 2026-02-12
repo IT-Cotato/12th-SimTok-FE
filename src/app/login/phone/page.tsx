@@ -80,7 +80,7 @@ const LoginPage = () => {
       }
     } catch (error) {
       console.error("Draft 생성 에러:", error);
-      router.push("/password/find");
+      alert("네트워크 오류가 발생했습니다. 다시 시도해주세요.");
     }
   };
 

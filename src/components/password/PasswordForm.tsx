@@ -99,15 +99,14 @@ export const PasswordForm = () => {
 
       const result = await res.json();
 
-      if (result.success && result.data.step !== "OTP_REQUIRED") {
+      if (result.success && result.data?.step !== "OTP_REQUIRED") {
         setIsVerified(true);
         setModalType("success");
         stop();
       } else {
-        // 번호가 틀렸거나 단계가 넘어가지 않은 경우 에러 처리
         setIsVerified(false);
         setModalType("error");
-        if (result.data.step === "OTP_REQUIRED") {
+        if (result.data?.step === "OTP_REQUIRED") {
           console.warn(
             "서버 응답은 성공이나 인증 단계가 갱신되지 않음(번호 불일치 추정)",
           );

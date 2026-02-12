@@ -2,9 +2,9 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 import { refreshAccessToken } from "@/lib/auth";
+import { BACKEND_BASE_URL } from "@/lib/constants";
 
-const API_BASE = process.env.BACKEND_URL ?? "https://43.202.184.232.nip.io";
-const PROFILE_API = `${API_BASE}/api/profile`;
+const PROFILE_API = `${BACKEND_BASE_URL}/api/profile`;
 
 async function fetchWithAuth(url: string, method: string, body?: unknown) {
   const cookieStore = await cookies();

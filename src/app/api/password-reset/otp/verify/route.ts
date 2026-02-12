@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 
+import { BACKEND_BASE_URL } from "@/lib/constants";
+
 export async function POST(request: Request) {
-  const BACKEND_URL =
-    "https://43.202.184.232.nip.io/api/password-reset/otp/verify";
+  const BACKEND_URL = `${BACKEND_BASE_URL}/api/password-reset/otp/verify`;
   const draftKey = request.headers.get("Password-Reset-Draft-Key") || "";
 
   try {
