@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import "swiper/css";
 import { Keyboard } from "swiper/modules";
@@ -42,9 +42,23 @@ const GardenCare = () => {
   const [optimisticGardenState, setOptimisticGardenState] =
     useState<GardenState | null>(null);
 
+  useEffect(() => {
+    if (currentStep?.gardenState) {
+      setConfirmedGardenState(currentStep.gardenState as GardenState);
+    } else {
+      setConfirmedGardenState("EMPTY");
+    }
+
+    // 슬라이드 이동하면 임시 상태 제거
+    setOptimisticGardenState(null);
+    setViewPhase("IDLE");
+  }, [currentIndex]);
+
   const displayGardenState = optimisticGardenState ?? confirmedGardenState;
+
   const slideGardenState: GardenState =
     optimisticGardenState ??
+    confirmedGardenState ??
     (currentStep?.gardenState as GardenState) ??
     "EMPTY";
 
@@ -111,15 +125,17 @@ const GardenCare = () => {
       setViewPhase("IDLE");
     }
   };
+
   console.log(currentIndex);
   console.log("slideGardenState: ", slideGardenState);
   console.log("viewPhase:", viewPhase);
   console.log("confirmed: ", confirmedGardenState);
+
   return (
     <main className="relative flex h-screen flex-col">
       {/* 배경 */}
       <GardenBackgroundColor
-        gardenState={slideGardenState}
+        gardenState={displayGardenState}
         viewPhase={viewPhase}
       />
 
@@ -129,12 +145,17 @@ const GardenCare = () => {
         onChangeSelectTitle={handleChangeSelectTitle}
       />
 
-      {viewPhase === "WATERING" ? (
+      {viewPhase !== "IDLE" ? (
+        // viewPhase 연출 중
         <div className="flex flex-1 flex-col">
-          <Watering growthStage={currentStep?.growthStatus as GrowthStage} />
+          {viewPhase === "WATERING" && (
+            <Watering growthStage={currentStep?.growthStatus as GrowthStage} />
+          )}
+          {/* 이후 NUTRITION_BLACK, NUTRITION_AFTER_SHORTLY 등 추가 */}
         </div>
       ) : (
-        <>
+        // 일반 상태
+        <div className="relative flex flex-1 flex-col">
           {PlantData && PlantData.length > 0 && (
             <ProgressDots total={PlantData.length} current={currentIndex + 1} />
           )}
@@ -176,7 +197,7 @@ const GardenCare = () => {
               </section>
             </>
           )}
-        </>
+        </div>
       )}
     </main>
   );

@@ -25,23 +25,23 @@ export const Watering = ({ growthStage }: WateringProps) => {
       <PageTitle title={["물을 주고 있어요", "잠시만 기다려주세요"]} />
       <div className="relative z-99 flex items-center justify-center">
         {/* 식물 이미지 */}
-        <div className="relative flex items-center justify-center">
-          <div className="absolute bottom-[153px] left-1/2 flex w-max -translate-x-1/2 flex-col items-center">
+        <div className="relative bottom-[200px] flex items-center justify-center">
+          <div className="absolute bottom-[155px] left-1/2 flex w-max -translate-x-1/2 flex-col items-center">
             <Lottie
               play
               animationData={wateringAnimation}
               loop
               style={{ width: 125, height: 125 }}
             />
-            <div className="relative flex h-[176px] w-full items-center justify-center">
-              <Circle className="absolute h-[176px] w-[176px]" />
+            <div className="relative flex h-[179px] w-full items-center justify-center">
+              <Circle className="absolute h-[179px] w-[179px]" />
               {plantImg && (
                 <Image
                   src={plantImg}
                   alt="식물이미지"
-                  width={132}
-                  height={185}
-                  className="object-obtain h-auto"
+                  width={111}
+                  height={174}
+                  className="h-auto object-contain"
                 />
               )}
             </div>
