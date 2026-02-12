@@ -12,11 +12,13 @@ import { InfoMessage } from "../dailyRecord/InfoMessage";
 interface HeaderWithIconProps {
   havePencil?: boolean;
   title?: string;
+  haveAlarm?: boolean;
 }
 
 export const HeaderWithIcon = ({
   title,
   havePencil = false,
+  haveAlarm = true,
 }: HeaderWithIconProps) => {
   const router = useRouter();
   const [isAlarmNew, setIsAlarmNew] = useState(true);
@@ -31,7 +33,7 @@ export const HeaderWithIcon = ({
     <header className="relative mt-[13px] flex items-center justify-center px-4 py-[10px]">
       <h1 className="text-h1 text-black">{title}</h1>
       <div className="absolute right-4 flex gap-2">
-        {isAlarmNew ? (
+        {haveAlarm && isAlarmNew ? (
           <button
             className="relative cursor-pointer"
             onClick={() => setIsAlarmNew(false)}
@@ -42,6 +44,7 @@ export const HeaderWithIcon = ({
         ) : (
           <AlarmIcon className="h-6 w-6 cursor-pointer" />
         )}
+
         {havePencil && (
           <PencilIcon
             className="h-6 w-6 cursor-pointer"

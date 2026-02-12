@@ -10,8 +10,10 @@ import FloatingButtonIcon from "@/assets/floating_button.svg";
 import { ChatItem } from "@/components/chat/ChatItem";
 import { ExitChatModal } from "@/components/chat/ExitChatModal";
 import { BackHeader } from "@/components/common/BackHeader";
+import { HeaderWithIcon } from "@/components/common/HeaderWithIcon";
 import { NavBar } from "@/components/common/NavBar";
 import { SearchField } from "@/components/common/SearchField";
+import { Header } from "@/components/home/Header";
 
 import chatListData from "@/mock/chatList.json";
 
@@ -57,11 +59,7 @@ const ChatListPage = () => {
   return (
     <main className="relative flex min-h-dvh w-full justify-center bg-white">
       <div className="flex h-full w-full flex-col">
-        <BackHeader title="대화" showBackIcon={false}>
-          <button className="flex items-center justify-center">
-            <BellIcon />
-          </button>
-        </BackHeader>
+        <HeaderWithIcon title="채팅" haveAlarm={true} />
 
         <div className="px-4">
           <SearchField onChangeSearchText={setSearchText} />
@@ -86,7 +84,7 @@ const ChatListPage = () => {
         <div className="pointer-events-none fixed bottom-[122px] left-0 z-40 flex w-full justify-center">
           <div className="flex w-full max-w-[440px] justify-end px-4">
             <button
-              className="pointer-events-auto transition-transform active:scale-95"
+              className="pointer-events-auto cursor-pointer transition-transform active:scale-95"
               onClick={() => router.push("/chat/create")}
             >
               <FloatingButtonIcon />
