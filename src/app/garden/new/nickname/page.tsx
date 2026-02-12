@@ -42,7 +42,7 @@ const PlantNicknamePage = () => {
         <ProgressDots total={3} current={0} />
         <div className="mt-[29px]">
           <PageTitle
-            title={["친구와 함께 키울", "식물의 이름을 만들어보세요."]}
+            title={["친구와 함께 키울", "식물에게 이름을 지어주세요"]}
           />
         </div>
         {selectedPlant && (
