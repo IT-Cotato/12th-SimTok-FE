@@ -31,62 +31,82 @@ export const SharedDiaryItem = ({
   const timeAgo = getTimeAgo(item.createdAt);
 
   return (
-    <section key={item.id} className="flex w-full flex-col">
-      <div className="flex items-center justify-start gap-[5px] px-4 py-[10px]">
-        <Image
-          src={item.profile}
-          alt={item.userName}
-          width={46}
-          height={46}
-          className="rounded-full object-cover"
-        />
-        <p className="text-sub2-sb text-neutral-01">{item.userName}</p>
-      </div>
-      {emotionMeta && (
-        <figure className="-mt-[32px] flex flex-col items-center">
+    <section key={item.id} className="mb-6 flex w-full flex-col">
+      <div className="flex items-center justify-between px-4 py-[10px]">
+        <div className="flex items-center justify-start gap-[5px]">
           <Image
-            src={emotionMeta.imageSrc}
-            alt={item.emotion}
-            width={89}
-            height={89}
-            className="p-[10px]"
+            src={item.profile}
+            alt={item.userName}
+            width={46}
+            height={46}
+            className="rounded-2xl object-cover"
           />
-          <figcaption className="text-sub1-sb -mt-[16px] text-black">
-            {`"오늘 하루는 ${emotionMeta.pastText}"`}
-          </figcaption>
-        </figure>
-      )}
-      {item.image && (
-        <div className="bg-neutral-11 relative mt-2 h-[589px] w-full">
-          <Image
-            src={item.image}
-            alt={item.image}
-            fill
-            className="w-full object-contain"
-          />
+          <p className="text-sub1-sb text-neutral-01">{item.userName}</p>
         </div>
-      )}
+        <p className="text-neutral-04 text-sub2-sb">{timeAgo}</p>
+      </div>
 
-      <div className="flex flex-col gap-[10px] px-4 pt-[10px] pb-4">
-        <p className="text-body1-md text-black">{item.text}</p>
-        <div className="flex justify-between">
-          <div className="flex gap-2">
+      <section className="flex flex-col gap-4">
+        {emotionMeta && (
+          <figure className="-mt-[32px] flex flex-col items-center">
+            <div className="p-[10px]">
+              <Image
+                src={emotionMeta.imageSrc}
+                alt={item.emotion}
+                width={89}
+                height={89}
+              />
+            </div>
+            <figcaption className="text-sub1-sb text-black">
+              {`"오늘 하루는 ${emotionMeta.pastText}"`}
+            </figcaption>
+          </figure>
+        )}
+        {item.image && (
+          <div className="w-full px-4">
+            <Image
+              src={item.image}
+              alt="diary image"
+              width={800}
+              height={600}
+              className="h-auto w-full rounded-2xl object-contain"
+            />
+          </div>
+        )}
+
+        {!item.image && (
+          <section className="px-4">
+            <div className="bg-neutral-10 border-mint-01 rounded-2xl border px-[10px] py-4">
+              {item.text}
+            </div>
+          </section>
+        )}
+      </section>
+
+      <div className="flex justify-between p-[10px] px-4">
+        {item.image && <p className="text-body1-md text-black">{item.text}</p>}
+
+        <div className="flex items-center justify-between">
+          <div className="flex gap-3 pl-[10px]">
             <div
               className="cursor-pointer"
               onClick={() => setHeartClicked(prev => !prev)}
             >
               {heartClicked ? (
-                <HeartFillIcon width={24} height={24} />
+                <HeartFillIcon
+                  width={26}
+                  height={26}
+                  className="text-mint-01"
+                />
               ) : (
-                <HeartIcon width={24} height={24} />
+                <HeartIcon width={26} height={26} className="text-neutral-01" />
               )}
             </div>
             <CommentIcon
-              className="cursor-pointer"
+              className="text-neutral-01 h-[26px] w-[26px] cursor-pointer"
               onClick={() => router.push(`/shared-diary/${item.id}`)}
             />
           </div>
-          <p className="text-neutral-04 text-sub2-sb">{timeAgo}</p>
         </div>
       </div>
       {commentMode && (
