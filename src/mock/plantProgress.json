@@ -13,11 +13,11 @@
     "id": 2,
     "nickname": "맥모닝",
     "plantSort": "tulip",
-    "growthStatus": "STEM",
+    "growthStatus": "SEED",
     "recentWateredTime": "2026-02-09T21:10:00",
-    "gardenState": "WATERABLE",
+    "gardenState": "SEED_READY",
     "lastWateredById": 102,
-    "percentage": 12
+    "percentage": 0
   },
   {
     "id": 3,

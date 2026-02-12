@@ -25,6 +25,7 @@ export const GardenCareContent = ({
   plantSort,
   onWater,
   onNutrition,
+  onPlant,
 }: {
   plantName?: string;
   percentage?: number;
@@ -33,6 +34,7 @@ export const GardenCareContent = ({
   plantSort: PlantSort;
   onWater: () => void;
   onNutrition: () => void;
+  onPlant: () => void;
 }) => {
   let Content: JSX.Element | null;
   const activeButtonList =
@@ -40,7 +42,7 @@ export const GardenCareContent = ({
 
   switch (gardenState) {
     case "SEED_READY":
-      Content = <SeedReady />;
+      Content = <SeedReady onPlant={onPlant} />;
       break;
     case "GROWING":
       Content = <Growning growthStage={growthStage} />;

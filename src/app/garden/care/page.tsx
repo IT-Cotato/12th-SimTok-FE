@@ -137,6 +137,31 @@ const GardenCare = () => {
       // TODO: 에러 토스트 등
     }
   };
+  const handlePlant = async () => {
+    if (!currentPlantId) return;
+
+    // optimistic 업데이트
+    setOptimisticGardenState("GROWING");
+
+    try {
+      // TODO: 실제 API 호출
+      // const res = await plantSeedApi();
+      // const newState = res.gardenState;
+
+      const newState: GardenState = "GROWING";
+
+      // 해당 식물 상태 저장
+      setPlantGardenStates(prev => ({
+        ...prev,
+        [currentPlantId]: newState,
+      }));
+
+      setOptimisticGardenState(null);
+    } catch (e) {
+      console.error("씨앗 심기 실패:", e);
+      setOptimisticGardenState(null);
+    }
+  };
 
   return (
     <main className="relative flex h-screen flex-col">
@@ -210,6 +235,7 @@ const GardenCare = () => {
                         plantSort={data.plantSort as PlantSort}
                         onWater={handleWater}
                         onNutrition={handleNutrition}
+                        onPlant={handlePlant}
                       />
                     </div>
                   </SwiperSlide>
