@@ -23,7 +23,7 @@ export const HeaderWithIcon = ({
   const router = useRouter();
 
   const [isAlarmNew, setIsAlarmNew] = useState(true);
-  const [showInfo, setShowInfo] = useState(false);
+  const [showInfo, setShowInfo] = useState(true);
 
   useEffect(() => {
     if (!havePencil) return;
