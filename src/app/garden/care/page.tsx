@@ -14,6 +14,7 @@ import { GardenCareContent } from "@/components/garden/care/GardenCareContent";
 import { GardenCareHeader } from "@/components/garden/care/GardenCareHeader";
 import { ProgressSection } from "@/components/garden/care/ProgressSection";
 import { EmptyPlant } from "@/components/garden/care/gardenState/EmptyPlant";
+import { NutritionAfterShortly } from "@/components/garden/care/gardenState/viewPhase/NutritionAfterShortly";
 import { Nutritioning } from "@/components/garden/care/gardenState/viewPhase/Nutritioning";
 import { Watering } from "@/components/garden/care/gardenState/viewPhase/Watering";
 
@@ -34,34 +35,31 @@ const GardenCare = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [viewPhase, setViewPhase] = useState<ViewPhase>("IDLE");
 
-  const currentStep = PlantData?.[currentIndex];
-
-  const [confirmedGardenState, setConfirmedGardenState] = useState<GardenState>(
-    (currentStep?.gardenState as GardenState) ?? "EMPTY",
+  // 각 식물(id)별 최신 gardenState를 저장
+  const [plantGardenStates, setPlantGardenStates] = useState<
+    Record<number, GardenState>
+  >(
+    PlantData.reduce(
+      (acc, item) => {
+        acc[item.id] = item.gardenState as GardenState;
+        return acc;
+      },
+      {} as Record<number, GardenState>,
+    ),
   );
 
   const [optimisticGardenState, setOptimisticGardenState] =
     useState<GardenState | null>(null);
 
-  useEffect(() => {
-    if (currentStep?.gardenState) {
-      setConfirmedGardenState(currentStep.gardenState as GardenState);
-    } else {
-      setConfirmedGardenState("EMPTY");
-    }
+  const currentStep = PlantData?.[currentIndex];
+  const currentPlantId = currentStep?.id;
 
-    // 슬라이드 이동하면 임시 상태 제거
-    setOptimisticGardenState(null);
-    setViewPhase("IDLE");
-  }, [currentIndex]);
+  // 현재 슬라이드의 실제 gardenState 계산
+  const currentGardenState: GardenState = currentPlantId
+    ? (optimisticGardenState ?? plantGardenStates[currentPlantId] ?? "EMPTY")
+    : "EMPTY";
 
-  const displayGardenState = optimisticGardenState ?? confirmedGardenState;
-
-  const slideGardenState: GardenState =
-    optimisticGardenState ??
-    confirmedGardenState ??
-    (currentStep?.gardenState as GardenState) ??
-    "EMPTY";
+  const displayGardenState = currentGardenState;
 
   const handleChangeSelectTitle = (value: "left" | "right") => {
     setSelectTitle(value);
@@ -72,65 +70,73 @@ const GardenCare = () => {
   };
 
   const handleNutrition = async () => {
-    // 1. optimistic update
+    if (!currentPlantId) return;
+
     setOptimisticGardenState("AFTER_NUTRITION");
 
-    // 2. 연출 시퀀스
     await runPhaseSequence(
       [
         { phase: "NUTRITION_BLACK", duration: 1000 },
-        { phase: "NUTRITION_AFTER_SHORTLY", duration: 20000000 },
+        { phase: "NUTRITION_AFTER_SHORTLY", duration: 1000 },
       ],
       setViewPhase,
     );
 
     try {
-      // TODO: 영양제 투여 API 호출
+      // TODO: 실제 API 호출
       // const res = await nutritionPlantApi();
-      // setConfirmedGardenState(res.gardenState);
+      // const newState = res.gardenState;
 
-      // 임시: 성공 가정
-      setConfirmedGardenState("AFTER_NUTRITION");
-    } catch (e) {
-      // TODO: 실패 처리 (토스트 등)
-      // 실패 시 optimistic rollback
-      setOptimisticGardenState(null);
-    } finally {
+      const newState: GardenState = "AFTER_NUTRITION";
+
+      // 해당 식물 상태 업데이트
+      setPlantGardenStates(prev => ({
+        ...prev,
+        [currentPlantId]: newState,
+      }));
+
       setOptimisticGardenState(null);
       setViewPhase("IDLE");
+    } catch (e) {
+      console.error("영양제 실패:", e);
+      setOptimisticGardenState(null);
+      setViewPhase("IDLE");
+      // TODO: 에러 토스트 등
     }
   };
 
   const handleWater = async () => {
-    // 1. optimistic update
+    if (!currentPlantId) return;
+
     setOptimisticGardenState("WATERED_RECENTLY");
 
-    // 2. 연출
     await runPhaseSequence(
       [{ phase: "WATERING", duration: 1000 }],
       setViewPhase,
     );
 
     try {
-      // TODO: 물주기 API 호출
+      // TODO: 실제 API 호출
       // const res = await waterPlantApi();
-      // setConfirmedGardenState(res.gardenState);
+      // const newState = res.gardenState;
 
-      // 임시: 성공 가정
-      setConfirmedGardenState("WATERED_RECENTLY");
-    } catch (e) {
-      // TODO: 실패 처리
-      setOptimisticGardenState(null);
-    } finally {
+      const newState: GardenState = "WATERED_RECENTLY";
+
+      // 해당 식물 상태 업데이트
+      setPlantGardenStates(prev => ({
+        ...prev,
+        [currentPlantId]: newState,
+      }));
+
       setOptimisticGardenState(null);
       setViewPhase("IDLE");
+    } catch (e) {
+      console.error("물주기 실패:", e);
+      setOptimisticGardenState(null);
+      setViewPhase("IDLE");
+      // TODO: 에러 토스트 등
     }
   };
-
-  console.log(currentIndex);
-  console.log("slideGardenState: ", slideGardenState);
-  console.log("viewPhase:", viewPhase);
-  console.log("confirmed: ", confirmedGardenState);
 
   return (
     <main className="relative flex h-screen flex-col">
@@ -157,6 +163,11 @@ const GardenCare = () => {
               growthStage={currentStep?.growthStatus as GrowthStage}
             />
           )}
+          {viewPhase === "NUTRITION_AFTER_SHORTLY" && (
+            <NutritionAfterShortly
+              growthStage={currentStep?.growthStatus as GrowthStage}
+            />
+          )}
         </div>
       ) : (
         // 일반 상태
@@ -166,28 +177,44 @@ const GardenCare = () => {
           )}
           {PlantData && PlantData.length > 0 ? (
             <Swiper
-              onSlideChange={swiper => setCurrentIndex(swiper.activeIndex)}
+              initialSlide={currentIndex}
+              onSlideChange={swiper => {
+                setCurrentIndex(swiper.activeIndex);
+                setOptimisticGardenState(null); // 이벤트 핸들러에서 직접 초기화
+                setViewPhase("IDLE");
+              }}
               modules={[Keyboard]}
               keyboard={{ enabled: true }}
               spaceBetween={0}
               slidesPerView={1}
               className="h-full w-full flex-1"
             >
-              {PlantData.map((data, idx) => (
-                <SwiperSlide key={idx}>
-                  <div className="flex h-full flex-col">
-                    <GardenCareContent
-                      growthStage={data.growthStatus as GrowthStage}
-                      gardenState={data.gardenState as GardenState}
-                      percentage={data.percentage}
-                      plantName={data.nickname}
-                      plantSort={data.plantSort as PlantSort}
-                      onWater={handleWater}
-                      onNutrition={handleNutrition}
-                    />
-                  </div>
-                </SwiperSlide>
-              ))}
+              {PlantData.map((data, idx) => {
+                const isCurrent = idx === currentIndex;
+
+                const effectiveGardenState = isCurrent
+                  ? (optimisticGardenState ??
+                    plantGardenStates[data.id] ??
+                    (data.gardenState as GardenState))
+                  : (plantGardenStates[data.id] ??
+                    (data.gardenState as GardenState));
+
+                return (
+                  <SwiperSlide key={idx}>
+                    <div className="flex h-full flex-col">
+                      <GardenCareContent
+                        growthStage={data.growthStatus as GrowthStage}
+                        gardenState={effectiveGardenState}
+                        percentage={data.percentage}
+                        plantName={data.nickname}
+                        plantSort={data.plantSort as PlantSort}
+                        onWater={handleWater}
+                        onNutrition={handleNutrition}
+                      />
+                    </div>
+                  </SwiperSlide>
+                );
+              })}
             </Swiper>
           ) : (
             <>
@@ -207,4 +234,5 @@ const GardenCare = () => {
     </main>
   );
 };
+
 export default GardenCare;

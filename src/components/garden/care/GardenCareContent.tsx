@@ -35,7 +35,6 @@ export const GardenCareContent = ({
   onNutrition: () => void;
 }) => {
   let Content: JSX.Element | null;
-  console.log("gardenState: ", gardenState);
   const activeButtonList =
     GARDEN_STATE_ITEM.find(item => item.state === gardenState)?.action ?? [];
 
