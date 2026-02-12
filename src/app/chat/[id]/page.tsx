@@ -81,10 +81,16 @@ const Chatting = () => {
   const fetchHistory = useCallback(
     async (id: string) => {
       if (!id || id === "new") return;
-      try {
-        const res = await fetch(`/api/chat/rooms/${id}/messages?limit=20`);
-        const result: HistoryResponse = await res.json();
+      const token = localStorage.getItem("accessToken");
 
+      try {
+        const res = await fetch(`/api/chat/rooms/${id}/messages?limit=20`, {
+          headers: {
+            Authorization: `Bearer ${token}`, // 인증 헤더 추가 필수
+          },
+        });
+
+        const result: HistoryResponse = await res.json();
         if (result.success) {
           const history: ChatMessage[] = result.data.items.map(msg => ({
             id: msg.messageId,
@@ -150,7 +156,7 @@ const Chatting = () => {
     const payload = {
       clientMessageId: crypto.randomUUID(),
       roomId: roomId === "new" ? null : Number(roomId),
-      targetMemberId: roomId === "new" ? Number(targetId) : null,
+      opponentMemberId: roomId ? null : Number(targetId),
       messageType: "TEXT",
       content: text,
     };
