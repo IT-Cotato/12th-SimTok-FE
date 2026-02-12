@@ -31,7 +31,7 @@ export const Completed = ({ plantSort }: CompletedProps) => {
                 alt="식물이미지"
                 width={149}
                 height={224}
-                className="h-auto object-contain" // 비율 유지하며 꽉 차게
+                className="h-auto object-contain"
               />
             )}
           </div>
