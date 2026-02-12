@@ -1,17 +1,15 @@
 import { NextResponse } from "next/server";
 
+import { BACKEND_BASE_URL } from "@/lib/constants";
+
 export async function POST() {
   try {
-    const response = await fetch(
-      "https://43.202.184.232.nip.io/api/signup/drafts",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      },
-    );
+    const response = await fetch(`${BACKEND_BASE_URL}/api/signup/drafts`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
 
     const body = await response.json();
-    console.log("백엔드 응답 상세:", body);
     const draftKey = response.headers.get("signup-draft-key");
 
     return NextResponse.json(body, {
