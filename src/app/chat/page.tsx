@@ -32,6 +32,15 @@ const ChatListPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedChat, setSelectedChat] = useState<ChatRoomItem | null>(null);
 
+  const formatDate = (dateString: string) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}.${month}.${day}`;
+  };
+
   useEffect(() => {
     const fetchChatRooms = async () => {
       try {
@@ -82,7 +91,7 @@ const ChatListPage = () => {
               id={chat.roomId}
               name={chat.roomName}
               lastMessage={chat.lastMessagePreview}
-              date={chat.lastMessageAt}
+              date={formatDate(chat.lastMessageAt)}
               unreadCount={chat.unreadCount}
               profileImg={chat.opponent.profileImageUrl}
               onDelete={() => handleOpenModal(chat)}
