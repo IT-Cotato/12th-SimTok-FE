@@ -1,6 +1,8 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
+import { BACKEND_BASE_URL } from "@/lib/constants";
+
 export async function POST(request: Request) {
   try {
     const cookieStore = await cookies();
@@ -16,7 +18,7 @@ export async function POST(request: Request) {
     const body = await request.json();
 
     const response = await fetch(
-      "https://43.202.184.232.nip.io/api/image/presigned-url",
+      `${BACKEND_BASE_URL}/api/image/presigned-url`,
       {
         method: "POST",
         headers: {

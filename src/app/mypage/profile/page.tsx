@@ -23,10 +23,10 @@ const ProfileSettingPage = () => {
 
         <div className="flex flex-1 flex-col items-center">
           <section className="w-full">
-            <ProfileSummary
+            {/* <ProfileSummary
               userProfileData={userProfileData}
               onModalStateChange={setIsModalOpen}
-            />
+            /> */}
           </section>
         </div>
 

@@ -96,7 +96,7 @@ export const SettingField = (props: SettingFieldProps) => {
         {CHAT_STYLE.map(({ key, label }) => (
           <div key={key} className="flex items-center gap-[10px]">
             <button
-              className={`relative h-6 w-6 rounded-full ${
+              className={`relative h-6 w-6 cursor-pointer rounded-full ${
                 chatStyle === key ? "bg-mint-01" : "border-neutral-08 border"
               }`}
               onClick={() => onChangeChatStyle(key)}
@@ -122,19 +122,13 @@ export const SettingField = (props: SettingFieldProps) => {
         {CHAT_TOPIC.map(({ key, label, icon }: ChatTopicItem) => (
           <button
             key={key}
-            className={`flex h-[55px] max-w-[127px] items-center justify-center rounded-2xl border ${
+            className={`flex h-[55px] max-w-[127px] cursor-pointer items-center justify-center rounded-2xl border ${
               chatTopic.includes(key) ? "border-mint-01" : "border-neutral-08"
             }`}
             onClick={() => onToggleChatTopic(key)}
           >
-            {key === "custom" ? (
-              <PlusIcon className="h-6 w-6" />
-            ) : (
-              <>
-                {icon && <img src={icon} alt={label} className="h-6 w-6" />}
-                <p className="text-h2 text-neutral-01">{label}</p>
-              </>
-            )}
+            {icon && <img src={icon} alt={label} className="h-6 w-6" />}
+            <p className="text-h2 text-neutral-01">{label}</p>
           </button>
         ))}
       </div>

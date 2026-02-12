@@ -26,12 +26,11 @@ export const PasswordForm = () => {
   const [focused, setFocused] = useState<"name" | "phone" | "code" | null>(
     null,
   );
-
+  const [isLoading, setIsLoading] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [modalType, setModalType] = useState<"success" | "error" | null>(null);
 
   const router = useRouter();
-
   const { isValidPhone } = usePhoneValidation(phone);
   const { timeLeft, isRunning, start, stop } = useCountdown();
   const isCodeRequested = isRunning;
@@ -40,11 +39,39 @@ export const PasswordForm = () => {
 
   const canRequestCode = isValidPhone;
 
-  const handleRequestCode = () => {
-    if (!canRequestCode) return;
-    setIsVerified(false);
-    setCode("");
-    start(120);
+  const handleRequestCode = async () => {
+    const key = sessionStorage.getItem("pw_reset_key");
+    if (!canRequestCode || isLoading) return;
+
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/password-reset/sms/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Password-Reset-Draft-Key": key || "",
+        },
+        body: JSON.stringify({
+          phoneNumber: phone.replace(/-/g, ""),
+          name: name,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setIsVerified(false);
+        setCode("");
+        start(180);
+      } else {
+        alert(result.message || "서버 내부 오류입니다.");
+      }
+    } catch (error) {
+      console.error("Catch 에러:", error);
+      alert("네트워크 연결에 실패했습니다.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleResendClick = () => {
@@ -54,17 +81,42 @@ export const PasswordForm = () => {
     handleRequestCode();
   };
 
-  const handleVerify = () => {
-    if (!code || !isCodeRequested || timeLeft === 0) return;
-    const isSuccess = code === "1234";
+  const handleVerify = async () => {
+    if (!code || !isCodeRequested || timeLeft === 0 || isLoading) return;
 
-    if (isSuccess) {
-      setIsVerified(true);
-      setModalType("success");
-      stop();
-    } else {
-      setIsVerified(false);
+    setIsLoading(true);
+    const resetKey = sessionStorage.getItem("pw_reset_key") || "";
+
+    try {
+      const res = await fetch("/api/password-reset/otp/verify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Password-Reset-Draft-Key": resetKey,
+        },
+        body: JSON.stringify({ otpCode: code }),
+      });
+
+      const result = await res.json();
+
+      if (result.success && result.data?.step !== "OTP_REQUIRED") {
+        setIsVerified(true);
+        setModalType("success");
+        stop();
+      } else {
+        setIsVerified(false);
+        setModalType("error");
+        if (result.data?.step === "OTP_REQUIRED") {
+          console.warn(
+            "서버 응답은 성공이나 인증 단계가 갱신되지 않음(번호 불일치 추정)",
+          );
+        }
+      }
+    } catch (error) {
+      console.error("검증 중 에러 발생:", error);
       setModalType("error");
+    } finally {
+      setIsLoading(false);
     }
   };
 

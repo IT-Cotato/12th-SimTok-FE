@@ -54,8 +54,6 @@ const SettingPage = () => {
       });
       const result = await res.json();
 
-      console.log("회원가입 최종 결과:", result);
-
       if (result.success) {
         const tokens = result.data?.tokens;
         const access = tokens?.accessToken?.accessToken;
