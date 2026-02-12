@@ -54,7 +54,7 @@ export const Withered = ({ growthStage }: WitheredProps) => {
                 alt="식물이미지"
                 width={isSeed ? "90" : "132"}
                 height={185}
-                className="object-obtain h-auto"
+                className="h-auto object-contain"
               />
             </div>
           </div>

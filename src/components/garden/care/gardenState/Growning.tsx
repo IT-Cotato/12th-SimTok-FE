@@ -31,7 +31,7 @@ export const Growning = ({ growthStage }: GrowiningProps) => {
               alt="식물이미지"
               width={132}
               height={185}
-              className="object-obtain h-auto"
+              className="h-auto object-contain"
             />
           </div>
           {/* 화분 */}
