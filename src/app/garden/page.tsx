@@ -53,11 +53,12 @@ const Garden = () => {
         <button
           className="absolute top-1/2 right-4 -translate-y-1/2 p-2"
           onClick={() => setOpenRules(true)}
+          aria-label="정원 규칙 열기"
         >
           <SupportIcon className="text-neutral-04 h-6 w-6 cursor-pointer" />
         </button>
       </div>
-      <div className="mt-[53.5px]">
+      <div className="mt-[40px]">
         {carouselPage > 1 && (
           <div>
             <ProgressDots total={carouselPage} current={currentPage + 1} />

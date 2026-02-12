@@ -27,7 +27,6 @@ const FriendInvitePage = () => {
         backHeader={true}
         leftText="QR코드"
         rightText="초대코드"
-        bgColor="bg-neutral-01"
         selectTitle={selectTitle}
         onChangeSelectTitle={setSelectTitle}
       />
