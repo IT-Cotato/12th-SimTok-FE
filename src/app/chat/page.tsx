@@ -4,16 +4,13 @@ import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
-import BellIcon from "@/assets/bell_chat.svg";
 import FloatingButtonIcon from "@/assets/floating_button.svg";
 
 import { ChatItem } from "@/components/chat/ChatItem";
 import { ExitChatModal } from "@/components/chat/ExitChatModal";
-import { BackHeader } from "@/components/common/BackHeader";
 import { HeaderWithIcon } from "@/components/common/HeaderWithIcon";
 import { NavBar } from "@/components/common/NavBar";
 import { SearchField } from "@/components/common/SearchField";
-import { Header } from "@/components/home/Header";
 
 import chatListData from "@/mock/chatList.json";
 
