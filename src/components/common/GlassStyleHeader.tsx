@@ -9,7 +9,7 @@ interface GlassStyleHeaderProps {
   backHeader?: boolean;
   leftText: string;
   rightText: string;
-  bgColor: string;
+  bgColor?: string;
   selectTitle: "left" | "right";
   onChangeSelectTitle: (value: "left" | "right") => void;
 }
@@ -18,7 +18,7 @@ export const GlassStyleHeader = ({
   backHeader = false,
   leftText,
   rightText,
-  bgColor,
+  bgColor = "bg-neutral-01",
   selectTitle,
   onChangeSelectTitle,
 }: GlassStyleHeaderProps) => {
@@ -37,7 +37,7 @@ export const GlassStyleHeader = ({
       )}
       <div className={`${bgColor} flex gap-[5px] rounded-3xl px-4 py-[6px]`}>
         <button
-          className={`${selectTitle === "left" ? "bg-glass-style rounded-[53px] text-white" : bgColor === "neutral-01" ? "text-neutral-03" : "text-neutral-04"} text-sub-number min-w-[82px] cursor-pointer px-[10px]`}
+          className={`${selectTitle === "left" ? "bg-glass-style rounded-[53px] text-white" : bgColor === "bg-neutral-01" ? "text-neutral-03" : "text-neutral-04"} text-sub-number min-w-[82px] cursor-pointer px-[10px]`}
           onClick={() => onChangeSelectTitle("left")}
         >
           {leftText}
