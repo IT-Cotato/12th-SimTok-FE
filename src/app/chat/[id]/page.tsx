@@ -10,11 +10,12 @@ import BackToKeywordIcon from "@/assets/backtokeyword.svg";
 import MenuIcon from "@/assets/list.svg";
 
 import { ChatDateDivider } from "@/components/chat/ChatDateDivider";
-import { ChatField } from "@/components/chat/ChatField";
 import { FriendMessage } from "@/components/chat/FriendMessage";
 import { MyMessage } from "@/components/chat/MyMessage";
 import TopicKeyword from "@/components/chat/TopicKeyword";
 import { BackHeader } from "@/components/common/BackHeader";
+//import { ChatField } from "@/components/chat/ChatField";
+import { MessageInput } from "@/components/common/MessageInput";
 import { InfoMessage } from "@/components/dailyRecord/InfoMessage";
 
 import { CHAT_TOPIC } from "@/constants/friendsSettings";
@@ -166,7 +167,7 @@ const Chatting = () => {
       destination: "/app/chat/messages/send",
       body: JSON.stringify(payload),
     });
-    setInputValue("");
+    // setInputValue("");
   };
 
   const handleCloseTopic = () => {
@@ -228,7 +229,7 @@ const Chatting = () => {
         </BackHeader>
         <section
           ref={scrollRef}
-          className="scrollbar-hide flex-1 overflow-y-auto scroll-smooth"
+          className="scrollbar-hide mb-40 flex-1 overflow-y-auto scroll-smooth"
         >
           <ChatDateDivider date="2025년 12월 18일 목요일" />
           <div className="flex flex-col">
@@ -281,9 +282,9 @@ const Chatting = () => {
                       <div className="flex justify-center">
                         <button
                           onClick={() => setSelectedTopicKey(null)}
-                          className="text-sub1-r text-orange-01 flex items-center gap-1"
+                          className="text-sub1-r text-orange-01 flex cursor-pointer items-center gap-1"
                         >
-                          <BackToKeywordIcon className="cursor-pointer" />{" "}
+                          <BackToKeywordIcon />
                           키워드로 돌아가기
                         </button>
                       </div>
@@ -330,13 +331,25 @@ const Chatting = () => {
                 </div>
               )}
             </div>
-            <ChatField
+            {/* <ChatField
               value={inputValue}
               onChange={setInputValue}
               isDimmed={isDimmed}
               onSend={handleSend}
               onImageUpload={handleImageUpload}
-            />
+            /> */}
+            <div
+              className={`px-4 ${isDimmed ? "pointer-events-none opacity-50" : ""}`}
+            >
+              <MessageInput
+                value={inputValue}
+                onChange={setInputValue}
+                isChatting={true}
+                isDimmed={isDimmed}
+                onSend={handleSend}
+                onImageUpload={handleImageUpload}
+              />
+            </div>
           </div>
         </div>
       </div>
