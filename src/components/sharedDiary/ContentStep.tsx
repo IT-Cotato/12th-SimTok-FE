@@ -72,7 +72,7 @@ export const ContentStep = ({
               height={hasInput ? 47 : 96}
               alt="selected-emotion"
             />
-            <p className="text-sub1-r text-black">
+            <p className="text-sub1-sb text-black">
               &ldquo;오늘 하루는 {emotionData.presentText}&rdquo;
             </p>
           </section>
