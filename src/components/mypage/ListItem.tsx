@@ -54,14 +54,18 @@ export const ListItem = ({
         <span className="text-neutral-03 text-sub0-sb">{label}</span>
       </div>
       {hasToggle && (
-        <div className="flex items-center">
-          <Toggle on={isOn} onChange={handleToggleAction} />
+        <div className="flex cursor-pointer items-center">
+          <Toggle
+            on={isOn}
+            onChange={handleToggleAction}
+            className="cursor-pointer"
+          />
         </div>
       )}
     </>
   );
   return (
-    <div className="flex w-full items-center justify-between transition-colors">
+    <div className="w-full flex-1 items-center justify-between transition-colors">
       {href ? (
         <Link href={href} className={commonClasses}>
           {renderInnerContent()}

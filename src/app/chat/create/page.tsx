@@ -23,18 +23,9 @@ const CreateChatPage = () => {
 
   const toggleFriend = (friend: FriendProfile) => {
     setSelectedFriends(prev =>
-      prev.some(f => f.userId === friend.userId)
-        ? prev.filter(f => f.userId !== friend.userId)
-        : [...prev, friend],
+      prev.some(f => f.userId === friend.userId) ? [] : [friend],
     );
   };
-
-  // const handleStartChat = () => {
-  //   if (selectedFriends.length > 0) {
-  //     const targetId = selectedFriends[0].userId;
-  //     router.push(`/chat/${targetId}`);
-  //   }
-  // };
 
   const handleStartChat = async () => {
     if (selectedFriends.length === 0) return;
@@ -51,7 +42,6 @@ const CreateChatPage = () => {
         `/api/chat/rooms/direct/resolve?opponentMemberId=${opponentId}`,
         {
           headers: {
-            // 수정: Bearer 토큰 주입
             Authorization: `Bearer ${token}`,
           },
         },
@@ -78,7 +68,7 @@ const CreateChatPage = () => {
             isEditMode={isEditMode}
             onClickEdit={() => {
               setIsEditMode(prev => !prev);
-              if (isEditMode) setSelectedFriends([]);
+              setSelectedFriends([]);
             }}
             selectedCount={selectedFriends.length}
           />
@@ -89,7 +79,7 @@ const CreateChatPage = () => {
         className={`${modalOpen ? "mt-[95px]" : "mt-[30.5px]"} flex flex-col gap-5`}
       >
         <SearchField onChangeSearchText={setSearchText} />
-        {isEditMode && (
+        {isEditMode && selectedFriends.length > 0 && (
           <section className="flex items-start gap-2 px-4">
             {selectedFriends.map(({ userId, profileImg, userName }) => (
               <div
@@ -130,7 +120,7 @@ const CreateChatPage = () => {
       <div className="fixed bottom-0 z-50 w-full max-w-[440px] bg-white px-4 py-[10px] pb-[42px] shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.05),0_-4px_6px_-4px_rgba(0,0,0,0.05)]">
         <FullButton
           onClick={handleStartChat}
-          isActive={selectedFriends.length > 0}
+          isActive={selectedFriends.length === 1}
         >
           대화하기
         </FullButton>
