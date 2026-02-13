@@ -73,9 +73,9 @@ const ChatListPage = () => {
   return (
     <main className="relative flex min-h-dvh w-full justify-center bg-white">
       <div className="flex h-full w-full flex-col">
-        <HeaderWithIcon title="채팅" haveAlarm={true} />
+        <HeaderWithIcon title="대화" haveAlarm={true} />
 
-        <div className="px-4">
+        <div className="px-4 pt-[30.5px]">
           <SearchField onChangeSearchText={setSearchText} />
         </div>
 
