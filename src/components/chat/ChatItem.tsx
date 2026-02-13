@@ -73,7 +73,7 @@ export const ChatItem = ({
               {lastMessage}
             </span>
             {unreadCount && unreadCount > 0 && (
-              <div className="bg-mint-02 flex h-[26px] w-[26px] items-center justify-center rounded-full px-1.5 text-[10px] text-white">
+              <div className="bg-mint-01 flex h-[26px] w-[26px] items-center justify-center rounded-full px-1.5 text-[10px] text-white">
                 {unreadCount}
               </div>
             )}

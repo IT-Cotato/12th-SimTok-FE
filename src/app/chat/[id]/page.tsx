@@ -1,7 +1,7 @@
 "use client";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useStomp } from "@/context/StompContext";
 
@@ -50,6 +50,7 @@ const Chatting = () => {
   const router = useRouter();
   const params = useParams();
   const searchParams = useSearchParams();
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const roomId = params?.id as string;
   const targetId = searchParams.get("target");
@@ -194,6 +195,16 @@ const Chatting = () => {
     setMessages(prev => [...prev, newMessage]);
   };
 
+  const scrollToBottom = useCallback(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, []);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, scrollToBottom]);
+
   return (
     <main className="relative flex h-dvh w-full justify-center bg-white">
       {isTopicOpen && (
@@ -215,7 +226,10 @@ const Chatting = () => {
             <MenuIcon />
           </button>
         </BackHeader>
-        <section className="scrollbar-hide flex-1 overflow-y-auto">
+        <section
+          ref={scrollRef}
+          className="scrollbar-hide flex-1 overflow-y-auto scroll-smooth"
+        >
           <ChatDateDivider date="2025년 12월 18일 목요일" />
           <div className="flex flex-col">
             {messages.map((msg, index) => {
@@ -269,7 +283,8 @@ const Chatting = () => {
                           onClick={() => setSelectedTopicKey(null)}
                           className="text-sub1-r text-orange-01 flex items-center gap-1"
                         >
-                          <BackToKeywordIcon /> 키워드로 돌아가기
+                          <BackToKeywordIcon className="cursor-pointer" />{" "}
+                          키워드로 돌아가기
                         </button>
                       </div>
                       <div className="flex flex-col items-start gap-2">

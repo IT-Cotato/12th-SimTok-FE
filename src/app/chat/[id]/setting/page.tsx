@@ -66,9 +66,6 @@ const SettingChatPage = () => {
                   <li key={item.label}>
                     <ListItem
                       label={item.label}
-                      // onClick={
-                      //   !isToggleItem ? () => router.push(item.path) : undefined
-                      // }
                       onClick={
                         hasRoute ? () => router.push(item.path) : undefined
                       }
@@ -81,7 +78,7 @@ const SettingChatPage = () => {
               })}
             </ul>
           </nav>
-          <div className="mb-13 flex w-full justify-center px-4 py-[10px]">
+          <div className="mb-13 flex w-full flex-1 justify-center px-4 py-[10px]">
             <FullButton
               colorScheme="orange"
               onClick={() => setIsModalOpen(true)}

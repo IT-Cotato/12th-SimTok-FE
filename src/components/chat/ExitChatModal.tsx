@@ -49,13 +49,13 @@ export const ExitChatModal = ({
         <div className="border-neutral-11 flex h-[64px] w-full border-t">
           <button
             onClick={onClose}
-            className="text-sub1-sb text-neutral-05 active:bg-neutral-11 flex flex-1 items-center justify-center bg-white"
+            className="text-sub1-sb text-neutral-05 active:bg-neutral-11 flex flex-1 cursor-pointer items-center justify-center bg-white"
           >
             취소할래요
           </button>
           <button
             onClick={onConfirm}
-            className="text-sub1-sb bg-red-01 flex flex-1 items-center justify-center text-white"
+            className="text-sub1-sb bg-red-01 flex flex-1 cursor-pointer items-center justify-center text-white"
           >
             네, 나갈래요
           </button>
