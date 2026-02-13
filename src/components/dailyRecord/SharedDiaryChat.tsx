@@ -36,7 +36,7 @@ export const SharedDiaryComment = () => {
           <CommentList comments={comments} />
         </div>
 
-        <footer className="fixed bottom-0 mb-[11px] flex w-full max-w-[440px] items-center gap-[13px] bg-white px-4 pt-4">
+        <footer className="fixed bottom-0 flex w-full max-w-[440px] items-center gap-[13px] bg-white px-4 pt-4 pb-[11px]">
           <MessageInput
             onSend={message => {
               setComments(prev => [

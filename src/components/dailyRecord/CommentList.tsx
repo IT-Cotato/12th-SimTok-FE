@@ -34,7 +34,7 @@ export const CommentList = ({ comments }: CommentListProps) => {
               <p className="text-d3 text-neutral-01">{comment.userName}</p>
               <p className="text-sub1-r text-neutral-01">{comment.comment}</p>
             </div>
-            <p className="text-body3 text-neutral-05 flex flex-col self-start">
+            <p className="text-body3 text-neutral-05 flex shrink-0 flex-col self-start">
               {formatDate(comment.createdAt)}
             </p>
           </div>
