@@ -83,7 +83,9 @@ export const SharedDiaryItem = ({
         )}
       </section>
 
-      <div className="flex justify-between p-[10px] px-4">
+      <div
+        className={`flex p-[10px] px-4 ${item.image ? "justify-between" : "self-end"}`}
+      >
         {item.image && <p className="text-body1-md text-black">{item.text}</p>}
 
         <div className="flex items-center justify-between">

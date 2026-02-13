@@ -83,13 +83,9 @@ export const ConfirmStep = ({
               className="h-auto w-full"
             />
           )}
-          <div className="flex justify-between px-4">
-            <div className="text-sub1-r whitespace-pre-wrap text-black">
-              {text}
-            </div>
-            <div className="text-neutral-07 text-sub1-r">
-              {formatDateWithDot(new Date().toISOString())}
-            </div>
+
+          <div className="text-sub1-r px-4 break-all whitespace-pre-wrap text-black">
+            {text}
           </div>
         </section>
       )}
