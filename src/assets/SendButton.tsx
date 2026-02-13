@@ -7,11 +7,11 @@ interface SendButtonProps {
 export const SendButton = ({ hasText = false, onClick }: SendButtonProps) => {
   return (
     <button
-      className="absolute top-1 right-4 rotate-[-23deg] px-[2px] py-[3px]"
+      className="bg-mint-01 flex h-[38px] w-13 items-center justify-center rounded-[24px]"
       onClick={onClick}
     >
       <SendIcon
-        className={`text-neutral-04 h-[18px] w-[20px] ${hasText ? "cursor-pointer" : ""}`}
+        className={`h-5 text-white ${hasText ? "cursor-pointer" : ""}`}
       />
     </button>
   );

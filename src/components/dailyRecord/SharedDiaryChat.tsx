@@ -1,11 +1,7 @@
 "use client";
-import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 
 import { useState } from "react";
-import { useEffect } from "react";
-
-import CloseIcon from "@/assets/close-bold.svg";
 
 import { MessageInput } from "@/components/common/MessageInput";
 
@@ -14,26 +10,8 @@ import MyProfile from "@/mock/myProfile.json";
 
 import { CommentList } from "./CommentList";
 
-interface SharedDiaryCommentProps {
-  variant?: "modal" | "page";
-}
-
-export const SharedDiaryComment = ({
-  variant = "modal",
-}: SharedDiaryCommentProps) => {
-  const isPage = variant === "page";
-
+export const SharedDiaryComment = () => {
   const [comments, setComments] = useState(CommentData);
-
-  useEffect(() => {
-    if (!isPage) {
-      document.body.style.overflow = "hidden";
-    }
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isPage]);
 
   const profileImg = MyProfile.profileImg;
   const router = useRouter();
@@ -42,50 +20,24 @@ export const SharedDiaryComment = ({
 
   return (
     <div
-      className={`${
-        isPage
-          ? "min-h-screen"
-          : "fixed inset-0 bottom-0 left-1/2 z-50 -translate-x-1/2 bg-black/50"
-      } flex w-full max-w-[440px] items-end justify-center`}
+      className="fixed inset-0 bottom-0 left-1/2 z-50 flex w-full max-w-[440px] -translate-x-1/2 items-end justify-center bg-black/50"
       onClick={() => {
-        if (!isPage) router.back();
+        router.back();
       }}
     >
       <section
-        className={`flex w-full max-w-[440px] flex-col bg-white ${
-          isPage ? "h-screen rounded-none" : "h-[545px] rounded-t-2xl"
-        }`}
+        className="flex h-[545px] w-full max-w-[440px] flex-col rounded-t-2xl bg-white"
         onClick={e => e.stopPropagation()}
       >
-        <div className="w-full px-4 py-[10px]">
-          <button
-            className="h-[14px] w-[14px] cursor-pointer"
-            onClick={() => router.back()}
-          >
-            <CloseIcon />
-          </button>
+        <div className="flex w-full items-center justify-center px-4 pt-[10px] pb-9">
+          <div className="bg-neutral-08 h-[3px] w-[38px] rounded-[2px]"></div>
         </div>
-        <h3 className="text-h3 text-neutral-01 border-neutral-10 flex items-center justify-center border-b p-[10px]">
-          댓글
-        </h3>
         <div className="flex-1 overflow-y-auto pb-[109px]">
           <CommentList comments={comments} />
         </div>
 
-        <footer className="fixed bottom-0 flex w-full max-w-[440px] items-center gap-[13px] bg-white px-4 pt-4 pb-10 shadow-[0_-2px_10px_0px_rgba(0,0,0,0.10)]">
-          <Image
-            src={profileImg}
-            alt="myProfileImage"
-            width={53}
-            height={53}
-            className="h-[53px] w-[53px] rounded-full object-cover"
-          />
+        <footer className="fixed bottom-0 mb-[11px] flex w-full max-w-[440px] items-center gap-[13px] bg-white px-4 pt-4">
           <MessageInput
-            onFocus={() => {
-              if (!isPage && numericId !== null) {
-                router.push(`/shared-diary/${numericId}/comment`);
-              }
-            }}
             onSend={message => {
               setComments(prev => [
                 ...prev,
