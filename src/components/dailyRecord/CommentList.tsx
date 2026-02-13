@@ -11,9 +11,9 @@ interface CommentListProps {
 export const CommentList = ({ comments }: CommentListProps) => {
   if (comments.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center pt-[109px]">
-        <p className="text-sub1-sb text-neutral-01">아직 댓글이 없습니다</p>
-        <p className="text-sub2-r text-neutral-06">댓글을 남겨보세요!</p>
+      <div className="flex flex-col items-center justify-center pt-5">
+        <p className="text-d3 text-neutral-06">아직 댓글이 없습니다</p>
+        <p className="text-sub1-r text-neutral-06">댓글을 남겨보세요!</p>
       </div>
     );
   }
@@ -30,9 +30,9 @@ export const CommentList = ({ comments }: CommentListProps) => {
             className="h-14 w-14 rounded-2xl object-cover"
           />
           <div className="flex flex-1 justify-between">
-            <div className="flex flex-col">
-              <p className="text-d3 text-black">{comment.userName}</p>
-              <p className="text-sub1-r text-neutral-05">{comment.comment}</p>
+            <div className="flex flex-col gap-[1px]">
+              <p className="text-d3 text-neutral-01">{comment.userName}</p>
+              <p className="text-sub1-r text-neutral-01">{comment.comment}</p>
             </div>
             <p className="text-body3 text-neutral-05 flex flex-col self-start">
               {formatDate(comment.createdAt)}
