@@ -1,12 +1,14 @@
 import { cookies } from "next/headers";
 
+import { BACKEND_BASE_URL } from "@/lib/constants";
+
 export async function refreshAccessToken() {
   const cookieStore = await cookies();
   const refreshToken = cookieStore.get("refreshToken")?.value;
 
   if (!refreshToken) return null;
 
-  const res = await fetch("https://43.202.184.232.nip.io/api/auth/refresh", {
+  const res = await fetch(`${BACKEND_BASE_URL}/api/auth/refresh`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
