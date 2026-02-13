@@ -46,7 +46,8 @@ export const WriteStepButton = ({
         className={`flex justify-between gap-2 bg-white px-4 ${!showInfoMessage && "py-5"}`}
       >
         <button
-          className={`bg-neutral-11 ${!hasImage && "border-mint-01 border border-solid"} flex h-[95px] max-w-[196px] flex-1 cursor-pointer flex-col items-center gap-1 rounded-2xl px-[10px] py-[10px] pt-[20px]`}
+          disabled={hasImage}
+          className={`bg-neutral-11 ${hasImage ? "cursor-not-allowed" : "border-mint-01 cursor-pointer border border-solid"} flex h-[95px] max-w-[196px] flex-1 flex-col items-center gap-1 rounded-2xl px-[10px] py-[10px] pt-[20px]`}
           onClick={openFilePicker}
         >
           <div className="inline-flex items-center justify-center rounded-2xl bg-white p-[10px] shadow-[0_0_14px_0_rgba(0,0,0,0.05)]">
