@@ -46,6 +46,12 @@ interface HistoryResponse {
   };
 }
 
+interface RoomCreatedEvent extends CustomEvent {
+  detail: {
+    roomId: string | number;
+  };
+}
+
 const Chatting = () => {
   const { client, isConnected } = useStomp();
   const router = useRouter();
@@ -151,14 +157,27 @@ const Chatting = () => {
     return () => sub.unsubscribe();
   }, [client, isConnected, roomId, router]);
 
+  useEffect(() => {
+    const handleRoomCreated = (e: Event) => {
+      const customEvent = e as RoomCreatedEvent;
+      const { roomId: newRoomId } = customEvent.detail;
+      if (newRoomId) {
+        router.replace(`/chat/${newRoomId}`);
+      }
+    };
+
+    window.addEventListener("ROOM_CREATED", handleRoomCreated);
+    return () => window.removeEventListener("ROOM_CREATED", handleRoomCreated);
+  }, [router]);
+
   // 메시지 전송
   const handleSend = (text: string) => {
-    if (!client || !isConnected || !text.trim()) return;
+    if (!client?.connected || !text.trim()) return;
 
     const payload = {
       clientMessageId: crypto.randomUUID(),
       roomId: roomId === "new" ? null : Number(roomId),
-      opponentMemberId: roomId ? null : Number(targetId),
+      opponentMemberId: roomId === "new" ? Number(targetId) : null, // roomId 없을 때만 상대 ID 포함
       messageType: "TEXT",
       content: text,
     };
@@ -167,7 +186,7 @@ const Chatting = () => {
       destination: "/app/chat/messages/send",
       body: JSON.stringify(payload),
     });
-    // setInputValue("");
+    setInputValue(""); // 전송 후 입력창 비우기
   };
 
   const handleCloseTopic = () => {
@@ -229,7 +248,7 @@ const Chatting = () => {
         </BackHeader>
         <section
           ref={scrollRef}
-          className="scrollbar-hide mb-40 flex-1 overflow-y-auto scroll-smooth"
+          className="scrollbar-hide flex-1 overflow-y-auto scroll-smooth"
         >
           <ChatDateDivider date="2025년 12월 18일 목요일" />
           <div className="flex flex-col">

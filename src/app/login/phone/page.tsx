@@ -39,19 +39,23 @@ const LoginPage = () => {
 
       const result = await response.json();
 
-      if (result.success) {
-        const { accessToken, refreshToken } = result.data;
+      if (result.success && result.data) {
+        const AT = result.data.accessToken?.accessToken;
+        const RT = result.data.refreshToken?.refreshToken;
 
-        localStorage.setItem("access_token", accessToken.accessToken);
-        localStorage.setItem("refresh_token", refreshToken.refreshToken);
-
-        router.push("/");
+        if (AT && RT) {
+          localStorage.setItem("accessToken", AT);
+          localStorage.setItem("refreshToken", RT);
+          console.log("토큰 저장 완료");
+          window.location.href = "/";
+        } else {
+          console.error("토큰 데이터 누락:", result.data);
+        }
       } else {
-        alert(result.message || "로그인 정보가 일치하지 않습니다.");
+        console.error("로그인 실패:", result.message);
       }
     } catch (error) {
-      console.error("로그인 에러:", error);
-      alert("네트워크 오류가 발생했습니다.");
+      console.error("네트워크 오류:", error);
     } finally {
       setIsLoading(false);
     }

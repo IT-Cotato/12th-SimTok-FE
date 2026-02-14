@@ -36,6 +36,11 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "images.imyfone.com",
+        pathname: "/**",
+      },
     ],
   },
 };

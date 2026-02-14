@@ -2,7 +2,9 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-import { Client, IFrame, IMessage } from "@stomp/stompjs";
+import { Client } from "@stomp/stompjs";
+
+import { refreshAccessToken } from "@/utils/auth";
 
 interface StompContextType {
   client: Client | null;
@@ -16,39 +18,86 @@ export const StompProvider = ({ children }: { children: React.ReactNode }) => {
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    const SOCKET_URL = `wss://43.202.184.232.nip.io/ws?token=${token}`;
+    const getLatestToken = () => localStorage.getItem("accessToken");
+    const initialToken = getLatestToken();
+
+    if (!initialToken) {
+      console.warn("⚠️ 초기 토큰 없음");
+      return;
+    }
 
     const clientInstance = new Client({
-      webSocketFactory: () => new WebSocket(SOCKET_URL, ["v12.stomp"]),
-      connectHeaders: {},
-
-      onConnect: (frame: IFrame) => {
-        setIsConnected(true);
-        console.log("🚀 STOMP Connected");
-
-        // [가이드 STEP 1] 개인 이벤트 채널 구독 (방 생성 알림 등 수신)
-        clientInstance.subscribe("/user/queue/chat/events", (msg: IMessage) => {
-          const event = JSON.parse(msg.body);
-          console.log("📩 [EVENT RECEIVED]", event);
-
-          // 방 생성 이벤트(ROOM_CREATED) 발생 시 커스텀 이벤트로 알림 (Chatting 컴포넌트 수신용)
-          if (event.type === "ROOM_CREATED") {
-            window.dispatchEvent(
-              new CustomEvent("ROOM_CREATED", { detail: event }),
-            );
-          }
-        });
+      brokerURL: `wss://43.202.184.232.nip.io/ws`,
+      connectHeaders: { Authorization: `Bearer ${initialToken}` },
+      webSocketFactory: () =>
+        new WebSocket(`wss://43.202.184.232.nip.io/ws`, ["v12.stomp"]),
+      beforeConnect: () => {
+        const currentToken = getLatestToken();
+        if (currentToken) {
+          clientInstance.connectHeaders = {
+            Authorization: `Bearer ${currentToken}`,
+          };
+        }
       },
-      onDisconnect: () => setIsConnected(false),
       debug: str => console.log("[STOMP Debug]", str),
       reconnectDelay: 5000,
+      heartbeatIncoming: 10000,
+      heartbeatOutgoing: 10000,
     });
 
-    clientInstance.activate();
-    //setClient(clientInstance);
+    // 1. 연결 성공 콜백
+    clientInstance.onConnect = _frame => {
+      console.log("🚀 STOMP Connected");
+      setIsConnected(true);
+      setClient(clientInstance);
 
-    // return () => { clientInstance.deactivate(); };
+      // 2.2 에러 수신 채널 구독
+      // clientInstance.subscribe("/user/queue/errors", (msg) => {
+      //   console.error("❌ 서버 에러 수신:", JSON.parse(msg.body));
+      // });
+
+      // 2.1 ACK 수신 채널 구독
+      // clientInstance.subscribe("/user/queue/chat/events", (msg) => {
+      //   console.log("✅:", JSON.parse(msg.body));
+      // });
+
+      // 3.1 ACK 요청 전송
+      // clientInstance.publish({
+      //   destination: "/app/connection/ack",
+      //   body: JSON.stringify({ message: "안녕하세요" }),
+      //   headers: { "content-type": "application/json" }
+      // });
+    };
+
+    // 2. 웹소켓 종료 콜백
+    clientInstance.onWebSocketClose = () => {
+      console.warn("⚠️ WebSocket Closed");
+      setIsConnected(false);
+      setClient(null);
+    };
+
+    // 3. 에러 핸들러
+    clientInstance.onStompError = async frame => {
+      const msg = frame.headers["message"];
+      if (
+        msg?.includes("expired") ||
+        msg?.includes("token") ||
+        msg?.includes("403")
+      ) {
+        const newToken = await refreshAccessToken();
+        if (newToken) {
+          clientInstance.connectHeaders = {
+            Authorization: `Bearer ${newToken}`,
+          };
+          clientInstance.activate();
+        }
+      }
+    };
+
+    clientInstance.activate();
+    return () => {
+      clientInstance.deactivate();
+    };
   }, []);
 
   return (

@@ -24,6 +24,13 @@ interface ChatRoomItem {
   };
 }
 
+export interface ApiResponse {
+  success: boolean;
+  data: {
+    items: ChatRoomItem[];
+  };
+}
+
 const ChatListPage = () => {
   const router = useRouter();
   const [chats, setChats] = useState<ChatRoomItem[]>([]);
@@ -47,10 +54,9 @@ const ChatListPage = () => {
 
         if (!res.ok) throw new Error(`HTTP 에러! 상태: ${res.status}`);
 
-        const result = await res.json();
+        const result: ApiResponse = await res.json();
         if (result.success) {
           setChats(result.data.items);
-          console.log(result);
         }
       } catch (error) {
         console.error("목록 로드 실패:", error);
@@ -80,7 +86,7 @@ const ChatListPage = () => {
         </div>
 
         <section className="mt-5 flex flex-col overflow-y-auto">
-          {filteredChats.map(chat => (
+          {filteredChats.map((chat: ChatRoomItem) => (
             <ChatItem
               key={chat.roomId}
               id={chat.roomId}
