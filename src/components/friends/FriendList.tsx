@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import CheckIcon from "@/assets/check.svg";
 
-import friendListData from "@/mock/friendList.json";
+//import friendListData from "@/mock/friendList.json";
 
 import { FriendProfile } from "@/types/friendProfile.type";
 
@@ -10,6 +10,7 @@ import { ProfileImagePicker } from "../common/ProfileImagePicker";
 import { ProfileModal } from "./ProfileModal";
 
 interface FriendListProps {
+  friends: FriendProfile[];
   searchText: string;
   setModalOpen?: (open: boolean) => void;
   isEditMode: boolean;
@@ -17,6 +18,7 @@ interface FriendListProps {
   onToggleFriend: (friend: FriendProfile) => void;
 }
 export const FriendList = ({
+  friends,
   searchText,
   setModalOpen,
   isEditMode = false,
@@ -24,8 +26,8 @@ export const FriendList = ({
   onToggleFriend,
 }: FriendListProps) => {
   const filteredFriends = searchText
-    ? friendListData.filter(user => user.userName.includes(searchText))
-    : friendListData;
+    ? friends.filter(user => user.userName.includes(searchText))
+    : friends;
 
   const [modalFriend, setModalFriend] = useState<FriendProfile | null>(null);
 
@@ -48,7 +50,7 @@ export const FriendList = ({
       {!searchText && (
         <div className="flex gap-1 px-4">
           <p className="text-sub1-r text-neutral-04">친구</p>
-          <p className="text-sub1-r text-neutral-04">{friendListData.length}</p>
+          <p className="text-sub1-r text-neutral-04">{friends.length}</p>
         </div>
       )}
       {filteredFriends.map(friend => {
