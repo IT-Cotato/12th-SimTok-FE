@@ -4,6 +4,7 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useStomp } from "@/context/StompContext";
+import { StompSubscription } from "@stomp/stompjs";
 
 import AiIcon from "@/assets/AI.svg";
 import BackToKeywordIcon from "@/assets/backtokeyword.svg";
@@ -42,12 +43,6 @@ interface HistoryResponse {
     items: ApiMessageItem[];
   };
 }
-
-// interface RoomCreatedEvent extends CustomEvent {
-//   detail: {
-//     roomId: string | number;
-//   };
-// }
 
 const Chatting = () => {
   const { client, isConnected } = useStomp();
@@ -113,31 +108,70 @@ const Chatting = () => {
     [myMemberId],
   );
 
-  // 초기화 및 실시간 메시지 구독
   useEffect(() => {
-    if (!roomId || roomId === "new") return;
+    if (!roomId || roomId === "new" || !client || !isConnected) return;
 
-    const loadInitialData = async () => {
+    const initChat = async () => {
       await fetchHistory(roomId);
     };
+    initChat();
 
-    loadInitialData();
+    const subscriptions: StompSubscription[] = [];
 
-    if (!client || !isConnected) return;
+    const subscribeAll = () => {
+      try {
+        // subscriptions.push(
+        //   client.subscribe("/user/queue/errors", (msg) => {
+        //     console.error("STOMP Server Error:", JSON.parse(msg.body));
+        //   })
+        // );
 
-    const sub = client.subscribe(`/topic/chat/rooms/${roomId}`, msg => {
-      const body = JSON.parse(msg.body);
-      const formattedMsg: ChatMessage = {
-        id: body.messageId,
-        type: body.senderMemberId === myMemberId ? "mine" : "friend",
-        content: body.content,
-        time: formatTime(body.createdAt),
-      };
-      setMessages(prev => [...prev, formattedMsg]);
-    });
+        // subscriptions.push(
+        //   client.subscribe("/user/queue/connection/ack", (msg) => {
+        //     console.log("STOMP Connection ACK:", JSON.parse(msg.body));
+        //   })
+        // );
 
-    return () => sub.unsubscribe();
-  }, [roomId, client, isConnected, fetchHistory, myMemberId]);
+        // 채팅방 채널
+        subscriptions.push(
+          client.subscribe(`/topic/chat/rooms/${roomId}`, msg => {
+            const body = JSON.parse(msg.body);
+            setMessages(prev => [
+              ...prev,
+              {
+                id: body.messageId,
+                type: body.senderMemberId === myMemberId ? "mine" : "friend",
+                content: body.content,
+                time: formatTime(body.createdAt),
+              },
+            ]);
+          }),
+        );
+
+        setTimeout(() => {
+          if (client.connected) {
+            client.publish({
+              destination: "/app/connection/ack",
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify({ message: "연결 확인 요청" }),
+            });
+          }
+        }, 200);
+      } catch (err) {
+        console.error("Subscription Flow Error:", err);
+      }
+    };
+
+    subscribeAll();
+
+    return () => {
+      subscriptions.forEach(sub => {
+        if (client.active && client.connected) {
+          sub.unsubscribe();
+        }
+      });
+    };
+  }, [roomId, client, isConnected, myMemberId]);
 
   // 방 생성 리다이렉트 구독
   useEffect(() => {
@@ -151,23 +185,41 @@ const Chatting = () => {
     return () => sub.unsubscribe();
   }, [client, isConnected, roomId, router]);
 
-  // 메시지 전송
-  const handleSend = (text: string) => {
-    if (!client?.connected || !text.trim()) return;
+  //메시지 전송
+  const handleSend = () => {
+    const text = inputValue;
 
-    const payload = {
-      clientMessageId: crypto.randomUUID(),
-      roomId: roomId === "new" ? null : Number(roomId),
-      opponentMemberId: roomId === "new" ? Number(targetId) : null, // roomId 없을 때만 상대 ID 포함
-      messageType: "TEXT",
-      content: text,
-    };
+    if (!client?.connected || !text || !text.trim()) {
+      console.log("전송 중단: 연결되지 않았거나 빈 메시지임");
+      return;
+    }
 
-    client.publish({
-      destination: "/app/chat/messages/send",
-      body: JSON.stringify(payload),
-    });
-    setInputValue(""); // 전송 후 입력창 비우기
+    try {
+      const clientMessageId =
+        typeof crypto.randomUUID === "function"
+          ? crypto.randomUUID()
+          : Date.now().toString();
+
+      const isNewRoom = roomId === "new";
+      const payload = {
+        clientMessageId,
+        roomId: isNewRoom ? null : Number(roomId),
+        opponentMemberId: isNewRoom ? Number(targetId) : null,
+        messageType: "TEXT",
+        content: text,
+      };
+
+      client.publish({
+        destination: "/app/chat/messages/send",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      setInputValue("");
+      console.log("3. 전송 명령 완료");
+    } catch (err) {
+      console.error("전송 로직 실행 중 에러 발생:", err);
+    }
   };
 
   const handleCloseTopic = () => {
