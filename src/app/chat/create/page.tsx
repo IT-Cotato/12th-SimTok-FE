@@ -11,7 +11,7 @@ import { ProfileImagePicker } from "@/components/common/ProfileImagePicker";
 import { SearchField } from "@/components/common/SearchField";
 import { FriendList } from "@/components/friends/FriendList";
 
-import { ApiResponse } from "@/types/api.type.ts";
+import { ApiResponse, FriendshipResponse } from "@/types/api.type";
 import { FriendProfile } from "@/types/friendProfile.type";
 
 const CreateChatPage = () => {
@@ -49,7 +49,7 @@ const CreateChatPage = () => {
           (f: FriendshipResponse) => ({
             userId: f.friendId,
             userName: f.showName,
-            profileImg: f.profileImageUrl,
+            profileImg: f.profileImageUrl ?? undefined,
           }),
         );
         setFriends(mappedFriends);
@@ -67,7 +67,7 @@ const CreateChatPage = () => {
 
   const handleStartChat = async () => {
     if (selectedFriends.length === 0) return;
-    const opponentId = selectedFriends[0].userId;
+    const opponent = selectedFriends[0];
 
     const token =
       typeof window !== "undefined"
@@ -76,7 +76,7 @@ const CreateChatPage = () => {
 
     try {
       const res = await fetch(
-        `/api/chat/rooms/direct/resolve?opponentMemberId=${opponentId}`,
+        `/api/chat/rooms/direct/resolve?opponentMemberId=${opponent.userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -84,11 +84,14 @@ const CreateChatPage = () => {
         },
       );
       const data = await res.json();
+      const query = `name=${encodeURIComponent(opponent.userName)}&img=${encodeURIComponent(opponent.profileImg || "")}`;
 
       if (data.exists) {
-        router.push(`/chat/${data.roomId}`);
+        router.push(`/chat/${data.roomId}${query}`);
       } else {
-        router.push(`/chat/new?target=${opponentId}`);
+        router.push(
+          `/chat/${opponent.userId}?target=${opponent.userId}&${query}`,
+        );
       }
     } catch (error) {
       console.error("방 생성 실패", error);

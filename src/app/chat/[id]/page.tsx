@@ -14,13 +14,10 @@ import { FriendMessage } from "@/components/chat/FriendMessage";
 import { MyMessage } from "@/components/chat/MyMessage";
 import TopicKeyword from "@/components/chat/TopicKeyword";
 import { BackHeader } from "@/components/common/BackHeader";
-//import { ChatField } from "@/components/chat/ChatField";
 import { MessageInput } from "@/components/common/MessageInput";
 import { InfoMessage } from "@/components/dailyRecord/InfoMessage";
 
 import { CHAT_TOPIC } from "@/constants/friendsSettings";
-
-import friendListData from "@/mock/friendList.json";
 
 interface ChatMessage {
   id: string | number;
@@ -46,11 +43,11 @@ interface HistoryResponse {
   };
 }
 
-interface RoomCreatedEvent extends CustomEvent {
-  detail: {
-    roomId: string | number;
-  };
-}
+// interface RoomCreatedEvent extends CustomEvent {
+//   detail: {
+//     roomId: string | number;
+//   };
+// }
 
 const Chatting = () => {
   const { client, isConnected } = useStomp();
@@ -67,6 +64,8 @@ const Chatting = () => {
   const [isTopicOpen, setIsTopicOpen] = useState(false);
   const [selectedTopicKey, setSelectedTopicKey] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState<string>("");
+  const displayName = searchParams.get("name") || "상대방";
+  const opponentProfileImg = searchParams.get("img");
 
   const [prevRoomId, setPrevRoomId] = useState(roomId);
   if (roomId !== prevRoomId) {
@@ -75,8 +74,6 @@ const Chatting = () => {
   }
 
   const selectedTopic = CHAT_TOPIC.find(t => t.key === selectedTopicKey);
-  const targetFriend = friendListData.find(f => f.userId === Number(roomId));
-  const displayName = targetFriend ? targetFriend.userName : "...";
   const isDimmed = isTopicOpen && Boolean(selectedTopicKey);
 
   const formatTime = (dateStr: string) =>
@@ -94,7 +91,7 @@ const Chatting = () => {
       try {
         const res = await fetch(`/api/chat/rooms/${id}/messages?limit=20`, {
           headers: {
-            Authorization: `Bearer ${token}`, // 인증 헤더 추가 필수
+            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -120,13 +117,13 @@ const Chatting = () => {
   useEffect(() => {
     if (!roomId || roomId === "new") return;
 
-    const timer = setTimeout(() => {
-      fetchHistory(roomId);
-    }, 0);
+    const loadInitialData = async () => {
+      await fetchHistory(roomId);
+    };
 
-    if (!client || !isConnected) {
-      return () => clearTimeout(timer);
-    }
+    loadInitialData();
+
+    if (!client || !isConnected) return;
 
     const sub = client.subscribe(`/topic/chat/rooms/${roomId}`, msg => {
       const body = JSON.parse(msg.body);
@@ -134,10 +131,7 @@ const Chatting = () => {
         id: body.messageId,
         type: body.senderMemberId === myMemberId ? "mine" : "friend",
         content: body.content,
-        time: new Date(body.createdAt).toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
+        time: formatTime(body.createdAt),
       };
       setMessages(prev => [...prev, formattedMsg]);
     });
@@ -156,19 +150,6 @@ const Chatting = () => {
 
     return () => sub.unsubscribe();
   }, [client, isConnected, roomId, router]);
-
-  useEffect(() => {
-    const handleRoomCreated = (e: Event) => {
-      const customEvent = e as RoomCreatedEvent;
-      const { roomId: newRoomId } = customEvent.detail;
-      if (newRoomId) {
-        router.replace(`/chat/${newRoomId}`);
-      }
-    };
-
-    window.addEventListener("ROOM_CREATED", handleRoomCreated);
-    return () => window.removeEventListener("ROOM_CREATED", handleRoomCreated);
-  }, [router]);
 
   // 메시지 전송
   const handleSend = (text: string) => {
@@ -272,7 +253,7 @@ const Chatting = () => {
                 <FriendMessage
                   key={msg.id}
                   userName={displayName}
-                  profileImage={targetFriend?.profileImg}
+                  profileImage={opponentProfileImg ?? undefined}
                   content={msg.content}
                   time={msg.time}
                   isPrevSame={isPrevSame}
