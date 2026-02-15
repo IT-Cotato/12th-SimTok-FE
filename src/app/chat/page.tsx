@@ -55,6 +55,7 @@ const ChatListPage = () => {
         if (!res.ok) throw new Error(`HTTP 에러! 상태: ${res.status}`);
 
         const result: ApiResponse = await res.json();
+        console.log(result);
         if (result.success) {
           setChats(result.data.items);
         }
@@ -128,7 +129,11 @@ const ChatListPage = () => {
               unreadCount={chat.unreadCount}
               profileImg={chat.opponent.profileImageUrl}
               onDelete={() => handleOpenModal(chat)}
-              onClick={() => router.push(`/chat/${chat.roomId}`)}
+              onClick={() =>
+                router.push(
+                  `/chat/${chat.roomId}?name=${encodeURIComponent(chat.roomName)}&img=${encodeURIComponent(chat.opponent.profileImageUrl || "")}`,
+                )
+              }
             />
           ))}
         </section>
