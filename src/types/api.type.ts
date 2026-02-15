@@ -1,4 +1,4 @@
-interface FriendshipResponse {
+export interface FriendshipResponse {
   friendshipId: number;
   friendId: number;
   showName: string;
@@ -7,7 +7,7 @@ interface FriendshipResponse {
   lastInteractedAt: string;
 }
 
-interface ApiResponse {
+export interface ApiResponse {
   success: boolean;
   data: {
     count: number;
