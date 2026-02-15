@@ -69,12 +69,12 @@ const PlantInvite = () => {
           <SearchField onChangeSearchText={setSearchText} />
         </div>
 
-        <FriendList
+        {/* <FriendList
           searchText={searchText}
           isEditMode={isEditMode}
           selectedFriends={selectedFriends}
           onToggleFriend={toggleFriend}
-        />
+        /> */}
       </div>
 
       <div className="fixed bottom-0 z-50 w-full max-w-[440px] bg-white px-4 py-[10px] pb-[42px]">
