@@ -71,6 +71,38 @@ const ChatListPage = () => {
     setIsModalOpen(true);
   };
 
+  const handleLeaveChat = async () => {
+    if (!selectedChat) return;
+
+    const token = localStorage.getItem("accessToken");
+    const roomId = selectedChat.roomId;
+
+    try {
+      const res = await fetch(`/api/chat/rooms/left/${roomId}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const result = await res.json();
+
+      if (result.success) {
+        setChats(prev => prev.filter(chat => chat.roomId !== roomId));
+        alert("대화방에서 나갔습니다.");
+      } else {
+        alert(result.message || "방 나가기 실패");
+      }
+    } catch (error) {
+      console.error("삭제 에러:", error);
+      alert("네트워크 오류가 발생했습니다.");
+    } finally {
+      setIsModalOpen(false);
+      setSelectedChat(null);
+    }
+  };
+
   // 2. 검색 필터링 (방 이름 기준)
   const filteredChats = chats.filter(chat =>
     chat.roomName.toLowerCase().includes(searchText.toLowerCase()),
@@ -120,10 +152,7 @@ const ChatListPage = () => {
           userName={selectedChat.roomName}
           profileImg={selectedChat.opponent.profileImageUrl}
           onClose={() => setIsModalOpen(false)}
-          onConfirm={() => {
-            /* 삭제 API 연동 필요 */
-            setIsModalOpen(false);
-          }}
+          onConfirm={handleLeaveChat}
         />
       )}
     </main>
