@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import FloatingButtonIcon from "@/assets/floating_button.svg";
 
@@ -12,68 +12,128 @@ import { HeaderWithIcon } from "@/components/common/HeaderWithIcon";
 import { NavBar } from "@/components/common/NavBar";
 import { SearchField } from "@/components/common/SearchField";
 
-import chatListData from "@/mock/chatList.json";
+interface ChatRoomItem {
+  roomId: number;
+  roomName: string;
+  lastMessagePreview: string;
+  lastMessageAt: string;
+  unreadCount: number;
+  opponent: {
+    name: string;
+    profileImageUrl: string;
+  };
+}
 
-interface ChatItemType {
-  id: number;
-  name: string;
-  lastMessage: string;
-  date: string;
-  unreadCount?: number;
-  profileImg: string;
+export interface ApiResponse {
+  success: boolean;
+  data: {
+    items: ChatRoomItem[];
+  };
 }
 
 const ChatListPage = () => {
   const router = useRouter();
-  const [chats, setChats] = useState(chatListData);
+  const [chats, setChats] = useState<ChatRoomItem[]>([]);
   const [searchText, setSearchText] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [targetChat] = useState<{
-    id: number;
-    name: string;
-    profileImg: string;
-  } | null>(null);
+  const [selectedChat, setSelectedChat] = useState<ChatRoomItem | null>(null);
 
-  const [selectedChat, setSelectedChat] = useState<ChatItemType | null>(null);
+  const formatDate = (dateString: string) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}.${month}.${day}`;
+  };
 
-  const handleOpenModal = (chat: ChatItemType) => {
+  useEffect(() => {
+    const fetchChatRooms = async () => {
+      try {
+        const res = await fetch("/api/chat/rooms");
+
+        if (!res.ok) throw new Error(`HTTP 에러! 상태: ${res.status}`);
+
+        const result: ApiResponse = await res.json();
+        console.log(result);
+        if (result.success) {
+          setChats(result.data.items);
+        }
+      } catch (error) {
+        console.error("목록 로드 실패:", error);
+      }
+    };
+
+    fetchChatRooms();
+  }, []);
+
+  const handleOpenModal = (chat: ChatRoomItem) => {
     setSelectedChat(chat);
     setIsModalOpen(true);
   };
 
-  const handleConfirmDelete = () => {
-    if (selectedChat) {
-      setChats(prev => prev.filter(c => c.id !== selectedChat.id));
+  const handleLeaveChat = async () => {
+    if (!selectedChat) return;
+
+    const token = localStorage.getItem("accessToken");
+    const roomId = selectedChat.roomId;
+
+    try {
+      const res = await fetch(`/api/chat/rooms/left/${roomId}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const result = await res.json();
+
+      if (result.success) {
+        setChats(prev => prev.filter(chat => chat.roomId !== roomId));
+        alert("대화방에서 나갔습니다.");
+      } else {
+        alert(result.message || "방 나가기 실패");
+      }
+    } catch (error) {
+      console.error("삭제 에러:", error);
+      alert("네트워크 오류가 발생했습니다.");
+    } finally {
       setIsModalOpen(false);
       setSelectedChat(null);
     }
   };
 
+  // 2. 검색 필터링 (방 이름 기준)
   const filteredChats = chats.filter(chat =>
-    chat.name.toLowerCase().includes(searchText.toLowerCase()),
+    chat.roomName.toLowerCase().includes(searchText.toLowerCase()),
   );
 
   return (
     <main className="relative flex min-h-dvh w-full justify-center bg-white">
       <div className="flex h-full w-full flex-col">
-        <HeaderWithIcon title="채팅" haveAlarm={true} />
+        <HeaderWithIcon title="대화" haveAlarm={true} />
 
-        <div className="px-4">
+        <div className="px-4 pt-[30.5px]">
           <SearchField onChangeSearchText={setSearchText} />
         </div>
 
         <section className="mt-5 flex flex-col overflow-y-auto">
-          {filteredChats.map(chat => (
+          {filteredChats.map((chat: ChatRoomItem) => (
             <ChatItem
-              key={chat.id}
-              {...chat}
-              onDelete={() => handleOpenModal(chat)}
-              name={chat.name}
-              lastMessage={chat.lastMessage}
-              date={chat.date}
+              key={chat.roomId}
+              id={chat.roomId}
+              name={chat.roomName}
+              lastMessage={chat.lastMessagePreview}
+              date={formatDate(chat.lastMessageAt)}
               unreadCount={chat.unreadCount}
-              profileImg={chat.profileImg}
-              onClick={() => router.push(`/chat/${chat.id}`)}
+              profileImg={chat.opponent.profileImageUrl}
+              onDelete={() => handleOpenModal(chat)}
+              onClick={() =>
+                router.push(
+                  `/chat/${chat.roomId}?name=${encodeURIComponent(chat.roomName)}&img=${encodeURIComponent(chat.opponent.profileImageUrl || "")}`,
+                )
+              }
             />
           ))}
         </section>
@@ -94,10 +154,10 @@ const ChatListPage = () => {
       {selectedChat && (
         <ExitChatModal
           isOpen={isModalOpen}
-          userName={selectedChat.name}
-          profileImg={selectedChat.profileImg}
+          userName={selectedChat.roomName}
+          profileImg={selectedChat.opponent.profileImageUrl}
           onClose={() => setIsModalOpen(false)}
-          onConfirm={handleConfirmDelete}
+          onConfirm={handleLeaveChat}
         />
       )}
     </main>

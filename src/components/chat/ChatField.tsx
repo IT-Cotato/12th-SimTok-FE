@@ -61,7 +61,7 @@ export const ChatField = ({
         >
           <div className="flex flex-shrink-0 items-center justify-center">
             <CameraIcon
-              className={`h-10 w-10 transition-colors ${
+              className={`h-10 w-10 transition-colors cursor-pointer${
                 isNotEmpty ? "text-neutral-09" : "text-neutral-06"
               }`}
             />
@@ -88,7 +88,7 @@ export const ChatField = ({
                 className="flex h-10 w-14 items-center justify-center transition-transform active:scale-95"
                 onClick={handleSend}
               >
-                <SendIcon className="h-full w-full object-contain" />
+                <SendIcon className="h-full w-full cursor-pointer object-contain" />
               </button>
             ) : (
               <div className="flex items-center">
@@ -98,7 +98,7 @@ export const ChatField = ({
                   onClick={handleImageClick}
                   className="flex h-8 w-8 flex-shrink-0 items-center justify-center"
                 >
-                  <ImageIcon className="text-neutral-02 h-7 w-7" />
+                  <ImageIcon className="text-neutral-02 h-7 w-7 cursor-pointer" />
                 </button>
                 <button
                   type="button"
@@ -106,7 +106,7 @@ export const ChatField = ({
                   onClick={() => setIsVoiceOpen(true)}
                   className="flex h-8 w-8 items-center justify-center"
                 >
-                  <MicIcon className="text-neutral-02 h-6 w-6" />
+                  <MicIcon className="text-neutral-02 h-6 w-6 cursor-pointer" />
                 </button>
               </div>
             )}

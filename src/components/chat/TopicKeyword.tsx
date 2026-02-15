@@ -18,8 +18,10 @@ export const TopicKeyword = ({
   return (
     <button
       onClick={onClick}
-      className={`border-green-01 flex h-[50px] min-w-[128px] items-center justify-center gap-1 rounded-3xl border px-4 py-[10px] transition-colors ${
-        isActive ? "bg-green-01" : "bg-white"
+      className={`border-green-01 group flex h-[50px] min-w-[128px] cursor-pointer items-center justify-center gap-1 rounded-3xl border px-4 py-[10px] transition-colors ${
+        isActive
+          ? "bg-green-01 text-white"
+          : "text-green-01 hover:bg-green-01 bg-white hover:text-white"
       }`}
     >
       {icon && (
@@ -29,7 +31,7 @@ export const TopicKeyword = ({
       )}
       <span
         className={`text-h2 whitespace-nowrap transition-colors ${
-          isActive ? "text-white" : "text-green-01"
+          isActive ? "text-white" : "text-inherit"
         }`}
       >
         {label}
