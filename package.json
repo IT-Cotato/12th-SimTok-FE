@@ -17,6 +17,7 @@
     ]
   },
   "dependencies": {
+    "@stomp/stompjs": "^7.3.0",
     "@use-funnel/browser": "^0.0.16",
     "axios": "^1.13.2",
     "framer-motion": "^12.34.0",
