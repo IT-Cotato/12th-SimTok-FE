@@ -1,4 +1,9 @@
-export const uploadToS3 = async (file: File) => {
+export type UploadFolderType = "DIARY" | "PROFILE" | "CHALLENGE" | "CHAT";
+
+export const uploadToS3 = async (
+  file: File,
+  folder: UploadFolderType = "DIARY",
+) => {
   const token = localStorage.getItem("accessToken");
 
   const res = await fetch("/api/image/presigned-url", {
@@ -9,7 +14,7 @@ export const uploadToS3 = async (file: File) => {
     },
     body: JSON.stringify({
       fileName: file.name,
-      folder: "DIARY",
+      folder: folder,
     }),
   });
 

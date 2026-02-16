@@ -1,16 +1,13 @@
 import { useRef, useState } from "react";
 
-import { uploadToS3 } from "@/utils/uploadImage.util";
+import { UploadFolderType, uploadToS3 } from "@/utils/uploadImage.util";
 
 interface useImageUploadProps {
   onSelect: (imageUrl: string) => void;
-  maxSizeMB?: number;
+  folder?: UploadFolderType;
 }
 
-export const useImageUpload = ({
-  onSelect,
-  maxSizeMB = 10,
-}: useImageUploadProps) => {
+export const useImageUpload = ({ onSelect, folder }: useImageUploadProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -24,7 +21,7 @@ export const useImageUpload = ({
     try {
       setIsUploading(true);
       // S3 업로드 실행
-      const imageUrl = await uploadToS3(file);
+      const imageUrl = await uploadToS3(file, folder);
       onSelect(imageUrl); // 부모에게 최종 S3 URL 전달
     } catch (error) {
       alert(error instanceof Error ? error.message : "업로드 실패");
