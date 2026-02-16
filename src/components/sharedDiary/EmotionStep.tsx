@@ -10,13 +10,10 @@ import { EmotionSelectSection } from "./EmotionSelectSection";
 import { UploadTitle } from "./UploadTitle";
 
 interface EmotionStepProps {
-  emotion?: Emotion;
-  onNext: (emotion: Emotion) => void;
+  emotion?: string;
+  onNext: (emotion: string) => void;
 }
-export const EmotionStep = ({
-  emotion: initialEmotion,
-  onNext,
-}: EmotionStepProps) => {
+export const EmotionStep = ({ emotion, onNext }: EmotionStepProps) => {
   const [selectedEmotion, setSelectedEmotion] = useState<string | null>(null);
 
   return (
@@ -37,7 +34,7 @@ export const EmotionStep = ({
       <div className="fixed bottom-0 h-[119px] w-screen max-w-[440px] bg-white px-4 py-[10px]">
         <FullButton
           isActive={!!selectedEmotion}
-          onClick={() => selectedEmotion && onNext(selectedEmotion as Emotion)}
+          onClick={() => selectedEmotion && onNext(selectedEmotion)}
         >
           <p>다음</p>
         </FullButton>

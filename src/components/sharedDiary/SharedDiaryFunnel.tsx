@@ -14,10 +14,10 @@ import { EmotionStep } from "./EmotionStep";
 const steps = createFunnelSteps<SharedDiaryFormState>()
   .extends("emotion")
   .extends("write", {
-    requiredKeys: ["emotion"],
+    requiredKeys: ["emojiCode"],
   })
   .extends("confirm", {
-    requiredKeys: ["emotion", "text"],
+    requiredKeys: ["emojiCode", "content"],
   })
   .extends("complete")
   .build();
@@ -28,7 +28,9 @@ export const SharedDiaryFunnel = () => {
     id: "sharedDiary",
     initial: {
       step: "emotion",
-      context: {},
+      context: {
+        date: new Date().toISOString().split("T")[0], //2026-02-16
+      },
     },
     steps: steps,
   });
@@ -37,53 +39,53 @@ export const SharedDiaryFunnel = () => {
     case "emotion": {
       return (
         <EmotionStep
-          emotion={funnel.context.emotion}
-          onNext={emotion =>
+          emotion={funnel.context.emojiCode}
+          onNext={emojiCode =>
             funnel.history.push("write", {
-              emotion,
-              text: "",
+              emojiCode,
+              content: "",
             })
           }
         />
       );
     }
 
-    case "write": {
-      const { emotion, text, file } = funnel.context;
+    // case "write": {
+    //   const { emojiCode, content, imageUrl } = funnel.context;
 
-      return (
-        <ContentStep
-          emotion={emotion}
-          defaultContent={text}
-          defaultFile={file}
-          onNext={(nextText, nextFile) =>
-            funnel.history.push("confirm", prev => ({
-              ...prev,
-              text: nextText,
-              file: nextFile,
-            }))
-          }
-          onBack={() => funnel.history.back()}
-        />
-      );
-    }
+    //   return (
+    //     <ContentStep
+    //       emotion={emojiCode}
+    //       defaultContent={content}
+    //       defaultFile={imageUrl || ""}
+    //       onNext={(nextText, nextFile) =>
+    //         funnel.history.push("confirm", prev => ({
+    //           ...prev,
+    //           content: nextText,
+    //           imageUrl: nextFile,
+    //         }))
+    //       }
+    //       onBack={() => funnel.history.back()}
+    //     />
+    //   );
+    // }
 
-    case "confirm": {
-      const { emotion, text, file } = funnel.context;
+    // case "confirm": {
+    //   const { emojiCode, content, imageUrl } = funnel.context;
 
-      return (
-        <ConfirmStep
-          emotion={emotion}
-          text={text}
-          file={file}
-          onSubmit={() => {
-            // TODO: 업로드 API 호출
-            funnel.history.push("complete");
-          }}
-          onBack={() => funnel.history.back()}
-        />
-      );
-    }
+    //   return (
+    //     <ConfirmStep
+    //       emotion={emojiCode}
+    //       text={content}
+    //       defaultFile={imageUrl || ""}
+    //       onSubmit={() => {
+    //         // TODO: 업로드 API 호출
+    //         funnel.history.push("complete");
+    //       }}
+    //       onBack={() => funnel.history.back()}
+    //     />
+    //   );
+    // }
 
     case "complete": {
       return (
