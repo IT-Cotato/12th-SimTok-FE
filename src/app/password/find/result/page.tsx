@@ -16,15 +16,51 @@ import { usePasswordValidation } from "@/hooks/usePasswordValidation";
 
 const FindPage = () => {
   const router = useRouter();
-
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const { isValidPassword, getState, getTextColor } = usePasswordValidation();
 
   const isPasswordValid = isValidPassword(password);
   const isPasswordConfirmValid =
     isValidPassword(passwordConfirm) && password === passwordConfirm;
+
+  const handleResetPassword = async () => {
+    if (!isPasswordConfirmValid || isLoading) return;
+
+    setIsLoading(true);
+    const resetKey = sessionStorage.getItem("pw_reset_key") || "";
+
+    try {
+      const res = await fetch("/api/password-reset/password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Password-Reset-Draft-Key": resetKey,
+        },
+        body: JSON.stringify({
+          password: password,
+          confirmPassword: passwordConfirm,
+        }),
+      });
+
+      const result = await res.json();
+
+      if (result.success) {
+        alert("비밀번호 재설정이 완료되었습니다.");
+        sessionStorage.removeItem("pw_reset_key"); // 키 삭제
+        router.push("/login/phone");
+      } else {
+        alert(result.message || "다시 시도해주세요.");
+      }
+    } catch (error) {
+      console.error("최종 단계 오류:", error);
+      alert("네트워크 오류가 발생했습니다.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const passwordState =
     getState(password, isPasswordValid) === "empty"
@@ -108,8 +144,8 @@ const FindPage = () => {
 
         <div className="mb-13 flex w-full justify-center px-4 py-[10px]">
           <FullButton
-            isActive={isPasswordConfirmValid}
-            onClick={() => router.push("/login/phone")}
+            isActive={isPasswordConfirmValid && !isLoading}
+            onClick={handleResetPassword}
           >
             설정완료
           </FullButton>

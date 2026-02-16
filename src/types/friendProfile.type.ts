@@ -11,7 +11,7 @@ export type ChatTopic =
   | "meal"
   | "mood"
   | "hobby"
-  | "custom";
+  | "joke";
 
 export type ChatTopicItem = { key: ChatTopic; label: string; icon?: string };
 

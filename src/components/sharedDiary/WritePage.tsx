@@ -21,8 +21,8 @@ export const WritePage = ({ text, onChangeText, onClose }: WritePageProps) => {
           subTitle="명언이나 오늘의 다짐을 적어도 좋아요."
         />
       </div>
-      <div className="mt-[102px] px-[10px]">
-        <section className="border-mint-01 h-[436px] w-full rounded-2xl border">
+      <div className="mt-[70px] px-4">
+        <section className="border-mint-01 h-[408px] w-full rounded-2xl border py-[10px]">
           <textarea
             value={text}
             onChange={e => onChangeText(e.target.value)}
@@ -32,7 +32,7 @@ export const WritePage = ({ text, onChangeText, onClose }: WritePageProps) => {
         </section>
       </div>
       <div className="fixed bottom-0 z-99 h-[119px] w-screen max-w-[440px] bg-white px-4 py-[10px]">
-        <FullButton isActive={!!text} onClick={onClose}>
+        <FullButton onClick={onClose}>
           <p>작성완료</p>
         </FullButton>
       </div>
