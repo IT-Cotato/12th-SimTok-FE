@@ -28,7 +28,7 @@ export const WriteStepButton = ({
       onSelect: (imageUrl: string) => {
         onSelectImage(imageUrl); // 업로드 완료된 S3 URL을 부모에게 전달
       },
-      maxSizeMB: 10,
+      folder: "DIARY",
     });
 
   const [openTextPage, setOpenTextPage] = useState(false);
