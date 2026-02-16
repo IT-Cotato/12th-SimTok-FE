@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { BACKEND_BASE_URL } from "@/lib/constants";
 
 export async function POST(req: Request) {
-  const BACKEND_URL = `${BACKEND_BASE_URL}/api/auth/refresh`;
+  const BACKEND_URL = `${BACKEND_BASE_URL}/auth/refresh`;
 
   try {
     const { refreshToken } = await req.json();

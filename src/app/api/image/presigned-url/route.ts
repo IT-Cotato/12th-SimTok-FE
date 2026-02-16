@@ -17,17 +17,14 @@ export async function POST(request: Request) {
 
     const body = await request.json();
 
-    const response = await fetch(
-      `${BACKEND_BASE_URL}/api/image/presigned-url`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(body),
+    const response = await fetch(`${BACKEND_BASE_URL}/image/presigned-url`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-    );
+      body: JSON.stringify(body),
+    });
 
     const data = await response.json();
 
