@@ -5,10 +5,10 @@ import { useRouter } from "next/navigation";
 import BackIcon from "@/assets/left-arrow.svg";
 import ListIcon from "@/assets/list.svg";
 
-interface HeaderProps {
+interface BackHeaderProps {
   title?: string;
   timeAgo?: string; // 하루한컷보기에서 사용
-  menuIcon?: boolean; // 채팅페이지에서 사용
+  menuIcon?: () => void;
   titleColor?: string; //하루한컷 업로드에서 사용
   subtext?: string; // 친구목록에서 사용
   isEditMode?: boolean; //친구목록에서 사용;
@@ -25,12 +25,12 @@ export const BackHeader = ({
   isEditMode,
   onClickEdit,
   selectedCount,
-}: HeaderProps) => {
+}: BackHeaderProps) => {
   const router = useRouter();
 
   return (
     <header
-      className={`relative mt-[13px] flex px-4 py-[10px] ${!title && "h-9"}`}
+      className={`relative flex px-4 py-[10px] pt-[13px] ${!title && "h-9"}`}
     >
       <button
         type="button"
@@ -44,13 +44,18 @@ export const BackHeader = ({
       >
         {title}
       </h1>
+
       {timeAgo && (
-        <p className="text-sub2-sb text-neutral-04 absolute right-4 bottom-[10px]">
+        <p className="text-h3 text-neutral-11 absolute top-1/2 right-4 -translate-y-1/2">
           {timeAgo}
         </p>
       )}
       {menuIcon && (
-        <button className="absolute top-1/2 right-4 -translate-y-1/2">
+        <button
+          className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer"
+          type="button"
+          onClick={menuIcon}
+        >
           <ListIcon />
         </button>
       )}

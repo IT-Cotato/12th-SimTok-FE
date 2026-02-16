@@ -21,9 +21,12 @@ const MyPage = () => {
         <div className="mt-[13px] flex h-full w-110 flex-col pb-30">
           <BackHeader title="마이페이지" />
           <section className="mt-[18.5px]">
-            {userProfileData && (
-              <MyProfileCard userProfileData={userProfileData} />
-            )}
+            {/* {userProfileData && (
+              <MyProfileCard
+                userProfileData={userProfileData}
+                onEdit={() => router.push("/mypage/profile")}
+              />
+            )} */}
           </section>
           <nav className="mt-10">
             <ul className="flex flex-col">

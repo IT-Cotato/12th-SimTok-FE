@@ -2,12 +2,13 @@
 
 import { useRouter } from "next/navigation";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { signupApi } from "@/app/api/signup";
 
 import DateIcon from "@/assets/date.svg";
 import ErrorIcon from "@/assets/modal_error.svg";
 import SuccessIcon from "@/assets/modal_success.svg";
-import PhoneIcon from "@/assets/phone.svg";
 import ProfileIcon from "@/assets/profile.svg";
 
 import { FullButton } from "@/components/common/FullButton";
@@ -44,12 +45,43 @@ export const ProfileForm = () => {
   const isNameFilled = name.trim().length > 0;
   const canRequestCode = isValidPhone;
   const isBirthValid = isValidBirth(birth);
+  const [remainingResend, setRemainingResend] = useState(3);
 
-  const handleRequestCode = () => {
-    if (!canRequestCode) return;
-    setIsVerified(false);
-    setCode("");
-    start(120);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleRequestCode = async () => {
+    if (!canRequestCode || isSubmitting) return;
+
+    //재전송 횟수 체크
+    if (remainingResend === 0) {
+      alert(
+        "문자 재발송 횟수를 모두 사용하셨습니다. 처음부터 다시 시도해주세요.",
+      );
+      router.replace("/login"); // 처음으로 리다이렉트
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const res = await signupApi.sendSms(phone.replace(/-/g, ""));
+      const result = await res.json();
+
+      if (result.success) {
+        const { remainingResendCount } = result.data.flags;
+        setRemainingResend(remainingResendCount);
+
+        setIsVerified(false);
+        setCode("");
+        start(180);
+        console.log("SMS 발송 성공:");
+      } else {
+        alert(result.message || "문자 발송 제한을 초과했습니다.");
+      }
+    } catch (error) {
+      console.error("SMS 요청 에러:", error);
+      alert("네트워크 오류가 발생했습니다.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleResendClick = () => {
@@ -59,17 +91,90 @@ export const ProfileForm = () => {
     handleRequestCode();
   };
 
-  const handleVerify = () => {
-    if (!code || !isCodeRequested || timeLeft === 0) return;
-    const isSuccess = code === "1234";
+  // [STEP 4] 인증번호 확인 (OTP 검증)
+  const handleVerify = async () => {
+    if (!code || !isCodeRequested || timeLeft === 0 || isSubmitting) return;
 
-    if (isSuccess) {
-      setIsVerified(true);
-      setModalType("success");
-      stop();
-    } else {
-      setIsVerified(false);
+    setIsSubmitting(true);
+    try {
+      const res = await signupApi.verifyOtp(code);
+      const result = await res.json();
+
+      console.log("OTP 검증 결과:", result);
+
+      //검증 성공 시
+      if (result.success && result.data?.step !== "OTP_REQUIRED") {
+        setIsVerified(true);
+        setModalType("success");
+        stop();
+      }
+      //검증 실패 시
+      else {
+        const remainingAttempts = result.data?.flags?.remainingOtpAttempts;
+
+        if (remainingAttempts === 0) {
+          alert(
+            "인증 시도 횟수(3회)를 초과했습니다. 인증번호를 다시 요청해주세요.",
+          );
+          stop();
+          setIsVerified(false);
+          setCode("");
+        } else {
+          // 남은 횟수 안내 포함 에러 처리
+          alert(
+            `인증번호가 올바르지 않습니다. (남은 횟수: ${remainingAttempts}회)`,
+          );
+          setModalType("error");
+        }
+      }
+    } catch (error) {
+      console.error("OTP 검증 에러:", error);
       setModalType("error");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // [STEP 5] 프로필 정보 제출 및 다음 단계 이동
+  const handleModalConfirm = async () => {
+    if (modalType === "error") {
+      setModalType(null);
+      return;
+    }
+
+    if (modalType === "success") {
+      if (isSubmitting) return;
+      setIsSubmitting(true);
+      try {
+        const cleanBirth = birth.replace(/\D/g, "");
+
+        if (cleanBirth.length !== 8) {
+          alert("생년월일 8자리를 정확히 입력해주세요.");
+          return;
+        }
+
+        const formattedBirth = `${cleanBirth.slice(0, 4)}-${cleanBirth.slice(4, 6)}-${cleanBirth.slice(6, 8)}`;
+
+        const res = await signupApi.submitProfile({
+          name,
+          birthDate: formattedBirth,
+        });
+        const result = await res.json();
+
+        if (result.success) {
+          setModalType(null);
+          router.push("/signup/password");
+        } else {
+          alert(result.message || "프로필 정보 등록에 실패했습니다.");
+          setModalType(null);
+        }
+      } catch (error) {
+        console.error("프로필 제출 에러:", error);
+        alert("네트워크 오류가 발생했습니다.");
+        setModalType(null);
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -111,18 +216,6 @@ export const ProfileForm = () => {
     isCodeRequested &&
     timeLeft > 0;
 
-  const handleModalConfirm = () => {
-    if (modalType === "success") {
-      setModalType(null);
-      router.push("/signup/password");
-    } else {
-      setModalType(null);
-      stop();
-      setCode("");
-      setIsVerified(false);
-    }
-  };
-
   return (
     <div className="mt-[18px] flex flex-1 flex-col gap-4">
       <div className="px-4">
@@ -159,7 +252,10 @@ export const ProfileForm = () => {
       />
 
       <div className="mt-auto mb-13 flex w-full justify-center px-4 py-[10px]">
-        <FullButton isActive={isConfirmActive} onClick={handleFullButtonClick}>
+        <FullButton
+          isActive={isConfirmActive && !isSubmitting}
+          onClick={handleFullButtonClick}
+        >
           인증하기
         </FullButton>
       </div>

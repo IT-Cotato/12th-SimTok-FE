@@ -63,13 +63,13 @@ const FriendsListPage = () => {
           />
         )}
 
-        <FriendList
+        {/* <FriendList
           searchText={searchText}
           setModalOpen={setModalOpen}
           isEditMode={isEditMode}
           selectedFriends={selectedFriends}
           onToggleFriend={toggleFriend}
-        />
+        /> */}
       </div>
       {isEditMode ? (
         selectedFriends.length > 0 && (

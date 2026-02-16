@@ -12,7 +12,7 @@ const DailyRecordPage = () => {
 
   return (
     <main className="flex w-full flex-col pb-[112px]">
-      <HeaderWithIcon title="하루기록" havePencil={true} />
+      <HeaderWithIcon title="하루기록" havePencil={true} haveAlarm={false} />
       <RecordMissionInfo hasMyRecord={hasMyRecord} />
       <div className="mt-[17.5px]">
         <RecordMissionFeed />

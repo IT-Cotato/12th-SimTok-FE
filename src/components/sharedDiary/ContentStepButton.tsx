@@ -12,12 +12,16 @@ interface WriteStepButtonProps {
   showInfoMessage: boolean;
   text: string;
   onChangeText: (value: string) => void;
+  hasText?: boolean;
+  hasImage?: boolean;
 }
 export const WriteStepButton = ({
   onSelectImage,
   showInfoMessage,
   text,
   onChangeText,
+  hasText,
+  hasImage,
 }: WriteStepButtonProps) => {
   const { inputRef, openFilePicker, onChangeFile } = useImageUpload({
     onSelect: ({ file }) => {
@@ -39,25 +43,34 @@ export const WriteStepButton = ({
       )}
 
       <div
-        className={`flex justify-between bg-white px-4 ${!showInfoMessage && "py-5"}`}
+        className={`flex justify-between gap-2 bg-white px-4 ${!showInfoMessage && "py-5"}`}
       >
         <button
-          className="bg-neutral-11 border-mint-01 h-[95px] max-w-[196px] flex-1 cursor-pointer rounded-2xl border border-solid px-[10px] py-[10px] pt-[20px]"
+          disabled={hasImage}
+          className={`bg-neutral-11 ${hasImage ? "cursor-not-allowed" : "border-mint-01 cursor-pointer border border-solid"} flex h-[95px] max-w-[196px] flex-1 flex-col items-center gap-1 rounded-2xl px-[10px] py-[10px] pt-[20px]`}
           onClick={openFilePicker}
         >
-          <div className="inline-flex items-center justify-center rounded-2xl bg-white p-[10px]">
+          <div className="inline-flex items-center justify-center rounded-2xl bg-white p-[10px] shadow-[0_0_14px_0_rgba(0,0,0,0.05)]">
             <GalleryAssets />
           </div>
-          <p>사진추가하기</p>
+          <p
+            className={`text-sub2-sb ${hasImage ? "text-neutral-07" : "text-green-01"}`}
+          >
+            사진추가하기
+          </p>
         </button>
         <button
-          className="bg-neutral-11 border-mint-01 h-[95px] max-w-[196px] flex-1 cursor-pointer rounded-2xl border border-solid px-[10px] py-[10px] pt-[20px]"
+          className={`bg-neutral-11 ${!hasText && "border-mint-01 border border-solid"} flex h-[95px] max-w-[196px] flex-1 cursor-pointer flex-col items-center gap-1 rounded-2xl px-[10px] py-[10px] pt-[20px]`}
           onClick={() => setOpenTextPage(true)}
         >
-          <div className="text-sub2-sb inline-flex items-center justify-center rounded-2xl bg-white p-[10px] text-black">
+          <div className="text-sub2-sb inline-flex h-[35px] w-[59px] items-center justify-center rounded-2xl bg-white px-[10px] text-black shadow-[0_0_14px_0_rgba(0,0,0,0.05)]">
             TEXT
           </div>
-          <p>글쓰기</p>
+          <p
+            className={`text-sub2-sb ${hasText ? "text-neutral-07" : "text-green-01"}`}
+          >
+            글쓰기
+          </p>
         </button>
       </div>
       <input

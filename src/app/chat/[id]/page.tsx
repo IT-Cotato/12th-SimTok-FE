@@ -1,0 +1,407 @@
+"use client";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+
+import { useCallback, useEffect, useRef, useState } from "react";
+
+import { useStomp } from "@/context/StompContext";
+import { StompSubscription } from "@stomp/stompjs";
+
+import AiIcon from "@/assets/AI.svg";
+import BackToKeywordIcon from "@/assets/backtokeyword.svg";
+import MenuIcon from "@/assets/list.svg";
+
+import { ChatDateDivider } from "@/components/chat/ChatDateDivider";
+import { FriendMessage } from "@/components/chat/FriendMessage";
+import { MyMessage } from "@/components/chat/MyMessage";
+import TopicKeyword from "@/components/chat/TopicKeyword";
+import { BackHeader } from "@/components/common/BackHeader";
+import { MessageInput } from "@/components/common/MessageInput";
+import { InfoMessage } from "@/components/dailyRecord/InfoMessage";
+
+import { CHAT_TOPIC } from "@/constants/friendsSettings";
+
+interface ChatMessage {
+  id: string | number;
+  type: "mine" | "friend";
+  content: string;
+  time: string;
+  messageSeq?: number;
+  isImage?: boolean;
+}
+
+interface ApiMessageItem {
+  messageId: number;
+  senderMemberId: number;
+  content: string;
+  createdAt: string;
+  messageSeq: number;
+}
+
+interface HistoryResponse {
+  success: boolean;
+  data: {
+    items: ApiMessageItem[];
+  };
+}
+
+const Chatting = () => {
+  const { client, isConnected } = useStomp();
+  const router = useRouter();
+  const params = useParams();
+  const searchParams = useSearchParams();
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const roomId = params?.id as string;
+  const targetId = searchParams.get("target");
+
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const myMemberId = 1;
+  const [isTopicOpen, setIsTopicOpen] = useState(false);
+  const [selectedTopicKey, setSelectedTopicKey] = useState<string | null>(null);
+  const [inputValue, setInputValue] = useState<string>("");
+  const displayName = searchParams.get("name") || "상대방";
+  const opponentProfileImg = searchParams.get("img");
+
+  const [prevRoomId, setPrevRoomId] = useState(roomId);
+  if (roomId !== prevRoomId) {
+    setPrevRoomId(roomId);
+    setMessages([]);
+  }
+
+  const selectedTopic = CHAT_TOPIC.find(t => t.key === selectedTopicKey);
+  const isDimmed = isTopicOpen && Boolean(selectedTopicKey);
+
+  const formatTime = (dateStr: string) =>
+    new Date(dateStr).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+  // 초기 메시지 히스토리 로드
+  const fetchHistory = useCallback(
+    async (id: string) => {
+      if (!id || id === "new") return;
+      const token = localStorage.getItem("accessToken");
+
+      try {
+        const res = await fetch(`/api/chat/rooms/${id}/messages?limit=20`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const result: HistoryResponse = await res.json();
+        if (result.success) {
+          const history: ChatMessage[] = result.data.items.map(msg => ({
+            id: msg.messageId,
+            type: msg.senderMemberId === myMemberId ? "mine" : "friend",
+            content: msg.content,
+            time: formatTime(msg.createdAt),
+            messageSeq: msg.messageSeq,
+          }));
+          setMessages(history.reverse());
+        }
+      } catch (err) {
+        console.error("히스토리 로드 실패", err);
+      }
+    },
+    [myMemberId],
+  );
+
+  useEffect(() => {
+    if (!roomId || roomId === "new" || !client || !isConnected) return;
+
+    const initChat = async () => {
+      await fetchHistory(roomId);
+    };
+    initChat();
+
+    const subscriptions: StompSubscription[] = [];
+
+    const subscribeAll = () => {
+      try {
+        // subscriptions.push(
+        //   client.subscribe("/user/queue/errors", (msg) => {
+        //     console.error("STOMP Server Error:", JSON.parse(msg.body));
+        //   })
+        // );
+
+        // subscriptions.push(
+        //   client.subscribe("/user/queue/connection/ack", (msg) => {
+        //     console.log("STOMP Connection ACK:", JSON.parse(msg.body));
+        //   })
+        // );
+
+        // 채팅방 채널
+        subscriptions.push(
+          client.subscribe(`/topic/chat/rooms/${roomId}`, msg => {
+            const body = JSON.parse(msg.body);
+            setMessages(prev => [
+              ...prev,
+              {
+                id: body.messageId,
+                type: body.senderMemberId === myMemberId ? "mine" : "friend",
+                content: body.content,
+                time: formatTime(body.createdAt),
+              },
+            ]);
+          }),
+        );
+
+        setTimeout(() => {
+          if (client.connected) {
+            client.publish({
+              destination: "/app/connection/ack",
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify({ message: "연결 확인 요청" }),
+            });
+          }
+        }, 200);
+      } catch (err) {
+        console.error("Subscription Flow Error:", err);
+      }
+    };
+
+    subscribeAll();
+
+    return () => {
+      subscriptions.forEach(sub => {
+        if (client.active && client.connected) {
+          sub.unsubscribe();
+        }
+      });
+    };
+  }, [roomId, client, isConnected, myMemberId]);
+
+  // 방 생성 리다이렉트 구독
+  useEffect(() => {
+    if (!client || !isConnected || roomId !== "new") return;
+
+    const sub = client.subscribe("/user/queue/chat/rooms", msg => {
+      const body = JSON.parse(msg.body);
+      if (body.roomId) router.replace(`/chat/${body.roomId}`);
+    });
+
+    return () => sub.unsubscribe();
+  }, [client, isConnected, roomId, router]);
+
+  //메시지 전송
+  const handleSend = () => {
+    const text = inputValue;
+
+    if (!client?.connected || !text || !text.trim()) {
+      console.log("전송 중단: 연결되지 않았거나 빈 메시지임");
+      return;
+    }
+
+    try {
+      const clientMessageId =
+        typeof crypto.randomUUID === "function"
+          ? crypto.randomUUID()
+          : Date.now().toString();
+
+      const isNewRoom = roomId === "new";
+      const payload = {
+        clientMessageId,
+        roomId: isNewRoom ? null : Number(roomId),
+        opponentMemberId: isNewRoom ? Number(targetId) : null,
+        messageType: "TEXT",
+        content: text,
+      };
+
+      client.publish({
+        destination: "/app/chat/messages/send",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      setInputValue("");
+      console.log("3. 전송 명령 완료");
+    } catch (err) {
+      console.error("전송 로직 실행 중 에러 발생:", err);
+    }
+  };
+
+  const handleCloseTopic = () => {
+    setIsTopicOpen(false);
+    setSelectedTopicKey(null);
+  };
+
+  const handleRecommendationClick = (text: string) => {
+    setInputValue(text);
+    setIsTopicOpen(false);
+    setSelectedTopicKey(null);
+  };
+
+  const handleImageUpload = (file: File) => {
+    const imageUrl = URL.createObjectURL(file);
+    const newMessage: ChatMessage = {
+      id: Date.now(),
+      type: "mine",
+      content: imageUrl,
+      isImage: true,
+      time: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    };
+    setMessages(prev => [...prev, newMessage]);
+  };
+
+  const scrollToBottom = useCallback(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, []);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, scrollToBottom]);
+
+  return (
+    <main className="relative flex h-dvh w-full justify-center bg-white">
+      {isTopicOpen && (
+        <div
+          className={`fixed inset-0 z-30 transition-opacity ${
+            selectedTopicKey ? "bg-black/50" : "bg-transparent"
+          }`}
+          onClick={handleCloseTopic}
+        />
+      )}
+
+      <div className="flex h-full w-full flex-col">
+        <BackHeader
+          title={displayName}
+          menuIcon={() => router.push(`/chat/${params.id}/setting`)}
+        />
+        <section
+          ref={scrollRef}
+          className="scrollbar-hide flex-1 overflow-y-auto scroll-smooth"
+        >
+          <ChatDateDivider date="2025년 12월 18일 목요일" />
+          <div className="flex flex-col">
+            {messages.map((msg, index) => {
+              const isPrevSame =
+                index > 0 && messages[index - 1].type === msg.type;
+              const isNextSame =
+                index < messages.length - 1 &&
+                messages[index + 1].type === msg.type &&
+                messages[index + 1].time === msg.time;
+
+              return msg.type === "mine" ? (
+                <MyMessage
+                  key={msg.id}
+                  content={msg.content}
+                  time={msg.time}
+                  isPrevSame={isPrevSame}
+                  isNextSame={isNextSame}
+                />
+              ) : (
+                <FriendMessage
+                  key={msg.id}
+                  userName={displayName}
+                  profileImage={opponentProfileImg ?? undefined}
+                  content={msg.content}
+                  time={msg.time}
+                  isPrevSame={isPrevSame}
+                  isNextSame={isNextSame}
+                />
+              );
+            })}
+          </div>
+        </section>
+
+        <div
+          className={`z-40 w-full max-w-[440px] flex-shrink-0 pb-[52px] transition-colors ${
+            isDimmed ? "bg-transparent" : "bg-white"
+          }`}
+        >
+          <div className="relative w-full">
+            <div
+              className={`relative w-full overflow-hidden px-4 pb-4 transition-colors ${
+                isDimmed ? "bg-transparent" : "bg-white"
+              }`}
+            >
+              {isTopicOpen && (
+                <div className="flex flex-col">
+                  {selectedTopic ? (
+                    <div className="flex flex-col gap-[19px]">
+                      <div className="flex justify-center">
+                        <button
+                          onClick={() => setSelectedTopicKey(null)}
+                          className="text-sub1-r text-orange-01 flex cursor-pointer items-center gap-1"
+                        >
+                          <BackToKeywordIcon />
+                          키워드로 돌아가기
+                        </button>
+                      </div>
+                      <div className="flex flex-col items-start gap-2">
+                        {selectedTopic.recommendations.map((text, idx) => (
+                          <TopicKeyword
+                            key={idx}
+                            label={text}
+                            onClick={() => handleRecommendationClick(text)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col">
+                      <div className="flex items-start">
+                        <InfoMessage
+                          text="대화하고 싶은 주제키워드를 골라보세요!"
+                          triangleUp={false}
+                        />
+                      </div>
+
+                      <div className="scrollbar-hide flex w-full flex-nowrap gap-[12px] overflow-x-auto">
+                        {CHAT_TOPIC.map(topic => (
+                          <TopicKeyword
+                            key={topic.key}
+                            label={topic.label}
+                            icon={topic.icon}
+                            isActive={false}
+                            onClick={() => setSelectedTopicKey(topic.key)}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {!isTopicOpen && (
+                <div className="flex justify-end">
+                  <button onClick={() => setIsTopicOpen(true)}>
+                    <AiIcon />
+                  </button>
+                </div>
+              )}
+            </div>
+            {/* <ChatField
+              value={inputValue}
+              onChange={setInputValue}
+              isDimmed={isDimmed}
+              onSend={handleSend}
+              onImageUpload={handleImageUpload}
+            /> */}
+            <div
+              className={`px-4 ${isDimmed ? "pointer-events-none opacity-50" : ""}`}
+            >
+              <MessageInput
+                value={inputValue}
+                onChange={setInputValue}
+                isChatting={true}
+                isDimmed={isDimmed}
+                onSend={handleSend}
+                onImageUpload={handleImageUpload}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+};
+
+export default Chatting;
