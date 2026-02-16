@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
     const cursorRoomId = searchParams.get("cursorRoomId");
 
     let backendUrl = `${BACKEND_BASE_URL}/chat/rooms?limit=${limit}`;
-    
+
     if (cursorAt && cursorRoomId) {
       backendUrl += `&cursorAt=${encodeURIComponent(cursorAt)}&cursorRoomId=${cursorRoomId}`;
     }

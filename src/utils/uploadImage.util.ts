@@ -1,35 +1,35 @@
-export interface UploadImageOptions {
-  maxSizeMB?: number;
-  allowedTypes?: string[];
-}
+export type UploadFolderType = "DIARY" | "PROFILE" | "CHALLENGE" | "CHAT";
 
-export interface UploadImageResult {
-  file: File;
-  previewUrl: string;
-}
-
-export const uploadImage = (
+export const uploadToS3 = async (
   file: File,
-  options: UploadImageOptions = {},
-): UploadImageResult => {
-  const {
-    maxSizeMB = 5,
-    allowedTypes = ["image/jpeg", "image/png", "image/webp"],
-  } = options;
+  folder: UploadFolderType = "DIARY",
+) => {
+  const token = localStorage.getItem("accessToken");
 
-  // 타입 검사
-  if (!allowedTypes.includes(file.type)) {
-    throw new Error("지원하지 않는 이미지 형식입니다.");
-  }
+  const res = await fetch("/api/image/presigned-url", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      fileName: file.name,
+      folder: folder,
+    }),
+  });
 
-  // 용량 검사
-  const maxSize = maxSizeMB * 1024 * 1024;
-  if (file.size > maxSize) {
-    throw new Error(`이미지 용량은 ${maxSizeMB}MB 이하만 가능합니다.`);
-  }
+  if (!res.ok) throw new Error("Presigned URL 발급 실패");
 
-  return {
-    file,
-    previewUrl: URL.createObjectURL(file),
-  };
+  const response = await res.json();
+  const { presignedUrl, imageUrl } = response.data;
+
+  const uploadRes = await fetch(presignedUrl, {
+    method: "PUT",
+    body: file,
+    headers: { "Content-Type": file.type },
+  });
+
+  if (!uploadRes.ok) throw new Error("S3 업로드 실패");
+
+  return imageUrl;
 };

@@ -39,7 +39,7 @@ export const StompProvider = ({ children }: { children: React.ReactNode }) => {
           };
         }
       },
-      debug: str => console.log("[STOMP Debug]", str),
+      // debug: str => console.log("[STOMP Debug]", str),
       reconnectDelay: 5000,
       heartbeatIncoming: 10000,
       heartbeatOutgoing: 10000,

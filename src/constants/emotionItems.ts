@@ -1,3 +1,81 @@
+export const HAPPY_EMOTION_MAP: Record<string, number> = {
+  HAPPY_GLAD: 1,
+  HAPPY_HAPPY: 2,
+  HAPPY_JOY: 3,
+  HAPPY_COOL: 4,
+  HAPPY_PROUD: 5,
+  HAPPY_GRATEFUL: 6,
+  HAPPY_EXCITED: 7,
+  HAPPY_SPECIAL: 8,
+  HAPPY_LOVELY: 9,
+  HAPPY_BEST: 10,
+  HAPPY_SATISFIED: 11,
+  HAPPY_GOOD: 12,
+};
+export const DAILY_EMOTION_MAP: Record<string, number> = {
+  DAILY_PLAIN: 1,
+  DAILY_SECRET: 2,
+  DAILY_SILENT: 3,
+  DAILY_SICK: 4,
+  DAILY_SOSO: 5,
+  DAILY_UNSURE: 6,
+  DAILY_SHY: 7,
+  DAILY_CONFUSED: 8,
+  DAILY_TIRED: 9,
+  DAILY_PLAYFUL: 10,
+  DAILY_BORED: 11,
+  DAILY_AMAZING: 12,
+};
+
+export const SAD_EMOTION_MAP: Record<string, number> = {
+  SAD_SAD: 1,
+  SAD_DEPRESSED: 2,
+  SAD_WORRIED: 3,
+  SAD_DISAPPOINTED: 4,
+  SAD_ABSURD: 5,
+  SAD_BAD: 6,
+  SAD_HARD: 7,
+  SAD_CRY: 8,
+  SAD_SHOCKED: 9,
+  SAD_EMBARRASSED: 10,
+  SAD_SCARED: 11,
+  SAD_UPSET: 12,
+};
+
+export const BAD_EMOTION_MAP: Record<string, number> = {
+  ANGRY_ANGRY: 1,
+  ANGRY_ANNOYED: 2,
+  ANGRY_FRUSTRATED: 3,
+  ANGRY_UNEASY: 4,
+  ANGRY_SUSPICIOUS: 5,
+  ANGRY_TERRIBLE: 6,
+  ANGRY_AWKWARD: 7,
+  ANGRY_FURIOUS: 8,
+  ANGRY_RESENTFUL: 9,
+  ANGRY_HATE: 10,
+};
+
+export const EMOTION_CODE_MAP = {
+  happy: HAPPY_EMOTION_MAP,
+  daily: DAILY_EMOTION_MAP,
+  sad: SAD_EMOTION_MAP,
+  bad: BAD_EMOTION_MAP,
+} as const;
+
+const createReverseMap = (map: Record<string, number>) => {
+  return Object.fromEntries(
+    Object.entries(map).map(([key, value]) => [value, key]),
+  );
+};
+
+//SERVER_EMOTION_REVERSE_MAP.happy[3] → "HAPPY_JOY"
+export const SERVER_EMOTION_REVERSE_MAP = {
+  happy: createReverseMap(HAPPY_EMOTION_MAP),
+  daily: createReverseMap(DAILY_EMOTION_MAP),
+  sad: createReverseMap(SAD_EMOTION_MAP),
+  bad: createReverseMap(BAD_EMOTION_MAP),
+} as const;
+
 export const EMOTION_ITEMS = {
   happy: {
     max: 12,
@@ -9,7 +87,7 @@ export const EMOTION_ITEMS = {
       5: { presentText: "흐뭇해요", pastText: "흐뭇했어요" },
       6: { presentText: "감사해요", pastText: "감사했어요" },
       7: { presentText: "정말신나요", pastText: "정말 신났어요" },
-      8: { presentText: "흐뭇해요", pastText: "흐뭇했어요" },
+      8: { presentText: "특별해요", pastText: "특별했어요" },
       9: { presentText: "사랑스러워요", pastText: "사랑스러웠어요" },
       10: { presentText: "최고예요", pastText: "최고였어요" },
       11: { presentText: "만족스러워요", pastText: "만족스러웠어요" },

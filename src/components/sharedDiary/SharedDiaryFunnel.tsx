@@ -14,10 +14,10 @@ import { EmotionStep } from "./EmotionStep";
 const steps = createFunnelSteps<SharedDiaryFormState>()
   .extends("emotion")
   .extends("write", {
-    requiredKeys: ["emotion"],
+    requiredKeys: ["emojiCode"],
   })
   .extends("confirm", {
-    requiredKeys: ["emotion", "text"],
+    requiredKeys: ["emojiCode", "content"],
   })
   .extends("complete")
   .build();
@@ -28,7 +28,9 @@ export const SharedDiaryFunnel = () => {
     id: "sharedDiary",
     initial: {
       step: "emotion",
-      context: {},
+      context: {
+        date: new Date().toISOString().split("T")[0], //2026-02-16
+      },
     },
     steps: steps,
   });
@@ -37,11 +39,11 @@ export const SharedDiaryFunnel = () => {
     case "emotion": {
       return (
         <EmotionStep
-          emotion={funnel.context.emotion}
-          onNext={emotion =>
+          emotion={funnel.context.emojiCode}
+          onNext={emojiCode =>
             funnel.history.push("write", {
-              emotion,
-              text: "",
+              emojiCode,
+              content: "",
             })
           }
         />
@@ -49,18 +51,18 @@ export const SharedDiaryFunnel = () => {
     }
 
     case "write": {
-      const { emotion, text, file } = funnel.context;
+      const { emojiCode, content, imageUrl } = funnel.context;
 
       return (
         <ContentStep
-          emotion={emotion}
-          defaultContent={text}
-          defaultFile={file}
+          emotion={emojiCode}
+          defaultContent={content}
+          defaultFile={imageUrl || ""}
           onNext={(nextText, nextFile) =>
             funnel.history.push("confirm", prev => ({
               ...prev,
-              text: nextText,
-              file: nextFile,
+              content: nextText,
+              imageUrl: nextFile,
             }))
           }
           onBack={() => funnel.history.back()}
@@ -69,15 +71,15 @@ export const SharedDiaryFunnel = () => {
     }
 
     case "confirm": {
-      const { emotion, text, file } = funnel.context;
+      const { emojiCode, content, imageUrl } = funnel.context;
 
       return (
         <ConfirmStep
-          emotion={emotion}
-          text={text}
-          file={file}
+          emotion={emojiCode}
+          text={content}
+          file={imageUrl}
           onSubmit={() => {
-            // TODO: 업로드 API 호출
+            console.log("최종 제출 데이터:", { emojiCode, content, imageUrl });
             funnel.history.push("complete");
           }}
           onBack={() => funnel.history.back()}
