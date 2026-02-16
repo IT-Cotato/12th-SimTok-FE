@@ -3,6 +3,7 @@ import { SharedDiaryFormState } from "@/types/sharedDiarySteps.type";
 import { apiInstance } from "../apiInstance";
 
 export const postSharedDiary = async (
+  date: string,
   emojiCode: string,
   content?: string,
   imageUrl?: string,
@@ -12,12 +13,12 @@ export const postSharedDiary = async (
   }
 
   const body: SharedDiaryFormState = {
-    date: new Date().toISOString().split("T")[0], //2026-02-16
+    date,
     emojiCode,
     ...(content && { content }),
     ...(imageUrl && { imageUrl }),
   };
 
-  const { data } = await apiInstance.post(`/diaries`, body);
+  const { data } = await apiInstance.post(`api/diaries`, body);
   return data;
 };

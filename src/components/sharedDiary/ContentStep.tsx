@@ -16,7 +16,7 @@ import { WriteStepButton } from "./ContentStepButton";
 import { UploadTitle } from "./UploadTitle";
 
 interface ContentStepProps {
-  emotion: Emotion;
+  emotion: string;
   defaultContent?: string;
   defaultFile?: File;
   onNext: (text: string, file?: File) => void;
