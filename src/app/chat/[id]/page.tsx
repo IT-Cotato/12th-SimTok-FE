@@ -270,15 +270,10 @@ const Chatting = () => {
       )}
 
       <div className="flex h-full w-full flex-col">
-        <BackHeader title={displayName}>
-          <button
-            type="button"
-            aria-label="채팅방 설정"
-            onClick={() => router.push(`/chat/${params.id}/setting`)}
-          >
-            <MenuIcon />
-          </button>
-        </BackHeader>
+        <BackHeader
+          title={displayName}
+          menuIcon={() => router.push(`/chat/${params.id}/setting`)}
+        />
         <section
           ref={scrollRef}
           className="scrollbar-hide flex-1 overflow-y-auto scroll-smooth"
