@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { BackHeader } from "@/components/common/BackHeader";
 import { NavBar } from "@/components/common/NavBar";
 import { ListItem } from "@/components/mypage/ListItem";
-import { MyProfileCard } from "@/components/mypage/MyProfileCard";
+import { ProfileCard } from "@/components/mypage/ProfileCard";
 
 import { MY_PAGE_MENU_ITEMS } from "@/constants/mypage";
 
@@ -21,12 +21,18 @@ const MyPage = () => {
         <div className="mt-[13px] flex h-full w-110 flex-col pb-30">
           <BackHeader title="마이페이지" />
           <section className="mt-[18.5px]">
-            {/* {userProfileData && (
-              <MyProfileCard
-                userProfileData={userProfileData}
+            {userProfileData && (
+              <ProfileCard
+                data={{
+                  name: userProfileData.name || "이름 없음",
+                  profileImageUrl:
+                    userProfileData.profileImageUrl ||
+                    "/images/onboarding_profile.svg",
+                }}
                 onEdit={() => router.push("/mypage/profile")}
+                isMyPage={true}
               />
-            )} */}
+            )}
           </section>
           <nav className="mt-10">
             <ul className="flex flex-col">
