@@ -24,13 +24,10 @@ const PlantGuidePage = () => {
 
   return (
     <main className="flex h-full w-full flex-col">
-      <div className="flex flex-1 flex-col">
+      <div className="mb-2 flex flex-1 flex-col">
         <BackHeader title="식물도감" />
         <div className="mt-[51.5px]">
-          <PageTitle>
-            친구와 함께 키울 식물을
-            <br /> 골라보세요!
-          </PageTitle>
+          <PageTitle title={["친구와 함께 키울 식물을", "골라보세요!"]} />
         </div>
         <PlantCarousel
           selectedId={selectedPlantId}

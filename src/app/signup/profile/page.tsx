@@ -8,11 +8,8 @@ const RegisterPage = () => {
       <div className="flex w-110 flex-col">
         <BackHeader title="회원가입" />
         <div className="mt-13.5 flex flex-1 flex-col">
-          <PageTitle>
-            회원가입을 위해 아래 정보를
-            <br />
-            입력해주세요.
-          </PageTitle>
+          <PageTitle title={["회원가입을 위해 아래 정보를", "입력해주세요."]} />
+
           <ProfileForm />
         </div>
       </div>

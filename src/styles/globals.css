@@ -7,6 +7,7 @@
   --color-green-02: #50cd7a;
   --color-green-03: #bbecc8;
   --color-green-04: #ebf9ef;
+  --color-green-05: #002c04;
 
   --color-mint-01: #42f09e;
   --color-mint-02: #c1f8da;
@@ -19,12 +20,15 @@
 
   --color-blue-00: #39a8fd;
   --color-blue-01: #d2ecff;
+  --color-blue-02: #84c7f9;
 
   --color-orange-00: #ff6700;
   --color-orange-01: #ff9100;
   --color-orange-02: #fbc223;
   --color-oragne-03: #fff2de;
   --color-oragne-04: #fdf8d2;
+
+  --color-brown: #4e2f00;
 
   --color-spring-01: #f6f8ad;
   --color-spring-02: #d9eec5;
@@ -61,14 +65,14 @@
   .bg-radial-yellowgreen-mintgreen {
     background:
       radial-gradient(
-        39.1% 31.12% at 80.25% 2.51%,
+        87.99% 89.07% at 123.07% 13.91%,
         rgba(246, 248, 173, 0.42) 57.26%,
         rgba(255, 255, 255, 0.42) 100%
       ),
       radial-gradient(
-        39.99% 49.21% at 23.64% 2.72%,
-        rgba(66, 240, 158, 0.66) 21.15%,
-        rgba(255, 255, 255, 0.87) 93.53%
+        131.98% 70.44% at -7.39% -2.25%,
+        #00ff62 0%,
+        rgb(255, 255, 255) 100%
       );
   }
 
@@ -96,6 +100,7 @@
       rgba(103, 103, 103, 0.1) 80.56%
     );
   }
+  /* 홈 */
   .bg-plant-blue {
     background: linear-gradient(
       180deg,
@@ -128,6 +133,7 @@
         rgba(254, 255, 230, 0.38) 79.52%
       );
   }
+  /* 홈 버블*/
   .bg-blur {
     background: linear-gradient(
       180deg,
@@ -135,6 +141,7 @@
       #fff 74.32%
     );
   }
+  /* 하루기록 */
   .bg-gradient-orange {
     background: linear-gradient(180deg, #f9cb4c 0%, #fdbb05 100%);
   }
@@ -163,6 +170,84 @@
       inset -1px -1px 0 rgb(255, 255, 255),
       inset 0 0 34px rgba(255, 255, 255, 0.55),
       inset 0 6px 12px rgba(255, 255, 255, 0.12);
+  }
+
+  .bg-brown-gradient {
+    background: linear-gradient(
+      359deg,
+      #251a13 0.71%,
+      #593924 44.37%,
+      #9f6742 73.83%,
+      #e99762 110.13%
+    );
+  }
+
+  /* 정원 배경 */
+  .bg-waterable {
+    background:
+      radial-gradient(
+        87.99% 89.07% at 123.07% 13.91%,
+        rgba(19, 153, 255, 0.53) 30.5%,
+        rgba(255, 255, 255, 0.53) 100%
+      ),
+      radial-gradient(
+        111.68% 73.28% at -16.48% 5.81%,
+        #0cefff 35.08%,
+        #ffffff 100%
+      );
+  }
+
+  .bg-withered {
+    background:
+      radial-gradient(
+        87.99% 89.07% at 123.07% 13.91%,
+        rgba(255, 98, 98, 0.53) 30.5%,
+        rgba(255, 255, 255, 0.53) 100%
+      ),
+      radial-gradient(136.93% 71.84% at 0% -1.83%, #ffaf1d 50.96%, #fff 100%);
+  }
+
+  .bg-watering {
+    background:
+      radial-gradient(
+        87.99% 89.07% at 123.07% 13.91%,
+        rgba(140, 243, 255, 0.53) 30.5%,
+        rgba(255, 255, 255, 0.53) 100%
+      ),
+      radial-gradient(131.98% 70.44% at -7.39% -2.25%, #03f 0%, #fff 100%);
+  }
+
+  .bg-after-watering {
+    background:
+      radial-gradient(152.95% 106.25% at -43.75% 0%, #00ff62 0%, #fff 100%),
+      radial-gradient(
+        338.52% 151.74% at 187.95% -53.19%,
+        rgba(0, 255, 98, 0.53) 30.5%,
+        rgba(255, 255, 255, 0.53) 100%
+      );
+  }
+
+  .bg-nutrition-available {
+    background:
+      radial-gradient(
+        87.99% 89.07% at 123.07% 13.91%,
+        rgba(222, 115, 0, 0.53) 30.5%,
+        rgba(255, 255, 255, 0.53) 100%
+      ),
+      radial-gradient(
+        153.07% 86.8% at -15.11% -6.85%,
+        #004a15 56.25%,
+        #fff 100%
+      );
+  }
+  .bg-shortly-after-nutrition {
+    background:
+      radial-gradient(131.98% 70.44% at -7.39% -2.25%, #f9ff00 0%, #fff 100%),
+      radial-gradient(
+        87.99% 89.07% at 123.07% 13.91%,
+        rgba(253, 255, 171, 0.53) 30.5%,
+        rgba(255, 255, 255, 0.53) 100%
+      );
   }
 
   @keyframes rotation {

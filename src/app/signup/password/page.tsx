@@ -84,11 +84,7 @@ const SettingPage = () => {
       <div className="flex w-full flex-col">
         <BackHeader title="비밀번호 설정" />
         <div className="mt-13.5 flex flex-1 flex-col">
-          <PageTitle>
-            로그인에 사용할 비밀번호를
-            <br />
-            설정해주세요
-          </PageTitle>
+          <PageTitle title={["로그인에 사용할 비밀번호를", "설정해주세요"]} />
 
           <div className="mt-[29px] flex flex-col gap-2.5 px-4">
             <div className="flex flex-col">

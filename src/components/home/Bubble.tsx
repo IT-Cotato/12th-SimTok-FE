@@ -6,7 +6,7 @@ import YellowCircle from "@/assets/home/yellow-circle.svg";
 import {
   PlantWaterStatus,
   PlantWaterStatusType,
-} from "@/constants/plantStatus";
+} from "@/constants/garden/plantStatus";
 
 interface BubbleProps {
   status: PlantWaterStatusType;

@@ -58,6 +58,7 @@ export const ConfirmStep = ({
         <UploadTitle
           title="공유일기 작성을 완료할까요?"
           subTitle="완료하고나면 친구들과 공유돼요."
+          titleColor="text-green-01"
         />
       </div>
       {emotionData && (
@@ -69,7 +70,7 @@ export const ConfirmStep = ({
             alt="selected-emotion"
             className="h-16 w-16"
           />
-          <p className="text-sub1-r text-black">
+          <p className="text-sub1-sb text-black">
             &ldquo;오늘 하루는 {emotionData.presentText}&rdquo;
           </p>
         </section>
@@ -83,13 +84,9 @@ export const ConfirmStep = ({
               className="h-auto w-full"
             />
           )}
-          <div className="flex justify-between px-4">
-            <div className="text-sub1-r whitespace-pre-wrap text-black">
-              {text}
-            </div>
-            <div className="text-neutral-07 text-sub1-r">
-              {formatDateWithDot(new Date().toISOString())}
-            </div>
+
+          <div className="text-body1-md px-4 break-all whitespace-pre-wrap text-black">
+            {text}
           </div>
         </section>
       )}
