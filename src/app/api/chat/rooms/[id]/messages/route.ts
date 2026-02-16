@@ -17,7 +17,8 @@ export async function GET(
     const limit = searchParams.get("limit") || "20";
     const cursorSeq = searchParams.get("cursorSeq");
 
-    let url = `${BACKEND_BASE_URL}/api/chat/rooms/${roomId}/messages?limit=${limit}`;
+    let url = `${BACKEND_BASE_URL}/chat/rooms/${roomId}/messages?limit=${limit}`;
+
     if (cursorSeq) url += `&cursorSeq=${cursorSeq}`;
 
     const response = await fetch(url, {

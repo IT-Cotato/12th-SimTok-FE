@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
 
     // 백엔드 서버로 요청 전달
     const response = await fetch(
-      `${BACKEND_BASE_URL}/api/chat/rooms/direct/resolve?opponentMemberId=${opponentMemberId}`,
+      `${BACKEND_BASE_URL}/chat/rooms/direct/resolve?opponentMemberId=${opponentMemberId}`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },

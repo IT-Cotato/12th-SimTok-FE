@@ -46,7 +46,7 @@ export const StompProvider = ({ children }: { children: React.ReactNode }) => {
     });
 
     // 1. 연결 성공 콜백
-    clientInstance.onConnect = _frame => {
+    clientInstance.onConnect = () => {
       console.log("🚀 STOMP Connected");
       setIsConnected(true);
       setClient(clientInstance);
