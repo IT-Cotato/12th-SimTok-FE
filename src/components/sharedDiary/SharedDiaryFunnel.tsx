@@ -50,42 +50,42 @@ export const SharedDiaryFunnel = () => {
       );
     }
 
-    // case "write": {
-    //   const { emojiCode, content, imageUrl } = funnel.context;
+    case "write": {
+      const { emojiCode, content, imageUrl } = funnel.context;
 
-    //   return (
-    //     <ContentStep
-    //       emotion={emojiCode}
-    //       defaultContent={content}
-    //       defaultFile={imageUrl || ""}
-    //       onNext={(nextText, nextFile) =>
-    //         funnel.history.push("confirm", prev => ({
-    //           ...prev,
-    //           content: nextText,
-    //           imageUrl: nextFile,
-    //         }))
-    //       }
-    //       onBack={() => funnel.history.back()}
-    //     />
-    //   );
-    // }
+      return (
+        <ContentStep
+          emotion={emojiCode}
+          defaultContent={content}
+          defaultFile={imageUrl || ""}
+          onNext={(nextText, nextFile) =>
+            funnel.history.push("confirm", prev => ({
+              ...prev,
+              content: nextText,
+              imageUrl: nextFile,
+            }))
+          }
+          onBack={() => funnel.history.back()}
+        />
+      );
+    }
 
-    // case "confirm": {
-    //   const { emojiCode, content, imageUrl } = funnel.context;
+    case "confirm": {
+      const { emojiCode, content, imageUrl } = funnel.context;
 
-    //   return (
-    //     <ConfirmStep
-    //       emotion={emojiCode}
-    //       text={content}
-    //       defaultFile={imageUrl || ""}
-    //       onSubmit={() => {
-    //         // TODO: 업로드 API 호출
-    //         funnel.history.push("complete");
-    //       }}
-    //       onBack={() => funnel.history.back()}
-    //     />
-    //   );
-    // }
+      return (
+        <ConfirmStep
+          emotion={emojiCode}
+          text={content}
+          file={imageUrl}
+          onSubmit={() => {
+            console.log("최종 제출 데이터:", { emojiCode, content, imageUrl });
+            funnel.history.push("complete");
+          }}
+          onBack={() => funnel.history.back()}
+        />
+      );
+    }
 
     case "complete": {
       return (
