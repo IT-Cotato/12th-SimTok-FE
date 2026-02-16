@@ -6,7 +6,7 @@ import { BACKEND_BASE_URL } from "@/lib/constants";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const response = await fetch(`${BACKEND_BASE_URL}/api/auth/login`, {
+    const response = await fetch(`${BACKEND_BASE_URL}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),

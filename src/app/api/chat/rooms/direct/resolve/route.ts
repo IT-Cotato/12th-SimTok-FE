@@ -1,6 +1,8 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
+import { BACKEND_BASE_URL } from "@/lib/constants";
+
 export async function GET(request: NextRequest) {
   try {
     const cookieStore = await cookies();
@@ -22,7 +24,7 @@ export async function GET(request: NextRequest) {
 
     // 백엔드 서버로 요청 전달
     const response = await fetch(
-      `https://43.202.184.232.nip.io/api/chat/rooms/direct/resolve?opponentMemberId=${opponentMemberId}`,
+      `${BACKEND_BASE_URL}/chat/rooms/direct/resolve?opponentMemberId=${opponentMemberId}`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },

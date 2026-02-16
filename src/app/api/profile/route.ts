@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { refreshAccessToken } from "@/lib/auth";
 import { BACKEND_BASE_URL } from "@/lib/constants";
 
-const PROFILE_API = `${BACKEND_BASE_URL}/api/profile`;
+const PROFILE_API = `${BACKEND_BASE_URL}/profile`;
 
 async function fetchWithAuth(url: string, method: string, body?: unknown) {
   const cookieStore = await cookies();

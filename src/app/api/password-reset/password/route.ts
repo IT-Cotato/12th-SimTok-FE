@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { BACKEND_BASE_URL } from "@/lib/constants";
 
 export async function POST(request: Request) {
-  const BACKEND_URL = `${BACKEND_BASE_URL}/api/password-reset/password`;
+  const BACKEND_URL = `${BACKEND_BASE_URL}/password-reset/password`;
   const draftKey = request.headers.get("Password-Reset-Draft-Key") || "";
 
   try {
