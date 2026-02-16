@@ -48,7 +48,10 @@ export const MessageInput = ({
         ) : (
           <button
             className="cursor-pointer"
-            onClick={() => setHeartClicked(prev => !prev)}
+            onClick={e => {
+              e.stopPropagation();
+              setHeartClicked(prev => !prev);
+            }}
           >
             {heartClicked ? (
               <HeartfillIcon className="text-mint-01 mr-[3px] h-[26px] w-[26px]" />
