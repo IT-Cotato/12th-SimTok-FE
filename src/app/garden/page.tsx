@@ -18,6 +18,8 @@ import { GardenBackground } from "@/components/garden/BackGround";
 import { GardenRules } from "@/components/garden/GardenRules";
 import { PlantColletction } from "@/components/garden/PlantColletction";
 
+import { PLANTS_PER_PAGE } from "@/constants/garden/gardenHome";
+
 import plantList from "@/mock/plantProgress.json";
 
 import { GardenPlant } from "@/types/plant.type";
@@ -30,7 +32,7 @@ const Garden = () => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const havePlant = plantList.length > 0;
-  const carouselPage = Math.ceil(plantList.length / 7);
+  const carouselPage = Math.ceil(plantList.length / PLANTS_PER_PAGE);
 
   const handleChangeSelectTitle = (value: "left" | "right") => {
     setSelectTitle(value);
@@ -74,7 +76,7 @@ const Garden = () => {
         />
       </div>
       {havePlant && (
-        <section className="absolute bottom-[180px] left-1/2 z-70 w-full -translate-x-1/2">
+        <section className="absolute bottom-[180px] left-1/2 z-[70] w-full -translate-x-1/2">
           <div className="mx-auto -mb-[10px] max-w-[440px]">
             <Swiper
               modules={[Keyboard]}
@@ -109,6 +111,8 @@ const Garden = () => {
         <div
           className="bg-neutral-01/83 fixed inset-y-0 left-1/2 z-[100] flex max-w-[440px] -translate-x-1/2 items-center justify-center px-4"
           onClick={() => setOpenRules(false)}
+          role="dialog"
+          aria-modal="true"
         >
           <div
             className="w-full max-w-[440px] rounded-2xl bg-white shadow-xl"

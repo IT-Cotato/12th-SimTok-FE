@@ -1,5 +1,6 @@
 "use client";
 
+import { PLANTS_PER_PAGE } from "@/constants/garden/gardenHome";
 import { PLANT_SORT_INFO } from "@/constants/garden/plantList";
 
 import { GardenPlant } from "@/types/plant.type";
@@ -13,7 +14,6 @@ export const PlantColletction = ({
   plantList,
   pageIndex,
 }: PlantColletctionProps) => {
-  const PLANTS_PER_PAGE = 7;
   const FRONT_MAX = 4;
 
   const start = pageIndex * PLANTS_PER_PAGE;
