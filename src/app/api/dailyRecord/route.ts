@@ -1,3 +1,4 @@
+import { DiaryDetail } from "@/types/diary.type";
 import { SharedDiaryFormState } from "@/types/sharedDiarySteps.type";
 
 import { apiInstance } from "../apiInstance";
@@ -53,11 +54,25 @@ export const deleteLike = async (diaryId: number) => {
   return data.data;
 };
 
-export const getDiaryLiked = async (diaryId: number): Promise<boolean> => {
+export const getDiaryDetail = async (diaryId: number): Promise<DiaryDetail> => {
   const { data } = await apiInstance.get(`/diaries/${diaryId}`);
   if (!data.success || data.code !== "SUCCESS") {
     const error = new Error(data.message || "알 수 없는 에러가 발생했습니다.");
     throw error;
   }
-  return data.data.isLiked;
+  return data.data;
+};
+
+export const getDiaryComments = async (
+  diaryId: number,
+  size: number,
+  lastId?: number | null,
+) => {
+  const url =
+    lastId !== undefined && lastId !== null
+      ? `/diaries/${diaryId}/comments?lastId=${lastId}&size=${size}`
+      : `/diaries/${diaryId}/comments?size=${size}`;
+
+  const { data } = await apiInstance.get(url);
+  return data.data;
 };

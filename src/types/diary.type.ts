@@ -27,3 +27,16 @@ export type DiaryListResponse = {
   lastId: number;
   hasNext: boolean;
 };
+
+export type DiaryComment = {
+  commentId: number;
+  writerInfo: WriterInfo;
+  content: string;
+  createdAt: string;
+};
+
+export type DiaryCommentList = {
+  comments: DiaryComment[];
+  lastId: number;
+  hasNext: boolean;
+};
