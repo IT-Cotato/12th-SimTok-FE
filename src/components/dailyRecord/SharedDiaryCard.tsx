@@ -22,7 +22,7 @@ export const SharedDiaryCard = () => {
     setIsLoading(true);
 
     try {
-      const result = await getSharedDiaryList(10, lastId);
+      const result = await getSharedDiaryList(5, lastId);
       console.log("API 응답 성공:", result);
 
       if (!result.diaries || result.diaries.length === 0) {
