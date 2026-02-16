@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useSignupStore } from "@/stores/useSignupStore";
 
@@ -16,10 +16,21 @@ import { PageTitle } from "@/components/common/PageTitle";
 const AgreePage = () => {
   const router = useRouter();
   const { terms } = useSignupStore();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [agreements, setAgreements] = useState<Record<string, boolean>>(() =>
     Object.fromEntries(terms.map(t => [t.code, false])),
   );
+
+  useEffect(() => {
+    if (terms.length > 0) {
+      setAgreements(prev => {
+        const hasKeys = terms.some(t => t.code in prev);
+        if (hasKeys) return prev;
+        return Object.fromEntries(terms.map(t => [t.code, false]));
+      });
+    }
+  }, [terms]);
 
   const isConfirmActive = useMemo(
     () =>
@@ -46,6 +57,8 @@ const AgreePage = () => {
     };
 
   const handleAgreeSubmit = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
     const consents = terms.map(term => ({
       code: term.code,
       version: term.version,
@@ -62,6 +75,9 @@ const AgreePage = () => {
       }
     } catch (error) {
       console.error("제출 실패:", error);
+      alert("네트워크 오류가 발생했습니다.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -71,7 +87,7 @@ const AgreePage = () => {
 
       <div className="mt-13.5 flex flex-1 flex-col">
         <PageTitle
-          title={[" 반가워요! 가입하려면", " 약관에 동의가 필요해요."]}
+          title={["반가워요! 가입하려면", "약관에 동의가 필요해요."]}
         />
 
         {/* 전체동의 영역 */}
@@ -102,7 +118,10 @@ const AgreePage = () => {
       </div>
 
       <div className="mb-[42px] flex w-full justify-center px-4 py-[10px]">
-        <FullButton isActive={isConfirmActive} onClick={handleAgreeSubmit}>
+        <FullButton
+          isActive={isConfirmActive && !isSubmitting}
+          onClick={handleAgreeSubmit}
+        >
           동의하기
         </FullButton>
       </div>
