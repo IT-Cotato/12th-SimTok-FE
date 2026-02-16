@@ -89,10 +89,7 @@ const AgreePage = () => {
         <PageTitle
           title={["반가워요! 가입하려면", "약관에 동의가 필요해요."]}
         />
-
-        {/* 전체동의 영역 */}
         <ul className="mt-[41px] flex w-full flex-col gap-[10px]">
-          {/* 전체동의 */}
           <li className="border-neutral-09 border-b px-4 py-[10px]">
             <Checkbox
               label="전체동의"

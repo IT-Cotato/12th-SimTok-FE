@@ -33,10 +33,10 @@ const OnboardingProfileClient = () => {
     loadInitialData();
   }, []);
 
-  const isNameValid = name.trim().length > 0;
+  const isNameLoaded = name.trim().length > 0;
 
   const handleCreateProfile = async () => {
-    if (!isNameValid || isSubmitting) return; // 중복 클릭 방지
+    if (!isNameLoaded || isSubmitting) return;
     setIsSubmitting(true);
 
     try {
@@ -86,7 +86,7 @@ const OnboardingProfileClient = () => {
           <div className="flex flex-1 flex-col">
             <section className="mt-[123px] px-4 py-2.5">
               <p className="text-d2 text-neutral-02 whitespace-pre-line">
-                가족들에게 보여줄{"\n"}내 프로필을 만들어주세요
+                가족에게 보여줄{"\n"}내 사진을 골라볼까요?
               </p>
             </section>
 
@@ -104,7 +104,7 @@ const OnboardingProfileClient = () => {
           {!isUploadOpen && (
             <section className="mb-13 px-4 py-[10px]">
               <FullButton
-                isActive={isNameValid && !isSubmitting}
+                isActive={isNameLoaded && !isSubmitting}
                 onClick={handleCreateProfile}
               >
                 프로필생성하기
