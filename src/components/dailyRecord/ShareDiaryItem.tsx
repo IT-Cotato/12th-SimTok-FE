@@ -2,7 +2,13 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import {
+  deleteLike,
+  getDiaryLiked,
+  postLike,
+} from "@/app/api/dailyRecord/route";
 
 import HeartFillIcon from "@/assets/heart-fill.svg";
 import HeartIcon from "@/assets/heart.svg";
@@ -26,10 +32,22 @@ export const SharedDiaryItem = ({
   commentMode = false,
 }: SharedDiaryItemProps) => {
   const router = useRouter();
-  const [heartClicked, setHeartClicked] = useState(false);
+  const [heartClicked, setHeartClicked] = useState(item.isLiked);
 
   const emotionMeta = getEmotionMeta(item.emojiCode);
   const timeAgo = getTimeAgo(item.createdAt);
+
+  const handleHeartClick = async () => {
+    const previousState = heartClicked;
+    setHeartClicked(!previousState);
+    try {
+      const apiCall = heartClicked ? deleteLike : postLike;
+      await apiCall(item.diaryId);
+    } catch (error) {
+      console.error("좋아요 처리 실패:", error);
+      setHeartClicked(previousState);
+    }
+  };
 
   return (
     <section key={item.diaryId} className="mb-6 flex w-full flex-col">
@@ -93,12 +111,9 @@ export const SharedDiaryItem = ({
           <p className="text-body1-md text-black">{item.content}</p>
         )}
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-start justify-start">
           <div className="flex gap-3 pl-[10px]">
-            <div
-              className="cursor-pointer"
-              onClick={() => setHeartClicked(prev => !prev)}
-            >
+            <div className="cursor-pointer" onClick={handleHeartClick}>
               {heartClicked ? (
                 <HeartFillIcon
                   width={26}

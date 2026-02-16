@@ -1,4 +1,3 @@
-import { DiaryListResponse } from "@/types/diary.type";
 import { SharedDiaryFormState } from "@/types/sharedDiarySteps.type";
 
 import { apiInstance } from "../apiInstance";
@@ -33,4 +32,32 @@ export const getSharedDiaryList = async (size: number, lastId?: number) => {
   const { data } = await apiInstance.get(url);
   console.log("공유 일기 목록 응답:", data.data);
   return data.data;
+};
+
+export const postLike = async (diaryId: number) => {
+  const { data } = await apiInstance.post(`/diaries/${diaryId}/likes`);
+  if (!data.success || data.code !== "SUCCESS") {
+    // 서버가 보내준 message를 에러 객체에 담아 던짐
+    const error = new Error(data.message || "알 수 없는 에러가 발생했습니다.");
+    throw error;
+  }
+  return data.data;
+};
+
+export const deleteLike = async (diaryId: number) => {
+  const { data } = await apiInstance.delete(`/diaries/${diaryId}/likes`);
+  if (!data.success || data.code !== "SUCCESS") {
+    const error = new Error(data.message || "알 수 없는 에러가 발생했습니다.");
+    throw error;
+  }
+  return data.data;
+};
+
+export const getDiaryLiked = async (diaryId: number): Promise<boolean> => {
+  const { data } = await apiInstance.get(`/diaries/${diaryId}`);
+  if (!data.success || data.code !== "SUCCESS") {
+    const error = new Error(data.message || "알 수 없는 에러가 발생했습니다.");
+    throw error;
+  }
+  return data.data.isLiked;
 };
