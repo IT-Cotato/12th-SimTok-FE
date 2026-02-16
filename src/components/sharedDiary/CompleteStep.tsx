@@ -13,7 +13,7 @@ export const CompleteStep = ({ onClose }: CompleteStepProps) => {
           공유일기 작성이 완료되었어요!
         </h1>
         <p className="text-h3 text-neutral-05">
-          하루기록페이지에서 공유한 일기를 확인 할 수 있어요.
+          하루기록페이지에서 공유한 일기를 확인할 수 있어요.
         </p>
       </section>
       <section className="mb-[112px] flex flex-1 items-center justify-center">
