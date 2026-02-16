@@ -1,13 +1,15 @@
 import { useRef, useState } from "react";
 
+import { deleteLike, postLike } from "@/app/api/dailyRecord/route";
+
 import { SendButton } from "@/assets/SendButton";
 import CameraIcon from "@/assets/camera.svg";
 import HeartfillIcon from "@/assets/heart-fill.svg";
 import HeartBlankIcon from "@/assets/heart.svg";
 
 interface MessageInputProps {
-  value?: string;
-  onChange?: (val: string) => void;
+  diaryId?: number;
+  isLiked?: boolean;
   isChatting?: boolean;
   isDimmed?: boolean;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
@@ -18,8 +20,8 @@ interface MessageInputProps {
 }
 
 export const MessageInput = ({
-  value = "",
-  onChange,
+  diaryId,
+  isLiked = false,
   isChatting = false,
   isDimmed = false,
   onFocus,
@@ -30,15 +32,15 @@ export const MessageInput = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [text, setText] = useState("");
   const [isComposing, setIsComposing] = useState(false);
-  const [heartClicked, setHeartClicked] = useState(false);
+  const [heartClicked, setHeartClicked] = useState(isLiked);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const hasText = Boolean(value);
+  const hasText = text.trim().length > 0;
 
   const sendMessage = () => {
     if (!hasText) return;
     onSend?.(text.trim());
-    onChange?.("");
+    setText("");
   };
 
   const handleCameraClick = () => {
@@ -49,6 +51,19 @@ export const MessageInput = ({
     const file = e.target.files?.[0];
     if (file && onImageUpload) {
       onImageUpload(file);
+    }
+  };
+
+  const handleHeartClick = async () => {
+    if (!diaryId) return;
+    const previousState = heartClicked;
+    setHeartClicked(!previousState);
+    try {
+      const apiCall = heartClicked ? deleteLike : postLike;
+      await apiCall(diaryId);
+    } catch (error) {
+      console.error("좋아요 처리 실패:", error);
+      setHeartClicked(previousState);
     }
   };
 
@@ -84,7 +99,7 @@ export const MessageInput = ({
             className="cursor-pointer"
             onClick={e => {
               e.stopPropagation();
-              setHeartClicked(prev => !prev);
+              handleHeartClick();
             }}
           >
             {heartClicked ? (
@@ -100,9 +115,9 @@ export const MessageInput = ({
           ref={inputRef}
           className={`text-sub1-r ${blackMode ? "text-neutral-05" : "text-neutral-01"} mr-2 w-full flex-1 focus:outline-none`}
           type="text"
-          value={value}
+          value={text}
           onChange={e => {
-            onChange?.(e.target.value);
+            setText(e.target.value);
           }}
           onFocus={onFocus}
           onCompositionStart={() => setIsComposing(true)}

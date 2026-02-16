@@ -14,8 +14,13 @@ import { DiaryComment, DiaryCommentList } from "@/types/diary.type";
 import { OnlyLoader } from "../common/OnlyLoader";
 import { CommentList } from "./CommentList";
 
-export const SharedDiaryComment = ({ diaryId }: { diaryId: number }) => {
-  // 1. 상태를 배열(DiaryComment[])로 관리하도록 수정
+export const SharedDiaryComment = ({
+  diaryId,
+  isLiked,
+}: {
+  diaryId: number;
+  isLiked: boolean;
+}) => {
   const [comments, setComments] = useState<DiaryComment[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -90,6 +95,8 @@ export const SharedDiaryComment = ({ diaryId }: { diaryId: number }) => {
 
         <footer className="fixed bottom-0 flex w-full max-w-[440px] items-center gap-[13px] bg-white px-4 pt-4 pb-[11px]">
           <MessageInput
+            diaryId={diaryId}
+            isLiked={isLiked}
             onSend={message => {
               const newComment: DiaryComment = {
                 commentId: Date.now(),
@@ -103,7 +110,7 @@ export const SharedDiaryComment = ({ diaryId }: { diaryId: number }) => {
                 createdAt: new Date().toISOString(),
               };
               // 새 댓글을 리스트 가장 상단에 추가
-              setComments(prev => [newComment, ...prev]);
+              setComments(prev => [...prev, newComment]);
             }}
           />
         </footer>

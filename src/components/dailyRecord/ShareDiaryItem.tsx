@@ -129,7 +129,7 @@ export const SharedDiaryItem = ({
       </div>
       {commentMode && (
         <div className="w-full">
-          <SharedDiaryComment diaryId={item.diaryId} />
+          <SharedDiaryComment diaryId={item.diaryId} isLiked={item.isLiked} />
         </div>
       )}
     </section>
