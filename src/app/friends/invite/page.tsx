@@ -60,7 +60,9 @@ const FriendInvitePage = () => {
           <div className="fixed bottom-0 left-1/2 z-50 w-full max-w-[440px] -translate-x-1/2 bg-white px-4 py-[10px] pb-[42px]">
             <FullButton
               isActive={inputCode.length > 0}
-              onClick={() => router.push(`/friends/add/${inputCode}`)}
+              onClick={() =>
+                router.push(`/friends/add/${encodeURIComponent(inputCode)}`)
+              }
             >
               입력완료
             </FullButton>

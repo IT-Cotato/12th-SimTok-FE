@@ -74,34 +74,26 @@ const GardenCare = () => {
 
     setOptimisticGardenState("AFTER_NUTRITION");
 
-    await runPhaseSequence(
-      [
-        { phase: "NUTRITION_BLACK", duration: 1000 },
-        { phase: "NUTRITION_AFTER_SHORTLY", duration: 1000 },
-      ],
-      setViewPhase,
-    );
-
     try {
-      // TODO: 실제 API 호출
-      // const res = await nutritionPlantApi();
-      // const newState = res.gardenState;
+      await runPhaseSequence(
+        [
+          { phase: "NUTRITION_BLACK", duration: 1000 },
+          { phase: "NUTRITION_AFTER_SHORTLY", duration: 1000 },
+        ],
+        setViewPhase,
+      );
 
       const newState: GardenState = "AFTER_NUTRITION";
 
-      // 해당 식물 상태 업데이트
       setPlantGardenStates(prev => ({
         ...prev,
         [currentPlantId]: newState,
       }));
-
-      setOptimisticGardenState(null);
-      setViewPhase("IDLE");
     } catch (e) {
       console.error("영양제 실패:", e);
+    } finally {
       setOptimisticGardenState(null);
       setViewPhase("IDLE");
-      // TODO: 에러 토스트 등
     }
   };
 
@@ -110,33 +102,31 @@ const GardenCare = () => {
 
     setOptimisticGardenState("WATERED_RECENTLY");
 
-    await runPhaseSequence(
-      [{ phase: "WATERING", duration: 1000 }],
-      setViewPhase,
-    );
-
     try {
+      await runPhaseSequence(
+        [{ phase: "WATERING", duration: 1000 }],
+        setViewPhase,
+      );
+
       // TODO: 실제 API 호출
       // const res = await waterPlantApi();
       // const newState = res.gardenState;
 
       const newState: GardenState = "WATERED_RECENTLY";
 
-      // 해당 식물 상태 업데이트
       setPlantGardenStates(prev => ({
         ...prev,
         [currentPlantId]: newState,
       }));
-
-      setOptimisticGardenState(null);
-      setViewPhase("IDLE");
     } catch (e) {
       console.error("물주기 실패:", e);
+      // TODO: 에러 토스트
+    } finally {
       setOptimisticGardenState(null);
       setViewPhase("IDLE");
-      // TODO: 에러 토스트 등
     }
   };
+
   const handlePlant = async () => {
     if (!currentPlantId) return;
 
