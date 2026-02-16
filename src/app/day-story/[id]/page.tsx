@@ -22,12 +22,16 @@ const DailyStory = () => {
   const timeAgo = getTimeAgo(story.createdAt);
 
   return (
-    <section className="relative h-screen w-full">
+    <section className="relative h-screen w-full bg-black">
       <div className="fixed top-0 w-full max-w-[440px]">
-        <BackHeader title={`${story.userName}의 하루`} timeAgo={timeAgo} />
+        <BackHeader
+          title={`${story.userName}의 챌린지`}
+          timeAgo={timeAgo}
+          titleColor="neutral-11"
+        />
       </div>
 
-      <div className="absolute top-[66px] bottom-[114px] w-full max-w-[440px]">
+      <div className="absolute top-[56px] bottom-[76px] w-full max-w-[440px]">
         <Image
           src={story.image}
           alt={`${story.userName}의 하루한컷`}

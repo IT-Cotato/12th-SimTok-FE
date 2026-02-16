@@ -11,7 +11,7 @@ export const SendButton = ({ hasText = false, onClick }: SendButtonProps) => {
       onClick={onClick}
     >
       <SendIcon
-        className={`h-5 text-white ${hasText ? "cursor-pointer" : ""}`}
+        className={`h-[25px] w-[25px] text-white ${hasText ? "cursor-pointer" : ""}`}
       />
     </button>
   );

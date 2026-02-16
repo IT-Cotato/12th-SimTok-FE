@@ -11,14 +11,16 @@ import { PageTitle } from "@/components/common/PageTitle";
 import { ChosenPlant } from "@/components/garden/ChosenPlant";
 import ProgressDots from "@/components/onboarding/ProgressDots";
 
-import { PlantSort } from "@/constants/plantList";
+import { PLANT_SORT_INFO } from "@/constants/garden/plantList";
 
 const PlantNicknamePage = () => {
   const router = useRouter();
   const selectedPlantId = useGardenStore(state => state.selectedPlantId);
   const setPlantNickname = useGardenStore(state => state.setNickname);
 
-  const selectedPlant = PlantSort.find(plant => plant.id === selectedPlantId);
+  const selectedPlant = PLANT_SORT_INFO.find(
+    plant => plant.id === selectedPlantId,
+  );
 
   const [nickname, setNickname] = useState("");
 
@@ -39,10 +41,9 @@ const PlantNicknamePage = () => {
         <BackHeader title="식물이름변경" />
         <ProgressDots total={3} current={0} />
         <div className="mt-[29px]">
-          <PageTitle>
-            친구와 함께 키울 <br />
-            식물의 이름을 만들어보세요.
-          </PageTitle>
+          <PageTitle
+            title={["친구와 함께 키울", "식물에게 이름을 지어주세요"]}
+          />
         </div>
         {selectedPlant && (
           <div className="absolute bottom-[271px] left-1/2 flex -translate-x-1/2 justify-center">

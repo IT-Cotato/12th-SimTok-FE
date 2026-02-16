@@ -10,7 +10,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import StarFill from "@/assets/garden/star-fill.svg";
 import StarStroke from "@/assets/garden/star-stroke.svg";
 
-import { PlantSort } from "@/constants/plantList";
+import { PLANT_SORT_INFO } from "@/constants/garden/plantList";
 
 import { ProgressDots } from "../common/ProgressDot";
 
@@ -34,8 +34,8 @@ export const PlantCarousel = ({
 
   return (
     <section className="flex w-full flex-col items-center justify-center gap-4">
-      <ProgressDots total={PlantSort.length} current={activeIndex + 1} />
-      <div className="-my-5 w-full overflow-hidden py-5">
+      <ProgressDots total={PLANT_SORT_INFO.length} current={activeIndex + 1} />
+      <div className="-my-5 w-full overflow-hidden px-4 py-5">
         <Swiper
           modules={[Keyboard]}
           keyboard={{ enabled: true }}
@@ -44,7 +44,7 @@ export const PlantCarousel = ({
           onSlideChange={handleSlideChange}
           className="mx-auto w-full max-w-[408px] !overflow-visible"
         >
-          {PlantSort.map(plant => (
+          {PLANT_SORT_INFO.map(plant => (
             <SwiperSlide key={plant.id}>
               <div
                 onClick={() => onPlantClick(plant.id)}

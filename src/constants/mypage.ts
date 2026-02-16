@@ -1,6 +1,6 @@
 import { ElementType } from "react";
 
-import BellIcon from "@/assets/fi_bell.svg";
+import BellIcon from "@/assets/bell.svg";
 import FileIcon from "@/assets/file.svg";
 import LockIcon from "@/assets/lock.svg";
 import LogoutIcon from "@/assets/logout.svg";
