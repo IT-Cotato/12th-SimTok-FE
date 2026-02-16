@@ -24,9 +24,22 @@ const ProfileSettingPage = () => {
         <div className="flex flex-1 flex-col items-center">
           <section className="w-full">
             {/* <ProfileSummary
-              userProfileData={userProfileData}
+              userProfileData={userProfileData ?? null}
               onModalStateChange={setIsModalOpen}
             /> */}
+            <ProfileSummary
+              userProfileData={
+                userProfileData
+                  ? {
+                      profileImageUrl: userProfileData.profileImageUrl || "",
+                      name: userProfileData.name || "",
+                      phoneNumber: userProfileData.phoneNumber || "",
+                      birthDate: userProfileData.birthDate || "",
+                    }
+                  : null
+              }
+              onModalStateChange={setIsModalOpen}
+            />
           </section>
         </div>
 
