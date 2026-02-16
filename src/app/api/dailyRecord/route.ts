@@ -19,6 +19,17 @@ export const postSharedDiary = async (
     ...(imageUrl && { imageUrl }),
   };
 
-  const { data } = await apiInstance.post(`api/diaries`, body);
+  const { data } = await apiInstance.post(`/diaries`, body);
+  console.log("업로드 응답:", data);
   return data;
+};
+
+export const getSharedDiaryList = async (size: number, lastId?: number) => {
+  if (!lastId) {
+    const { data } = await apiInstance.get(`api/diaries?size=${size}`);
+  } else {
+    const { data } = await apiInstance.get(
+      `api/diaries?lastId=${lastId}&size=${size}`,
+    );
+  }
 };
