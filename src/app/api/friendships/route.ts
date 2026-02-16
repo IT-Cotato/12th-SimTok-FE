@@ -7,7 +7,7 @@ export async function GET(request: Request) {
   const token = request.headers.get("Authorization");
 
   try {
-    const targetUrl = `${BACKEND_BASE_URL}/api/friendships?${searchParams.toString()}`;
+    const targetUrl = `${BACKEND_BASE_URL}/friendships?${searchParams.toString()}`;
 
     const res = await fetch(targetUrl.toString(), {
       headers: {

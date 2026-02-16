@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 
+import { WS_BASE_URL } from "@/lib/constants";
 import { Client } from "@stomp/stompjs";
 
 import { refreshAccessToken } from "@/utils/auth";
@@ -27,10 +28,9 @@ export const StompProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     const clientInstance = new Client({
-      brokerURL: `wss://43.202.184.232.nip.io/ws`,
+      brokerURL: WS_BASE_URL,
       connectHeaders: { Authorization: `Bearer ${initialToken}` },
-      webSocketFactory: () =>
-        new WebSocket(`wss://43.202.184.232.nip.io/ws`, ["v12.stomp"]),
+      webSocketFactory: () => new WebSocket(WS_BASE_URL, ["v12.stomp"]),
       beforeConnect: () => {
         const currentToken = getLatestToken();
         if (currentToken) {
@@ -46,7 +46,7 @@ export const StompProvider = ({ children }: { children: React.ReactNode }) => {
     });
 
     // 1. 연결 성공 콜백
-    clientInstance.onConnect = _frame => {
+    clientInstance.onConnect = () => {
       console.log("🚀 STOMP Connected");
       setIsConnected(true);
       setClient(clientInstance);

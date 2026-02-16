@@ -1,6 +1,8 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
+import { BACKEND_BASE_URL } from "@/lib/constants";
+
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -15,7 +17,7 @@ export async function GET(
     const limit = searchParams.get("limit") || "20";
     const cursorSeq = searchParams.get("cursorSeq");
 
-    let url = `https://43.202.184.232.nip.io/api/chat/rooms/${roomId}/messages?limit=${limit}`;
+    let url = `${BACKEND_BASE_URL}/chat/rooms/${roomId}/messages?limit=${limit}`;
     if (cursorSeq) url += `&cursorSeq=${cursorSeq}`;
 
     const response = await fetch(url, {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 import { useState } from "react";
 
@@ -8,11 +8,9 @@ import { ExitChatModal } from "@/components/chat/ExitChatModal";
 import { BackHeader } from "@/components/common/BackHeader";
 import { FullButton } from "@/components/common/FullButton";
 import { ListItem } from "@/components/mypage/ListItem";
-import { MyProfileCard } from "@/components/mypage/MyProfileCard";
+import { ProfileCard } from "@/components/mypage/ProfileCard";
 
 import { CHAT_LIST_ITEMS } from "@/constants/chatSettings";
-
-import friendListData from "@/mock/friendList.json";
 
 interface Friend {
   userId: number;
@@ -23,18 +21,37 @@ interface Friend {
 const SettingChatPage = () => {
   const router = useRouter();
   const { id } = useParams();
+  const searchParams = useSearchParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const opponentName = searchParams.get("name") || "대화 상대";
+  const opponentImg = searchParams.get("img") || "";
 
-  const targetFriend = (friendListData as Friend[]).find(
-    friend => friend.userId === Number(id),
-  );
+  const handleConfirmExit = async () => {
+    const token = localStorage.getItem("accessToken");
 
-  const handleConfirmExit = () => {
-    setIsModalOpen(false);
-    router.push("/chat");
+    try {
+      const res = await fetch(`/api/chat/rooms/left/${id}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const result = await res.json();
+
+      if (result.success) {
+        setIsModalOpen(false);
+        // 목록으로 이동하며 캐시 무효화가 필요할 수 있으므로 replace 사용
+        router.replace("/chat");
+      } else {
+        alert(result.message || "채팅방 나가기 실패");
+      }
+    } catch (error) {
+      console.error("퇴장 처리 중 오류:", error);
+      alert("네트워크 오류가 발생했습니다.");
+    }
   };
-
-  if (!targetFriend) return <div>사용자를 찾을 수 없습니다.</div>;
 
   return (
     <main className="flex min-h-dvh w-full flex-col">
@@ -42,18 +59,13 @@ const SettingChatPage = () => {
         <div className="flex h-full w-110 flex-col pb-30">
           <BackHeader title="대화방 설정" />
           <section className="mt-[18.5px]">
-            {/* <MyProfileCard
-              userProfileData={{
-                userId: targetFriend.userId,
-                userName: targetFriend.userName,
-                nickName: targetFriend.userName,
-                profileImg: targetFriend.profileImg,
-                phoneNumber: "",
-                birthDate: "",
-                inviteCode: "",
+            <ProfileCard
+              data={{
+                name: opponentName,
+                profileImageUrl: opponentImg,
               }}
               onEdit={() => router.push(`/friends/settings/${id}`)}
-            /> */}
+            />
           </section>
           <nav className="mt-10">
             <ul className="flex flex-col">
@@ -91,8 +103,8 @@ const SettingChatPage = () => {
       {isModalOpen && (
         <ExitChatModal
           isOpen={isModalOpen}
-          userName={targetFriend.userName}
-          profileImg={targetFriend.profileImg}
+          userName={opponentName}
+          profileImg={opponentImg}
           onClose={() => setIsModalOpen(false)}
           onConfirm={handleConfirmExit}
         />

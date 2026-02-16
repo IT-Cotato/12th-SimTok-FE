@@ -11,16 +11,13 @@ export async function POST(
   const token = request.headers.get("Authorization");
 
   try {
-    const res = await fetch(
-      `${BACKEND_BASE_URL}/api/chat/rooms/left/${roomId}`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: token || "",
-          "Content-Type": "application/json",
-        },
+    const res = await fetch(`${BACKEND_BASE_URL}/chat/rooms/left/${roomId}`, {
+      method: "POST",
+      headers: {
+        Authorization: token || "",
+        "Content-Type": "application/json",
       },
-    );
+    });
 
     const data = await res.json();
     return NextResponse.json(data);

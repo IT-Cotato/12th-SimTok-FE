@@ -6,7 +6,7 @@ export async function POST(req: Request) {
   const body = await req.json();
   const draftKey = req.headers.get("Signup-Draft-Key") || "";
 
-  const res = await fetch(`${BACKEND_BASE_URL}/api/signup/sms/send`, {
+  const res = await fetch(`${BACKEND_BASE_URL}/signup/sms/send`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

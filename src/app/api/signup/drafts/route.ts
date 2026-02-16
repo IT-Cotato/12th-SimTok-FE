@@ -4,7 +4,7 @@ import { BACKEND_BASE_URL } from "@/lib/constants";
 
 export async function POST() {
   try {
-    const response = await fetch(`${BACKEND_BASE_URL}/api/signup/drafts`, {
+    const response = await fetch(`${BACKEND_BASE_URL}/signup/drafts`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     });

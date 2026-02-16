@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useStomp } from "@/context/StompContext";
 import { StompSubscription } from "@stomp/stompjs";
+import { JwtPayload, jwtDecode } from "jwt-decode";
 
 import AiIcon from "@/assets/AI.svg";
 import BackToKeywordIcon from "@/assets/backtokeyword.svg";
@@ -44,6 +45,10 @@ interface HistoryResponse {
   };
 }
 
+interface CustomJwtPayload extends JwtPayload {
+  memberId?: string | number;
+}
+
 const Chatting = () => {
   const { client, isConnected } = useStomp();
   const router = useRouter();
@@ -55,7 +60,24 @@ const Chatting = () => {
   const targetId = searchParams.get("target");
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const myMemberId = 1;
+  const [myMemberId, setMyMemberId] = useState<number | null>(() => {
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        try {
+          const decoded = jwtDecode<CustomJwtPayload>(token);
+          return decoded.memberId || decoded.sub
+            ? Number(decoded.memberId || decoded.sub)
+            : null;
+        } catch (e) {
+          console.error("토큰 디코딩 실패", e);
+          return null;
+        }
+      }
+    }
+    return null;
+  });
+
   const [isTopicOpen, setIsTopicOpen] = useState(false);
   const [selectedTopicKey, setSelectedTopicKey] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState<string>("");
@@ -108,8 +130,16 @@ const Chatting = () => {
     [myMemberId],
   );
 
+  // useEffect(() => {
+  //   if (!roomId || roomId === "new" || !client || !isConnected) return;
+
+  //   const initChat = async () => {
+  //     await fetchHistory(roomId);
+  //   };
+  //   initChat();
   useEffect(() => {
-    if (!roomId || roomId === "new" || !client || !isConnected) return;
+    if (!roomId || roomId === "new" || !client || !isConnected || !myMemberId)
+      return;
 
     const initChat = async () => {
       await fetchHistory(roomId);
@@ -171,7 +201,7 @@ const Chatting = () => {
         }
       });
     };
-  }, [roomId, client, isConnected, myMemberId]);
+  }, [roomId, client, isConnected, myMemberId, fetchHistory]);
 
   // 방 생성 리다이렉트 구독
   useEffect(() => {
@@ -272,7 +302,11 @@ const Chatting = () => {
       <div className="flex h-full w-full flex-col">
         <BackHeader
           title={displayName}
-          menuIcon={() => router.push(`/chat/${params.id}/setting`)}
+          menuIcon={() =>
+            router.push(
+              `/chat/${params.id}/setting?name=${displayName}&img=${opponentProfileImg}`,
+            )
+          }
         />
         <section
           ref={scrollRef}

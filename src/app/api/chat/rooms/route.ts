@@ -1,6 +1,8 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
+import { BACKEND_BASE_URL } from "@/lib/constants";
+
 export async function GET(request: NextRequest) {
   try {
     const cookieStore = await cookies();
@@ -15,7 +17,7 @@ export async function GET(request: NextRequest) {
     const cursorAt = searchParams.get("cursorAt");
     const cursorRoomId = searchParams.get("cursorRoomId");
 
-    let backendUrl = `https://43.202.184.232.nip.io/api/chat/rooms?limit=${limit}`;
+    let backendUrl = `${BACKEND_BASE_URL}/chat/rooms?limit=${limit}`;
 
     if (cursorAt && cursorRoomId) {
       backendUrl += `&cursorAt=${encodeURIComponent(cursorAt)}&cursorRoomId=${cursorRoomId}`;
