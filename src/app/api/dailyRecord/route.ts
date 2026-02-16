@@ -1,3 +1,4 @@
+import { DiaryListResponse } from "@/types/diary.type";
 import { SharedDiaryFormState } from "@/types/sharedDiarySteps.type";
 
 import { apiInstance } from "../apiInstance";
@@ -25,11 +26,11 @@ export const postSharedDiary = async (
 };
 
 export const getSharedDiaryList = async (size: number, lastId?: number) => {
-  if (!lastId) {
-    const { data } = await apiInstance.get(`api/diaries?size=${size}`);
-  } else {
-    const { data } = await apiInstance.get(
-      `api/diaries?lastId=${lastId}&size=${size}`,
-    );
-  }
+  const url = lastId
+    ? `/diaries?lastId=${lastId}&size=${size}`
+    : `/diaries?size=${size}`;
+
+  const { data } = await apiInstance.get(url);
+  console.log("공유 일기 목록 응답:", data.data);
+  return data.data;
 };

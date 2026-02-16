@@ -54,9 +54,9 @@ export const MessageInput = ({
 
   return (
     <div
-      className={`focus:border-mint-01 relative flex h-[50px] w-full items-center justify-between rounded-2xl border border-solid border-transparent pr-[5px] pl-[15px] transition-colors focus:outline-none ${
+      className={`focus:border-mint-01 relative flex h-[50px] w-full items-center justify-between rounded-2xl border border-solid pr-[5px] pl-[15px] transition-colors focus:outline-none ${
         isDimmed ? "bg-neutral-04" : "bg-neutral-10"
-      } `}
+      } ${blackMode ? "border-neutral-02 bg-transparent" : ""} `}
       onClick={() => inputRef.current?.focus()}
     >
       <div className="flex gap-[10px]">
