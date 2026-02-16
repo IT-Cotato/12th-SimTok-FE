@@ -1,11 +1,6 @@
 "use client";
 import Image from "next/image";
 
-import { useEffect, useRef, useState } from "react";
-
-import { Emotion } from "@/types/emotion.type";
-
-import { formatDateWithDot } from "@/utils/formatDate";
 import { getEmotionMeta } from "@/utils/getEmotionMeta";
 
 import { BackHeader } from "../common/BackHeader";
@@ -14,9 +9,9 @@ import { ProgressDots } from "../common/ProgressDot";
 import { UploadTitle } from "./UploadTitle";
 
 interface ConfirmStepProps {
-  emotion: Emotion;
+  emotion: string;
   text: string;
-  file?: File;
+  file?: string;
   onSubmit: () => void;
   onBack: () => void;
 }
@@ -28,26 +23,8 @@ export const ConfirmStep = ({
   onBack,
 }: ConfirmStepProps) => {
   const emotionData = getEmotionMeta(emotion);
-
-  const previewUrlRef = useRef<string | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!file) return;
-
-    const url = URL.createObjectURL(file);
-    previewUrlRef.current = url;
-
-    // 비동기로 state 업데이트
-    const id = setTimeout(() => setPreviewUrl(url), 0);
-
-    return () => {
-      clearTimeout(id);
-      URL.revokeObjectURL(url);
-      previewUrlRef.current = null;
-    };
-  }, [file]);
-
+  console.log(emotionData, emotion);
+  console.log(file);
   return (
     <main className="w-full">
       <BackHeader title="공유일기쓰기" />
@@ -75,14 +52,18 @@ export const ConfirmStep = ({
           </p>
         </section>
       )}
-      {(previewUrl || text) && (
+      {(file || text) && (
         <section className="mt-[6px] flex flex-col gap-[15px] pb-[158px]">
-          {previewUrl && (
-            <img
-              src={previewUrl}
-              alt="업로드 이미지 미리보기"
-              className="h-auto w-full"
-            />
+          {file && (
+            <div className="px-4">
+              <Image
+                src={file}
+                alt="업로드 이미지 확인"
+                width={440}
+                height={440}
+                className="h-auto w-full rounded-2xl object-cover"
+              />
+            </div>
           )}
 
           <div className="text-body1-md px-4 break-all whitespace-pre-wrap text-black">

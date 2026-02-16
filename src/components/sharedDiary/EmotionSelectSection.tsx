@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 import { EMOTION_BUTTONS, EMOTION_ITEMS } from "@/constants/emotionItems";
+import { SERVER_EMOTION_REVERSE_MAP } from "@/constants/emotionItems";
 
 interface EmotionSelectSectionProps {
   onSelect?: (value: string) => void;
@@ -16,7 +17,10 @@ export const EmotionSelectSection = ({
 
   const handleClickItem = (index: number) => {
     setSelectedIndex(index);
-    onSelect?.(`${isActive}-${index}`); // "happy-1" 형태로 전달
+    const emotionCode = SERVER_EMOTION_REVERSE_MAP[isActive][index];
+
+    onSelect?.(emotionCode);
+    console.log(emotionCode);
   };
 
   return (

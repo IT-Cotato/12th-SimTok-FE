@@ -41,6 +41,10 @@ const nextConfig: NextConfig = {
         hostname: "images.imyfone.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "**.amazonaws.com",
+      },
     ],
   },
 };
