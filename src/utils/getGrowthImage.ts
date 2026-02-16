@@ -4,10 +4,10 @@ import {
   PlantWaterStatusType,
 } from "@/constants/garden/plantStatus";
 
-import { GrowthStatus } from "@/types/plant.type";
+import { GrowthStage } from "@/types/plant.type";
 
 export const getGrowthImage = (
-  growthStatus: GrowthStatus,
+  growthStatus: GrowthStage,
   plantStatus: PlantWaterStatusType,
 ) => {
   if (growthStatus === "BLOOM") return "";

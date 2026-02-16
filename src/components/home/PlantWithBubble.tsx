@@ -2,14 +2,14 @@ import Image from "next/image";
 
 import { PlantWaterStatusType } from "@/constants/garden/plantStatus";
 
-import { GrowthStatus, PlantSort } from "@/types/plant.type";
+import { GrowthStage, PlantSort } from "@/types/plant.type";
 
 import { Bubble } from "./Bubble";
 
 interface PlantWithBubbleProps {
   plantWaterStatus: PlantWaterStatusType; // 물주기상태
   plantSort: PlantSort; // "daisy" | "tulip" | ...
-  plantGrowthStatus: GrowthStatus; // "SEED" | "SPROUT" | ...
+  plantGrowthStatus: GrowthStage; // "SEED" | "SPROUT" | ...
   growthImage: string;
 }
 
