@@ -24,7 +24,9 @@ async function fetchWithAuth(url: string, method: string, body?: unknown) {
 
   if (res.status === 401) {
     const newToken = await refreshAccessToken();
-    if (newToken) res = await executeFetch(newToken);
+    if (newToken) {
+      res = await executeFetch(newToken);
+    }
   }
   return res;
 }
