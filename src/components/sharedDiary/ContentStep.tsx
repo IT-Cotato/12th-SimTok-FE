@@ -1,11 +1,9 @@
 "use client";
 import Image from "next/image";
 
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 
 import CloseIcon from "@/assets/close-bold.svg";
-
-import { Emotion } from "@/types/emotion.type";
 
 import { getEmotionMeta } from "@/utils/getEmotionMeta";
 
@@ -18,8 +16,8 @@ import { UploadTitle } from "./UploadTitle";
 interface ContentStepProps {
   emotion: string;
   defaultContent?: string;
-  defaultFile?: File;
-  onNext: (text: string, file?: File) => void;
+  defaultFile?: string;
+  onNext: (text: string, file?: string) => void;
   onBack: () => void;
 }
 export const ContentStep = ({
@@ -31,25 +29,12 @@ export const ContentStep = ({
 }: ContentStepProps) => {
   const emotionData = getEmotionMeta(emotion);
 
-  const [file, setFile] = useState<File | undefined>(defaultFile);
+  const [imageUrl, setImageUrl] = useState<string>(defaultFile || "");
   const [text, setText] = useState<string>(defaultContent || "");
 
-  const hasInput = Boolean(text || file);
+  const hasInput = Boolean(text || imageUrl);
   const hasText = text.trim().length > 0;
-  const hasImage = !!file;
-
-  const previewUrl = useMemo(() => {
-    if (!file) return null;
-    return URL.createObjectURL(file);
-  }, [file]);
-
-  useEffect(() => {
-    return () => {
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
-      }
-    };
-  }, [previewUrl]);
+  const hasImage = !!imageUrl;
 
   return (
     <main className="flex w-full flex-col">
@@ -80,10 +65,10 @@ export const ContentStep = ({
         <section className="flex flex-col">
           {hasInput && (
             <section>
-              {previewUrl && (
+              {imageUrl && (
                 <figure className="relative mx-4">
                   <Image
-                    src={previewUrl}
+                    src={imageUrl}
                     alt="업로드 이미지 미리보기"
                     width={440}
                     height={440}
@@ -91,7 +76,7 @@ export const ContentStep = ({
                   />
                   <button
                     className="bg-mint-01 absolute top-[6px] right-2 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full"
-                    onClick={() => setFile(undefined)}
+                    onClick={() => setImageUrl("")}
                   >
                     <CloseIcon className="h-2 w-2 text-white" />
                   </button>
@@ -108,11 +93,9 @@ export const ContentStep = ({
         </section>
       </section>
 
-      <div
-        className={`${hasInput ? "pb-[119px]" : "fixed bottom-[119px]"} w-full max-w-[440px]`}
-      >
+      <div className="fixed bottom-[119px] w-full max-w-[440px]">
         <WriteStepButton
-          onSelectImage={selectedFile => setFile(selectedFile)}
+          onSelectImage={url => setImageUrl(url)}
           showInfoMessage={!hasInput}
           text={text}
           onChangeText={setText}
@@ -125,7 +108,8 @@ export const ContentStep = ({
           isActive={hasInput}
           onClick={() => {
             if (!text) return;
-            onNext(text, file || undefined);
+            console.log("Next 버튼 클릭 시 imageUrl 상태:", imageUrl);
+            onNext(text, imageUrl);
           }}
         >
           <p>다음</p>

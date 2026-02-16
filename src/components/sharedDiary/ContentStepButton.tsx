@@ -8,7 +8,7 @@ import { InfoMessage } from "../dailyRecord/InfoMessage";
 import { WritePage } from "./WritePage";
 
 interface WriteStepButtonProps {
-  onSelectImage: (file: File) => void;
+  onSelectImage: (imageUrl: string) => void;
   showInfoMessage: boolean;
   text: string;
   onChangeText: (value: string) => void;
@@ -23,12 +23,14 @@ export const WriteStepButton = ({
   hasText,
   hasImage,
 }: WriteStepButtonProps) => {
-  const { inputRef, openFilePicker, onChangeFile } = useImageUpload({
-    onSelect: ({ file }) => {
-      onSelectImage(file);
-    },
-    maxSizeMB: 10,
-  });
+  const { inputRef, openFilePicker, onChangeFile, isUploading } =
+    useImageUpload({
+      onSelect: (imageUrl: string) => {
+        onSelectImage(imageUrl); // 업로드 완료된 S3 URL을 부모에게 전달
+      },
+      maxSizeMB: 10,
+    });
+
   const [openTextPage, setOpenTextPage] = useState(false);
 
   return (
@@ -46,15 +48,15 @@ export const WriteStepButton = ({
         className={`flex justify-between gap-2 bg-white px-4 ${!showInfoMessage && "py-5"}`}
       >
         <button
-          disabled={hasImage}
-          className={`bg-neutral-11 ${hasImage ? "cursor-not-allowed" : "border-mint-01 cursor-pointer border border-solid"} flex h-[95px] max-w-[196px] flex-1 flex-col items-center gap-1 rounded-2xl px-[10px] py-[10px] pt-[20px]`}
+          disabled={hasImage || isUploading}
+          className={`bg-neutral-11 ${hasImage || isUploading ? "cursor-not-allowed" : "border-mint-01 cursor-pointer border border-solid"} flex h-[95px] max-w-[196px] flex-1 flex-col items-center gap-1 rounded-2xl px-[10px] py-[10px] pt-[20px]`}
           onClick={openFilePicker}
         >
           <div className="inline-flex items-center justify-center rounded-2xl bg-white p-[10px] shadow-[0_0_14px_0_rgba(0,0,0,0.05)]">
             <GalleryAssets />
           </div>
           <p
-            className={`text-sub2-sb ${hasImage ? "text-neutral-07" : "text-green-01"}`}
+            className={`text-sub2-sb ${hasImage || isUploading ? "text-neutral-07" : "text-green-01"}`}
           >
             사진추가하기
           </p>
