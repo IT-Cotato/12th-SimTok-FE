@@ -19,7 +19,9 @@
   "dependencies": {
     "@stomp/stompjs": "^7.3.0",
     "@use-funnel/browser": "^0.0.16",
-    "axios": "^1.13.2",
+    "axios": "^1.13.5",
+    "clsx": "^2.1.1",
+    "lottie-react": "^2.4.1",
     "framer-motion": "^12.34.0",
     "jwt-decode": "^4.0.0",
     "next": "^16.1.6",

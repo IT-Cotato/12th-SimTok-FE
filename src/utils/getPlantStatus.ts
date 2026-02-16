@@ -1,4 +1,4 @@
-import { PlantWaterStatus } from "@/constants/plantStatus";
+import { PlantWaterStatus } from "@/constants/garden/plantStatus";
 
 const HOUR = 60 * 60 * 1000;
 const MINUTE = 60 * 1000;
