@@ -17,13 +17,10 @@ export const SharedDiaryCard = () => {
 
   const loadMoreDiaries = useCallback(async () => {
     if (isLoading || !hasNext) return;
-
-    console.log("API 요청 시작, lastId:", lastId);
     setIsLoading(true);
 
     try {
       const result = await getSharedDiaryList(5, lastId);
-      console.log("API 응답 성공:", result);
 
       if (!result.diaries || result.diaries.length === 0) {
         setHasNext(false);

@@ -2,13 +2,9 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import {
-  deleteLike,
-  getDiaryLiked,
-  postLike,
-} from "@/app/api/dailyRecord/route";
+import { deleteLike, postLike } from "@/app/api/dailyRecord/route";
 
 import HeartFillIcon from "@/assets/heart-fill.svg";
 import HeartIcon from "@/assets/heart.svg";
@@ -133,7 +129,7 @@ export const SharedDiaryItem = ({
       </div>
       {commentMode && (
         <div className="w-full">
-          <SharedDiaryComment />
+          <SharedDiaryComment diaryId={item.diaryId} />
         </div>
       )}
     </section>
