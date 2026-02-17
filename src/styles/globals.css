@@ -62,6 +62,23 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
+
+  .bg-radial-orange {
+    background: radial-gradient(
+      59.35% 59.35% at 50% 40.65%,
+      #fff2a1 33.18%,
+      #fff 89.47%
+    );
+  }
+
+  .bg-radial-green {
+    background: radial-gradient(
+      81.95% 81.95% at 50% 18.05%,
+      #c5ffdb 53.05%,
+      #fff 89.47%
+    );
+  }
+
   .bg-radial-yellowgreen-mintgreen {
     background:
       radial-gradient(
