@@ -2,58 +2,83 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { MISSION_SORT, MISSION_STATUS } from "@/constants/missionCard";
+import { postChallenge } from "@/app/api/dailyRecord/dayLog.api";
+
+import { MISSION_ICONS, MISSION_STATUS } from "@/constants/missionCard";
 import { WEEK_DAYS_KOR } from "@/constants/weekDays";
 
 import { useImageUpload } from "@/hooks/useImageUpload";
 
-import missionCardData from "@/mock/randomMission.json";
+import { MissionInfo, MyChallenge } from "@/types/dailyRecord.type";
 
 import { getTodayIndex } from "@/utils/getCurrentDay";
-import { getMissionSubtitle } from "@/utils/getMissionSubtitle";
+
+import { OnlyLoader } from "../common/OnlyLoader";
 
 interface DailyMissionCardProps {
   status: keyof typeof MISSION_STATUS;
   setStatus: React.Dispatch<React.SetStateAction<keyof typeof MISSION_STATUS>>;
+  missionData: MissionInfo;
+  myChallenge: MyChallenge | null;
 }
 
 export const DailyMissionCard = ({
   status,
   setStatus,
+  missionData,
+  myChallenge,
 }: DailyMissionCardProps) => {
+  const router = useRouter();
+
+  const [finalImageUrl, setFinalImageUrl] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
+  // 오늘 요일 인덱스와 한글 요일
   const currentDayIndex = getTodayIndex();
+  const koreanDay = WEEK_DAYS_KOR[currentDayIndex];
 
-  const subtitle = getMissionSubtitle(status, currentDayIndex);
+  // 미션 종류 찾기
+  const missionKind = missionData.category;
+  const missionIcon = MISSION_ICONS[missionKind as keyof typeof MISSION_ICONS];
 
-  const missionKind = missionCardData[0].kind;
+  const { inputRef, openFilePicker, onChangeFile, isUploading } =
+    useImageUpload({
+      folder: "CHALLENGE",
+      onSelect: (url: string) => {
+        if (url.startsWith("blob:")) {
+          setPreviewUrl(url);
+          setStatus("IMAGE_UPLOADED");
+        } else {
+          setFinalImageUrl(url); // S3 업로드 완료 시 URL 저장
+        }
+      },
+    });
 
-  const missionIcon = MISSION_SORT.find(
-    item => item.sort === missionKind,
-  )?.icon;
-
-  const onSelectImage = (previewUrl: string) => {
-    setPreviewUrl(previewUrl);
-    setStatus("IMAGE_UPLOADED");
+  const handleConfirmClick = async () => {
+    if (!finalImageUrl) {
+      alert("이미지 업로드 중입니다. 잠시만 기다려주세요.");
+      return;
+    }
+    try {
+      await postChallenge(missionData.missionId, finalImageUrl);
+      setStatus("IMAGE_CONFIRMED");
+    } catch (error) {
+      console.error("챌린지 제출 실패:", error);
+    }
   };
 
-  const { inputRef, openFilePicker, onChangeFile } = useImageUpload({
-    onSelect: (url: string) => {
-      onSelectImage(url);
-    },
-  });
-
-  const router = useRouter();
+  if (isUploading) {
+    return <OnlyLoader />;
+  }
   return (
     <section className="flex h-[385px] w-[353px] flex-col items-center justify-center gap-5 rounded-2xl bg-white">
       <div className="flex flex-col items-center justify-center">
         <h3 className="text-green-01 text-h3">
           {MISSION_STATUS[status].title}
         </h3>
-        <p className="text-neutral-06 text-sub1-r -mt-[4px]">{subtitle}</p>
+        <p className="text-neutral-06 text-sub1-r -mt-[4px]">{koreanDay}요일</p>
       </div>
       {status === "NOT_STARTED" && missionIcon && (
         <div className="bg-neutral-11 flex h-28 w-28 items-center justify-center rounded-full">
@@ -65,12 +90,12 @@ export const DailyMissionCard = ({
           />
         </div>
       )}
-      {status !== "NOT_STARTED" && previewUrl && (
+      {status !== "NOT_STARTED" && (previewUrl || myChallenge?.imageUrl) && (
         <div
           className={`h-27 w-27 overflow-hidden rounded-full ${status === "IMAGE_CONFIRMED" ? "border border-[4px] border-white shadow-[0_0_12px_-1px_#00C362]" : ""}`}
         >
           <Image
-            src={previewUrl}
+            src={previewUrl || myChallenge?.imageUrl || ""}
             alt="하루한컷이미지"
             width={108}
             height={108}
@@ -82,15 +107,15 @@ export const DailyMissionCard = ({
       <div className="flex flex-col items-center justify-center">
         <div className="text-sub-number p-[10px]">
           {status === "IMAGE_CONFIRMED"
-            ? "미션이 완료되었어요!"
-            : missionCardData[0].mission}
+            ? "미션 공유가 완료되었어요"
+            : missionData.content}
         </div>
         <button
           className={`${status == "NOT_STARTED" ? "bg-gradient-orange" : "bg-mint-01"} text-button-sb h-[50px] w-[90px] cursor-pointer rounded-2xl text-white`}
           onClick={() => {
             if (status === "NOT_STARTED") openFilePicker();
-            if (status === "IMAGE_UPLOADED") setStatus("IMAGE_CONFIRMED");
-            if (status === "IMAGE_CONFIRMED") router.push("/day-log");
+            if (status === "IMAGE_UPLOADED") handleConfirmClick();
+            if (status === "IMAGE_CONFIRMED") router.push("/day-log/");
           }}
         >
           {MISSION_STATUS[status].buttonText}

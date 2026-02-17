@@ -8,6 +8,8 @@ export const WEEK_DAYS_KOR = [
   "일",
 ] as const;
 
+export type WeekDayKor = (typeof WEEK_DAYS_KOR)[number];
+
 export const WEEK_DAY_KEYS = [
   "monday",
   "tuesday",
@@ -17,3 +19,5 @@ export const WEEK_DAY_KEYS = [
   "saturday",
   "sunday",
 ] as const;
+
+export type WeekDayKey = (typeof WEEK_DAY_KEYS)[number];
