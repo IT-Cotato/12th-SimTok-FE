@@ -1,21 +1,65 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { s } from "framer-motion/client";
+
+import { getChallengeDashboard } from "@/app/api/dailyRecord/dayLog.api";
 
 import { BackHeader } from "@/components/common/BackHeader";
+import { OnlyLoader } from "@/components/common/OnlyLoader";
 import { DailyMissionCard } from "@/components/dailyPhoto/DailyMissionCard";
 import { DailyMissionProgress } from "@/components/dailyPhoto/DailyMissionProgress";
 
 import { MISSION_STATUS } from "@/constants/missionCard";
 
+import {
+  MissionInfo,
+  MyChallenge,
+  WeeklyStatus,
+} from "@/types/dailyRecord.type";
+
 const DayStoryUpload = () => {
   const [status, setStatus] =
     useState<keyof typeof MISSION_STATUS>("NOT_STARTED");
+  const [missionData, setMissionData] = useState<MissionInfo>();
+  const [weeklyStatus, setWeeklyStatus] = useState<WeeklyStatus[]>([]);
+  const [myChallenge, setMyChallenge] = useState<MyChallenge | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProgress = async () => {
+      setIsLoading(true);
+      try {
+        const data = await getChallengeDashboard();
+        setMissionData(data.mission);
+        setWeeklyStatus(data.weeklyStatus);
+        setMyChallenge(data.myChallenge);
+        setIsLoading(false);
+        console.log("주간 미션 진행 상황:", data.weeklyStatus);
+        console.log("오늘의 미션 정보:", data.mission);
+        console.log("나의 챌린지 정보:", data.myChallenge);
+      } catch (error) {
+        console.error("미션 정보 로드 실패:", error);
+      }
+    };
+    fetchProgress();
+  }, []);
+
+  if (!missionData || isLoading) {
+    return <OnlyLoader />;
+  }
+
   return (
     <main className="h-full w-full bg-black">
       <BackHeader title="하루한컷" titleColor="white" />
-      <DailyMissionProgress status={status} />
+      <DailyMissionProgress weeklyStatus={weeklyStatus} />
       <div className="mt-[120px] flex items-center justify-center">
-        <DailyMissionCard status={status} setStatus={setStatus} />
+        <DailyMissionCard
+          status={status}
+          setStatus={setStatus}
+          missionData={missionData}
+          myChallenge={myChallenge}
+        />
       </div>
     </main>
   );

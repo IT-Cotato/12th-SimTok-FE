@@ -11,18 +11,19 @@ export interface UserActivity {
 export type MyChallenge = {
   challengeId: number;
   imageUrl: string;
-  createdAt: string;
 };
 
 export type MyDayLog = {
   isCompleted: boolean;
   myChallenge: MyChallenge | null;
+  createdAt: string;
 };
 
 export type WeeklyStatus = {
   date: string; // "2026-02-16"
   status: "MISSED" | "WAITING" | "FUTURE" | "DONE";
 };
+
 export type MissionCategory = "FOOD" | "PLANT" | "COLOR" | "MOMENT" | "TV";
 
 export type MissionInfo = {

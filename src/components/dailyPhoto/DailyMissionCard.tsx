@@ -13,17 +13,23 @@ import { useImageUpload } from "@/hooks/useImageUpload";
 
 import missionCardData from "@/mock/randomMission.json";
 
+import { MissionInfo, MyChallenge } from "@/types/dailyRecord.type";
+
 import { getTodayIndex } from "@/utils/getCurrentDay";
 import { getMissionSubtitle } from "@/utils/getMissionSubtitle";
 
 interface DailyMissionCardProps {
   status: keyof typeof MISSION_STATUS;
   setStatus: React.Dispatch<React.SetStateAction<keyof typeof MISSION_STATUS>>;
+  missionData: MissionInfo;
+  myChallenge: MyChallenge | null;
 }
 
 export const DailyMissionCard = ({
   status,
   setStatus,
+  missionData,
+  myChallenge,
 }: DailyMissionCardProps) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -31,8 +37,8 @@ export const DailyMissionCard = ({
 
   const subtitle = getMissionSubtitle(status, currentDayIndex);
 
-  const missionKind = missionCardData[0].kind;
-
+  // 미션 종류 찾기
+  const missionKind = missionData.category;
   const missionIcon = MISSION_ICONS[missionKind as keyof typeof MISSION_ICONS];
 
   const onSelectImage = (previewUrl: string) => {
@@ -83,7 +89,7 @@ export const DailyMissionCard = ({
         <div className="text-sub-number p-[10px]">
           {status === "IMAGE_CONFIRMED"
             ? "미션이 완료되었어요!"
-            : missionCardData[0].mission}
+            : missionData.content}
         </div>
         <button
           className={`${status == "NOT_STARTED" ? "bg-gradient-orange" : "bg-mint-01"} text-button-sb h-[50px] w-[90px] cursor-pointer rounded-2xl text-white`}
