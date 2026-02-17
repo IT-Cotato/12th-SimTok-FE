@@ -1,8 +1,15 @@
 export type FriendProfile = {
-  userId: number;
-  userName: string;
-  nickNameByMe?: string; // 내가 설정한 닉네임
-  profileImg?: string;
+  friendshipId: number; // 친구관계 id
+  friendId: number; // 친구의 useerId
+  showName: string;
+  profileImageUrl: string;
+  status: "ACTIVE" | "PENDING";
+  lastInteractedAt: string;
+};
+
+export type FriendList = {
+  count: number;
+  friendshipList: FriendProfile[];
 };
 
 export type ChatTopic =
@@ -13,15 +20,14 @@ export type ChatTopic =
   | "hobby"
   | "joke";
 
-export type ChatTopicItem = { key: ChatTopic; label: string; icon?: string };
+export type ChatStyle = "존댓말" | "반말";
 
-export type ChatStyle = "formal" | "casual";
-
-export type FriendChatSetting = {
-  friendProfile: FriendProfile;
-  nickNameByFriend?: string; // 상대가 나를 부르는 이름
-  goalDays?: number;
-  chatStyle: ChatStyle;
-  chatTopic: ChatTopic[];
-  customTopic?: string;
+export type FriendSetting = {
+  friendshipId: number;
+  nickname: string; // 내가 설정한 친구 닉네임
+  speechStyle: ChatStyle;
+  chatGoal: string;
+  topicCodes: ChatTopic[];
 };
+
+export type ChatTopicItem = { key: ChatTopic; label: string; icon?: string };
