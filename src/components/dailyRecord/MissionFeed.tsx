@@ -4,13 +4,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { getFriendsDayLog } from "@/app/api/dailyRecord/dayLog.api";
 
 import PlusIcon from "@/assets/plus.svg";
 
-import { MissionFeedList, MyDayLog } from "@/types/dailyRecord.type";
+import {
+  MissionFeedItem,
+  MissionFeedResponse,
+  MyDayLog,
+} from "@/types/dailyRecord.type";
 
 interface RecordMissionFeedProps {
   myRecord: MyDayLog | null;
@@ -19,44 +23,56 @@ interface RecordMissionFeedProps {
 export const RecordMissionFeed = ({ myRecord }: RecordMissionFeedProps) => {
   const router = useRouter();
 
-  const [otherRecords, setOtherRecords] = useState<MissionFeedList[]>([]);
+  const [otherRecords, setOtherRecords] = useState<MissionFeedItem[]>([]);
   const [lastId, setLastId] = useState<number | undefined>(undefined);
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const observerRef = useRef<HTMLDivElement>(null);
 
-  // 1. 데이터 호출 함수
-  const fetchRecords = async (currentLastId?: number) => {
-    if (isLoading || !hasNextPage) return;
-    setIsLoading(true);
-    try {
-      const size = 10;
-      const data = await getFriendsDayLog(size, currentLastId);
+  const fetchRecords = useCallback(
+    async (currentLastId?: number) => {
+      if (isLoading || !hasNextPage) return;
 
-      if (data.length < size) {
+      setIsLoading(true);
+      try {
+        const response: MissionFeedResponse = await getFriendsDayLog(
+          10,
+          currentLastId,
+        );
+
+        const newChallenges = response.challenges || [];
+
+        setHasNextPage(response.hasNext);
+
+        if (newChallenges.length > 0) {
+          setOtherRecords(prev => {
+            const existingIds = new Set(prev.map(item => item.challengeId));
+            const filtered = newChallenges.filter(
+              item => !existingIds.has(item.challengeId),
+            );
+            return [...prev, ...filtered];
+          });
+          setLastId(response.lastId);
+        }
+      } catch (error) {
+        console.error("데이터 로드 실패:", error);
         setHasNextPage(false);
+      } finally {
+        setIsLoading(false);
       }
-
-      if (data.length > 0) {
-        setOtherRecords(prev => [...prev, ...data]);
-        setLastId(data[data.length - 1].id);
-      }
-    } catch (error) {
-      console.error("데이터 로드 실패:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // 2. Intersection Observer 설정 (useEffect로 감싸기)
+    },
+    [isLoading, hasNextPage],
+  );
   useEffect(() => {
-    // 관찰 대상이 없거나 다음 페이지가 없으면 생성 안 함
+    fetchRecords();
+  }, []);
+
+  useEffect(() => {
     if (!observerRef.current || !hasNextPage) return;
 
     const observer = new IntersectionObserver(
       (entries: IntersectionObserverEntry[]) => {
-        // 타입을 명시적으로 지정
         if (entries[0].isIntersecting && !isLoading) {
           fetchRecords(lastId);
         }
@@ -65,10 +81,8 @@ export const RecordMissionFeed = ({ myRecord }: RecordMissionFeedProps) => {
     );
 
     observer.observe(observerRef.current);
-
     return () => observer.disconnect();
-    // 의존성 배열의 변수들이 boolean/number/undefined임을 위에서 useState로 명시했으므로 에러가 사라집니다.
-  }, [lastId, hasNextPage, isLoading]);
+  }, [lastId, hasNextPage, isLoading, fetchRecords]);
 
   const sortedRecords = [...otherRecords].sort((a, b) => {
     if (a.isViewed !== b.isViewed)
@@ -81,17 +95,17 @@ export const RecordMissionFeed = ({ myRecord }: RecordMissionFeedProps) => {
       {/* 내 영역 */}
       <section className="flex">
         <div className="flex w-[88px] shrink-0 cursor-pointer flex-col items-center gap-2">
-          {myRecord?.isCompleted === true ? (
+          {myRecord?.isCompleted ? (
             <Link href={`/day-story/${myRecord.challengeId}?isMe=true`}>
-              {myRecord.imageUrl && (
+              <div className="h-[88px] w-[88px] overflow-hidden rounded-full">
                 <Image
                   src={myRecord.imageUrl}
                   alt="내 하루한컷"
                   width={88}
                   height={88}
-                  className="h-[88px] w-[88px] rounded-full object-cover"
+                  className="h-full w-full object-cover"
                 />
-              )}
+              </div>
             </Link>
           ) : (
             <div
@@ -110,19 +124,28 @@ export const RecordMissionFeed = ({ myRecord }: RecordMissionFeedProps) => {
         {sortedRecords.map(item => (
           <Link key={item.challengeId} href={`/day-story/${item.challengeId}`}>
             <div className="flex w-[88px] shrink-0 cursor-pointer flex-col items-center gap-2 py-2">
-              <Image
-                src={item.imageUrl}
-                alt={item.memberInfo?.nickname || "사용자"}
-                width={88}
-                height={88}
-                className={`${item.isViewed ? "" : "border border-[4px] border-white shadow-[0_0_12px_-1px_#00C362]"} h-[88px] w-[88px] rounded-full object-cover`}
-              />
-              <p className="text-neutral-03 text-d3">
+              <div
+                className={`h-[88px] w-[88px] overflow-hidden rounded-full ${
+                  item.isViewed
+                    ? ""
+                    : "border-[4px] border-white shadow-[0_0_12px_-1px_#00C362]"
+                }`}
+              >
+                <Image
+                  src={item.imageUrl}
+                  alt={item.memberInfo?.nickname || "사용자"}
+                  width={88}
+                  height={88}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              <p className="text-neutral-03 text-d3 w-full truncate text-center">
                 {item.memberInfo?.nickname}
               </p>
             </div>
           </Link>
         ))}
+        <div ref={observerRef} className="h-full w-1 shrink-0" />
       </section>
     </div>
   );

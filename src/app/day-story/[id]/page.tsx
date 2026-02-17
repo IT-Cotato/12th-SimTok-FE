@@ -16,9 +16,11 @@ const DailyStory = () => {
   const story = DailyRecordData.find(item => item.id === numericId);
   const router = useRouter();
   const searchParams = useSearchParams();
+
   if (!story) {
     return router.push("/day-log");
   }
+
   const isMe = searchParams.get("isMe") === "true";
   const timeAgo = getTimeAgo(story.createdAt);
 
