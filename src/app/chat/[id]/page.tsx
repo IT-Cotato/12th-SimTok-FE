@@ -225,18 +225,19 @@ const Chatting = () => {
           console.log("📩 [EVENT 수신]:", body);
 
           if (body.type === "ROOM_CREATED" && body.roomId) {
-            const nameParam = encodeURIComponent(displayName || "");
-            const targetParam = searchParams.get("target");
+            // const nameParam = encodeURIComponent(displayName || "");
+            // const targetParam = searchParams.get("target");
 
-            router.replace(
-              `/chat/${body.roomId}?target=${targetParam}&name=${nameParam}`,
-            );
+            // router.replace(
+            //   `/chat/${body.roomId}?target=${targetParam}&name=${nameParam}`,
+            // );
 
-            fetchHistory(body.roomId.toString());
+            // fetchHistory(body.roomId.toString());
 
             router.replace(
               `/chat/${body.roomId}?target=${targetId}&name=${encodeURIComponent(displayName)}`,
             );
+            fetchHistory(body.roomId.toString());
           }
         }),
       );
