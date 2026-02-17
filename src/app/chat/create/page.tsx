@@ -65,36 +65,60 @@ const CreateChatPage = () => {
     fetchFriends();
   }, [fetchFriends]);
 
+  // const handleStartChat = async () => {
+  //   if (selectedFriends.length === 0) return;
+  //   const opponent = selectedFriends[0];
+
+  //   const token =
+  //     typeof window !== "undefined"
+  //       ? localStorage.getItem("accessToken")
+  //       : null;
+
+  //   try {
+  //     const res = await fetch(
+  //       `/api/chat/rooms/direct/resolve?opponentMemberId=${opponent.userId}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       },
+  //     );
+  //     const data = await res.json();
+  //     const query = `name=${encodeURIComponent(opponent.userName)}&img=${encodeURIComponent(opponent.profileImg || "")}`;
+
+  //     if (data.exists) {
+  //       router.push(`/chat/${data.roomId}${query}`);
+  //     } else {
+  //       router.push(
+  //         `/chat/${opponent.userId}&${query}`,
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.error("방 생성 실패", error);
+  //   }
+  // };
   const handleStartChat = async () => {
     if (selectedFriends.length === 0) return;
     const opponent = selectedFriends[0];
-
-    const token =
-      typeof window !== "undefined"
-        ? localStorage.getItem("accessToken")
-        : null;
+    const token = localStorage.getItem("accessToken");
 
     try {
       const res = await fetch(
         `/api/chat/rooms/direct/resolve?opponentMemberId=${opponent.userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
+        { headers: { Authorization: `Bearer ${token}` } },
       );
-      const data = await res.json();
-      const query = `name=${encodeURIComponent(opponent.userName)}&img=${encodeURIComponent(opponent.profileImg || "")}`;
+      const result = await res.json();
 
-      if (data.exists) {
-        router.push(`/chat/${data.roomId}${query}`);
+      const chatData = result.data;
+      const query = `?name=${encodeURIComponent(opponent.userName)}&img=${encodeURIComponent(opponent.profileImg || "")}`;
+
+      if (chatData.exists) {
+        router.push(`/chat/${chatData.roomId}${query}`);
       } else {
-        router.push(
-          `/chat/${opponent.userId}?target=${opponent.userId}&${query}`,
-        );
+        router.push(`/chat/new${query}&target=${opponent.userId}`);
       }
     } catch (error) {
-      console.error("방 생성 실패", error);
+      console.error("방 확인 실패", error);
     }
   };
 
