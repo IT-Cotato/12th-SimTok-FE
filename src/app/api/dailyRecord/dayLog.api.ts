@@ -28,3 +28,9 @@ export const postChallenge = async (missionId: number, imageUrl: string) => {
 
   return data.data;
 };
+
+export const getChallengeDetail = async (challengeId: number) => {
+  const { data } = await apiInstance.get(`/challenges/${challengeId}`);
+
+  return data.data;
+};
