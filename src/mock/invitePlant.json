@@ -1,0 +1,16 @@
+{
+  "count": 1,
+  "invitations": [
+    {
+      "inviteId": 12,
+      "plantId": 1,
+      "plantSort": "daisy",
+      "inviterId": 1,
+      "inviterName": "콩순이",
+      "nickname": "두쫀쿠",
+      "message": "같이 키워용",
+      "status": "PENDING",
+      "createdAt": "2025-12-28 12:23"
+    }
+  ]
+}

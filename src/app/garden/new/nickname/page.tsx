@@ -49,7 +49,7 @@ const PlantNicknamePage = () => {
           <div className="absolute bottom-[271px] left-1/2 flex -translate-x-1/2 justify-center">
             <ChosenPlant
               nickname={nickname}
-              plant={selectedPlant}
+              plantSort={selectedPlant.id}
               onChangeNickname={setNickname}
               isNicknameEditable={true}
             />

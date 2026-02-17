@@ -1,9 +1,17 @@
+import type { Metadata } from "next";
 import localfont from "next/font/local";
 
 import { StompProvider } from "@/context/StompContext";
 
 import "@/styles/globals.css";
 
+export const metadata: Metadata = {
+  title: "심톡",
+  description: "서비스 설명",
+  icons: {
+    icon: "/favicon.svg",
+  },
+};
 const pretendard = localfont({
   src: "../../public/fonts/PretendardVariable.woff2",
   variable: "--font-pretendard",
