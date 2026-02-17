@@ -1,14 +1,20 @@
 "use client";
 import Image from "next/image";
 
+import { useState } from "react";
+
+import { postSharedDiary } from "@/app/api/dailyRecord/dailyRecord.api";
+
 import { getEmotionMeta } from "@/utils/getEmotionMeta";
 
 import { BackHeader } from "../common/BackHeader";
 import { FullButton } from "../common/FullButton";
+import { OnlyLoader } from "../common/OnlyLoader";
 import { ProgressDots } from "../common/ProgressDot";
 import { UploadTitle } from "./UploadTitle";
 
 interface ConfirmStepProps {
+  date: string;
   emotion: string;
   text: string;
   file?: string;
@@ -16,15 +22,34 @@ interface ConfirmStepProps {
   onBack: () => void;
 }
 export const ConfirmStep = ({
+  date,
   emotion,
   file,
   text,
   onSubmit,
   onBack,
 }: ConfirmStepProps) => {
+  const [isLoading, setIsLoading] = useState(false);
   const emotionData = getEmotionMeta(emotion);
-  console.log(emotionData, emotion);
-  console.log(file);
+
+  const handleUpload = async () => {
+    if (isLoading) return; // 이미 로딩 중이면 중복 실행 방지
+
+    try {
+      setIsLoading(true);
+      await postSharedDiary(
+        date, // 서버로 보낼 날짜 (YYYY-MM-DD 형식 권장)
+        emotion, // emojiCode
+        text || undefined, // content
+        file || undefined, // imageUrl
+      );
+      onSubmit();
+    } catch (error) {
+      alert("일기 저장에 실패했습니다. 다시 시도해 주세요.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <main className="w-full">
       <BackHeader title="공유일기쓰기" />
@@ -72,10 +97,11 @@ export const ConfirmStep = ({
         </section>
       )}
       <div className="fixed bottom-0 h-[119px] w-screen max-w-[440px] bg-white px-4 py-[10px]">
-        <FullButton onClick={onSubmit}>
+        <FullButton onClick={handleUpload} disabled={isLoading}>
           <p>업로드하기</p>
         </FullButton>
       </div>
+      {isLoading && <OnlyLoader />}
     </main>
   );
 };

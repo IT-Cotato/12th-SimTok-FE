@@ -423,8 +423,8 @@ const Chatting = () => {
               className={`px-4 ${isDimmed ? "pointer-events-none opacity-50" : ""}`}
             >
               <MessageInput
-                value={inputValue}
-                onChange={setInputValue}
+                suggestedMessage={inputValue}
+                onMessageChange={setInputValue}
                 isChatting={true}
                 isDimmed={isDimmed}
                 onSend={handleSend}

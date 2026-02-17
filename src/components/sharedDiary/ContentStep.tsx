@@ -48,7 +48,7 @@ export const ContentStep = ({
           subTitle="공유일기를 작성해보세요."
         />
       </div>
-      <section className="flex flex-col gap-4">
+      <section className="mb-[255px] flex flex-col gap-4">
         {emotionData && (
           <section className="flex flex-col items-center justify-center">
             <Image

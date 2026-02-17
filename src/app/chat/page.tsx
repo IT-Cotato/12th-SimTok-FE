@@ -127,11 +127,11 @@ const ChatListPage = () => {
               lastMessage={chat.lastMessagePreview}
               date={formatDate(chat.lastMessageAt)}
               unreadCount={chat.unreadCount}
-              profileImg={chat.opponent.profileImageUrl}
+              profileImg={chat.opponent?.profileImageUrl}
               onDelete={() => handleOpenModal(chat)}
               onClick={() =>
                 router.push(
-                  `/chat/${chat.roomId}?name=${encodeURIComponent(chat.roomName)}&img=${encodeURIComponent(chat.opponent.profileImageUrl || "")}`,
+                  `/chat/${chat.roomId}?name=${encodeURIComponent(chat.roomName)}&img=${encodeURIComponent(chat.opponent?.profileImageUrl || "")}`,
                 )
               }
             />
@@ -155,7 +155,7 @@ const ChatListPage = () => {
         <ExitChatModal
           isOpen={isModalOpen}
           userName={selectedChat.roomName}
-          profileImg={selectedChat.opponent.profileImageUrl}
+          profileImg={selectedChat.opponent?.profileImageUrl}
           onClose={() => setIsModalOpen(false)}
           onConfirm={handleLeaveChat}
         />
