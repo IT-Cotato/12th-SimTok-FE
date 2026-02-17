@@ -39,6 +39,11 @@ interface ApiMessageItem {
   messageSeq: number;
 }
 
+interface ChatTopicItem {
+  name: string;
+  code: string;
+}
+
 // interface HistoryResponse {
 //   success: boolean;
 //   data: {
@@ -67,6 +72,15 @@ const Chatting = () => {
 
   const roomId = params?.id as string;
   const targetId = searchParams.get("target");
+  const [apiTopics, setApiTopics] = useState<ChatTopicItem[]>([]);
+  const getTopicMeta = (code: string) => {
+    return (
+      CHAT_TOPIC.find(t => t.key === code) || {
+        icon: null,
+        recommendations: [],
+      }
+    );
+  };
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [myMemberId] = useState<number | null>(() => {
@@ -108,6 +122,45 @@ const Chatting = () => {
       minute: "2-digit",
     });
 
+  const fetchTopics = useCallback(async () => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      console.error("토큰이 존재하지 않습니다.");
+      return;
+    }
+    try {
+      const res = await fetch("/api/chat-topics", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const result = await res.json();
+      console.log("--- Client Received Data ---", result);
+
+      if (result.success && result.data?.chatTopicList) {
+        setApiTopics(result.data.chatTopicList);
+      }
+    } catch (err) {
+      console.error("주제 목록 로드 실패:", err);
+    }
+  }, []);
+
+  const markAsRead = useCallback(async (id: string) => {
+    if (!id || id === "new") return;
+
+    try {
+      await fetch(`/api/chat/rooms/${id}/enter`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      console.log(`Room ${id} 읽음 처리 완료`);
+    } catch (err) {
+      console.error("읽음 처리 요청 실패:", err);
+    }
+  }, []);
+
   // 초기 메시지 히스토리 로드
   const fetchHistory = useCallback(
     async (id: string, isRetry = false) => {
@@ -144,9 +197,10 @@ const Chatting = () => {
 
   useEffect(() => {
     if (roomId && roomId !== "new") {
-      fetchHistory(roomId);
+      markAsRead(roomId); // 읽음 처리 알림
+      fetchHistory(roomId); // 메시지 내역 로드
     }
-  }, [roomId, fetchHistory]);
+  }, [roomId, markAsRead, fetchHistory]);
 
   useEffect(() => {
     if (!client || !isConnected) return;
@@ -264,6 +318,12 @@ const Chatting = () => {
     }
   };
 
+  const handleBack = async () => {
+    await markAsRead(roomId);
+    router.replace("/chat");
+    router.refresh();
+  };
+
   const handleCloseTopic = () => {
     setIsTopicOpen(false);
     setSelectedTopicKey(null);
@@ -314,6 +374,7 @@ const Chatting = () => {
       <div className="flex h-full w-full flex-col">
         <BackHeader
           title={displayName}
+          onBack={handleBack}
           menuIcon={() =>
             router.push(
               `/chat/${params.id}/setting?name=${displayName}&img=${opponentProfileImg}`,
@@ -403,7 +464,7 @@ const Chatting = () => {
                       </div>
 
                       <div className="scrollbar-hide flex w-full flex-nowrap gap-[12px] overflow-x-auto">
-                        {CHAT_TOPIC.map(topic => (
+                        {/* {CHAT_TOPIC.map(topic => (
                           <TopicKeyword
                             key={topic.key}
                             label={topic.label}
@@ -411,7 +472,19 @@ const Chatting = () => {
                             isActive={false}
                             onClick={() => setSelectedTopicKey(topic.key)}
                           />
-                        ))}
+                        ))} */}
+                        {apiTopics.map(topic => {
+                          const meta = getTopicMeta(topic.code); // 아이콘 매칭
+                          return (
+                            <TopicKeyword
+                              key={topic.code}
+                              label={topic.name} // 서버에서 온 주제명 (일상 등)
+                              icon={meta.icon ?? undefined}
+                              isActive={selectedTopicKey === topic.code}
+                              onClick={() => setSelectedTopicKey(topic.code)}
+                            />
+                          );
+                        })}
                       </div>
                     </div>
                   )}
@@ -420,7 +493,12 @@ const Chatting = () => {
 
               {!isTopicOpen && (
                 <div className="flex justify-end">
-                  <button onClick={() => setIsTopicOpen(true)}>
+                  <button
+                    onClick={() => {
+                      setIsTopicOpen(true);
+                      fetchTopics();
+                    }}
+                  >
                     <AiIcon />
                   </button>
                 </div>

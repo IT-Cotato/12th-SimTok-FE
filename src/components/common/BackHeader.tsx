@@ -9,6 +9,7 @@ interface BackHeaderProps {
   title?: string;
   timeAgo?: string; // 하루한컷보기에서 사용
   menuIcon?: () => void;
+  onBack?: () => void;
   titleColor?: string; //하루한컷 업로드에서 사용
   subtext?: string; // 친구목록에서 사용
   isEditMode?: boolean; //친구목록에서 사용;
@@ -20,6 +21,7 @@ export const BackHeader = ({
   title,
   timeAgo,
   menuIcon,
+  onBack,
   titleColor = "black",
   subtext,
   isEditMode,
@@ -28,13 +30,21 @@ export const BackHeader = ({
 }: BackHeaderProps) => {
   const router = useRouter();
 
+  const handleBackClick = () => {
+    if (onBack) {
+      onBack();
+    } else {
+      router.back();
+    }
+  };
+
   return (
     <header
       className={`relative flex px-4 py-[10px] pt-[13px] ${!title && "h-9"}`}
     >
       <button
         type="button"
-        onClick={() => router.back()}
+        onClick={handleBackClick}
         className="absolute top-1/2 left-4 -translate-y-1/2 cursor-pointer"
       >
         <BackIcon className={`text-${titleColor} h-6 w-6`} />
