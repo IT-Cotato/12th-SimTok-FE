@@ -41,10 +41,9 @@ export const DailyMissionCard = ({
   };
 
   const { inputRef, openFilePicker, onChangeFile } = useImageUpload({
-    onSelect: ({ previewUrl }) => {
-      onSelectImage(previewUrl);
+    onSelect: (url: string) => {
+      onSelectImage(url);
     },
-    maxSizeMB: 10,
   });
 
   const router = useRouter();
