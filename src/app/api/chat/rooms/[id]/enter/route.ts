@@ -2,11 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { BACKEND_BASE_URL } from "@/lib/constants";
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { id: string } },
-) {
-  const roomId = params.id;
+interface RouteContext {
+  params: Promise<{ id: string }>;
+}
+
+export async function POST(request: NextRequest, context: RouteContext) {
+  const { id: roomId } = await context.params;
   const authHeader = request.headers.get("Authorization");
 
   try {
