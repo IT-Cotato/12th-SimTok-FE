@@ -76,3 +76,10 @@ export const getDiaryComments = async (
   const { data } = await apiInstance.get(url);
   return data.data;
 };
+
+export const postDiaryComment = async (diaryId: number, content: string) => {
+  const { data } = await apiInstance.post(`/diaries/${diaryId}/comments`, {
+    content,
+  });
+  return data.data;
+};
