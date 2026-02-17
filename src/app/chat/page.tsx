@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import FloatingButtonIcon from "@/assets/floating_button.svg";
 
@@ -21,7 +21,7 @@ interface ChatRoomItem {
   opponent: {
     name: string;
     profileImageUrl: string;
-  };
+  } | null;
 }
 
 export interface ApiResponse {
@@ -47,25 +47,28 @@ const ChatListPage = () => {
     return `${year}.${month}.${day}`;
   };
 
-  useEffect(() => {
-    const fetchChatRooms = async () => {
-      try {
-        const res = await fetch("/api/chat/rooms");
-
-        if (!res.ok) throw new Error(`HTTP 에러! 상태: ${res.status}`);
-
-        const result: ApiResponse = await res.json();
-        console.log(result);
-        if (result.success) {
-          setChats(result.data.items);
-        }
-      } catch (error) {
-        console.error("목록 로드 실패:", error);
+  const fetchChatRooms = useCallback(async () => {
+    try {
+      const res = await fetch("/api/chat/rooms");
+      const result: ApiResponse = await res.json();
+      if (result.success) {
+        setChats(result.data.items);
       }
-    };
-
-    fetchChatRooms();
+    } catch (error) {
+      console.error("목록 로드 실패:", error);
+    }
   }, []);
+
+  // 2. 초기 로드 및 포커스 이벤트 등록
+  useEffect(() => {
+    fetchChatRooms();
+
+    // 사용자가 채팅방에 있다가 뒤로가기로 돌아오거나 창을 다시 볼 때 갱신
+    window.addEventListener("focus", fetchChatRooms);
+    return () => {
+      window.removeEventListener("focus", fetchChatRooms);
+    };
+  }, [fetchChatRooms]);
 
   const handleOpenModal = (chat: ChatRoomItem) => {
     setSelectedChat(chat);
@@ -105,9 +108,10 @@ const ChatListPage = () => {
   };
 
   // 2. 검색 필터링 (방 이름 기준)
-  const filteredChats = chats.filter(chat =>
-    chat.roomName.toLowerCase().includes(searchText.toLowerCase()),
-  );
+  const filteredChats = chats.filter(chat => {
+    const name = chat.opponent?.name ?? "";
+    return name.toLowerCase().includes(searchText.toLowerCase());
+  });
 
   return (
     <main className="relative flex min-h-dvh w-full justify-center bg-white">
@@ -119,23 +123,27 @@ const ChatListPage = () => {
         </div>
 
         <section className="mt-5 flex flex-col overflow-y-auto">
-          {filteredChats.map((chat: ChatRoomItem) => (
-            <ChatItem
-              key={chat.roomId}
-              id={chat.roomId}
-              name={chat.roomName}
-              lastMessage={chat.lastMessagePreview}
-              date={formatDate(chat.lastMessageAt)}
-              unreadCount={chat.unreadCount}
-              profileImg={chat.opponent?.profileImageUrl}
-              onDelete={() => handleOpenModal(chat)}
-              onClick={() =>
-                router.push(
-                  `/chat/${chat.roomId}?name=${encodeURIComponent(chat.roomName)}&img=${encodeURIComponent(chat.opponent?.profileImageUrl || "")}`,
-                )
-              }
-            />
-          ))}
+          {filteredChats.map((chat: ChatRoomItem) => {
+            const displayChatName = chat.opponent?.name || "알 수 없는 사용자";
+
+            return (
+              <ChatItem
+                key={chat.roomId}
+                id={chat.roomId}
+                name={displayChatName} // 상대방 이름 전달
+                lastMessage={chat.lastMessagePreview}
+                date={formatDate(chat.lastMessageAt)}
+                unreadCount={chat.unreadCount}
+                profileImg={chat.opponent?.profileImageUrl ?? ""}
+                onDelete={() => handleOpenModal(chat)}
+                onClick={() => {
+                  router.push(
+                    `/chat/${chat.roomId}?name=${encodeURIComponent(displayChatName)}&img=${encodeURIComponent(chat.opponent?.profileImageUrl || "")}`,
+                  );
+                }}
+              />
+            );
+          })}
         </section>
 
         <div className="pointer-events-none fixed bottom-[122px] left-0 z-40 flex w-full justify-center">
@@ -155,7 +163,7 @@ const ChatListPage = () => {
         <ExitChatModal
           isOpen={isModalOpen}
           userName={selectedChat.roomName}
-          profileImg={selectedChat.opponent?.profileImageUrl}
+          profileImg={selectedChat.opponent?.profileImageUrl || ""}
           onClose={() => setIsModalOpen(false)}
           onConfirm={handleLeaveChat}
         />

@@ -9,7 +9,8 @@ import { JwtPayload, jwtDecode } from "jwt-decode";
 
 import AiIcon from "@/assets/AI.svg";
 import BackToKeywordIcon from "@/assets/backtokeyword.svg";
-import MenuIcon from "@/assets/list.svg";
+
+//import MenuIcon from "@/assets/list.svg";
 
 import { ChatDateDivider } from "@/components/chat/ChatDateDivider";
 import { FriendMessage } from "@/components/chat/FriendMessage";
@@ -38,11 +39,19 @@ interface ApiMessageItem {
   messageSeq: number;
 }
 
-interface HistoryResponse {
-  success: boolean;
-  data: {
-    items: ApiMessageItem[];
-  };
+// interface HistoryResponse {
+//   success: boolean;
+//   data: {
+//     items: ApiMessageItem[];
+//   };
+// }
+
+interface ChatMessageResponse {
+  messageId: string;
+  senderMemberId: number;
+  content: string;
+  createdAt: string;
+  messageSeq: number;
 }
 
 interface CustomJwtPayload extends JwtPayload {
@@ -60,7 +69,7 @@ const Chatting = () => {
   const targetId = searchParams.get("target");
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [myMemberId, setMyMemberId] = useState<number | null>(() => {
+  const [myMemberId] = useState<number | null>(() => {
     if (typeof window !== "undefined") {
       const token = localStorage.getItem("accessToken");
       if (token) {
@@ -101,20 +110,23 @@ const Chatting = () => {
 
   // 초기 메시지 히스토리 로드
   const fetchHistory = useCallback(
-    async (id: string) => {
-      if (!id || id === "new") return;
-      const token = localStorage.getItem("accessToken");
+    async (id: string, isRetry = false) => {
+      if (!id || id === "new" || isNaN(Number(id))) return;
 
       try {
         const res = await fetch(`/api/chat/rooms/${id}/messages?limit=20`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
 
-        const result: HistoryResponse = await res.json();
-        if (result.success) {
-          const history: ChatMessage[] = result.data.items.map(msg => ({
+        if (res.status === 403) {
+          throw new Error("FORBIDDEN");
+        }
+
+        const result = await res.json();
+        if (result.success && result.data?.items) {
+          const history = result.data.items.map((msg: ChatMessageResponse) => ({
             id: msg.messageId,
             type: msg.senderMemberId === myMemberId ? "mine" : "friend",
             content: msg.content,
@@ -124,121 +136,120 @@ const Chatting = () => {
           setMessages(history.reverse());
         }
       } catch (err) {
-        console.error("히스토리 로드 실패", err);
+        console.error("히스토리 로드 실패:", err);
       }
     },
     [myMemberId],
   );
 
-  // useEffect(() => {
-  //   if (!roomId || roomId === "new" || !client || !isConnected) return;
-
-  //   const initChat = async () => {
-  //     await fetchHistory(roomId);
-  //   };
-  //   initChat();
   useEffect(() => {
-    if (!roomId || roomId === "new" || !client || !isConnected || !myMemberId)
-      return;
+    if (roomId && roomId !== "new") {
+      fetchHistory(roomId);
+    }
+  }, [roomId, fetchHistory]);
 
-    const initChat = async () => {
-      await fetchHistory(roomId);
-    };
-    initChat();
+  useEffect(() => {
+    if (!client || !isConnected) return;
+
+    if (roomId !== "new") {
+      fetchHistory(roomId);
+    }
 
     const subscriptions: StompSubscription[] = [];
 
-    const subscribeAll = () => {
-      try {
-        // subscriptions.push(
-        //   client.subscribe("/user/queue/errors", (msg) => {
-        //     console.error("STOMP Server Error:", JSON.parse(msg.body));
-        //   })
-        // );
+    try {
+      // 1. 공통 에러 구독
+      subscriptions.push(
+        client.subscribe("/user/queue/errors", msg => {
+          console.error("STOMP Server Error:", JSON.parse(msg.body));
+        }),
+      );
 
-        // subscriptions.push(
-        //   client.subscribe("/user/queue/connection/ack", (msg) => {
-        //     console.log("STOMP Connection ACK:", JSON.parse(msg.body));
-        //   })
-        // );
+      subscriptions.push(
+        client.subscribe("/user/queue/chat/events", msg => {
+          const body = JSON.parse(msg.body);
+          console.log("📩 [EVENT 수신]:", body);
 
-        // 채팅방 채널
+          if (body.type === "ROOM_CREATED" && body.roomId) {
+            const nameParam = encodeURIComponent(displayName || "");
+            const targetParam = searchParams.get("target");
+
+            router.replace(
+              `/chat/${body.roomId}?target=${targetParam}&name=${nameParam}`,
+            );
+
+            fetchHistory(body.roomId.toString());
+
+            router.replace(
+              `/chat/${body.roomId}?target=${targetId}&name=${encodeURIComponent(displayName)}`,
+            );
+          }
+        }),
+      );
+
+      if (roomId && roomId !== "new") {
         subscriptions.push(
           client.subscribe(`/topic/chat/rooms/${roomId}`, msg => {
             const body = JSON.parse(msg.body);
+            console.log("메시지 수신:", body);
             setMessages(prev => [
               ...prev,
               {
-                id: body.messageId,
+                id: body.messageId || Date.now(),
                 type: body.senderMemberId === myMemberId ? "mine" : "friend",
                 content: body.content,
                 time: formatTime(body.createdAt),
               },
             ]);
           }),
+          client.subscribe("/user/queue/connection/ack", msg => {
+            console.log("Connection ACK:", JSON.parse(msg.body));
+          }),
         );
 
-        setTimeout(() => {
-          if (client.connected) {
-            client.publish({
-              destination: "/app/connection/ack",
-              headers: { "content-type": "application/json" },
-              body: JSON.stringify({ message: "연결 확인 요청" }),
-            });
-          }
-        }, 200);
-      } catch (err) {
-        console.error("Subscription Flow Error:", err);
+        // 연결 확인용 ACK
+        client.publish({
+          destination: "/app/connection/ack",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ message: "연결 확인" }),
+        });
       }
-    };
-
-    subscribeAll();
-
-    return () => {
-      subscriptions.forEach(sub => {
-        if (client.active && client.connected) {
-          sub.unsubscribe();
-        }
-      });
-    };
-  }, [roomId, client, isConnected, myMemberId, fetchHistory]);
-
-  // 방 생성 리다이렉트 구독
-  useEffect(() => {
-    if (!client || !isConnected || roomId !== "new") return;
-
-    const sub = client.subscribe("/user/queue/chat/rooms", msg => {
-      const body = JSON.parse(msg.body);
-      if (body.roomId) router.replace(`/chat/${body.roomId}`);
-    });
-
-    return () => sub.unsubscribe();
-  }, [client, isConnected, roomId, router]);
-
-  //메시지 전송
-  const handleSend = () => {
-    const text = inputValue;
-
-    if (!client?.connected || !text || !text.trim()) {
-      console.log("전송 중단: 연결되지 않았거나 빈 메시지임");
-      return;
+    } catch (err) {
+      console.error("구독 설정 오류:", err);
     }
 
-    try {
-      const clientMessageId =
-        typeof crypto.randomUUID === "function"
-          ? crypto.randomUUID()
-          : Date.now().toString();
+    return () => {
+      subscriptions.forEach(sub => sub.unsubscribe());
+    };
+  }, [
+    roomId,
+    client,
+    isConnected,
+    myMemberId,
+    fetchHistory,
+    router,
+    displayName,
+    searchParams,
+  ]);
 
-      const isNewRoom = roomId === "new";
+  const handleSend = () => {
+    const text = inputValue;
+    if (!client?.connected || !text?.trim()) return;
+
+    try {
+      const targetIdFromUrl = searchParams.get("target");
+      const currentRoomId = params?.id;
+      const isNewRoom = currentRoomId === "new";
+
       const payload = {
-        clientMessageId,
-        roomId: isNewRoom ? null : Number(roomId),
-        opponentMemberId: isNewRoom ? Number(targetId) : null,
+        clientMessageId: crypto.randomUUID(),
+        roomId: isNewRoom ? null : Number(currentRoomId),
+        opponentMemberId: targetIdFromUrl ? Number(targetIdFromUrl) : null,
         messageType: "TEXT",
         content: text,
       };
 
+      console.log("📤 [최종 전송 페이로드]:", payload);
       client.publish({
         destination: "/app/chat/messages/send",
         headers: { "content-type": "application/json" },
@@ -246,9 +257,8 @@ const Chatting = () => {
       });
 
       setInputValue("");
-      console.log("3. 전송 명령 완료");
     } catch (err) {
-      console.error("전송 로직 실행 중 에러 발생:", err);
+      console.error("메시지 전송 에러:", err);
     }
   };
 
@@ -412,13 +422,6 @@ const Chatting = () => {
                 </div>
               )}
             </div>
-            {/* <ChatField
-              value={inputValue}
-              onChange={setInputValue}
-              isDimmed={isDimmed}
-              onSend={handleSend}
-              onImageUpload={handleImageUpload}
-            /> */}
             <div
               className={`px-4 ${isDimmed ? "pointer-events-none opacity-50" : ""}`}
             >
