@@ -6,12 +6,14 @@ import { useState } from "react";
 import AlarmIcon from "@/assets/bell.svg";
 import FriendIcon from "@/assets/friend.svg";
 
+import Logo from "@/public/images/logo.svg";
+
 export const Header = () => {
   const [isAlarmNew, setIsAlarmNew] = useState(true);
   const router = useRouter();
   return (
     <header className="flex items-center justify-between px-4 py-[10px]">
-      <div className="text-h1 text-mint-01">SIMTALK</div>
+      <Logo className="h-6 w-[143px]" />
 
       <div className="flex items-center justify-center gap-6">
         <button onClick={() => router.push("/friends")}>
