@@ -1,40 +1,57 @@
 import { useEffect, useState } from "react";
 
 import { getFriendsList } from "@/app/api/friendships/friend.api";
+import { getGardenInviteFriends } from "@/app/api/garden/invite.api";
 
 import CheckIcon from "@/assets/check.svg";
 
-import { FriendProfile } from "@/types/friendProfile.type";
+import { Friend, FriendShipProfile } from "@/types/friendProfile.type";
+
+import { getFriendName } from "@/utils/getFriendName";
 
 import { OnlyLoader } from "../common/OnlyLoader";
 import { ProfileImagePicker } from "../common/ProfileImagePicker";
 import { ProfileModal } from "./ProfileModal";
 
+type CombinedFriend = FriendShipProfile | Friend;
+
 interface FriendListProps {
+  gardenInviteMode?: boolean;
   searchText: string;
   setModalOpen?: (open: boolean) => void;
   isEditMode: boolean;
-  selectedFriends: FriendProfile[];
-  onToggleFriend: (friend: FriendProfile) => void;
+  selectedFriends: CombinedFriend[];
+  onToggleFriend: (friend: CombinedFriend) => void;
 }
+
 export const FriendList = ({
+  gardenInviteMode = false,
   searchText,
   setModalOpen,
   isEditMode = false,
   selectedFriends,
   onToggleFriend,
 }: FriendListProps) => {
-  const [friends, setFriends] = useState<FriendProfile[]>([]);
+  const [friends, setFriends] = useState<CombinedFriend[]>([]);
+
   const [activeFriendsCount, setActiveFriendsCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchFriends = async () => {
       try {
-        const data = await getFriendsList("ACTIVE");
-        setFriends(data.friendshipList);
-        setActiveFriendsCount(data.count);
-        console.log("친구 목록:", data.friendshipList);
+        if (gardenInviteMode) {
+          const data = await getGardenInviteFriends();
+          // FriendGardenList 구조: { count: number, friends: Friend[] }
+          setFriends(data.friends);
+          setActiveFriendsCount(data.count);
+          console.log("초대 가능한 친구 목록:", data.friends);
+        } else {
+          const data = await getFriendsList("ACTIVE");
+          // FriendList 구조: { count: number, friendshipList: FriendShipProfile[] }
+          setFriends(data.friendshipList);
+          setActiveFriendsCount(data.count);
+        }
       } catch (error) {
         console.error("친구 목록 로드 실패:", error);
       } finally {
@@ -42,18 +59,20 @@ export const FriendList = ({
       }
     };
     fetchFriends();
-  }, []);
+  }, [gardenInviteMode]);
 
   const filteredFriends = searchText
-    ? friends.filter(user => user.showName.includes(searchText))
+    ? friends.filter(user =>
+        getFriendName(user, gardenInviteMode).includes(searchText),
+      )
     : friends;
 
-  const [modalFriend, setModalFriend] = useState<FriendProfile | null>(null);
+  const [modalFriend, setModalFriend] = useState<CombinedFriend | null>(null);
 
   const isSelected = (friendshipId: number) =>
     selectedFriends.some(f => f.friendshipId === friendshipId);
 
-  const profileModalOpen = (friend: FriendProfile) => {
+  const profileModalOpen = (friend: CombinedFriend) => {
     if (isEditMode) return;
     setModalFriend(friend);
     setModalOpen?.(true);
@@ -64,9 +83,7 @@ export const FriendList = ({
     setModalOpen?.(false);
   };
 
-  if (isLoading) {
-    return <OnlyLoader />;
-  }
+  if (isLoading) return <OnlyLoader />;
 
   return (
     <section>
@@ -78,6 +95,7 @@ export const FriendList = ({
       )}
       {filteredFriends.map(friend => {
         const selected = isSelected(friend.friendshipId);
+        const displayName = getFriendName(friend, gardenInviteMode);
 
         return (
           <div
@@ -101,7 +119,8 @@ export const FriendList = ({
             <div
               className={`${isEditMode ? "flex-1 justify-between" : ""} flex items-center`}
             >
-              <p className="text-h2 text-neutral-01">{friend.showName}</p>
+              <p className="text-h2 text-neutral-01">{displayName}</p>
+
               {isEditMode && (
                 <button
                   className={`${
@@ -124,7 +143,7 @@ export const FriendList = ({
       {modalFriend && (
         <ProfileModal
           userId={modalFriend.friendshipId}
-          userName={modalFriend.showName}
+          userName={getFriendName(modalFriend, gardenInviteMode)}
           profileImg={modalFriend.profileImageUrl}
           onClose={profileModalClose}
         />

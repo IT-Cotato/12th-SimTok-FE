@@ -1,4 +1,4 @@
-export type FriendProfile = {
+export type FriendShipProfile = {
   friendshipId: number; // 친구관계 id
   friendId: number; // 친구의 useerId
   showName: string;
@@ -7,9 +7,22 @@ export type FriendProfile = {
   lastInteractedAt: string;
 };
 
+export type Friend = {
+  friendshipId: number; // 친구관계 id
+  friendId: number; // 친구의 useerId
+  nickname: string;
+  profileImageUrl: string;
+};
+
+export type CombinedFriend = FriendShipProfile | Friend;
 export type FriendList = {
   count: number;
-  friendshipList: FriendProfile[];
+  friendshipList: FriendShipProfile[];
+};
+
+export type FriendGardenList = {
+  count: number;
+  friends: Friend[];
 };
 
 export type ChatTopic =
