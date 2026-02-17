@@ -4,16 +4,20 @@ import CloseIcon from "@/assets/close-thin.svg";
 
 import { ProfileImagePicker } from "@/components/common/ProfileImagePicker";
 
-import { FriendProfile } from "@/types/friendProfile.type";
+import { CombinedFriend } from "@/types/friendProfile.type";
+
+import { getFriendName } from "@/utils/getFriendName";
 
 interface SelectedFriendsBarProps {
-  selectedFriends: FriendProfile[];
-  onToggleFriend: (friend: FriendProfile) => void;
+  selectedFriends: CombinedFriend[];
+  onToggleFriend: (friend: CombinedFriend) => void;
+  gardenInviteMode?: boolean;
 }
 
 export const SelectedFriendsBar = ({
   selectedFriends,
   onToggleFriend,
+  gardenInviteMode = false,
 }: SelectedFriendsBarProps) => {
   if (selectedFriends.length === 0) return null;
 
@@ -41,7 +45,9 @@ export const SelectedFriendsBar = ({
             </button>
           </div>
 
-          <p className="text-body3 text-neutral-06">{friend.showName}</p>
+          <p className="text-body3 text-neutral-06">
+            {getFriendName(friend, gardenInviteMode)}
+          </p>
         </div>
       ))}
     </section>

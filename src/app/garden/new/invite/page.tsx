@@ -12,13 +12,13 @@ import { SelectedFriendsBar } from "@/components/common/SelectFriendsBar";
 import { FriendList } from "@/components/friends/FriendList";
 import ProgressDots from "@/components/onboarding/ProgressDots";
 
-import { FriendProfile } from "@/types/friendProfile.type";
+import { CombinedFriend } from "@/types/friendProfile.type";
 
 const PlantInvite = () => {
   const router = useRouter();
   const isEditMode = true;
 
-  const [selectedFriends, setSelectedFriends] = useState<FriendProfile[]>([]); // 편집모드에서 선택한 friendId
+  const [selectedFriends, setSelectedFriends] = useState<CombinedFriend[]>([]); // 편집모드에서 선택한 friendId
   const [searchText, setSearchText] = useState(""); // 서치필드에 입력된 텍스트
 
   const setInvitedFriend = useGardenStore(state => state.setInvitedFriend);
@@ -29,7 +29,7 @@ const PlantInvite = () => {
     router.push("/garden/new/invite/message");
   };
 
-  const toggleFriend = (friend: FriendProfile) => {
+  const toggleFriend = (friend: CombinedFriend) => {
     setSelectedFriends(prev => {
       const isSameFriend = prev[0]?.friendshipId === friend.friendshipId;
 
@@ -40,7 +40,7 @@ const PlantInvite = () => {
       }
       // 무조건 새 친구로 교체
       setInvitedFriend(friend);
-      setInvitedFriendId(friend.friendshipId);
+      setInvitedFriendId(friend.friendId);
       return [friend];
     });
   };
@@ -68,6 +68,7 @@ const PlantInvite = () => {
           <SelectedFriendsBar
             selectedFriends={selectedFriends}
             onToggleFriend={toggleFriend}
+            gardenInviteMode={true}
           />
         )}
         <div className="px-4">
@@ -75,6 +76,7 @@ const PlantInvite = () => {
         </div>
 
         <FriendList
+          gardenInviteMode={true}
           searchText={searchText}
           isEditMode={isEditMode}
           selectedFriends={selectedFriends}
