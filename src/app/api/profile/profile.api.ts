@@ -1,6 +1,3 @@
-import { NextRequest, NextResponse } from "next/server";
-
-import { refreshAccessToken } from "@/lib/auth";
 import { BACKEND_BASE_URL } from "@/lib/constants";
 
 import { MyProfile } from "@/types/myProfile.type";

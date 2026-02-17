@@ -1,7 +1,7 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 
-import { getSharedDiaryList } from "@/app/api/dailyRecord/route";
+import { getSharedDiaryList } from "@/app/api/dailyRecord/dailyRecord.api";
 
 import { DiaryDetail } from "@/types/diary.type";
 
