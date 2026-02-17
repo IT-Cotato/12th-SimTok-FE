@@ -1,27 +1,46 @@
-export type FriendProfile = {
-  userId: number;
-  userName: string;
-  nickNameByMe?: string; // 내가 설정한 닉네임
-  profileImg?: string;
+export type FriendShipProfile = {
+  friendshipId: number; // 친구관계 id
+  friendId: number; // 친구의 useerId
+  showName: string;
+  profileImageUrl: string;
+  status: "ACTIVE" | "PENDING";
+  lastInteractedAt: string;
+};
+
+export type Friend = {
+  friendshipId: number; // 친구관계 id
+  friendId: number; // 친구의 useerId
+  nickname: string;
+  profileImageUrl: string;
+};
+
+export type CombinedFriend = FriendShipProfile | Friend;
+export type FriendList = {
+  count: number;
+  friendshipList: FriendShipProfile[];
+};
+
+export type FriendGardenList = {
+  count: number;
+  friends: Friend[];
 };
 
 export type ChatTopic =
-  | "weather"
-  | "health"
-  | "meal"
-  | "mood"
-  | "hobby"
-  | "joke";
+  | "WEATHER"
+  | "HEALTH"
+  | "MEAL"
+  | "MOOD"
+  | "HOBBY"
+  | "JOKE";
+
+export type ChatStyle = "FORMAL" | "CASUAL";
+
+export type FriendSetting = {
+  friendshipId: number;
+  nickname: string; // 내가 설정한 친구 닉네임
+  speechStyle: ChatStyle;
+  chatGoal: number;
+  topicCodes: ChatTopic[];
+};
 
 export type ChatTopicItem = { key: ChatTopic; label: string; icon?: string };
-
-export type ChatStyle = "formal" | "casual";
-
-export type FriendChatSetting = {
-  friendProfile: FriendProfile;
-  nickNameByFriend?: string; // 상대가 나를 부르는 이름
-  goalDays?: number;
-  chatStyle: ChatStyle;
-  chatTopic: ChatTopic[];
-  customTopic?: string;
-};

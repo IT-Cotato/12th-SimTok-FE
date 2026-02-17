@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { NavBar } from "@/components/common/NavBar";
+import { InvitationModal } from "@/components/garden/modal/InvitiationModalWrapper";
 import { ChatProgress } from "@/components/home/ChatProgress";
 import { Header } from "@/components/home/Header";
 import { PlantProgress } from "@/components/home/PlantProgress";
@@ -12,6 +13,7 @@ import { PlantProgress } from "@/components/home/PlantProgress";
 export default function HomePage() {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [inviteCome, setInviteCome] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -43,6 +45,13 @@ export default function HomePage() {
       <div className="fixed bottom-0 w-full max-w-[440px]">
         <NavBar />
       </div>
+      {inviteCome && (
+        <InvitationModal
+          onClose={() => {
+            setInviteCome(false);
+          }}
+        />
+      )}
     </main>
   );
 }

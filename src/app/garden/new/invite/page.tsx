@@ -12,22 +12,26 @@ import { SelectedFriendsBar } from "@/components/common/SelectFriendsBar";
 import { FriendList } from "@/components/friends/FriendList";
 import ProgressDots from "@/components/onboarding/ProgressDots";
 
-import { FriendProfile } from "@/types/friendProfile.type";
+import { CombinedFriend } from "@/types/friendProfile.type";
 
 const PlantInvite = () => {
   const router = useRouter();
   const isEditMode = true;
 
-  const [selectedFriends, setSelectedFriends] = useState<FriendProfile[]>([]); // 편집모드에서 선택한 friendId
+  const [selectedFriends, setSelectedFriends] = useState<CombinedFriend[]>([]); // 편집모드에서 선택한 friendId
   const [searchText, setSearchText] = useState(""); // 서치필드에 입력된 텍스트
+
+  const setInvitedFriend = useGardenStore(state => state.setInvitedFriend);
   const setInvitedFriendId = useGardenStore(state => state.setInvitedFriendId);
+
   const handleNext = () => {
+    console.log("선택된 친구 ID:", selectedFriends[0]?.friendshipId);
     router.push("/garden/new/invite/message");
   };
 
-  const toggleFriend = (friend: FriendProfile) => {
+  const toggleFriend = (friend: CombinedFriend) => {
     setSelectedFriends(prev => {
-      const isSameFriend = prev[0]?.userId === friend.userId;
+      const isSameFriend = prev[0]?.friendshipId === friend.friendshipId;
 
       // 같은 친구 누르면 해제
       if (isSameFriend) {
@@ -35,7 +39,8 @@ const PlantInvite = () => {
         return [];
       }
       // 무조건 새 친구로 교체
-      setInvitedFriendId(friend.userId);
+      setInvitedFriend(friend);
+      setInvitedFriendId(friend.friendId);
       return [friend];
     });
   };
@@ -63,18 +68,20 @@ const PlantInvite = () => {
           <SelectedFriendsBar
             selectedFriends={selectedFriends}
             onToggleFriend={toggleFriend}
+            gardenInviteMode={true}
           />
         )}
         <div className="px-4">
           <SearchField onChangeSearchText={setSearchText} />
         </div>
 
-        {/* <FriendList
+        <FriendList
+          gardenInviteMode={true}
           searchText={searchText}
           isEditMode={isEditMode}
           selectedFriends={selectedFriends}
           onToggleFriend={toggleFriend}
-        /> */}
+        />
       </div>
 
       <div className="fixed bottom-0 z-50 w-full max-w-[440px] bg-white px-4 py-[10px] pb-[42px]">

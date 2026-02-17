@@ -12,7 +12,9 @@ import { SelectedFriendsBar } from "@/components/common/SelectFriendsBar";
 import { DeleteFriendModal } from "@/components/friends/DeleteFriendModal";
 import { FriendList } from "@/components/friends/FriendList";
 
-import { FriendProfile } from "@/types/friendProfile.type";
+import { CombinedFriend } from "@/types/friendProfile.type";
+
+import { getFriendName } from "@/utils/getFriendName";
 
 const FriendsListPage = () => {
   const router = useRouter();
@@ -20,13 +22,13 @@ const FriendsListPage = () => {
   const [searchText, setSearchText] = useState(""); // 서치필드에 입력된 텍스트
   const [modalOpen, setModalOpen] = useState(false); // 친구프로필 모달
   const [isEditMode, setIsEditMode] = useState(false); // 편집모드 전환
-  const [selectedFriends, setSelectedFriends] = useState<FriendProfile[]>([]); // 편집모드에서 선택한 friendId
+  const [selectedFriends, setSelectedFriends] = useState<CombinedFriend[]>([]); // 편집모드에서 선택한 friendId
   const [clickDelete, setClickDelete] = useState(false);
 
-  const toggleFriend = (friend: FriendProfile) => {
+  const toggleFriend = (friend: CombinedFriend) => {
     setSelectedFriends(prev =>
-      prev.some(f => f.userId === friend.userId)
-        ? prev.filter(f => f.userId !== friend.userId)
+      prev.some(f => f.friendshipId === friend.friendshipId)
+        ? prev.filter(f => f.friendshipId !== friend.friendshipId)
         : [...prev, friend],
     );
   };
@@ -55,21 +57,25 @@ const FriendsListPage = () => {
       <div
         className={`${modalOpen ? "mt-[95px]" : "mt-[30.5px]"} flex flex-col gap-5`}
       >
-        <SearchField onChangeSearchText={setSearchText} />
+        <div className="px-4">
+          <SearchField onChangeSearchText={setSearchText} />
+        </div>
+
         {isEditMode && (
           <SelectedFriendsBar
             selectedFriends={selectedFriends}
             onToggleFriend={toggleFriend}
+            gardenInviteMode={false}
           />
         )}
 
-        {/* <FriendList
+        <FriendList
           searchText={searchText}
           setModalOpen={setModalOpen}
           isEditMode={isEditMode}
           selectedFriends={selectedFriends}
           onToggleFriend={toggleFriend}
-        /> */}
+        />
       </div>
       {isEditMode ? (
         selectedFriends.length > 0 && (
@@ -92,8 +98,8 @@ const FriendsListPage = () => {
       {clickDelete && selectedFriends.length > 0 && (
         <DeleteFriendModal
           selectedCount={selectedFriends.length}
-          selectedProfileImg={selectedFriends[0].profileImg}
-          selectedName={selectedFriends[0].userName}
+          selectedProfileImg={selectedFriends[0].profileImageUrl}
+          selectedName={getFriendName(selectedFriends[0], false)}
           onClose={clickDeleteButton}
         />
       )}

@@ -6,6 +6,8 @@ import { useState } from "react";
 
 import { useSignupStore } from "@/stores/useSignupStore";
 
+import Logo from "@/public/images/logo.svg";
+
 const AuthStartPage = () => {
   const router = useRouter();
   const { setSignupData } = useSignupStore();
@@ -44,10 +46,8 @@ const AuthStartPage = () => {
 
   return (
     <main className="flex min-h-dvh w-full flex-col justify-center">
-      <div className="flex w-full flex-1 items-center justify-center px-4 py-2.5">
-        <span className="text-d1 text-mint-01 flex items-center justify-center">
-          SIMTOK
-        </span>
+      <div className="flex w-full flex-1 items-center justify-center">
+        <Logo className="h-9 w-[215px]" />
       </div>
 
       <div className="mb-13 flex flex-col gap-6 py-[10px]">
