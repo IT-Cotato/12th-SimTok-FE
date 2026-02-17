@@ -7,10 +7,10 @@ interface RouteContext {
 }
 
 export async function POST(request: NextRequest, context: RouteContext) {
-  const { id: roomId } = await context.params;
-  const authHeader = request.headers.get("Authorization");
-
   try {
+    const { id: roomId } = await context.params;
+    const authHeader = request.headers.get("Authorization");
+
     const res = await fetch(
       `${BACKEND_BASE_URL}/api/chat/rooms/${roomId}/enter`,
       {
