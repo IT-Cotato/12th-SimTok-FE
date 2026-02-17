@@ -1,23 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
-import { getChallengeDashboard } from "@/app/api/dailyRecord/dayLog.api";
-
 import CheckIcon from "@/assets/check.svg";
 import CrossIcon from "@/assets/close-bold.svg";
 import QuestionIcon from "@/assets/questionMark.svg";
 
-import { MISSION_STATUS } from "@/constants/missionCard";
-import { WEEK_DAYS_KOR } from "@/constants/weekDays";
-
-import dailyRecordProgress from "@/mock/dailyRecordProgress.json";
+import { WEEK_DAYS_KOR, WeekDayKor } from "@/constants/weekDays";
 
 import { WeeklyStatus } from "@/types/dailyRecord.type";
-
-import { getWeekDayStatus } from "@/utils/getCurrentDay";
-
-type WeekDayKey = keyof typeof dailyRecordProgress;
 
 interface DailyMissionProgressProps {
   weeklyStatus: WeeklyStatus[];
@@ -34,10 +23,10 @@ export const DailyMissionProgress = ({
         const showQuestion =
           item.status === "WAITING" || item.status === "FUTURE";
 
-        const weekDayKey = WEEK_DAYS_KOR[index] as WeekDayKey;
+        const weekDayKor = WEEK_DAYS_KOR[index] as WeekDayKor;
 
         return (
-          <li key={weekDayKey} className="h-[82px] w-[74px] shrink-0">
+          <li key={weekDayKor} className="h-[82px] w-[74px] shrink-0">
             <div
               className={`flex h-full flex-col items-center justify-center gap-[3px] rounded-2xl border border-solid px-[10px] py-[6px] ${showQuestion ? "bg-white" : "bg-spring-01"} ${item.status !== "FUTURE" ? "border-mint-01" : "border-neutral-08"} `}
             >
@@ -74,7 +63,7 @@ export const DailyMissionProgress = ({
                     : "text-neutral-06"
                 } `}
               >
-                {weekDayKey}
+                {weekDayKor}
               </span>
             </div>
           </li>
