@@ -21,13 +21,20 @@ export const FriendMessage = ({
     <div
       className={`flex w-full justify-start gap-[6px] px-4 ${paddingTop} ${paddingBottom}`}
     >
-      <div className="bg-neutral-08 h-12 w-12 overflow-hidden rounded-2xl">
-        {!isPrevSame && profileImage && (
-          <img
-            src={profileImage}
-            alt={userName}
-            className="h-full w-full object-cover"
-          />
+      <div className="w-12 flex-shrink-0">
+        {!isPrevSame ? (
+          <div className="bg-neutral-08 h-12 w-12 overflow-hidden rounded-2xl">
+            {profileImage && (
+              <img
+                src={profileImage}
+                alt={userName}
+                className="h-full w-full object-cover"
+              />
+            )}
+          </div>
+        ) : (
+          /* 시간까지 같은 연속 메시지일 경우 빈 공간 확보 */
+          <div className="w-12" />
         )}
       </div>
 
