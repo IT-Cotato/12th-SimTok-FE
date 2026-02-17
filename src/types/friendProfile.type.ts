@@ -26,20 +26,20 @@ export type FriendGardenList = {
 };
 
 export type ChatTopic =
-  | "weather"
-  | "health"
-  | "meal"
-  | "mood"
-  | "hobby"
-  | "joke";
+  | "WEATHER"
+  | "HEALTH"
+  | "MEAL"
+  | "MOOD"
+  | "HOBBY"
+  | "JOKE";
 
-export type ChatStyle = "존댓말" | "반말";
+export type ChatStyle = "FORMAL" | "CASUAL";
 
 export type FriendSetting = {
   friendshipId: number;
   nickname: string; // 내가 설정한 친구 닉네임
   speechStyle: ChatStyle;
-  chatGoal: string;
+  chatGoal: number;
   topicCodes: ChatTopic[];
 };
 

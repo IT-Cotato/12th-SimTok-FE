@@ -21,43 +21,43 @@ export const CHAT_FREQUENCY_OPTIONS = [
 ] as const;
 
 export const CHAT_STYLE = [
-  { key: "formal", label: "존댓말" },
-  { key: "casual", label: "반말" },
+  { key: "FORMAL", label: "존댓말" },
+  { key: "CASUAL", label: "반말" },
 ] as const;
 
 export const CHAT_TOPIC = [
   {
-    key: "weather",
+    key: "WEATHER",
     label: "날씨",
     icon: "/images/chatTopic/weather.svg",
     recommendations: RECOMMENDATIONS.weather,
   },
   {
-    key: "health",
+    key: "HEALTH",
     label: "건강",
     icon: "/images/chatTopic/health.svg",
     recommendations: RECOMMENDATIONS.health,
   },
   {
-    key: "meal",
+    key: "MEAL",
     label: "식사",
     icon: "/images/chatTopic/meal.svg",
     recommendations: RECOMMENDATIONS.meal,
   },
   {
-    key: "mood",
+    key: "MOOD",
     label: "기분",
     icon: "/images/chatTopic/mood.svg",
     recommendations: RECOMMENDATIONS.mood,
   },
   {
-    key: "hobby",
+    key: "HOBBY",
     label: "취미",
     icon: "/images/chatTopic/hobby.svg",
     recommendations: RECOMMENDATIONS.hobby,
   },
   {
-    key: "joke",
+    key: "JOKE",
     label: "농담",
     icon: "/images/chatTopic/joke.svg",
     recommendations: RECOMMENDATIONS.joke,
