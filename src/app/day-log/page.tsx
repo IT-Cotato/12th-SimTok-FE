@@ -13,6 +13,7 @@ import { getMyDayLog } from "../api/dailyRecord/dayLog.api";
 
 const DailyRecordPage = () => {
   const [myData, setMyData] = useState<MyDayLog | null>(null);
+
   useEffect(() => {
     const fetchMyDayLog = async () => {
       try {

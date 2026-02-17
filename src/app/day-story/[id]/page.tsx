@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useParams } from "next/navigation";
-import { useRouter } from "next/router";
+import { useParams, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { BackHeader } from "@/components/common/BackHeader";
 
@@ -15,18 +15,18 @@ const DailyStory = () => {
   const numericId = Number(id);
   const story = DailyRecordData.find(item => item.id === numericId);
   const router = useRouter();
-
+  const searchParams = useSearchParams();
   if (!story) {
     return router.push("/day-log");
   }
-
+  const isMe = searchParams.get("isMe") === "true";
   const timeAgo = getTimeAgo(story.createdAt);
 
   return (
     <section className="relative h-screen w-full bg-black">
       <div className="fixed top-0 w-full max-w-[440px]">
         <BackHeader
-          title={`${story.userName}의 챌린지`}
+          title={`${isMe ? "나" : story.userName}의 챌린지`}
           timeAgo={timeAgo}
           titleColor="neutral-11"
         />
