@@ -18,10 +18,10 @@ export const MISSION_STATUS = {
   },
 } as const;
 
-const MISSION_ICONS: Record<MissionCategory, string> = {
-  FOOD: "/icons/food.svg",
-  PLANT: "/icons/plant.svg",
-  COLOR: "/icons/color.svg",
-  MOMENT: "/icons/moment.svg",
-  TV: "/icons/tv.svg",
+export const MISSION_ICONS: Record<MissionCategory, string> = {
+  FOOD: "/images/missionIcon/food.svg",
+  PLANT: "/images/missionIcon/plant.svg",
+  COLOR: "/images/missionIcon/color.svg",
+  MOMENT: "/images/missionIcon/moment.svg",
+  TV: "/images/missionIcon/tv.svg",
 };

@@ -4,7 +4,9 @@ import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
-import { MISSION_SORT, MISSION_STATUS } from "@/constants/missionCard";
+import { m } from "framer-motion";
+
+import { MISSION_ICONS, MISSION_STATUS } from "@/constants/missionCard";
 import { WEEK_DAYS_KOR } from "@/constants/weekDays";
 
 import { useImageUpload } from "@/hooks/useImageUpload";
@@ -31,9 +33,7 @@ export const DailyMissionCard = ({
 
   const missionKind = missionCardData[0].kind;
 
-  const missionIcon = MISSION_SORT.find(
-    item => item.sort === missionKind,
-  )?.icon;
+  const missionIcon = MISSION_ICONS[missionKind as keyof typeof MISSION_ICONS];
 
   const onSelectImage = (previewUrl: string) => {
     setPreviewUrl(previewUrl);
