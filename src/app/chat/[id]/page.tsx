@@ -240,16 +240,18 @@ const Chatting = () => {
       const targetIdFromUrl = searchParams.get("target");
       const currentRoomId = params?.id;
       const isNewRoom = currentRoomId === "new";
+      const numericRoomId = isNewRoom ? null : Number(currentRoomId);
 
       const payload = {
         clientMessageId: crypto.randomUUID(),
-        roomId: isNewRoom ? null : Number(currentRoomId),
+        roomId: numericRoomId,
         opponentMemberId: targetIdFromUrl ? Number(targetIdFromUrl) : null,
         messageType: "TEXT",
         content: text,
       };
 
       console.log("📤 [최종 전송 페이로드]:", payload);
+
       client.publish({
         destination: "/app/chat/messages/send",
         headers: { "content-type": "application/json" },
@@ -326,7 +328,9 @@ const Chatting = () => {
           <div className="flex flex-col">
             {messages.map((msg, index) => {
               const isPrevSame =
-                index > 0 && messages[index - 1].type === msg.type;
+                index > 0 &&
+                messages[index - 1].type === msg.type &&
+                messages[index - 1].time === msg.time;
               const isNextSame =
                 index < messages.length - 1 &&
                 messages[index + 1].type === msg.type &&
