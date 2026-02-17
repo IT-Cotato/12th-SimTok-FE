@@ -1,22 +1,13 @@
-export interface UserActivity {
-  userId: number;
-  userName: string;
-  topic: "sky" | "meal" | "cloth";
-  image: string;
-  isRead: boolean;
+export type MyDayLog = {
+  isCompleted: boolean;
+  challengeId: number; // 중첩되지 않고 평탄한 구조
+  imageUrl: string;
   createdAt: string;
-}
+};
 
-//
 export type MyChallenge = {
   challengeId: number;
   imageUrl: string;
-};
-
-export type MyDayLog = {
-  isCompleted: boolean;
-  myChallenge: MyChallenge | null;
-  createdAt: string;
 };
 
 export type WeeklyStatus = {
@@ -52,4 +43,15 @@ export type MissionDetail = {
   isLiked?: boolean;
   likeCount?: number;
   commentCount?: number;
+};
+
+export type MissionFeedList = {
+  memberInfo?: {
+    memberId: number;
+    nickname: string;
+  };
+  challengeId: number;
+  imageUrl: string;
+  createdAt: string;
+  isViewed: boolean;
 };
