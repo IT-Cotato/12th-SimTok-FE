@@ -49,7 +49,9 @@ const ChatListPage = () => {
 
   const fetchChatRooms = useCallback(async () => {
     try {
-      const res = await fetch("/api/chat/rooms");
+      const res = await fetch("/api/chat/rooms", {
+        cache: "no-store",
+      });
       const result: ApiResponse = await res.json();
       if (result.success) {
         setChats(result.data.items);
@@ -61,14 +63,30 @@ const ChatListPage = () => {
 
   // 2. 초기 로드 및 포커스 이벤트 등록
   useEffect(() => {
+    // 1. 최초 로드
     fetchChatRooms();
 
-    // 사용자가 채팅방에 있다가 뒤로가기로 돌아오거나 창을 다시 볼 때 갱신
-    window.addEventListener("focus", fetchChatRooms);
+    const handleRefresh = () => {
+      console.log("새로고침 실행");
+      fetchChatRooms();
+    };
+
+    // 2. 뒤로가기(BFCache) 및 포커스 시 갱신
+    window.addEventListener("pageshow", handleRefresh);
+    window.addEventListener("focus", handleRefresh);
+
     return () => {
-      window.removeEventListener("focus", fetchChatRooms);
+      window.removeEventListener("pageshow", handleRefresh);
+      window.removeEventListener("focus", handleRefresh);
     };
   }, [fetchChatRooms]);
+
+  // 사용자가 채팅방에 있다가 뒤로가기로 돌아오거나 창을 다시 볼 때 갱신
+  //   window.addEventListener("focus", fetchChatRooms);
+  //   return () => {
+  //     window.removeEventListener("focus", fetchChatRooms);
+  //   };
+  // }, [fetchChatRooms]);
 
   const handleOpenModal = (chat: ChatRoomItem) => {
     setSelectedChat(chat);
