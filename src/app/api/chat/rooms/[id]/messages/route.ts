@@ -10,6 +10,13 @@ export async function GET(
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get("accessToken")?.value;
+    if (!token) {
+      console.error("❌ API Route: Access Token 누락됨");
+      return NextResponse.json(
+        { message: "인증 토큰이 없습니다." },
+        { status: 401 },
+      );
+    }
     const resolvedParams = await params;
     const roomId = resolvedParams.id;
 
@@ -23,12 +30,16 @@ export async function GET(
 
     const response = await fetch(url, {
       method: "GET",
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json", // 헤더 명시적 추가
+      },
       cache: "no-store",
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
+      const errorData = await response.json().catch(() => ({}));
+      console.error(`❌ Backend Error (${response.status}):`, errorData);
       return NextResponse.json(errorData, { status: response.status });
     }
 
