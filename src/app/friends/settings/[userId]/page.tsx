@@ -53,24 +53,24 @@ const FriendSetting = () => {
   }, [friendId]);
 
   // 저장 처리
-  const handleSubmit = async () => {
-    try {
-      const payload = {
-        nickNameByMe: nickname,
-        goalDays,
-        chatStyle,
-        chatTopic,
-      };
-      const result = await friendsApi.saveFriendSetting(friendId, payload);
-      if (result.success) {
-        router.push("/friends");
-      } else {
-        alert(result.message || "설정 저장 실패");
-      }
-    } catch (err) {
-      alert("네트워크 오류가 발생했습니다.");
-    }
-  };
+  // const handleSubmit = async () => {
+  //   try {
+  //     const payload = {
+  //       nickNameByMe: nickname,
+  //       goalDays,
+  //       chatStyle,
+  //       chatTopic,
+  //     };
+  //     const result = await friendsApi.saveFriendSetting(friendId, payload);
+  //     if (result.success) {
+  //       router.push("/friends");
+  //     } else {
+  //       alert(result.message || "설정 저장 실패");
+  //     }
+  //   } catch (err) {
+  //     alert("네트워크 오류가 발생했습니다.");
+  //   }
+  // };
 
   // const friendData = FriendSettingData[myUserId]?.find(
   //   item => item.userId === friendId,
