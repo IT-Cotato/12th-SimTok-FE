@@ -3,7 +3,7 @@ import Image from "next/image";
 
 import { useState } from "react";
 
-import { postSharedDiary } from "@/app/api/dailyRecord/dailyRecord.api";
+import { postSharedDiary } from "@/app/api/dailyRecord/sharedDiary.api";
 
 import { getEmotionMeta } from "@/utils/getEmotionMeta";
 

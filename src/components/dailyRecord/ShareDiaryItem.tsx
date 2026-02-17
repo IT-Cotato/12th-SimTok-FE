@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
-import { deleteLike, postLike } from "@/app/api/dailyRecord/dailyRecord.api";
+import { deleteLike, postLike } from "@/app/api/dailyRecord/sharedDiary.api";
 
 import HeartFillIcon from "@/assets/heart-fill.svg";
 import HeartIcon from "@/assets/heart.svg";

@@ -45,7 +45,7 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts",
-    "src/app/api/dailyRecord/dailyRecord.api.ts"
+    "src/app/api/dailyRecord/sharedDiary.api.ts"
   ],
   "exclude": ["node_modules"]
 }
