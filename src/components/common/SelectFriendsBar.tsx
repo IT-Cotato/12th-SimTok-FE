@@ -19,11 +19,14 @@ export const SelectedFriendsBar = ({
 
   return (
     <section className="flex items-start gap-2 px-4">
-      {selectedFriends.map(({ userId, profileImg, userName }) => (
-        <div key={userId} className="flex flex-col items-center justify-center">
+      {selectedFriends.map(friend => (
+        <div
+          key={friend.friendshipId}
+          className="flex flex-col items-center justify-center"
+        >
           <div className="relative">
             <ProfileImagePicker
-              imageUrl={profileImg ?? null}
+              imageUrl={friend.profileImageUrl ?? null}
               canEdit={false}
               width={80}
               height={80}
@@ -32,13 +35,13 @@ export const SelectedFriendsBar = ({
             <button
               type="button"
               className="bg-neutral-11 absolute bottom-[58px] left-[63px] h-[22px] w-[22px] cursor-pointer rounded-full"
-              onClick={() => onToggleFriend({ userId, profileImg, userName })}
+              onClick={() => onToggleFriend(friend)}
             >
               <CloseIcon className="mx-auto h-2 w-2" />
             </button>
           </div>
 
-          <p className="text-body3 text-neutral-06">{userName}</p>
+          <p className="text-body3 text-neutral-06">{friend.showName}</p>
         </div>
       ))}
     </section>
