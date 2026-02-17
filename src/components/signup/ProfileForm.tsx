@@ -269,7 +269,13 @@ export const ProfileForm = () => {
               ? "인증이 완료되었어요"
               : "인증번호가 올바르지 않아요"
           }
-          icon={modalType === "success" ? <SuccessIcon /> : <ErrorIcon />}
+          icon={
+            modalType === "success" ? (
+              <SuccessIcon className="h-[60px] w-[62px]" />
+            ) : (
+              <ErrorIcon />
+            )
+          }
           onClose={handleModalConfirm}
         />
       )}
