@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import myProfileMock from "@/mock/myProfile.json";
+import { profileApi } from "@/app/api/profile";
 
 import type { UserProfile } from "@/types/user.type";
 
@@ -23,11 +23,12 @@ export const useUserProfile = (): UseUserProfileResult => {
     const fetchProfileData = async () => {
       try {
         setIsLoading(true);
-
-        await new Promise(resolve => setTimeout(resolve, 500));
-
-        const data = myProfileMock as UserProfile;
-        setUserProfileData(data);
+        const result = await profileApi.getProfile();
+        if (result.success) {
+          setUserProfileData(result.data);
+        } else {
+          throw new Error(result.message || "프로필 로드 실패");
+        }
       } catch (err) {
         setError(err as Error);
       } finally {
@@ -37,6 +38,20 @@ export const useUserProfile = (): UseUserProfileResult => {
 
     fetchProfileData();
   }, []);
+
+  //       await new Promise(resolve => setTimeout(resolve, 500));
+
+  //       const data = myProfileMock as UserProfile;
+  //       setUserProfileData(data);
+  //     } catch (err) {
+  //       setError(err as Error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+
+  //   fetchProfileData();
+  // }, []);
 
   return { userProfileData, isLoading, error };
 };
