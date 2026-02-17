@@ -12,8 +12,6 @@ import ProgressDots from "@/components/onboarding/ProgressDots";
 
 import { PLANT_SORT_INFO } from "@/constants/garden/plantList";
 
-import FriendData from "@/mock/friendList.json";
-
 const InviteMessagePage = () => {
   const router = useRouter();
   const nickname = useGardenStore(state => state.nickname);
@@ -24,15 +22,15 @@ const InviteMessagePage = () => {
   const setMessage = useGardenStore(state => state.setMessage);
 
   const selectedPlant = PLANT_SORT_INFO.find(plant => plant.id === plantId);
-  const friendName = FriendData.find(
-    data => data.userId === friendId,
-  )?.userName;
+
+  const invitedFriend = useGardenStore(state => state.invitedFriend);
+  const friendName = invitedFriend?.showName;
 
   useEffect(() => {
-    if (!selectedPlant || !friendName) {
+    if (!selectedPlant || !invitedFriend) {
       router.replace("/garden/new");
     }
-  }, [selectedPlant, friendName, router]);
+  }, [selectedPlant, invitedFriend, router]);
 
   if (!selectedPlant || !friendName) return null;
 
@@ -45,7 +43,7 @@ const InviteMessagePage = () => {
 
       <div className="mb-[42px] flex flex-col">
         <div className="flex flex-col items-center justify-center gap-1 gap-[1px]">
-          <ChosenPlant plant={selectedPlant} nickname={nickname} />
+          <ChosenPlant plantSort={selectedPlant.id} nickname={nickname} />
           <div className="flex gap-2">
             {selectedPlant.meanings.map(text => (
               <p key={text} className="text-h3 text-green-01 px-2 py-[10px]">
