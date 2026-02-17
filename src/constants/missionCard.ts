@@ -1,3 +1,5 @@
+import { MissionCategory } from "@/types/dailyRecord.type";
+
 export const MISSION_STATUS = {
   NOT_STARTED: {
     title: "하루한컷 미션 도착!",
@@ -16,13 +18,10 @@ export const MISSION_STATUS = {
   },
 } as const;
 
-export const MISSION_SORT = [
-  { sort: "food", icon: "/images/missionIcon/food.svg" },
-  {
-    sort: "plant",
-    icon: "/images/missionIcon/plant.svg",
-  },
-  { sort: "color", icon: "/images/missionIcon/color.svg" },
-  { sort: "time", icon: "/images/missionIcon/time.svg" },
-  { sort: "tv", icon: "/images/missionIcon/tv.svg" },
-];
+const MISSION_ICONS: Record<MissionCategory, string> = {
+  FOOD: "/icons/food.svg",
+  PLANT: "/icons/plant.svg",
+  COLOR: "/icons/color.svg",
+  MOMENT: "/icons/moment.svg",
+  TV: "/icons/tv.svg",
+};
