@@ -109,7 +109,7 @@ const Garden = () => {
       <NavBar />
       {openRules && (
         <div
-          className="bg-neutral-01/83 fixed inset-y-0 left-1/2 z-[100] flex max-w-[440px] -translate-x-1/2 items-center justify-center px-4"
+          className="bg-neutral-01/83 fixed inset-y-0 left-1/2 z-[100] flex w-full max-w-[440px] -translate-x-1/2 items-center justify-center px-4"
           onClick={() => setOpenRules(false)}
           role="dialog"
           aria-modal="true"
