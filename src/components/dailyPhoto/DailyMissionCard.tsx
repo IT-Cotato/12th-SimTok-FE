@@ -4,19 +4,14 @@ import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
-import { m } from "framer-motion";
-
 import { MISSION_ICONS, MISSION_STATUS } from "@/constants/missionCard";
 import { WEEK_DAYS_KOR } from "@/constants/weekDays";
 
 import { useImageUpload } from "@/hooks/useImageUpload";
 
-import missionCardData from "@/mock/randomMission.json";
-
 import { MissionInfo, MyChallenge } from "@/types/dailyRecord.type";
 
 import { getTodayIndex } from "@/utils/getCurrentDay";
-import { getMissionSubtitle } from "@/utils/getMissionSubtitle";
 
 interface DailyMissionCardProps {
   status: keyof typeof MISSION_STATUS;
@@ -35,7 +30,7 @@ export const DailyMissionCard = ({
 
   const currentDayIndex = getTodayIndex();
 
-  const subtitle = getMissionSubtitle(status, currentDayIndex);
+  const koreanDay = WEEK_DAYS_KOR[currentDayIndex];
 
   // 미션 종류 찾기
   const missionKind = missionData.category;
@@ -59,7 +54,7 @@ export const DailyMissionCard = ({
         <h3 className="text-green-01 text-h3">
           {MISSION_STATUS[status].title}
         </h3>
-        <p className="text-neutral-06 text-sub1-r -mt-[4px]">{subtitle}</p>
+        <p className="text-neutral-06 text-sub1-r -mt-[4px]">{koreanDay}요일</p>
       </div>
       {status === "NOT_STARTED" && missionIcon && (
         <div className="bg-neutral-11 flex h-28 w-28 items-center justify-center rounded-full">
@@ -88,7 +83,7 @@ export const DailyMissionCard = ({
       <div className="flex flex-col items-center justify-center">
         <div className="text-sub-number p-[10px]">
           {status === "IMAGE_CONFIRMED"
-            ? "미션이 완료되었어요!"
+            ? "미션 공유가 완료되었어요"
             : missionData.content}
         </div>
         <button
