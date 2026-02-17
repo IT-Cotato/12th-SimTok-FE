@@ -3,7 +3,6 @@
 import Lottie from "react-lottie-player";
 
 import Cloud from "@/assets/garden/cloud.svg";
-import PillIcon from "@/assets/garden/pill.svg";
 
 import { GardenAction } from "@/types/plant.type";
 
