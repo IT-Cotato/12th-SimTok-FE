@@ -71,10 +71,11 @@ export const SharedDiaryFunnel = () => {
     }
 
     case "confirm": {
-      const { emojiCode, content, imageUrl } = funnel.context;
+      const { date, emojiCode, content, imageUrl } = funnel.context;
 
       return (
         <ConfirmStep
+          date={date}
           emotion={emojiCode}
           text={content}
           file={imageUrl}

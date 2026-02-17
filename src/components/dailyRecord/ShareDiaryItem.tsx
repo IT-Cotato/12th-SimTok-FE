@@ -4,19 +4,22 @@ import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
+import { deleteLike, postLike } from "@/app/api/dailyRecord/dailyRecord.api";
+
 import HeartFillIcon from "@/assets/heart-fill.svg";
 import HeartIcon from "@/assets/heart.svg";
 import CommentIcon from "@/assets/reply.svg";
 
-import { Diary } from "@/types/diary.type";
+import { DiaryDetail } from "@/types/diary.type";
 
 import { getEmotionMeta } from "@/utils/getEmotionMeta";
 import { getTimeAgo } from "@/utils/getTimeAgo";
 
+import { ProfileImagePicker } from "../common/ProfileImagePicker";
 import { SharedDiaryComment } from "./SharedDiaryChat";
 
 interface SharedDiaryItemProps {
-  item: Diary;
+  item: DiaryDetail;
   commentMode?: boolean;
 }
 
@@ -25,23 +28,37 @@ export const SharedDiaryItem = ({
   commentMode = false,
 }: SharedDiaryItemProps) => {
   const router = useRouter();
-  const [heartClicked, setHeartClicked] = useState(false);
+  const [heartClicked, setHeartClicked] = useState(item.isLiked);
 
-  const emotionMeta = getEmotionMeta(item.emotion);
+  const emotionMeta = getEmotionMeta(item.emojiCode);
   const timeAgo = getTimeAgo(item.createdAt);
 
+  const handleHeartClick = async () => {
+    const previousState = heartClicked;
+    setHeartClicked(!previousState);
+    try {
+      const apiCall = heartClicked ? deleteLike : postLike;
+      await apiCall(item.diaryId);
+    } catch (error) {
+      console.error("좋아요 처리 실패:", error);
+      setHeartClicked(previousState);
+    }
+  };
+
   return (
-    <section key={item.id} className="mb-6 flex w-full flex-col">
+    <section key={item.diaryId} className="mb-6 flex w-full flex-col">
       <div className="flex items-center justify-between px-4 py-[10px]">
         <div className="flex items-center justify-start gap-[5px]">
-          <Image
-            src={item.profile}
-            alt={item.userName}
+          <ProfileImagePicker
+            imageUrl={item.writerInfo.profileImageUrl}
+            canEdit={false}
             width={46}
             height={46}
-            className="rounded-2xl object-cover"
+            radius={16}
           />
-          <p className="text-sub1-sb text-neutral-01">{item.userName}</p>
+          <p className="text-sub1-sb text-neutral-01">
+            {item.writerInfo.nickname}
+          </p>
         </div>
         <p className="text-neutral-04 text-sub2-sb">{timeAgo}</p>
       </div>
@@ -52,7 +69,7 @@ export const SharedDiaryItem = ({
             <div className="p-[10px]">
               <Image
                 src={emotionMeta.imageSrc}
-                alt={item.emotion}
+                alt={item.emojiCode}
                 width={89}
                 height={89}
               />
@@ -62,10 +79,10 @@ export const SharedDiaryItem = ({
             </figcaption>
           </figure>
         )}
-        {item.image && (
+        {item.imageUrl && (
           <div className="w-full px-4">
             <Image
-              src={item.image}
+              src={item.imageUrl}
               alt="diary image"
               width={800}
               height={600}
@@ -74,26 +91,25 @@ export const SharedDiaryItem = ({
           </div>
         )}
 
-        {!item.image && (
+        {!item.imageUrl && (
           <section className="px-4">
             <div className="bg-neutral-10 border-mint-01 rounded-2xl border px-[10px] py-4">
-              {item.text}
+              {item.content}
             </div>
           </section>
         )}
       </section>
 
       <div
-        className={`flex p-[10px] px-4 ${item.image ? "justify-between" : "self-end"}`}
+        className={`flex p-[10px] px-4 ${item.imageUrl ? "justify-between" : "self-end"}`}
       >
-        {item.image && <p className="text-body1-md text-black">{item.text}</p>}
+        {item.imageUrl && (
+          <p className="text-body1-md text-black">{item.content}</p>
+        )}
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-start justify-start">
           <div className="flex gap-3 pl-[10px]">
-            <div
-              className="cursor-pointer"
-              onClick={() => setHeartClicked(prev => !prev)}
-            >
+            <div className="cursor-pointer" onClick={handleHeartClick}>
               {heartClicked ? (
                 <HeartFillIcon
                   width={26}
@@ -106,14 +122,14 @@ export const SharedDiaryItem = ({
             </div>
             <CommentIcon
               className="text-neutral-01 h-[26px] w-[26px] cursor-pointer"
-              onClick={() => router.push(`/shared-diary/${item.id}`)}
+              onClick={() => router.push(`/shared-diary/${item.diaryId}`)}
             />
           </div>
         </div>
       </div>
       {commentMode && (
         <div className="w-full">
-          <SharedDiaryComment />
+          <SharedDiaryComment diaryId={item.diaryId} isLiked={item.isLiked} />
         </div>
       )}
     </section>
