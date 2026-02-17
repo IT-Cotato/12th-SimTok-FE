@@ -4,12 +4,13 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { getDiaryComments } from "@/app/api/dailyRecord/route";
+import { postDiaryComment } from "@/app/api/dailyRecord/route";
+import { getMyProfile } from "@/app/api/profile/route";
 
 import { MessageInput } from "@/components/common/MessageInput";
 
-import MyProfile from "@/mock/myProfile.json";
-
 import { DiaryComment, DiaryCommentList } from "@/types/diary.type";
+import { MyProfile } from "@/types/myProfile.type";
 
 import { OnlyLoader } from "../common/OnlyLoader";
 import { CommentList } from "./CommentList";
@@ -21,13 +22,27 @@ export const SharedDiaryComment = ({
   diaryId: number;
   isLiked: boolean;
 }) => {
+  const [profile, setProfile] = useState<MyProfile | null>(null);
   const [comments, setComments] = useState<DiaryComment[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [currentLastId, setCurrentLastId] = useState<number>(0);
 
   const router = useRouter();
-  const profileImg = MyProfile.profileImg;
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const profile = await getMyProfile();
+        setProfile(profile);
+        console.log(profile);
+      } catch (error) {
+        console.error("프로필 가져오기 실패:", error);
+      }
+    };
+    fetchProfile();
+  }, [diaryId]);
+
+  const profileImg = profile?.profileImageUrl || "";
 
   const fetchComments = async (isInitial: boolean = false) => {
     if (isLoading || (!isInitial && !hasMore)) return;
@@ -36,21 +51,18 @@ export const SharedDiaryComment = ({
       setIsLoading(true);
       const lastIdToSend = isInitial ? 0 : currentLastId;
 
-      // 사이즈는 무조건 10으로 고정
       const response: DiaryCommentList = await getDiaryComments(
         diaryId,
         10,
         lastIdToSend,
       );
 
-      // 3. 데이터 업데이트 (배열에 추가)
       if (isInitial) {
         setComments(response.comments);
       } else {
         setComments(prev => [...prev, ...response.comments]);
       }
 
-      // 4. 페이징 정보 갱신
       setCurrentLastId(response.lastId);
       setHasMore(response.hasNext);
     } catch (error) {
@@ -70,7 +82,7 @@ export const SharedDiaryComment = ({
       fetchComments();
     }
   };
-  console.log(comments);
+
   return (
     <div
       className="fixed inset-0 bottom-0 left-1/2 z-50 flex w-full max-w-[440px] -translate-x-1/2 items-end justify-center bg-black/50"
@@ -84,7 +96,6 @@ export const SharedDiaryComment = ({
           <div className="bg-neutral-08 h-[3px] w-[38px] rounded-[2px]"></div>
         </div>
 
-        {/* 스크롤 이벤트 연결 */}
         <div
           className="flex-1 overflow-y-auto pb-[109px]"
           onScroll={handleScroll}
@@ -97,20 +108,35 @@ export const SharedDiaryComment = ({
           <MessageInput
             diaryId={diaryId}
             isLiked={isLiked}
-            onSend={message => {
-              const newComment: DiaryComment = {
-                commentId: Date.now(),
+            onSend={async message => {
+              const tempId = Date.now();
+              const optimisticComment: DiaryComment = {
+                commentId: tempId,
                 writerInfo: {
-                  memberId: 0,
-                  nickname: MyProfile.userName,
+                  memberId: profile?.memberId || 0,
+                  nickname: profile?.name || "사용자",
                   profileImageUrl: profileImg,
                   isMe: true,
                 },
                 content: message,
                 createdAt: new Date().toISOString(),
               };
-              // 새 댓글을 리스트 가장 상단에 추가
-              setComments(prev => [...prev, newComment]);
+
+              const previousComments = [...comments];
+              setComments(prev => [...prev, optimisticComment]);
+
+              try {
+                const serverComment = await postDiaryComment(diaryId, message);
+
+                setComments(prev =>
+                  prev.map(comment =>
+                    comment.commentId === tempId ? serverComment : comment,
+                  ),
+                );
+              } catch (error) {
+                console.error("댓글 등록 실패:", error);
+                setComments(previousComments);
+              }
             }}
           />
         </footer>
