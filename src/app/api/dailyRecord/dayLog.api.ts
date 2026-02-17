@@ -14,3 +14,23 @@ export const getMyDayLog = async () => {
   const { data } = await apiInstance.get("/challenges/me");
   return data.data;
 };
+
+export const getChallengeDashboard = async () => {
+  const { data } = await apiInstance.get("/challenges/dashboard");
+  return data.data;
+};
+
+export const postChallenge = async (missionId: number, imageUrl: string) => {
+  const { data } = await apiInstance.post("/challenges", {
+    missionId,
+    imageUrl,
+  });
+
+  return data.data;
+};
+
+export const getChallengeDetail = async (challengeId: number) => {
+  const { data } = await apiInstance.get(`/challenges/${challengeId}`);
+
+  return data.data;
+};
