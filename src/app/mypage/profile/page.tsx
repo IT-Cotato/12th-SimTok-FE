@@ -10,6 +10,8 @@ import { ProfileSummary } from "@/components/profile/ProfileSummary";
 
 import { useUserProfile } from "@/hooks/useUserProfile";
 
+import { formatDateWithSlash, formatPhone } from "@/utils/format";
+
 const ProfileSettingPage = () => {
   const router = useRouter();
   const { userProfileData } = useUserProfile();
@@ -23,10 +25,23 @@ const ProfileSettingPage = () => {
 
         <div className="flex flex-1 flex-col items-center">
           <section className="w-full">
-            {/* <ProfileSummary
-              userProfileData={userProfileData}
+            <ProfileSummary
+              userProfileData={
+                userProfileData
+                  ? {
+                      profileImageUrl: userProfileData.profileImageUrl || "",
+                      name: userProfileData.name || "",
+                      phoneNumber: userProfileData.phoneNumber
+                        ? formatPhone(userProfileData.phoneNumber)
+                        : "",
+                      birthDate: userProfileData.birthDate
+                        ? formatDateWithSlash(userProfileData.birthDate)
+                        : "",
+                    }
+                  : null
+              }
               onModalStateChange={setIsModalOpen}
-            /> */}
+            />
           </section>
         </div>
 

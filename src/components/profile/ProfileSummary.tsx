@@ -17,11 +17,13 @@ import { useProfileImageUpload } from "@/hooks/useProfileImageUpload";
 import { ProfileWrapper } from "../common/ProfileWrapper";
 
 export const ProfileSummary = ({
+  userProfileData,
   onModalStateChange,
 }: {
+  userProfileData?: ProfileData | null;
   onModalStateChange?: (open: boolean) => void;
 }) => {
-  const [data, setData] = useState<ProfileData | null>(null);
+  const [data, setData] = useState<ProfileData | null>(userProfileData || null);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const { profileImage, isLoading, resetImage, cancelUpload } =
@@ -32,16 +34,24 @@ export const ProfileSummary = ({
   }, [isUploadOpen, isLoading, onModalStateChange]);
 
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        const result = await profileApi.getProfile();
-        if (result.success) setData(result.data);
-      } catch (error) {
-        console.error("데이터 조회 실패:", error);
-      }
-    };
-    loadData();
-  }, []);
+    if (userProfileData) {
+      setData(userProfileData);
+    }
+  }, [userProfileData]);
+
+  useEffect(() => {
+    if (!userProfileData) {
+      const loadData = async () => {
+        try {
+          const result = await profileApi.getProfile();
+          if (result.success) setData(result.data);
+        } catch (error) {
+          console.error("데이터 조회 실패:", error);
+        }
+      };
+      loadData();
+    }
+  }, [userProfileData]);
 
   if (!data) return null;
 
