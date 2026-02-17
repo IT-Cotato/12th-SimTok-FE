@@ -45,7 +45,7 @@ export type MissionDetail = {
   commentCount?: number;
 };
 
-export type MissionFeedList = {
+export type MissionFeedItem = {
   memberInfo?: {
     memberId: number;
     nickname: string;
@@ -54,4 +54,10 @@ export type MissionFeedList = {
   imageUrl: string;
   createdAt: string;
   isViewed: boolean;
+};
+
+export type MissionFeedResponse = {
+  challenges: MissionFeedItem[];
+  lastId: number;
+  hasNext: boolean;
 };
