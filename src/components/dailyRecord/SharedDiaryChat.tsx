@@ -3,8 +3,8 @@ import { useRouter } from "next/navigation";
 
 import { useEffect, useRef, useState } from "react";
 
-import { getDiaryComments } from "@/app/api/dailyRecord/dailyRecord.api";
-import { postDiaryComment } from "@/app/api/dailyRecord/dailyRecord.api";
+import { getDiaryComments } from "@/app/api/dailyRecord/sharedDiary.api";
+import { postDiaryComment } from "@/app/api/dailyRecord/sharedDiary.api";
 import { getMyProfile } from "@/app/api/profile/profile.api";
 
 import { MessageInput } from "@/components/common/MessageInput";

@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 
-import { deleteLike, postLike } from "@/app/api/dailyRecord/dailyRecord.api";
+import { deleteLike, postLike } from "@/app/api/dailyRecord/sharedDiary.api";
 
 import { SendButton } from "@/assets/SendButton";
 import CameraIcon from "@/assets/camera.svg";

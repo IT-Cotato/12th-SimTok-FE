@@ -4,7 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 
 import { useEffect, useState } from "react";
 
-import { getDiaryDetail } from "@/app/api/dailyRecord/dailyRecord.api";
+import { getDiaryDetail } from "@/app/api/dailyRecord/sharedDiary.api";
 
 import { HeaderWithIcon } from "@/components/common/HeaderWithIcon";
 import { OnlyLoader } from "@/components/common/OnlyLoader";
