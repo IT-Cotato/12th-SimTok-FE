@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import { useParams } from "next/navigation";
+import { useRouter } from "next/router";
 
 import { BackHeader } from "@/components/common/BackHeader";
-import { StoryBottomBar } from "@/components/dailyRecord/StoryBottomBar";
 
 import DailyRecordData from "@/mock/dailyRecord.json";
 
@@ -14,9 +14,10 @@ const DailyStory = () => {
   const { id } = useParams<{ id: string }>();
   const numericId = Number(id);
   const story = DailyRecordData.find(item => item.id === numericId);
+  const router = useRouter();
 
   if (!story) {
-    return <div>스토리를 찾을 수 없습니다.</div>;
+    return router.push("/day-log");
   }
 
   const timeAgo = getTimeAgo(story.createdAt);
@@ -31,7 +32,7 @@ const DailyStory = () => {
         />
       </div>
 
-      <div className="absolute top-[56px] bottom-[76px] w-full max-w-[440px]">
+      <div className="absolute top-[56px] bottom-[56px] w-full max-w-[440px]">
         <Image
           src={story.image}
           alt={`${story.userName}의 하루한컷`}
@@ -40,9 +41,9 @@ const DailyStory = () => {
           priority
         />
       </div>
-      <div className="fixed bottom-0 w-full max-w-[440px]">
+      {/* <div className="fixed bottom-0 w-full max-w-[440px]">
         <StoryBottomBar />
-      </div>
+      </div> */}
     </section>
   );
 };
