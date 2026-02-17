@@ -7,36 +7,40 @@ import PlusIcon from "@/assets/plus.svg";
 
 import DailyRecordData from "@/mock/dailyRecord.json";
 
-export const RecordMissionFeed = () => {
-  const MY_ID = 111;
+import { MyDayLog } from "@/types/dailyRecord.type";
 
-  const myRecord = DailyRecordData.find(item => item.userId === MY_ID);
+interface RecordMissionFeedProps {
+  myRecord: MyDayLog | null;
+}
+
+export const RecordMissionFeed = ({ myRecord }: RecordMissionFeedProps) => {
   const router = useRouter();
 
-  // TODO: api연결시, zustand로 optimistic update로직 추가
-  const otherRecords = DailyRecordData.filter(
-    item => item.userId !== MY_ID,
-  ).sort((a, b) => {
-    if (a.isRead !== b.isRead) {
-      return Number(a.isRead) - Number(b.isRead);
-    }
-    return Date.parse(b.createdAt) - Date.parse(a.createdAt); // 최신순 정렬
-  });
+  const otherRecords = DailyRecordData.filter(item => !item.isRead).sort(
+    (a, b) => {
+      if (a.isRead !== b.isRead) {
+        return Number(a.isRead) - Number(b.isRead);
+      }
+      return Date.parse(b.createdAt) - Date.parse(a.createdAt); // 최신순 정렬
+    },
+  );
 
   return (
     <div className="scrollbar-hide flex h-[141px] w-full gap-4 overflow-x-auto px-4">
       {/* 내 영역 */}
       <section className="flex">
         <div className="flex w-[88px] shrink-0 cursor-pointer flex-col items-center gap-2">
-          {myRecord ? (
-            <Link href={`/day-story/${myRecord.id}`}>
-              <Image
-                src={myRecord.image}
-                alt="내 하루한컷"
-                width={88}
-                height={88}
-                className="h-[88px] w-[88px] rounded-full object-cover"
-              />
+          {myRecord?.myChallenge ? (
+            <Link href={`/day-story/${myRecord.myChallenge.challengeId}`}>
+              {myRecord.myChallenge.imageUrl && (
+                <Image
+                  src={myRecord.myChallenge.imageUrl}
+                  alt="내 하루한컷"
+                  width={88}
+                  height={88}
+                  className="h-[88px] w-[88px] rounded-full object-cover"
+                />
+              )}
             </Link>
           ) : (
             <div
