@@ -20,25 +20,12 @@ import { getWeekDayStatus } from "@/utils/getCurrentDay";
 type WeekDayKey = keyof typeof dailyRecordProgress;
 
 interface DailyMissionProgressProps {
-  status: keyof typeof MISSION_STATUS;
+  weeklyStatus: WeeklyStatus[];
 }
 
-export const DailyMissionProgress = ({ status }: DailyMissionProgressProps) => {
-  const [weeklyStatus, setWeeklyStatus] = useState<WeeklyStatus[]>([]);
-
-  useEffect(() => {
-    const fetchProgress = async () => {
-      try {
-        const data = await getChallengeDashboard();
-        setWeeklyStatus(data.weeklyStatus);
-        console.log("주간 미션 진행 상황:", data.weeklyStatus);
-      } catch (error) {
-        console.error("주간 미션 진행 상황 로드 실패:", error);
-      }
-    };
-    fetchProgress();
-  }, []);
-
+export const DailyMissionProgress = ({
+  weeklyStatus,
+}: DailyMissionProgressProps) => {
   return (
     <ul className="scrollbar-hide mt-8 flex gap-[9px] overflow-x-auto px-4">
       {weeklyStatus.map((item, index) => {
