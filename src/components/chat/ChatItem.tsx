@@ -6,6 +6,8 @@ import { useState } from "react";
 
 import { motion } from "framer-motion";
 
+import { ProfileImagePicker } from "../common/ProfileImagePicker";
+
 interface ChatItemProps {
   id: number;
   name: string;
@@ -58,9 +60,13 @@ export const ChatItem = ({
         className="relative z-10 flex cursor-pointer items-center gap-3 bg-white px-4 py-3"
       >
         <div className="bg-neutral-08 relative h-[80px] w-[80px] flex-shrink-0 overflow-hidden rounded-2xl">
-          {profileImg && (
-            <Image src={profileImg} alt={name} fill className="object-cover" />
-          )}
+          <ProfileImagePicker
+            imageUrl={profileImg || ""}
+            width={80}
+            height={80}
+            canEdit={false}
+            radius={16}
+          />
         </div>
 
         <div className="flex flex-1 flex-col gap-[7px] overflow-hidden">
