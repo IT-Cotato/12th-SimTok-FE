@@ -1,8 +1,7 @@
 export type InvitationContent = {
   inviteId: number;
-  plantId: number;
-  plantSort: string;
   inviterId: number;
+  plantName: string;
   inviterName: string;
   nickname: string;
   message: string;

@@ -1,28 +1,53 @@
 "use client";
 import { useState } from "react";
 
-import { on } from "events";
-
 import { InviteStart } from "@/components/garden/modal/InviteStart";
 
-import InviteData from "@/mock/invitePlant.json";
+import { InvitationContent } from "@/types/plantInvite.type";
 
 import { InviteAgree } from "./InviteAgree";
 import { InviteContent } from "./InviteContent";
 
-export const InvitationModal = ({ onClose }: { onClose: () => void }) => {
+interface InvitationModalProps {
+  inviteContent: InvitationContent;
+  onAccept: () => void;
+  onDecline: () => void;
+  onClose: () => void;
+}
+export const InvitationModal = ({
+  inviteContent,
+  onAccept,
+  onDecline,
+  onClose,
+}: InvitationModalProps) => {
   const [step, setStep] = useState(1);
-  const data = InviteData.invitations[0];
 
+  const handleClose = () => {
+    onClose();
+    setStep(1);
+  };
+  console.log(inviteContent);
   return (
     <div className="fixed inset-0 z-[100] mx-auto flex max-w-[440px] items-center justify-center bg-black/83 px-4">
       {step === 1 && (
-        <InviteStart onClose={onClose} inviteData={data} setStep={setStep} />
+        <InviteStart
+          onClose={handleClose}
+          inviteData={inviteContent}
+          setStep={setStep}
+        />
       )}
       {step === 2 && (
-        <InviteContent onClose={onClose} inviteData={data} setStep={setStep} />
+        <InviteContent
+          onClose={handleClose}
+          inviteData={inviteContent}
+          setStep={setStep}
+          onAccept={onAccept}
+          onDecline={onDecline}
+        />
       )}
-      {step === 3 && <InviteAgree onClose={onClose} inviteData={data} />}
+      {step === 3 && (
+        <InviteAgree onClose={handleClose} inviteData={inviteContent} />
+      )}
     </div>
   );
 };

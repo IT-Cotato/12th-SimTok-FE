@@ -29,10 +29,10 @@ export const postPlantInvite = async (
 // 초대받은 식물 수락 및 거절
 export const patchInvite = async (
   plantInviteId: number,
-  plantStatus: InviteResponse,
+  status: InviteResponse,
 ) => {
   const { data } = await apiInstance.patch(`/plant-invites/${plantInviteId}`, {
-    plantStatus,
+    status,
   });
   return data.data;
 };
