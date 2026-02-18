@@ -4,8 +4,6 @@ import { useRouter } from "next/navigation";
 
 import { useGardenStore } from "@/stores/useGardenStore";
 
-import MailBox from "@/assets/garden/red-message-box.svg";
-
 import { FullButton } from "@/components/common/FullButton";
 
 const InvitePlantConfirm = () => {
