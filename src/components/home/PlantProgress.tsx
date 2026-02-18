@@ -46,7 +46,7 @@ export const PlantProgress = ({ plantProgressData }: PlantProgressProps) => {
             <div className="bg-plant-yellow relative h-[551px] w-full overflow-hidden">
               <div className="flex h-full flex-col items-center justify-center px-4">
                 <Bubble status={PlantWaterStatus.EMPTY} />
-                <div className="bg-blur absolute bottom-0 z-10 h-[329px] w-full max-w-[440px]" />
+                <div className="bg-blur pointer-events-none absolute bottom-0 z-10 h-[329px] w-full max-w-[440px]" />
                 <div className="absolute bottom-[91px] z-20 flex w-full items-center justify-center px-4">
                   <InfoMessage
                     triangleUp={false}
@@ -55,7 +55,12 @@ export const PlantProgress = ({ plantProgressData }: PlantProgressProps) => {
                 </div>
 
                 <div className="absolute bottom-[13px] z-20 w-full px-4 py-[10px]">
-                  <FullButton isActive>식물 고르러 가기</FullButton>
+                  <FullButton
+                    isActive
+                    onClick={() => router.push("/garden/new")}
+                  >
+                    식물 고르러 가기
+                  </FullButton>
                 </div>
               </div>
             </div>
@@ -75,10 +80,11 @@ export const PlantProgress = ({ plantProgressData }: PlantProgressProps) => {
               plantStatus === PlantWaterStatus.EMPTY
                 ? "식물 키우러가기"
                 : "물주기";
+
             const routerLink =
               plantStatus === PlantWaterStatus.EMPTY
                 ? "/garden/new"
-                : "garden/care";
+                : "/garden/care";
             return (
               <SwiperSlide key={plant.sharedPlantId}>
                 <div
@@ -119,7 +125,7 @@ export const PlantProgress = ({ plantProgressData }: PlantProgressProps) => {
                       />
                     </div>
 
-                    <div className="bg-blur absolute bottom-0 z-10 h-[329px] w-full max-w-[440px]" />
+                    <div className="bg-blur pointer-events-none absolute bottom-0 z-10 h-[329px] w-full max-w-[440px]" />
                     <div className="absolute bottom-[73px] z-30 flex w-full items-center justify-center px-4 py-[10px]">
                       {plantLength > 0 ? (
                         <p className="text-h3 text-neutral-05 bg-glass-style z-99 rounded-2xl p-[10px]">
@@ -129,15 +135,17 @@ export const PlantProgress = ({ plantProgressData }: PlantProgressProps) => {
                         <InfoMessage text="원하는 식물을 골라보세요!" />
                       )}
                     </div>
-                    <div className="absolute bottom-0 z-99 w-full bg-white px-4 py-[10px]">
+                    <div className="absolute bottom-0 z-[100] w-full bg-white px-4 py-[10px]">
                       <FullButton
-                        isActive={plant.lastWateredBy.isMe === false}
+                        isActive={plant.lastWateredBy.isMe === true}
                         colorScheme={
                           (plantStatus === "WATERABLE" && "blue") ||
                           (plantStatus === "WITHERED" && "orange") ||
                           "mint"
                         }
-                        onClick={() => router.push(routerLink)}
+                        onClick={() => {
+                          router.push(routerLink);
+                        }}
                       >
                         {buttonTitle}
                       </FullButton>
