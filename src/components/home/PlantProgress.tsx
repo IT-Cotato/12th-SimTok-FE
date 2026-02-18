@@ -115,7 +115,7 @@ export const PlantProgress = ({ plantProgressData }: PlantProgressProps) => {
 
                     <div className="bg-blur absolute bottom-0 z-10 h-[329px] w-full max-w-[440px]" />
                     <div className="absolute bottom-[73px] z-30 flex w-full items-center justify-center px-4 py-[10px]">
-                      {plantLength > 1 ? (
+                      {plantLength > 0 ? (
                         <p className="text-h3 text-neutral-05 bg-glass-style z-99 rounded-2xl p-[10px]">
                           {plant.nickname}
                         </p>

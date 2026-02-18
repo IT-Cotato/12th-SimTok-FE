@@ -3,6 +3,7 @@ import { GardenState, GrowthStage, PlantSort } from "@/types/plant.type";
 // 실제 식물 상태별 컴포넌트들
 import { AfterNutrition } from "./gardenState/AfterNutriltion";
 import { Completed } from "./gardenState/Completed";
+import { EmptyPlant } from "./gardenState/EmptyPlant";
 import { Growning } from "./gardenState/Growning";
 import { NutritionAvailable } from "./gardenState/NutritionAvailable";
 import { SeedReady } from "./gardenState/SeedReady";
@@ -55,7 +56,6 @@ export const GardenStatusRenderer = ({
     case "COMPLETED":
       return <Completed plantSort={sort} />;
 
-    case "EMPTY":
     default:
       return null;
   }
