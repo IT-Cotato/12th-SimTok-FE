@@ -20,6 +20,8 @@ import { InfoMessage } from "@/components/dailyRecord/InfoMessage";
 
 import { CHAT_TOPIC } from "@/constants/friendsSettings";
 
+import { uploadToS3 } from "@/utils/uploadImage.util";
+
 import {
   getChatTopics,
   getTopicTemplates,
@@ -375,20 +377,87 @@ const Chatting = () => {
     }
   }, [selectedTopicKey, apiTopics, recommendations]);
 
-  const handleImageUpload = (file: File) => {
-    const imageUrl = URL.createObjectURL(file);
-    const newMessage: ChatMessage = {
-      id: Date.now(),
-      type: "mine",
-      content: imageUrl,
-      isImage: true,
-      time: new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-      createdAt: new Date().toISOString(),
-    };
-    setMessages(prev => [...prev, newMessage]);
+  // const handleImageUpload = (file: File) => {
+  //   const imageUrl = URL.createObjectURL(file);
+  //   const newMessage: ChatMessage = {
+  //     id: Date.now(),
+  //     type: "mine",
+  //     content: imageUrl,
+  //     isImage: true,
+  //     time: new Date().toLocaleTimeString([], {
+  //       hour: "2-digit",
+  //       minute: "2-digit",
+  //     }),
+  //     createdAt: new Date().toISOString(),
+  //   };
+  //   setMessages(prev => [...prev, newMessage]);
+  // };
+
+  const handleImageUpload = async (file: File) => {
+    // 0. 즉시 실행 확인 로그
+    console.log("📸 handleImageUpload 호출됨:", file.name);
+
+    // 1. 화면 즉시 반영 (낙관적 업데이트)
+    const previewUrl = URL.createObjectURL(file);
+    const tempId = crypto.randomUUID();
+
+    setMessages(prev => [
+      ...prev,
+      {
+        id: tempId,
+        type: "mine",
+        content: previewUrl,
+        isImage: true,
+        time: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+        createdAt: new Date().toISOString(),
+      },
+    ]);
+
+    try {
+      const fullUrl = await uploadToS3(file, "CHAT");
+      if (!fullUrl) return;
+
+      // 2. S3가 반환한 실제 URL에서 도메인을 제외한 '순수 경로'만 추출
+      const urlObj = new URL(fullUrl);
+      let realObjectKey = urlObj.pathname;
+
+      // 3. 맨 앞의 '/' 제거 (서버 예시 규격 준수)
+      if (realObjectKey.startsWith("/")) {
+        realObjectKey = realObjectKey.substring(1);
+      }
+
+      // 4. 인코딩된 문자 복원 (공백, 특수문자 등)
+      const finalKey = decodeURIComponent(realObjectKey);
+
+      console.log("🛠️ S3에 실제 저장된 ObjectKey:", finalKey);
+
+      const payload = {
+        clientMessageId: tempId,
+        roomId: roomId === "new" ? null : Number(roomId),
+        opponentMemberId:
+          roomId === "new" ? (targetId ? Number(targetId) : null) : null,
+        messageType: "ATTACHMENT",
+        content: null,
+        attachment: {
+          attachmentType: "IMAGE",
+          objectKey: finalKey, // 전체 URL이 아닌 추출된 Key 전달
+          mimeType: file.type,
+          sizeBytes: file.size,
+          durationMs: null,
+        },
+      };
+
+      client?.publish({
+        destination: "/app/chat/messages/send",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    } catch (err) {
+      console.error("❌ 이미지 전송 중 최종 에러:", err);
+    }
   };
 
   const scrollToBottom = useCallback(() => {
@@ -458,6 +527,11 @@ const Chatting = () => {
                       time={msg.time}
                       isPrevSame={isPrevSame}
                       isNextSame={isNextSame}
+                      isImage={
+                        msg.isImage ||
+                        msg.content?.includes("http") ||
+                        msg.content?.startsWith("blob:")
+                      }
                     />
                   ) : (
                     <FriendMessage
@@ -468,6 +542,11 @@ const Chatting = () => {
                       time={msg.time}
                       isPrevSame={isPrevSame}
                       isNextSame={isNextSame}
+                      isImage={
+                        msg.isImage ||
+                        msg.content?.includes("http") ||
+                        msg.content?.startsWith("blob:")
+                      }
                     />
                   )}
                 </div>
