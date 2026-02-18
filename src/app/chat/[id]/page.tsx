@@ -23,6 +23,7 @@ import { CHAT_TOPIC } from "@/constants/friendsSettings";
 import {
   getChatTopics,
   getTopicTemplates,
+  postAiPhrases,
 } from "../../api/chat/chatTopics.api";
 
 interface ChatMessage {
@@ -331,6 +332,36 @@ const Chatting = () => {
     setRecommendations([]); // 상태 초기화
   }, []);
 
+  const handleRefreshAiPhrases = useCallback(async () => {
+    console.log("🔄 [AI Refresh] 요청 시작");
+
+    if (!selectedTopicKey) {
+      console.warn("⚠️ [AI Refresh] selectedTopicKey 없음");
+      return;
+    }
+
+    const topicMeta = apiTopics.find(t => t.code === selectedTopicKey);
+    if (!topicMeta) {
+      console.warn("⚠️ [AI Refresh] 매칭되는 topicMeta 없음");
+      return;
+    }
+
+    try {
+      const response = await postAiPhrases({
+        topic: topicMeta.name, // 현재 선택된 주제 명칭
+        existingPhrases: recommendations, // 현재 화면에 떠 있는 문구들
+        count: 5, // 새로 받을 개수
+      });
+
+      if (response?.success && response?.data?.phrases) {
+        console.log("📥 [AI Refresh] 결과:", response.data.phrases);
+        setRecommendations(response.data.phrases); // 새로운 리스트로 교체
+      }
+    } catch (error) {
+      console.error("AI 문구 갱신 실패:", error);
+    }
+  }, [selectedTopicKey, apiTopics, recommendations]);
+
   const handleImageUpload = (file: File) => {
     const imageUrl = URL.createObjectURL(file);
     const newMessage: ChatMessage = {
@@ -431,7 +462,13 @@ const Chatting = () => {
                 <div className="flex flex-col">
                   {selectedTopic ? (
                     <div className="flex flex-col gap-[19px]">
-                      <div className="flex justify-center">
+                      <div className="flex w-full flex-col items-center">
+                        <div
+                          className="mb-[6px] cursor-pointer"
+                          onClick={handleRefreshAiPhrases}
+                        >
+                          <AiIcon />
+                        </div>
                         <button
                           onClick={() => setSelectedTopicKey(null)}
                           className="text-sub1-r text-orange-01 flex cursor-pointer items-center gap-1"
@@ -440,13 +477,19 @@ const Chatting = () => {
                           키워드로 돌아가기
                         </button>
                       </div>
-                      <div className="flex flex-col items-start gap-2">
+                      <div className="flex w-full flex-col items-start gap-2">
                         {recommendations.map((text, idx) => (
-                          <TopicKeyword
+                          <div
                             key={idx}
-                            label={text}
-                            onClick={() => handleRecommendationClick(text)}
-                          />
+                            className="scrollbar-hide w-full overflow-x-auto whitespace-nowrap"
+                          >
+                            <div className="inline-block min-w-full">
+                              <TopicKeyword
+                                label={text}
+                                onClick={() => handleRecommendationClick(text)}
+                              />
+                            </div>
+                          </div>
                         ))}
                       </div>
                     </div>
