@@ -12,7 +12,7 @@ export const InfoMessage = ({ text, triangleUp = true }: InfoMessageProps) => {
         {text}
       </div>
       {!triangleUp && (
-        <div className="border-b-neutral-01 mx-[10px] -mt-[6px] h-0 w-0 self-start border-t-[18px] border-r-[9px] border-b-[0] border-l-[9px] border-solid border-r-transparent border-b-transparent border-l-transparent"></div>
+        <div className="border-b-neutral-01 border-t-neutral-01 mx-[10px] -mt-[6px] h-0 w-0 self-start border-t-[18px] border-r-[9px] border-b-[0] border-l-[9px] border-solid border-r-transparent border-b-transparent border-l-transparent"></div>
       )}
     </section>
   );

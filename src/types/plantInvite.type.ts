@@ -14,3 +14,5 @@ export type PlantInvite = {
   count: number;
   invitations: InvitationContent[];
 };
+
+export type InviteResponse = "ACCEPTED" | "REJECTED";

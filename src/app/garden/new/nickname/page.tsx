@@ -15,7 +15,7 @@ import { PLANT_SORT_INFO } from "@/constants/garden/plantList";
 
 const PlantNicknamePage = () => {
   const router = useRouter();
-  const selectedPlantId = useGardenStore(state => state.selectedPlantId);
+  const selectedPlantId = useGardenStore(state => state.selectedPlant);
   const setPlantNickname = useGardenStore(state => state.setNickname);
 
   const selectedPlant = PLANT_SORT_INFO.find(

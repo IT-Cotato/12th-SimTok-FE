@@ -47,7 +47,7 @@ export interface GardenPlantBase {
   percentage: number;
   growthStage: GrowthStage;
   gardenState: GardenState;
-  status: "GROWING" | "WITHERED" | "COMPLETED";
+  status: "GROWING" | "COMPLETED";
   isSoloMode: boolean;
   lastWateredBy: {
     memberId: number;

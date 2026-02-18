@@ -1,12 +1,15 @@
 "use client";
 import { useRouter } from "next/navigation";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { useGardenStore } from "@/stores/useGardenStore";
 
+import { postPlantInvite } from "@/app/api/garden/invite.api";
+
 import { BackHeader } from "@/components/common/BackHeader";
 import { FullButton } from "@/components/common/FullButton";
+import { OnlyLoader } from "@/components/common/OnlyLoader";
 import { ChosenPlant } from "@/components/garden/ChosenPlant";
 import ProgressDots from "@/components/onboarding/ProgressDots";
 
@@ -16,16 +19,17 @@ import { getFriendName } from "@/utils/getFriendName";
 
 const InviteMessagePage = () => {
   const router = useRouter();
-  const nickname = useGardenStore(state => state.nickname);
-  const plantId = useGardenStore(state => state.selectedPlantId);
-  const friendId = useGardenStore(state => state.invitedFriendId);
+  const [isLoading, setIsLoading] = useState(false);
 
+  const nickname = useGardenStore(state => state.nickname); // 식물 닉네임
+  const plantName = useGardenStore(state => state.selectedPlant); // 식물 종류
+  const friendId = useGardenStore(state => state.invitedFriendId);
+  const invitedFriend = useGardenStore(state => state.invitedFriend);
   const message = useGardenStore(state => state.message);
   const setMessage = useGardenStore(state => state.setMessage);
 
-  const selectedPlant = PLANT_SORT_INFO.find(plant => plant.id === plantId);
+  const selectedPlant = PLANT_SORT_INFO.find(plant => plant.id === plantName);
 
-  const invitedFriend = useGardenStore(state => state.invitedFriend);
   const friendName = invitedFriend && getFriendName(invitedFriend, true);
 
   useEffect(() => {
@@ -33,6 +37,21 @@ const InviteMessagePage = () => {
       router.replace("/garden/new");
     }
   }, [selectedPlant, invitedFriend, router]);
+
+  const handleInvite = async () => {
+    if (!friendId || !plantName || !nickname || isLoading) return;
+
+    try {
+      setIsLoading(true);
+      await postPlantInvite(friendId, plantName, nickname, message);
+      // 성공 시 확인 페이지로 이동
+      router.push("/garden/new/invite/confirm");
+    } catch (error) {
+      console.error("초대 전송 실패:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   if (!selectedPlant || !friendName) return null;
 
@@ -67,13 +86,11 @@ const InviteMessagePage = () => {
           </div>
         </section>
         <section className="mt-9 px-4 py-[10px]">
-          <FullButton
-            isActive={!!message}
-            onClick={() => router.push("/garden/new/invite/confirm")}
-          >
+          <FullButton isActive={!!message} onClick={handleInvite}>
             초대문자보내기
           </FullButton>
         </section>
+        {isLoading && <OnlyLoader />}
       </div>
     </main>
   );
