@@ -10,8 +10,6 @@ import { JwtPayload, jwtDecode } from "jwt-decode";
 import AiIcon from "@/assets/AI.svg";
 import BackToKeywordIcon from "@/assets/backtokeyword.svg";
 
-//import MenuIcon from "@/assets/list.svg";
-
 import { ChatDateDivider } from "@/components/chat/ChatDateDivider";
 import { FriendMessage } from "@/components/chat/FriendMessage";
 import { MyMessage } from "@/components/chat/MyMessage";
@@ -21,6 +19,11 @@ import { MessageInput } from "@/components/common/MessageInput";
 import { InfoMessage } from "@/components/dailyRecord/InfoMessage";
 
 import { CHAT_TOPIC } from "@/constants/friendsSettings";
+
+import {
+  getChatTopics,
+  getTopicTemplates,
+} from "../../api/chat/chatTopics.api";
 
 interface ChatMessage {
   id: string | number;
@@ -43,13 +46,6 @@ interface ChatTopicItem {
   name: string;
   code: string;
 }
-
-// interface HistoryResponse {
-//   success: boolean;
-//   data: {
-//     items: ApiMessageItem[];
-//   };
-// }
 
 interface ChatMessageResponse {
   messageId: string;
@@ -106,6 +102,7 @@ const Chatting = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const displayName = searchParams.get("name") || "상대방";
   const opponentProfileImg = searchParams.get("img");
+  const [recommendations, setRecommendations] = useState<string[]>([]);
 
   const [prevRoomId, setPrevRoomId] = useState(roomId);
   if (roomId !== prevRoomId) {
@@ -123,27 +120,19 @@ const Chatting = () => {
     });
 
   const fetchTopics = useCallback(async () => {
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      console.error("토큰이 존재하지 않습니다.");
-      return;
-    }
     try {
-      const res = await fetch("/api/chat-topics", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const result = await res.json();
-      console.log("--- Client Received Data ---", result);
-
-      if (result.success && result.data?.chatTopicList) {
-        setApiTopics(result.data.chatTopicList);
+      const response = await getChatTopics();
+      if (response?.success && response?.data?.chatTopicList) {
+        setApiTopics(response.data.chatTopicList);
       }
-    } catch (err) {
-      console.error("주제 목록 로드 실패:", err);
+    } catch (error) {
+      console.error("주제 로드 실패", error);
     }
   }, []);
+
+  useEffect(() => {
+    fetchTopics();
+  }, [fetchTopics]);
 
   const markAsRead = useCallback(async (id: string) => {
     if (!id || id === "new") return;
@@ -225,15 +214,6 @@ const Chatting = () => {
           console.log("📩 [EVENT 수신]:", body);
 
           if (body.type === "ROOM_CREATED" && body.roomId) {
-            // const nameParam = encodeURIComponent(displayName || "");
-            // const targetParam = searchParams.get("target");
-
-            // router.replace(
-            //   `/chat/${body.roomId}?target=${targetParam}&name=${nameParam}`,
-            // );
-
-            // fetchHistory(body.roomId.toString());
-
             router.replace(
               `/chat/${body.roomId}?target=${targetId}&name=${encodeURIComponent(displayName)}`,
             );
@@ -330,11 +310,26 @@ const Chatting = () => {
     setSelectedTopicKey(null);
   };
 
-  const handleRecommendationClick = (text: string) => {
+  const handleTopicClick = useCallback(async (topicCode: string) => {
+    setSelectedTopicKey(topicCode);
+    try {
+      const response = await getTopicTemplates(topicCode);
+      if (response?.success && response?.data?.templates) {
+        setRecommendations(response.data.templates);
+      }
+    } catch (error) {
+      console.error("추천 문장 로드 실패:", error);
+      const meta = getTopicMeta(topicCode);
+      setRecommendations(meta.recommendations || []);
+    }
+  }, []);
+
+  const handleRecommendationClick = useCallback((text: string) => {
     setInputValue(text);
     setIsTopicOpen(false);
     setSelectedTopicKey(null);
-  };
+    setRecommendations([]); // 상태 초기화
+  }, []);
 
   const handleImageUpload = (file: File) => {
     const imageUrl = URL.createObjectURL(file);
@@ -446,7 +441,7 @@ const Chatting = () => {
                         </button>
                       </div>
                       <div className="flex flex-col items-start gap-2">
-                        {selectedTopic.recommendations.map((text, idx) => (
+                        {recommendations.map((text, idx) => (
                           <TopicKeyword
                             key={idx}
                             label={text}
@@ -465,27 +460,15 @@ const Chatting = () => {
                       </div>
 
                       <div className="scrollbar-hide flex w-full flex-nowrap gap-[12px] overflow-x-auto">
-                        {/* {CHAT_TOPIC.map(topic => (
+                        {apiTopics.map(topic => (
                           <TopicKeyword
-                            key={topic.key}
-                            label={topic.label}
-                            icon={topic.icon}
-                            isActive={false}
-                            onClick={() => setSelectedTopicKey(topic.key)}
+                            key={topic.code}
+                            label={topic.name}
+                            icon={getTopicMeta(topic.code).icon ?? undefined}
+                            isActive={selectedTopicKey === topic.code}
+                            onClick={() => handleTopicClick(topic.code)} // API 호출 핸들러 연결
                           />
-                        ))} */}
-                        {apiTopics.map(topic => {
-                          const meta = getTopicMeta(topic.code); // 아이콘 매칭
-                          return (
-                            <TopicKeyword
-                              key={topic.code}
-                              label={topic.name} // 서버에서 온 주제명 (일상 등)
-                              icon={meta.icon ?? undefined}
-                              isActive={selectedTopicKey === topic.code}
-                              onClick={() => setSelectedTopicKey(topic.code)}
-                            />
-                          );
-                        })}
+                        ))}
                       </div>
                     </div>
                   )}

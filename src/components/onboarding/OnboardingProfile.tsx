@@ -4,11 +4,13 @@ import { useRouter } from "next/navigation";
 
 import { useEffect, useState } from "react";
 
-import { type ProfileData, profileApi } from "@/app/api/profile";
+import { profileApi } from "@/app/api/profile";
 
 import { FullButton } from "@/components/common/FullButton";
 import LoadingModal from "@/components/common/LoadingModal";
 import UploadButton from "@/components/onboarding/UploadButton";
+
+import { useImageUpload } from "@/hooks/useImageUpload";
 
 import { ProfileWrapper } from "../common/ProfileWrapper";
 
