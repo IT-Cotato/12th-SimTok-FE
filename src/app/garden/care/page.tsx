@@ -21,6 +21,7 @@ import { GardenAnimationView } from "@/components/garden/care/GardenAnimationVie
 import { GardenBackgroundColor } from "@/components/garden/care/GardenBackgrounColor";
 import { GardenCareContent } from "@/components/garden/care/GardenCareContent";
 import { GardenCareHeader } from "@/components/garden/care/GardenCareHeader";
+import { EmptyPlant } from "@/components/garden/care/gardenState/EmptyPlant";
 import { NoNutrition } from "@/components/garden/modal/NoNutrition";
 
 import { useGardenStatus } from "@/hooks/useGardenStatus";
@@ -180,9 +181,7 @@ const GardenCare = () => {
               ))}
             </Swiper>
           ) : (
-            <div className="flex flex-1 items-center justify-center text-white">
-              키우고 있는 식물이 없어요.
-            </div>
+            <EmptyPlant />
           )}
         </div>
       )}

@@ -100,7 +100,7 @@ const Garden = () => {
           }
         />
       </div>
-      {havePlant && (
+      {plantCompleted && (
         <section className="absolute bottom-[180px] left-1/2 z-[70] w-full -translate-x-1/2">
           <div className="mx-auto -mb-[10px] max-w-[440px]">
             <Swiper
