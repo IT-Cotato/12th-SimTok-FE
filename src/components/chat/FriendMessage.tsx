@@ -5,6 +5,7 @@ interface FriendMessageProps {
   time: string;
   isPrevSame?: boolean;
   isNextSame?: boolean;
+  isImage?: boolean;
 }
 
 export const FriendMessage = ({
