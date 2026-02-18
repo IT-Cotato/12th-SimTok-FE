@@ -186,7 +186,7 @@ const Chatting = () => {
       if (!id || id === "new" || isNaN(Number(id))) return;
 
       try {
-        const res = await fetch(`/api/chat/rooms/${id}/messages?limit=20`, {
+        const res = await fetch(`/api/chat/rooms/${id}/messages?limit=500`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
