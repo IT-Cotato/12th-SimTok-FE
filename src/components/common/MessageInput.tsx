@@ -97,6 +97,14 @@ export const MessageInput = ({
       } ${blackMode ? "border-neutral-02 border bg-transparent" : ""} `}
       onClick={() => inputRef.current?.focus()}
     >
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: "none" }}
+        accept="image/*"
+        onChange={handleFileChange}
+      />
+
       <div className="flex flex-shrink-0 items-center">
         {isChatting ? (
           <button

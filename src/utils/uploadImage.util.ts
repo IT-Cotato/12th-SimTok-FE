@@ -1,4 +1,9 @@
-export type UploadFolderType = "DIARY" | "PROFILE" | "CHALLENGE" | "CHAT";
+export type UploadFolderType =
+  | "DIARY"
+  | "PROFILE"
+  | "CHALLENGE"
+  | "CHAT"
+  | "CHAT/attachments";
 
 export const uploadToS3 = async (
   file: File,
@@ -18,7 +23,11 @@ export const uploadToS3 = async (
     }),
   });
 
-  if (!res.ok) throw new Error("Presigned URL 발급 실패");
+  if (!res.ok) {
+    const errorDetail = await res.json().catch(() => ({}));
+    console.error("서버 응답 에러 상세:", errorDetail); // 서버가 보낸 'reasons' 확인 가능
+    throw new Error(`Presigned URL 발급 실패: ${res.status}`);
+  }
 
   const response = await res.json();
   const { presignedUrl, imageUrl } = response.data;

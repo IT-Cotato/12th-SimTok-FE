@@ -20,9 +20,12 @@ import { InfoMessage } from "@/components/dailyRecord/InfoMessage";
 
 import { CHAT_TOPIC } from "@/constants/friendsSettings";
 
+import { uploadToS3 } from "@/utils/uploadImage.util";
+
 import {
   getChatTopics,
   getTopicTemplates,
+  postAiPhrases,
 } from "../../api/chat/chatTopics.api";
 
 interface ChatMessage {
@@ -30,6 +33,7 @@ interface ChatMessage {
   type: "mine" | "friend";
   content: string;
   time: string;
+  createdAt: string;
   messageSeq?: number;
   isImage?: boolean;
 }
@@ -173,6 +177,7 @@ const Chatting = () => {
             type: msg.senderMemberId === myMemberId ? "mine" : "friend",
             content: msg.content,
             time: formatTime(msg.createdAt),
+            createdAt: msg.createdAt,
             messageSeq: msg.messageSeq,
           }));
           setMessages(history.reverse());
@@ -234,6 +239,7 @@ const Chatting = () => {
                 type: body.senderMemberId === myMemberId ? "mine" : "friend",
                 content: body.content,
                 time: formatTime(body.createdAt),
+                createdAt: body.createdAt, // 필드 반드시 추가
               },
             ]);
           }),
@@ -299,6 +305,16 @@ const Chatting = () => {
     }
   };
 
+  const formatDateForDivider = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return new Intl.DateTimeFormat("ko-KR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      weekday: "long",
+    }).format(date);
+  };
+
   const handleBack = async () => {
     await markAsRead(roomId);
     router.replace("/chat");
@@ -331,19 +347,117 @@ const Chatting = () => {
     setRecommendations([]); // 상태 초기화
   }, []);
 
-  const handleImageUpload = (file: File) => {
-    const imageUrl = URL.createObjectURL(file);
-    const newMessage: ChatMessage = {
-      id: Date.now(),
-      type: "mine",
-      content: imageUrl,
-      isImage: true,
-      time: new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-    };
-    setMessages(prev => [...prev, newMessage]);
+  const handleRefreshAiPhrases = useCallback(async () => {
+    console.log("🔄 [AI Refresh] 요청 시작");
+
+    if (!selectedTopicKey) {
+      console.warn("⚠️ [AI Refresh] selectedTopicKey 없음");
+      return;
+    }
+
+    const topicMeta = apiTopics.find(t => t.code === selectedTopicKey);
+    if (!topicMeta) {
+      console.warn("⚠️ [AI Refresh] 매칭되는 topicMeta 없음");
+      return;
+    }
+
+    try {
+      const response = await postAiPhrases({
+        topic: topicMeta.name, // 현재 선택된 주제 명칭
+        existingPhrases: recommendations, // 현재 화면에 떠 있는 문구들
+        count: 5, // 새로 받을 개수
+      });
+
+      if (response?.success && response?.data?.phrases) {
+        console.log("📥 [AI Refresh] 결과:", response.data.phrases);
+        setRecommendations(response.data.phrases); // 새로운 리스트로 교체
+      }
+    } catch (error) {
+      console.error("AI 문구 갱신 실패:", error);
+    }
+  }, [selectedTopicKey, apiTopics, recommendations]);
+
+  // const handleImageUpload = (file: File) => {
+  //   const imageUrl = URL.createObjectURL(file);
+  //   const newMessage: ChatMessage = {
+  //     id: Date.now(),
+  //     type: "mine",
+  //     content: imageUrl,
+  //     isImage: true,
+  //     time: new Date().toLocaleTimeString([], {
+  //       hour: "2-digit",
+  //       minute: "2-digit",
+  //     }),
+  //     createdAt: new Date().toISOString(),
+  //   };
+  //   setMessages(prev => [...prev, newMessage]);
+  // };
+
+  const handleImageUpload = async (file: File) => {
+    // 0. 즉시 실행 확인 로그
+    console.log("📸 handleImageUpload 호출됨:", file.name);
+
+    // 1. 화면 즉시 반영 (낙관적 업데이트)
+    const previewUrl = URL.createObjectURL(file);
+    const tempId = crypto.randomUUID();
+
+    setMessages(prev => [
+      ...prev,
+      {
+        id: tempId,
+        type: "mine",
+        content: previewUrl,
+        isImage: true,
+        time: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+        createdAt: new Date().toISOString(),
+      },
+    ]);
+
+    try {
+      const fullUrl = await uploadToS3(file, "CHAT");
+      if (!fullUrl) return;
+
+      // 2. S3가 반환한 실제 URL에서 도메인을 제외한 '순수 경로'만 추출
+      const urlObj = new URL(fullUrl);
+      let realObjectKey = urlObj.pathname;
+
+      // 3. 맨 앞의 '/' 제거 (서버 예시 규격 준수)
+      if (realObjectKey.startsWith("/")) {
+        realObjectKey = realObjectKey.substring(1);
+      }
+
+      // 4. 인코딩된 문자 복원 (공백, 특수문자 등)
+      const finalKey = decodeURIComponent(realObjectKey);
+
+      console.log("🛠️ S3에 실제 저장된 ObjectKey:", finalKey);
+
+      const payload = {
+        clientMessageId: tempId,
+        roomId: roomId === "new" ? null : Number(roomId),
+        opponentMemberId:
+          roomId === "new" ? (targetId ? Number(targetId) : null) : null,
+        messageType: "ATTACHMENT",
+        content: null,
+        attachment: {
+          attachmentType: "IMAGE",
+          objectKey: finalKey, // 전체 URL이 아닌 추출된 Key 전달
+          mimeType: file.type,
+          sizeBytes: file.size,
+          durationMs: null,
+        },
+      };
+
+      client?.publish({
+        destination: "/app/chat/messages/send",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    } catch (err) {
+      console.error("❌ 이미지 전송 중 최종 에러:", err);
+    }
   };
 
   const scrollToBottom = useCallback(() => {
@@ -381,9 +495,14 @@ const Chatting = () => {
           ref={scrollRef}
           className="scrollbar-hide flex-1 overflow-y-auto scroll-smooth"
         >
-          <ChatDateDivider date="2025년 12월 18일 목요일" />
           <div className="flex flex-col">
             {messages.map((msg, index) => {
+              const prevMsg = messages[index - 1];
+              const isNewDay =
+                !prevMsg ||
+                new Date(prevMsg.createdAt).toDateString() !==
+                  new Date(msg.createdAt).toDateString();
+
               const isPrevSame =
                 index > 0 &&
                 messages[index - 1].type === msg.type &&
@@ -393,24 +512,44 @@ const Chatting = () => {
                 messages[index + 1].type === msg.type &&
                 messages[index + 1].time === msg.time;
 
-              return msg.type === "mine" ? (
-                <MyMessage
-                  key={msg.id}
-                  content={msg.content}
-                  time={msg.time}
-                  isPrevSame={isPrevSame}
-                  isNextSame={isNextSame}
-                />
-              ) : (
-                <FriendMessage
-                  key={msg.id}
-                  userName={displayName}
-                  profileImage={opponentProfileImg ?? undefined}
-                  content={msg.content}
-                  time={msg.time}
-                  isPrevSame={isPrevSame}
-                  isNextSame={isNextSame}
-                />
+              return (
+                <div key={msg.id}>
+                  {isNewDay && (
+                    <ChatDateDivider
+                      date={formatDateForDivider(msg.createdAt)}
+                    />
+                  )}
+
+                  {msg.type === "mine" ? (
+                    <MyMessage
+                      key={msg.id}
+                      content={msg.content}
+                      time={msg.time}
+                      isPrevSame={isPrevSame}
+                      isNextSame={isNextSame}
+                      isImage={
+                        msg.isImage ||
+                        msg.content?.includes("http") ||
+                        msg.content?.startsWith("blob:")
+                      }
+                    />
+                  ) : (
+                    <FriendMessage
+                      key={msg.id}
+                      userName={displayName}
+                      profileImage={opponentProfileImg ?? undefined}
+                      content={msg.content}
+                      time={msg.time}
+                      isPrevSame={isPrevSame}
+                      isNextSame={isNextSame}
+                      isImage={
+                        msg.isImage ||
+                        msg.content?.includes("http") ||
+                        msg.content?.startsWith("blob:")
+                      }
+                    />
+                  )}
+                </div>
               );
             })}
           </div>
@@ -431,7 +570,13 @@ const Chatting = () => {
                 <div className="flex flex-col">
                   {selectedTopic ? (
                     <div className="flex flex-col gap-[19px]">
-                      <div className="flex justify-center">
+                      <div className="flex w-full flex-col items-center">
+                        <div
+                          className="mb-[6px] cursor-pointer"
+                          onClick={handleRefreshAiPhrases}
+                        >
+                          <AiIcon />
+                        </div>
                         <button
                           onClick={() => setSelectedTopicKey(null)}
                           className="text-sub1-r text-orange-01 flex cursor-pointer items-center gap-1"
@@ -440,13 +585,19 @@ const Chatting = () => {
                           키워드로 돌아가기
                         </button>
                       </div>
-                      <div className="flex flex-col items-start gap-2">
+                      <div className="flex w-full flex-col items-start gap-2">
                         {recommendations.map((text, idx) => (
-                          <TopicKeyword
+                          <div
                             key={idx}
-                            label={text}
-                            onClick={() => handleRecommendationClick(text)}
-                          />
+                            className="scrollbar-hide w-full overflow-x-auto whitespace-nowrap"
+                          >
+                            <div className="inline-block min-w-full">
+                              <TopicKeyword
+                                label={text}
+                                onClick={() => handleRecommendationClick(text)}
+                              />
+                            </div>
+                          </div>
                         ))}
                       </div>
                     </div>

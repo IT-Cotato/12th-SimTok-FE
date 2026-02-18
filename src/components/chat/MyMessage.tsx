@@ -5,6 +5,7 @@ interface MyMessageProps {
   time: string;
   isPrevSame?: boolean;
   isNextSame?: boolean;
+  isImage?: boolean;
 }
 
 export const MyMessage = ({
