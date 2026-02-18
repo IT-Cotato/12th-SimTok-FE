@@ -36,8 +36,8 @@ export type ViewPhase =
 export interface GardenStateItem {
   state: GardenState;
   growthStage: GrowthStage | null;
-  title: string[];
-  action: GardenAction[];
+  title?: string[];
+  action?: GardenAction[];
   background?: string;
 }
 
