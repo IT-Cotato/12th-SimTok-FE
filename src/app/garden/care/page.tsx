@@ -65,7 +65,7 @@ const GardenCare = () => {
     if (value === "left") router.push("/garden");
   };
 
-  if (isLoading) return <div className="bg-brown h-screen" />; // 초기 로딩 스켈레톤
+  if (isLoading) return <div className="bg-brown h-screen" />;
 
   return (
     <main className="relative flex h-screen flex-col">

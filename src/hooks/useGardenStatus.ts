@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { GardenPlantItem, GardenState, ViewPhase } from "@/types/plant.type";
 
@@ -9,20 +9,27 @@ export const useGardenStatus = (plantList: GardenPlantItem[]) => {
     null,
   );
 
-  // plantList가 바뀔 때마다 ID별 상태 객체를 생성
+  // 1. 수동으로 업데이트된 식물 상태만 기록하는 별도 상태
+  const [manualUpdates, setManualUpdates] = useState<
+    Record<number, { gardenState: GardenState; isMe: boolean }>
+  >({});
+
+  // 2. [핵심] 원본 데이터와 수동 업데이트 내역을 합쳐서 계산 (useEffect 필요 없음)
   const plantStatuses = useMemo(() => {
-    return plantList.reduce(
+    const baseStatuses = plantList.reduce(
       (acc, plant) => {
         acc[plant.sharedPlantId] = {
           gardenState: plant.gardenState,
-          // 서버 데이터 구조: lastWateredBy 내부에 isMe가 있음
           isMe: plant.lastWateredBy?.isMe ?? false,
         };
         return acc;
       },
       {} as Record<number, { gardenState: GardenState; isMe: boolean }>,
     );
-  }, [plantList]);
+
+    // 원본 데이터 위에 수동 업데이트된 내역을 덮어씀
+    return { ...baseStatuses, ...manualUpdates };
+  }, [plantList, manualUpdates]);
 
   const currentPlant = plantList[currentIndex] || null;
 
@@ -33,14 +40,23 @@ export const useGardenStatus = (plantList: GardenPlantItem[]) => {
   ) => {
     setOptimisticState(nextState);
 
-    // 애니메이션 단계별 실행 로직 (예시)
     if (phases.length > 0) {
       let totalDelay = 0;
       phases.forEach(p => {
         setTimeout(() => setViewPhase(p.phase), totalDelay);
         totalDelay += p.duration;
       });
+
       setTimeout(() => {
+        // 3. 애니메이션 종료 후 manualUpdates에 기록하여 상태 유지
+        setManualUpdates(prev => ({
+          ...prev,
+          [plantId]: {
+            gardenState: nextState,
+            isMe: true,
+          },
+        }));
+
         setViewPhase("IDLE");
         setOptimisticState(null);
       }, totalDelay);
