@@ -13,7 +13,7 @@ import {
 
 import plantProgressData from "@/mock/plantProgress.json";
 
-import { GardenPlant } from "@/types/plant.type";
+import { GardenPlantItem } from "@/types/plant.type";
 
 import { getGrowthImage } from "@/utils/getGrowthImage";
 import { getPlantStatus, getPlantStatusMinutes } from "@/utils/getPlantStatus";
@@ -25,7 +25,7 @@ import { Bubble } from "./Bubble";
 import { PlantWithBubble } from "./PlantWithBubble";
 
 export const PlantProgress = () => {
-  const plants = plantProgressData as GardenPlant[];
+  const plants = plantProgressData as GardenPlantItem[];
   const plantLength = plantProgressData.length;
 
   return (
@@ -58,12 +58,12 @@ export const PlantProgress = () => {
           </SwiperSlide>
         ) : (
           plants.map((plant, index) => {
-            const plantStatus = getPlantStatus(plant.recentWateredTime);
+            const plantStatus = getPlantStatus(plant.lastWateredAt);
 
             const growthImage =
-              plant.growthStatus === "BLOOM"
+              plant.growthStage === "BLOOM"
                 ? ""
-                : getGrowthImage(plant.growthStatus, plantStatus);
+                : getGrowthImage(plant.growthStage, plantStatus);
 
             const BG = PLANT_BG_BY_STATUS[plantStatus];
 
@@ -73,7 +73,7 @@ export const PlantProgress = () => {
                 : "물주기";
 
             return (
-              <SwiperSlide key={plant.id}>
+              <SwiperSlide key={plant.sharedPlantId}>
                 <div
                   className={`${BG} relative h-[551px] w-full overflow-hidden`}
                 >
@@ -82,20 +82,22 @@ export const PlantProgress = () => {
 
                     {plantStatus === PlantWaterStatus.WATERED_RECENTLY ? (
                       <div className="text-h1 text-neutral-03">
-                        오늘은 물주기를 완료했어요🥳
+                        {plant.lastWateredBy.isMe
+                          ? "친구가 물을 줄 차례예요"
+                          : "내가 물을 줄 차례에요"}
                       </div>
                     ) : plantStatus === PlantWaterStatus.WATERABLE ? (
                       <div className="flex items-center">
                         <ClockIcon className="text-blue-00 h-9 w-9" />
                         <h1 className="text-h1 text-blue-00">
-                          {getPlantStatusMinutes(plant.recentWateredTime)}
+                          {getPlantStatusMinutes(plant.lastWateredAt)}
                         </h1>
                       </div>
                     ) : plantStatus === PlantWaterStatus.WITHERED ? (
                       <div className="flex items-center">
                         <ClockIcon className="text-red-00 h-9 w-9" />
                         <h1 className="text-red-00 text-h1">
-                          {getPlantStatusMinutes(plant.recentWateredTime)}
+                          {getPlantStatusMinutes(plant.lastWateredAt)}
                         </h1>
                       </div>
                     ) : (
@@ -104,8 +106,8 @@ export const PlantProgress = () => {
                     <div className="absolute bottom-[85px]">
                       <PlantWithBubble
                         plantWaterStatus={plantStatus}
-                        plantGrowthStatus={plant.growthStatus}
-                        plantSort={plant.plantSort}
+                        plantGrowthStatus={plant.growthStage}
+                        plantSort={plant.plantName}
                         growthImage={growthImage}
                       />
                     </div>
@@ -122,9 +124,7 @@ export const PlantProgress = () => {
                     </div>
                     <div className="absolute bottom-0 z-99 w-full bg-white px-4 py-[10px]">
                       <FullButton
-                        isActive={
-                          !(plantStatus === PlantWaterStatus.WATERED_RECENTLY)
-                        }
+                        isActive={plant.lastWateredBy.isMe === false}
                         colorScheme={
                           (plantStatus === "WATERABLE" && "blue") ||
                           (plantStatus === "WITHERED" && "orange") ||
