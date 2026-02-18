@@ -11,14 +11,11 @@ import { PLANT_IMAGE_MAP } from "@/constants/garden/plantList";
 import { GrowthStage } from "@/types/plant.type";
 
 interface WitheredProps {
+  pageTitle?: string[];
   growthStage: GrowthStage;
 }
 
-export const Withered = ({ growthStage }: WitheredProps) => {
-  const pageTitle = GARDEN_STATE_ITEM.find(
-    item => item.state === "WITHERED" && item.growthStage === growthStage,
-  )?.title;
-
+export const Withered = ({ pageTitle, growthStage }: WitheredProps) => {
   const plantImg =
     PLANT_IMAGE_MAP[growthStage as keyof typeof PLANT_IMAGE_MAP].bad;
 

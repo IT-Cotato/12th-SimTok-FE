@@ -11,17 +11,14 @@ import { PLANT_IMAGE_MAP } from "@/constants/garden/plantList";
 import { GrowthStage } from "@/types/plant.type";
 
 interface NutritionAvailableProps {
+  pageTitle?: string[];
   growthStage: GrowthStage;
 }
 
 export const NutritionAvailable = ({
+  pageTitle,
   growthStage,
 }: NutritionAvailableProps) => {
-  const pageTitle = GARDEN_STATE_ITEM.find(
-    item =>
-      item.state === "NUTRITION_AVAILABLE" && item.growthStage === growthStage,
-  )?.title;
-
   const plantImg =
     PLANT_IMAGE_MAP[growthStage as keyof typeof PLANT_IMAGE_MAP].bad;
 

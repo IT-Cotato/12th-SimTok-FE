@@ -22,7 +22,7 @@ import { PLANTS_PER_PAGE } from "@/constants/garden/gardenHome";
 
 import plantList from "@/mock/plantProgress.json";
 
-import { GardenPlant } from "@/types/plant.type";
+import { GardenPlantItem } from "@/types/plant.type";
 
 const Garden = () => {
   const router = useRouter();
@@ -31,8 +31,13 @@ const Garden = () => {
   const [openRules, setOpenRules] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
 
+  const plantCompleted = plantList.filter(
+    plant => plant.status === "COMPLETED",
+  );
+
   const havePlant = plantList.length > 0;
-  const carouselPage = Math.ceil(plantList.length / PLANTS_PER_PAGE);
+  const haveFlower = plantCompleted.length > 0;
+  const carouselPage = Math.ceil(plantCompleted.length / PLANTS_PER_PAGE);
 
   const handleChangeSelectTitle = (value: "left" | "right") => {
     setSelectTitle(value);
@@ -41,8 +46,9 @@ const Garden = () => {
       router.push("/garden/care");
     }
   };
+
   return (
-    <GardenBackground noPlant={!havePlant}>
+    <GardenBackground noPlant={!haveFlower}>
       <div className="relative w-full items-center justify-center">
         <GlassStyleHeader
           backHeader={false}
@@ -70,7 +76,7 @@ const Garden = () => {
         <PageTitle
           title={
             havePlant
-              ? ["정원이 한층 더 풍성해졌네요!", "다른 식물도 키워볼까요?"]
+              ? []
               : ["지금은 돌보는 식물이 없어요", "새로운 식물을 키워볼까요?"]
           }
         />
@@ -90,7 +96,7 @@ const Garden = () => {
               }).map((_, pageIndex) => (
                 <SwiperSlide key={pageIndex}>
                   <PlantColletction
-                    plantList={plantList as GardenPlant[]}
+                    plantList={plantCompleted as GardenPlantItem[]}
                     pageIndex={pageIndex}
                   />
                 </SwiperSlide>
