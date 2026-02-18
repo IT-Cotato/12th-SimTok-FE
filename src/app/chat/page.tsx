@@ -81,13 +81,6 @@ const ChatListPage = () => {
     };
   }, [fetchChatRooms]);
 
-  // 사용자가 채팅방에 있다가 뒤로가기로 돌아오거나 창을 다시 볼 때 갱신
-  //   window.addEventListener("focus", fetchChatRooms);
-  //   return () => {
-  //     window.removeEventListener("focus", fetchChatRooms);
-  //   };
-  // }, [fetchChatRooms]);
-
   const handleOpenModal = (chat: ChatRoomItem) => {
     setSelectedChat(chat);
     setIsModalOpen(true);
@@ -134,7 +127,7 @@ const ChatListPage = () => {
   return (
     <main className="relative flex min-h-dvh w-full justify-center bg-white">
       <div className="flex h-full w-full flex-col">
-        <HeaderWithIcon title="대화" haveAlarm={true} />
+        <HeaderWithIcon title="대화" haveAlarm={false} />
 
         <div className="px-4 pt-[30.5px]">
           <SearchField onChangeSearchText={setSearchText} />
