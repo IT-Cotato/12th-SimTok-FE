@@ -1,7 +1,8 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import "swiper/css";
 import { Keyboard } from "swiper/modules";
@@ -29,45 +30,51 @@ import {
 
 import { runPhaseSequence } from "@/utils/runPhaseSequence";
 
+interface PlantStatusInfo {
+  gardenState: GardenState;
+  isMe: boolean;
+}
+
 const GardenCare = () => {
   const router = useRouter();
   const [selectTitle, setSelectTitle] = useState<"left" | "right">("right");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [viewPhase, setViewPhase] = useState<ViewPhase>("IDLE");
 
-  // 각 식물(id)별 최신 gardenState를 저장
-  const [plantGardenStates, setPlantGardenStates] = useState<
-    Record<number, GardenState>
+  // 1. 각 식물별 최신 상태(gardenState + isMe)를 통합 관리
+  const [plantStatuses, setPlantStatuses] = useState<
+    Record<number, PlantStatusInfo>
   >(
     PlantData.reduce(
       (acc, item) => {
-        acc[item.id] = item.gardenState as GardenState;
+        acc[item.sharedPlantId] = {
+          gardenState: item.gardenState as GardenState,
+          isMe: item.lastWateredBy.isMe,
+        };
         return acc;
       },
-      {} as Record<number, GardenState>,
+      {} as Record<number, PlantStatusInfo>,
     ),
   );
 
+  // 애니메이션 중 보여줄 임시 상태
   const [optimisticGardenState, setOptimisticGardenState] =
     useState<GardenState | null>(null);
 
   const currentStep = PlantData?.[currentIndex];
-  const currentPlantId = currentStep?.id;
+  const currentPlantId = currentStep?.sharedPlantId;
 
-  // 현재 슬라이드의 실제 gardenState 계산
-  const currentGardenState: GardenState = currentPlantId
-    ? (optimisticGardenState ?? plantGardenStates[currentPlantId] ?? "EMPTY")
-    : "EMPTY";
-
-  const displayGardenState = currentGardenState;
+  // 배경색 결정을 위한 현재 슬라이드 상태 계산
+  const currentStatus = currentPlantId ? plantStatuses[currentPlantId] : null;
+  const displayGardenState =
+    optimisticGardenState ?? currentStatus?.gardenState ?? "EMPTY";
 
   const handleChangeSelectTitle = (value: "left" | "right") => {
     setSelectTitle(value);
-
-    if (value === "left") {
-      router.push("/garden");
-    }
+    if (value === "left") router.push("/garden");
   };
+
+  // --- 핸들러 영역 ---
 
   const handleNutrition = async () => {
     if (!currentPlantId) return;
@@ -83,11 +90,13 @@ const GardenCare = () => {
         setViewPhase,
       );
 
-      const newState: GardenState = "AFTER_NUTRITION";
-
-      setPlantGardenStates(prev => ({
+      // 영양제 완료 후 상태 업데이트 (isMe를 true로 설정하여 내 턴 종료)
+      setPlantStatuses(prev => ({
         ...prev,
-        [currentPlantId]: newState,
+        [currentPlantId]: {
+          gardenState: "AFTER_NUTRITION",
+          isMe: true,
+        },
       }));
     } catch (e) {
       console.error("영양제 실패:", e);
@@ -108,19 +117,16 @@ const GardenCare = () => {
         setViewPhase,
       );
 
-      // TODO: 실제 API 호출
-      // const res = await waterPlantApi();
-      // const newState = res.gardenState;
-
-      const newState: GardenState = "WATERED_RECENTLY";
-
-      setPlantGardenStates(prev => ({
+      // 물주기 완료 후 상태 업데이트 (isMe를 true로 설정하여 내 턴 종료)
+      setPlantStatuses(prev => ({
         ...prev,
-        [currentPlantId]: newState,
+        [currentPlantId]: {
+          gardenState: "WATERED_RECENTLY",
+          isMe: true,
+        },
       }));
     } catch (e) {
       console.error("물주기 실패:", e);
-      // TODO: 에러 토스트
     } finally {
       setOptimisticGardenState(null);
       setViewPhase("IDLE");
@@ -129,73 +135,66 @@ const GardenCare = () => {
 
   const handlePlant = async () => {
     if (!currentPlantId) return;
-
-    // optimistic 업데이트
     setOptimisticGardenState("GROWING");
 
     try {
-      // TODO: 실제 API 호출
-      // const res = await plantSeedApi();
-      // const newState = res.gardenState;
-
-      const newState: GardenState = "GROWING";
-
-      // 해당 식물 상태 저장
-      setPlantGardenStates(prev => ({
+      // API 호출 가정
+      setPlantStatuses(prev => ({
         ...prev,
-        [currentPlantId]: newState,
+        [currentPlantId]: {
+          gardenState: "GROWING",
+          isMe: true,
+        },
       }));
-
-      setOptimisticGardenState(null);
     } catch (e) {
       console.error("씨앗 심기 실패:", e);
+    } finally {
       setOptimisticGardenState(null);
     }
   };
 
   return (
     <main className="relative flex h-screen flex-col">
-      {/* 배경 */}
       <GardenBackgroundColor
         gardenState={displayGardenState}
         viewPhase={viewPhase}
       />
 
-      {/* 헤더 */}
       <GardenCareHeader
         selectTitle={selectTitle}
         onChangeSelectTitle={handleChangeSelectTitle}
       />
 
       {viewPhase !== "IDLE" ? (
-        // viewPhase 연출 중
+        // 연출 페이즈 (애니메이션)
         <div className="flex flex-1 flex-col">
           {viewPhase === "WATERING" && (
-            <Watering growthStage={currentStep?.growthStatus as GrowthStage} />
+            <Watering growthStage={currentStep?.growthStage as GrowthStage} />
           )}
           {viewPhase === "NUTRITION_BLACK" && (
             <Nutritioning
-              growthStage={currentStep?.growthStatus as GrowthStage}
+              growthStage={currentStep?.growthStage as GrowthStage}
             />
           )}
           {viewPhase === "NUTRITION_AFTER_SHORTLY" && (
             <NutritionAfterShortly
-              growthStage={currentStep?.growthStatus as GrowthStage}
+              growthStage={currentStep?.growthStage as GrowthStage}
             />
           )}
         </div>
       ) : (
-        // 일반 상태
+        // 일반 정원 관리 페이즈
         <div className="relative flex flex-1 flex-col">
           {PlantData && PlantData.length > 0 && (
             <ProgressDots total={PlantData.length} current={currentIndex + 1} />
           )}
+
           {PlantData && PlantData.length > 0 ? (
             <Swiper
               initialSlide={currentIndex}
               onSlideChange={swiper => {
                 setCurrentIndex(swiper.activeIndex);
-                setOptimisticGardenState(null); // 이벤트 핸들러에서 직접 초기화
+                setOptimisticGardenState(null);
                 setViewPhase("IDLE");
               }}
               modules={[Keyboard]}
@@ -207,22 +206,28 @@ const GardenCare = () => {
               {PlantData.map((data, idx) => {
                 const isCurrent = idx === currentIndex;
 
-                const effectiveGardenState = isCurrent
-                  ? (optimisticGardenState ??
-                    plantGardenStates[data.id] ??
-                    (data.gardenState as GardenState))
-                  : (plantGardenStates[data.id] ??
-                    (data.gardenState as GardenState));
+                // 최신 로컬 상태 참조
+                const currentLocalStatus = plantStatuses[data.sharedPlantId];
+
+                // 현재 애니메이션 중이라면 낙관적 UI 적용, 아니면 로컬 상태 적용
+                const effectiveGardenState =
+                  isCurrent && optimisticGardenState
+                    ? optimisticGardenState
+                    : currentLocalStatus.gardenState;
+
+                // 내 턴 계산: 마지막 물 준 사람이 내가 아니면 내 턴임
+                const myTurn = !currentLocalStatus.isMe;
 
                 return (
-                  <SwiperSlide key={idx}>
+                  <SwiperSlide key={data.sharedPlantId}>
                     <div className="flex h-full flex-col">
                       <GardenCareContent
-                        growthStage={data.growthStatus as GrowthStage}
+                        growthStage={data.growthStage as GrowthStage}
                         gardenState={effectiveGardenState}
                         percentage={data.percentage}
                         plantName={data.nickname}
-                        plantSort={data.plantSort as PlantSort}
+                        plantSort={data.plantName as PlantSort}
+                        myTurn={myTurn} // 버튼 클릭 후 리렌더링되며 자동으로 반영됨
                         onWater={handleWater}
                         onNutrition={handleNutrition}
                         onPlant={handlePlant}

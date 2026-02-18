@@ -35,7 +35,8 @@ const Garden = () => {
     plant => plant.status === "COMPLETED",
   );
 
-  const havePlant = plantCompleted.length > 0;
+  const havePlant = plantList.length > 0;
+  const haveFlower = plantCompleted.length > 0;
   const carouselPage = Math.ceil(plantCompleted.length / PLANTS_PER_PAGE);
 
   const handleChangeSelectTitle = (value: "left" | "right") => {
@@ -47,7 +48,7 @@ const Garden = () => {
   };
 
   return (
-    <GardenBackground noPlant={!havePlant}>
+    <GardenBackground noPlant={!haveFlower}>
       <div className="relative w-full items-center justify-center">
         <GlassStyleHeader
           backHeader={false}
@@ -75,8 +76,8 @@ const Garden = () => {
         <PageTitle
           title={
             havePlant
-              ? ["정원이 한층 더 풍성해졌네요!", "다른 식물도 키워볼까요?"]
-              : ["친구와 함께 식물도 키우고", "정원도 꾸며볼까요?"]
+              ? []
+              : ["지금은 돌보는 식물이 없어요", "새로운 식물을 키워볼까요?"]
           }
         />
       </div>

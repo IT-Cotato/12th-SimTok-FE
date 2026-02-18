@@ -27,7 +27,7 @@
     "gardenState": "SEED_READY",
     "status": "GROWING",
     "isSoloMode": true,
-    "lastWateredBy": { "memberId": 999, "isMe": false},
+    "lastWateredBy": { "memberId": 999, "isMe": false },
     "lastWateredAt": "2026-02-18T09:00:00",
     "createdAt": "2026-02-18T08:00:00"
   },
