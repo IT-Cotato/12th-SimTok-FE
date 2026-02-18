@@ -11,6 +11,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import {
   getPlantList,
   postNutrient,
+  postSeed,
   postWater,
 } from "@/app/api/garden/care.api";
 
@@ -88,6 +89,25 @@ const GardenCare = () => {
     setNutrientCount(prev => Math.max(0, prev - 1));
   };
 
+  const handlePlantClick = async (plantId: number): Promise<void> => {
+    try {
+      await handleAction(
+        plantId,
+        "GROWING", // 씨앗을 심은 후의 상태
+        [], // 씨앗 심기는 별도 페이즈 애니메이션이 없다면 빈 배열
+        async () => {
+          await postSeed(plantId);
+        },
+      );
+      console.log(
+        `%c[Seed Success]: ${plantId}번 식물 심기 완료`,
+        "color: #2ecc71; font-weight: bold",
+      );
+    } catch (error) {
+      console.error("씨앗 심기 실패:", error);
+    }
+  };
+
   const handleWaterClick = async (plantId: number): Promise<void> => {
     await handleAction(
       plantId,
@@ -154,14 +174,7 @@ const GardenCare = () => {
                     onNutrition={() =>
                       handleNutritionClick(plant.sharedPlantId)
                     }
-                    onPlant={() =>
-                      handleAction(
-                        plant.sharedPlantId,
-                        "GROWING",
-                        [],
-                        async () => {},
-                      )
-                    }
+                    onPlant={() => handlePlantClick(plant.sharedPlantId)}
                   />
                 </SwiperSlide>
               ))}
