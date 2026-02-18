@@ -34,6 +34,7 @@ export const ProfileWrapper = ({
             value={name}
             onChange={onChangeName}
             placeholder={placeholder}
+            changeable={canEdit}
           />
         </div>
       )}

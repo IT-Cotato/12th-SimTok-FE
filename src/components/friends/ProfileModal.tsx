@@ -34,7 +34,9 @@ export const ProfileModal = ({
           <button
             type="button"
             aria-label="설정"
-            onClick={() => router.push(`/friends/settings/${userId}`)}
+            onClick={() => {
+              router.push(`/friends/settings/${userId}?mode=edit`);
+            }}
             className="text-neutral-09 h-6 w-6"
           >
             <SettingIcon className="h-6 w-6" />

@@ -4,7 +4,7 @@ import { apiInstance } from "../apiInstance";
 
 interface UpdateFriendshipPayload {
   nickname: string;
-  speechStyle: ChatStyle; // "존댓말" 등
+  speechStyle: "존댓말" | "반말";
   chatGoal: string; // "주 1일" 등
   topicCodes: ChatTopic[]; // ["DAILY_LIFE", "WEATHER"] 등
 }
@@ -25,7 +25,7 @@ export const getFriendsList = async (status?: string): Promise<FriendList> => {
 
 export const updateFriendship = async (
   friendshipId: number,
-  payload: UpdateFriendshipPayload,
+  payload: UpdateFriendshipPayload, // 명확한 타입 지정
 ) => {
   const { data } = await apiInstance.patch(
     `/friendships/${friendshipId}`,
@@ -38,5 +38,10 @@ export const getFriendshipSettings = async (friendshipId: number) => {
   const { data } = await apiInstance.get(
     `/friendships/settings/${friendshipId}`,
   );
+  return data;
+};
+
+export const deleteFriendship = async (friendshipId: number) => {
+  const { data } = await apiInstance.delete(`/friendships/${friendshipId}`);
   return data;
 };

@@ -1,5 +1,5 @@
 "use client";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 import { useEffect, useState } from "react";
 
@@ -18,7 +18,7 @@ import { ChatStyle, ChatTopic } from "@/types/friendProfile.type";
 
 interface UpdateFriendshipPayload {
   nickname: string;
-  speechStyle: ChatStyle;
+  speechStyle: "존댓말" | "반말";
   chatGoal: string;
   topicCodes: ChatTopic[];
 }
@@ -44,10 +44,12 @@ const FriendSetting = () => {
   const params = useParams();
   const router = useRouter();
   const friendId = Number(params.userId);
+  const searchParams = useSearchParams();
+  const mode = searchParams.get("mode");
 
   const [profileImg, setProfileImg] = useState("");
-  const [userName, setUserName] = useState(""); // 원본 이름
-  const [nickname, setNickName] = useState(""); // 설정할 닉네임
+  const [userName, setUserName] = useState(""); // 친구의 실제 본명 (수정 불가 영역용)
+  const [nickname, setNickName] = useState(""); // 상단 닉네임 (수정 가능 영역용)
   const [goalDays, setGoalDays] = useState<number | undefined>();
   const [chatStyle, setChatStyle] = useState<ChatStyle | undefined>();
   const [chatTopic, setChatTopic] = useState<ChatTopic[]>([]);
@@ -56,59 +58,45 @@ const FriendSetting = () => {
     null,
   );
 
+  const buttonText = mode === "add" ? "추가하기" : "확인완료";
+
   // 초기 데이터 로드
   const initData = async () => {
     try {
       setIsLoading(true);
-      console.log("🔍 1단계: 목록 조회 시작", friendId);
       const result = await friendsApi.getFriendDetail(friendId);
-
       const list = result?.data?.friendshipList;
-      console.log("🔍 2단계: 가져온 목록", list);
 
       if (result?.success && Array.isArray(list)) {
-        const friendInfo = list.find(f => f.friendId === friendId) || list[0];
+        const friendInfo = list.find(f => f.friendId === friendshipId);
 
         if (friendInfo) {
-          console.log("✅ 매칭된 친구 정보:", friendInfo);
           const fsId = friendInfo.friendshipId;
           setActualFriendshipId(fsId);
 
-          console.log("🔍 3단계: 상세 설정 조회 호출 ID:", fsId);
-          // 여기서 get/api/friendships/setting 호출
+          setUserName(friendInfo.showName);
+          setProfileImg(friendInfo.profileImageUrl || "");
+
           const detailResult = await getFriendshipSettings(fsId);
-          console.log("🔍 4단계: 상세 설정 결과", detailResult);
 
           if (detailResult?.success && detailResult?.data) {
             const detail = detailResult.data;
 
-            // 1. 닉네임 세팅
             setNickName(detail.nickname || friendInfo.showName);
-
-            // 2. 말투 세팅 (ChatStyle 타입 일치 확인 필요)
-            setChatStyle(detail.speechStyle);
-
-            // 3. 관심사 세팅
+            const mappedStyle: ChatStyle =
+              detail.speechStyle === "반말" ? "CASUAL" : "FORMAL";
+            setChatStyle(mappedStyle);
             setChatTopic(detail.topicCodes || []);
-
-            // 4. 목표 요일 세팅 (문자열 "주 1일" -> 숫자 1 추출)
-            if (detail.chatGoal) {
-              const goalNum = parseInt(detail.chatGoal.replace(/[^0-9]/g, ""));
+            if (detail.chatGoal !== undefined && detail.chatGoal !== null) {
+              const goalStr = String(detail.chatGoal);
+              const goalNum = parseInt(goalStr.replace(/[^0-9]/g, ""));
               setGoalDays(isNaN(goalNum) ? undefined : goalNum);
             }
-
-            console.log("✅ 상태 업데이트 완료:", {
-              nickname: detail.nickname,
-              chatStyle: detail.speechStyle,
-              goalDays: detail.chatGoal,
-            });
           }
-        } else {
-          console.warn("❗ 리스트에서 해당 friendId를 찾지 못함");
         }
       }
     } catch (err) {
-      console.error("❌ 초기 데이터 로드 에러:", err);
+      console.error("❌ 데이터 로드 에러:", err);
     } finally {
       setIsLoading(false);
     }
@@ -133,18 +121,26 @@ const FriendSetting = () => {
     }
 
     try {
+      const mappedStyle: "존댓말" | "반말" =
+        chatStyle === "FORMAL" ? "존댓말" : "반말";
+      const formattedGoal = `${goalDays}`;
+
       const payload: UpdateFriendshipPayload = {
-        nickname: nickname,
-        speechStyle: chatStyle,
-        chatGoal: `주 ${goalDays}일`,
+        nickname: nickname.trim(),
+        speechStyle: mappedStyle,
+        chatGoal: formattedGoal,
         topicCodes: chatTopic,
       };
+
       const result = await updateFriendship(actualFriendshipId, payload);
 
       if (result.success) {
-        router.push("/friends");
-      } else {
-        alert(result.message || "설정 저장 실패");
+        // 모드에 따른 동적 라우팅
+        if (mode === "add") {
+          router.push("/friends");
+        } else {
+          router.back();
+        }
       }
     } catch (err) {
       alert("네트워크 오류가 발생했습니다.");
@@ -159,38 +155,6 @@ const FriendSetting = () => {
 
   if (isLoading) return null;
 
-  // const friendData = FriendSettingData[myUserId]?.find(
-  //   item => item.userId === friendId,
-  // );
-
-  // const userData = AllUsers.find(user => user.userId === friendId);
-
-  // const baseUser = friendData ?? userData;
-  // const userName = baseUser?.userName ?? "";
-  // const profileImg = baseUser?.profileImg ?? "";
-
-  // const initialNickname =
-  //   friendData?.nickNameByFriend?.trim() ||
-  //   friendData?.nickNameByMe?.trim() ||
-  //   friendData?.userName ||
-  //   userData?.userName ||
-  //   "";
-
-  // const [nickname, setNickName] = useState(initialNickname);
-  // const [goalDays, setGoalDays] = useState<number | undefined>(
-  //   friendData?.goalDays,
-  // );
-  // const [chatStyle, setChatStyle] = useState<ChatStyle | undefined>(
-  //   friendData?.chatStyle as ChatStyle,
-  // );
-  // const [chatTopic, setChatTopic] = useState<ChatTopic[]>(
-  //   (friendData?.chatTopic as ChatTopic[]) ?? [],
-  // );
-
-  // if (!friendData && !userData) {
-  //   return;
-  // }
-
   return (
     <main className="w-full">
       <section className="mt-[8.5px]">
@@ -202,6 +166,7 @@ const FriendSetting = () => {
           name={nickname}
           onChangeName={setNickName}
           placeholder="닉네임을 입력해주세요"
+          canEdit={true}
         />
       </section>
       <section className="pb-[125px]">
@@ -224,7 +189,7 @@ const FriendSetting = () => {
 
       <div className="fixed bottom-0 w-full max-w-[440px] bg-white px-4 pt-[10px] pb-[52px]">
         <FullButton isActive={isValid} onClick={handleSubmit}>
-          추가하기
+          {buttonText}
         </FullButton>
       </div>
     </main>
