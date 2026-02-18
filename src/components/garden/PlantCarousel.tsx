@@ -12,11 +12,13 @@ import StarStroke from "@/assets/garden/star-stroke.svg";
 
 import { PLANT_SORT_INFO } from "@/constants/garden/plantList";
 
+import { PlantSort } from "@/types/plant.type";
+
 import { ProgressDots } from "../common/ProgressDot";
 
 interface PlantCarouselProps {
   selectedId: string | null;
-  onPlantClick: (id: string) => void;
+  onPlantClick: (id: PlantSort | null) => void;
 }
 
 export const PlantCarousel = ({
@@ -27,8 +29,8 @@ export const PlantCarousel = ({
 
   const handleSlideChange = (swiper: SwiperClass) => {
     setActiveIndex(swiper.activeIndex);
-    if (selectedId !== "") {
-      onPlantClick("");
+    if (selectedId !== null) {
+      onPlantClick(null);
     }
   };
 
