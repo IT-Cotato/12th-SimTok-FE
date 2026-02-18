@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import "swiper/css";
 import { Keyboard } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -28,6 +30,7 @@ interface PlantProgressProps {
 export const PlantProgress = ({ plantProgressData }: PlantProgressProps) => {
   const plantLength = plantProgressData.totalCount;
   const plantList = plantProgressData.sharedPlants;
+  const router = useRouter();
 
   return (
     <section className="h-full">
@@ -72,7 +75,10 @@ export const PlantProgress = ({ plantProgressData }: PlantProgressProps) => {
               plantStatus === PlantWaterStatus.EMPTY
                 ? "식물 키우러가기"
                 : "물주기";
-
+            const routerLink =
+              plantStatus === PlantWaterStatus.EMPTY
+                ? "/garden/new"
+                : "garden/care";
             return (
               <SwiperSlide key={plant.sharedPlantId}>
                 <div
@@ -131,6 +137,7 @@ export const PlantProgress = ({ plantProgressData }: PlantProgressProps) => {
                           (plantStatus === "WITHERED" && "orange") ||
                           "mint"
                         }
+                        onClick={() => router.push(routerLink)}
                       >
                         {buttonTitle}
                       </FullButton>
