@@ -72,3 +72,8 @@ export interface GardenListResponse {
   nutrientCount: number;
   sharedPlants: GardenPlantItem[];
 }
+
+export interface PlantStatusInfo {
+  gardenState: GardenState;
+  isMe: boolean;
+}

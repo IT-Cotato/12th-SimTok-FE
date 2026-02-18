@@ -139,7 +139,7 @@
     "gardenState": "WATERED_RECENTLY",
     "status": "GROWING",
     "isSoloMode": true,
-    "lastWateredBy": { "memberId": 999, "isMe": true },
+    "lastWateredBy": { "memberId": 999, "isMe": false },
     "lastWateredAt": "2026-02-18T10:00:00",
     "createdAt": "2026-02-03T10:00:00"
   },
