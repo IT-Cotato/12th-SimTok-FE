@@ -1,54 +1,49 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { GardenPlantItem, GardenState, ViewPhase } from "@/types/plant.type";
 
-import { runPhaseSequence } from "@/utils/runPhaseSequence";
-
-export const useGardenStatus = (initialPlants: GardenPlantItem[] = []) => {
+export const useGardenStatus = (plantList: GardenPlantItem[]) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [viewPhase, setViewPhase] = useState<ViewPhase>("IDLE");
   const [optimisticState, setOptimisticState] = useState<GardenState | null>(
     null,
   );
 
-  const [plantStatuses, setPlantStatuses] = useState<
-    Record<number, { gardenState: GardenState; isMe: boolean }>
-  >(() => {
-    if (!initialPlants || initialPlants.length === 0) return {};
-
-    return initialPlants.reduce(
-      (acc, item) => {
-        acc[item.sharedPlantId] = {
-          gardenState: item.gardenState,
-          isMe: item.lastWateredBy.isMe,
+  // plantList가 바뀔 때마다 ID별 상태 객체를 생성
+  const plantStatuses = useMemo(() => {
+    return plantList.reduce(
+      (acc, plant) => {
+        acc[plant.sharedPlantId] = {
+          gardenState: plant.gardenState,
+          // 서버 데이터 구조: lastWateredBy 내부에 isMe가 있음
+          isMe: plant.lastWateredBy?.isMe ?? false,
         };
         return acc;
       },
       {} as Record<number, { gardenState: GardenState; isMe: boolean }>,
     );
-  });
+  }, [plantList]);
 
-  const currentPlant = initialPlants?.[currentIndex];
+  const currentPlant = plantList[currentIndex] || null;
 
-  const handleAction = async (
+  const handleAction = (
     plantId: number,
     nextState: GardenState,
     phases: { phase: ViewPhase; duration: number }[],
   ) => {
     setOptimisticState(nextState);
-    try {
-      if (phases.length > 0) {
-        await runPhaseSequence(phases, setViewPhase);
-      }
-      setPlantStatuses(prev => ({
-        ...prev,
-        [plantId]: { gardenState: nextState, isMe: true },
-      }));
-    } catch (e) {
-      console.error("Action Failed:", e);
-    } finally {
-      setOptimisticState(null);
-      setViewPhase("IDLE");
+
+    // 애니메이션 단계별 실행 로직 (예시)
+    if (phases.length > 0) {
+      let totalDelay = 0;
+      phases.forEach(p => {
+        setTimeout(() => setViewPhase(p.phase), totalDelay);
+        totalDelay += p.duration;
+      });
+      setTimeout(() => {
+        setViewPhase("IDLE");
+        setOptimisticState(null);
+      }, totalDelay);
     }
   };
 
