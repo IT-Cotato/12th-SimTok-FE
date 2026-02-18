@@ -4,6 +4,7 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useStomp } from "@/context/StompContext";
+import { BACKEND_BASE_URL } from "@/lib/constants";
 import { StompSubscription } from "@stomp/stompjs";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 
@@ -40,23 +41,20 @@ interface ChatMessage {
 
 interface ApiMessageItem {
   messageId: number;
-  senderMemberId: number;
-  content: string;
-  createdAt: string;
   messageSeq: number;
+  senderMemberId: number;
+  messageType: "TEXT" | "ATTACHMENT";
+  content: string | null;
+  createdAt: string;
+  attachment?: {
+    attachmentType: string;
+    objectKey: string;
+  } | null;
 }
 
 interface ChatTopicItem {
   name: string;
   code: string;
-}
-
-interface ChatMessageResponse {
-  messageId: string;
-  senderMemberId: number;
-  content: string;
-  createdAt: string;
-  messageSeq: number;
 }
 
 interface CustomJwtPayload extends JwtPayload {
@@ -117,6 +115,33 @@ const Chatting = () => {
   const selectedTopic = CHAT_TOPIC.find(t => t.key === selectedTopicKey);
   const isDimmed = isTopicOpen && Boolean(selectedTopicKey);
 
+  const getPresignedUrl = async (objectKey: string) => {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+      localStorage.removeItem("accessToken");
+      window.location.href = "/login";
+      return null;
+    }
+    try {
+      const res = await fetch(
+        `${BACKEND_BASE_URL}/chat/attachments/presigned-get?objectKey=${encodeURIComponent(objectKey)}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        },
+      );
+      if (!res.ok) return null;
+
+      const result = await res.json();
+      return result.url;
+    } catch (err) {
+      console.error("URL 획득 실패:", err);
+      return null;
+    }
+  };
+
   const formatTime = (dateStr: string) =>
     new Date(dateStr).toLocaleTimeString([], {
       hour: "2-digit",
@@ -135,6 +160,7 @@ const Chatting = () => {
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchTopics();
   }, [fetchTopics]);
 
@@ -156,7 +182,7 @@ const Chatting = () => {
 
   // 초기 메시지 히스토리 로드
   const fetchHistory = useCallback(
-    async (id: string, isRetry = false) => {
+    async (id: string) => {
       if (!id || id === "new" || isNaN(Number(id))) return;
 
       try {
@@ -166,20 +192,33 @@ const Chatting = () => {
           },
         });
 
-        if (res.status === 403) {
-          throw new Error("FORBIDDEN");
-        }
-
         const result = await res.json();
         if (result.success && result.data?.items) {
-          const history = result.data.items.map((msg: ChatMessageResponse) => ({
-            id: msg.messageId,
-            type: msg.senderMemberId === myMemberId ? "mine" : "friend",
-            content: msg.content,
-            time: formatTime(msg.createdAt),
-            createdAt: msg.createdAt,
-            messageSeq: msg.messageSeq,
-          }));
+          // 모든 메시지를 순회하며 타입별로 처리
+          const history = await Promise.all(
+            result.data.items.map(async (msg: ApiMessageItem) => {
+              const isAttachment = msg.messageType === "ATTACHMENT";
+              let content = msg.content ?? "";
+
+              // 첨부파일인 경우 Presigned URL 획득
+              if (isAttachment && msg.attachment?.objectKey) {
+                const signedUrl = await getPresignedUrl(
+                  msg.attachment.objectKey,
+                );
+                content = signedUrl || ""; // 실패 시 빈 값
+              }
+
+              return {
+                id: msg.messageId,
+                type: msg.senderMemberId === myMemberId ? "mine" : "friend",
+                content: content,
+                time: formatTime(msg.createdAt),
+                createdAt: msg.createdAt,
+                messageSeq: msg.messageSeq,
+                isImage: isAttachment, // 렌더링 시 이미지 컴포넌트 사용 여부 결정
+              };
+            }),
+          );
           setMessages(history.reverse());
         }
       } catch (err) {
@@ -192,6 +231,7 @@ const Chatting = () => {
   useEffect(() => {
     if (roomId && roomId !== "new") {
       markAsRead(roomId); // 읽음 처리 알림
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       fetchHistory(roomId); // 메시지 내역 로드
     }
   }, [roomId, markAsRead, fetchHistory]);
@@ -200,6 +240,7 @@ const Chatting = () => {
     if (!client || !isConnected) return;
 
     if (roomId !== "new") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       fetchHistory(roomId);
     }
 
@@ -229,20 +270,32 @@ const Chatting = () => {
 
       if (roomId && roomId !== "new") {
         subscriptions.push(
-          client.subscribe(`/topic/chat/rooms/${roomId}`, msg => {
-            const body = JSON.parse(msg.body);
-            console.log("메시지 수신:", body);
+          client.subscribe(`/topic/chat/rooms/${roomId}`, async msg => {
+            const body: ApiMessageItem = JSON.parse(msg.body);
+            const isAttachment = body.messageType === "ATTACHMENT";
+            let messageContent = body.content ?? "";
+
+            if (isAttachment && body.attachment?.objectKey) {
+              const signedUrl = await getPresignedUrl(
+                body.attachment.objectKey,
+              );
+              messageContent = signedUrl || "";
+            }
+
+            console.log("📩 메시지 수신 성공:", body.messageId);
             setMessages(prev => [
               ...prev,
               {
                 id: body.messageId || Date.now(),
                 type: body.senderMemberId === myMemberId ? "mine" : "friend",
-                content: body.content,
+                content: messageContent,
                 time: formatTime(body.createdAt),
-                createdAt: body.createdAt, // 필드 반드시 추가
+                createdAt: body.createdAt,
+                isImage: isAttachment,
               },
             ]);
           }),
+
           client.subscribe("/user/queue/connection/ack", msg => {
             console.log("Connection ACK:", JSON.parse(msg.body));
           }),
@@ -377,62 +430,21 @@ const Chatting = () => {
     }
   }, [selectedTopicKey, apiTopics, recommendations]);
 
-  // const handleImageUpload = (file: File) => {
-  //   const imageUrl = URL.createObjectURL(file);
-  //   const newMessage: ChatMessage = {
-  //     id: Date.now(),
-  //     type: "mine",
-  //     content: imageUrl,
-  //     isImage: true,
-  //     time: new Date().toLocaleTimeString([], {
-  //       hour: "2-digit",
-  //       minute: "2-digit",
-  //     }),
-  //     createdAt: new Date().toISOString(),
-  //   };
-  //   setMessages(prev => [...prev, newMessage]);
-  // };
-
   const handleImageUpload = async (file: File) => {
-    // 0. 즉시 실행 확인 로그
-    console.log("📸 handleImageUpload 호출됨:", file.name);
-
-    // 1. 화면 즉시 반영 (낙관적 업데이트)
-    const previewUrl = URL.createObjectURL(file);
     const tempId = crypto.randomUUID();
-
-    setMessages(prev => [
-      ...prev,
-      {
-        id: tempId,
-        type: "mine",
-        content: previewUrl,
-        isImage: true,
-        time: new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-        createdAt: new Date().toISOString(),
-      },
-    ]);
 
     try {
       const fullUrl = await uploadToS3(file, "CHAT");
       if (!fullUrl) return;
 
-      // 2. S3가 반환한 실제 URL에서 도메인을 제외한 '순수 경로'만 추출
       const urlObj = new URL(fullUrl);
       let realObjectKey = urlObj.pathname;
 
-      // 3. 맨 앞의 '/' 제거 (서버 예시 규격 준수)
       if (realObjectKey.startsWith("/")) {
         realObjectKey = realObjectKey.substring(1);
       }
 
-      // 4. 인코딩된 문자 복원 (공백, 특수문자 등)
       const finalKey = decodeURIComponent(realObjectKey);
-
-      console.log("🛠️ S3에 실제 저장된 ObjectKey:", finalKey);
 
       const payload = {
         clientMessageId: tempId,
@@ -485,11 +497,11 @@ const Chatting = () => {
         <BackHeader
           title={displayName}
           onBack={handleBack}
-          menuIcon={() =>
+          menuIcon={() => {
             router.push(
-              `/chat/${params.id}/setting?name=${displayName}&img=${opponentProfileImg}`,
-            )
-          }
+              `/chat/${roomId}/setting?name=${encodeURIComponent(displayName)}&img=${opponentProfileImg}`,
+            );
+          }}
         />
         <section
           ref={scrollRef}

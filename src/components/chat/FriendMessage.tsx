@@ -16,6 +16,7 @@ export const FriendMessage = ({
   isPrevSame,
   isNextSame,
 }: FriendMessageProps) => {
+  const isImage = content.startsWith("blob:") || content.startsWith("http");
   const paddingTop = isPrevSame ? "pt-[2px]" : "pt-[10px]";
   const paddingBottom = isNextSame ? "pb-[2px]" : "pb-[10px]";
   return (
@@ -44,9 +45,21 @@ export const FriendMessage = ({
           <span className="text-sub2-r text-neutral-05 mb-1">{userName}</span>
         )}
         <div className="flex items-end gap-1">
-          <div className="bg-neutral-11 rounded-2xl px-4 py-[10px]">
-            <p className="text-sub1-r text-neutral-01 break-all">{content}</p>
-          </div>
+          {isImage ? (
+            /* 이미지 렌더링 */
+            <div className="relative max-w-full overflow-hidden rounded-2xl">
+              <img
+                src={content}
+                alt="전송 이미지"
+                className="h-auto w-full object-cover"
+              />
+            </div>
+          ) : (
+            /* 텍스트 렌더링 */
+            <div className="bg-neutral-11 rounded-2xl px-4 py-[10px]">
+              <p className="text-sub1-r text-neutral-01 break-all">{content}</p>
+            </div>
+          )}
           {!isNextSame && (
             <span className="text-sub2-r text-neutral-06 mb-[2px] flex-shrink-0">
               {time}
