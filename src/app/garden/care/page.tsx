@@ -15,6 +15,7 @@ import { GardenAnimationView } from "@/components/garden/care/GardenAnimationVie
 import { GardenBackgroundColor } from "@/components/garden/care/GardenBackgrounColor";
 import { GardenCareContent } from "@/components/garden/care/GardenCareContent";
 import { GardenCareHeader } from "@/components/garden/care/GardenCareHeader";
+import { NoNutrition } from "@/components/garden/modal/NoNutrition";
 
 import { useGardenStatus } from "@/hooks/useGardenStatus";
 
@@ -25,11 +26,14 @@ const GardenCare = () => {
   const [selectTitle, setSelectTitle] = useState<"left" | "right">("right");
   const [plantList, setPlantList] = useState<GardenPlantItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [noNutrientModal, setNoNutrientModal] = useState(false);
+  const [nutrientCount, setNutrientCount] = useState(0);
 
   useEffect(() => {
     const fetchPlantList = async () => {
       try {
         const data = await getPlantList("GROWING");
+        setNutrientCount(data.nutrientCount);
         setPlantList(data.sharedPlants ?? []);
         console.log("식물목록", data.sharedPlants);
       } catch (error) {
@@ -63,6 +67,20 @@ const GardenCare = () => {
   const handleNav = (value: "left" | "right") => {
     setSelectTitle(value);
     if (value === "left") router.push("/garden");
+  };
+
+  const handleNutritionClick = (plantId: number) => {
+    // 2. 영양제 수량 체크 로직
+    if (nutrientCount <= 0) {
+      setNoNutrientModal(true); // 수량이 없으면 모달 오픈
+      return;
+    }
+
+    // 수량이 있으면 기존 애니메이션 및 액션 실행
+    handleAction(plantId, "AFTER_NUTRITION", [
+      { phase: "NUTRITION_BLACK", duration: 1000 },
+      { phase: "NUTRITION_AFTER_SHORTLY", duration: 1000 },
+    ]);
   };
 
   if (isLoading) return <div className="bg-brown h-screen" />;
@@ -118,10 +136,7 @@ const GardenCare = () => {
                       ])
                     }
                     onNutrition={() =>
-                      handleAction(plant.sharedPlantId, "AFTER_NUTRITION", [
-                        { phase: "NUTRITION_BLACK", duration: 1000 },
-                        { phase: "NUTRITION_AFTER_SHORTLY", duration: 1000 },
-                      ])
+                      handleNutritionClick(plant.sharedPlantId)
                     }
                     onPlant={() =>
                       handleAction(plant.sharedPlantId, "GROWING", [])
@@ -136,6 +151,9 @@ const GardenCare = () => {
             </div>
           )}
         </div>
+      )}
+      {noNutrientModal && (
+        <NoNutrition onClose={() => setNoNutrientModal(false)} />
       )}
     </main>
   );
