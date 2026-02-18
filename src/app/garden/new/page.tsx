@@ -8,17 +8,19 @@ import { FullButton } from "@/components/common/FullButton";
 import { PageTitle } from "@/components/common/PageTitle";
 import { PlantCarousel } from "@/components/garden/PlantCarousel";
 
+import { PlantSort } from "@/types/plant.type";
+
 const PlantGuidePage = () => {
   const router = useRouter();
-  const { selectedPlantId, setSelectedPlant } = useGardenStore();
+  const { selectedPlant, setSelectedPlant } = useGardenStore();
 
-  const handlePlantSelect = (id: string | null) => {
-    const nextId = selectedPlantId === id ? null : id;
+  const handlePlantSelect = (sort: PlantSort | null) => {
+    const nextId = selectedPlant === sort ? null : sort;
     setSelectedPlant(nextId);
   };
 
   const handleNextStep = () => {
-    if (!selectedPlantId) return;
+    if (!selectedPlant) return;
     router.push("/garden/new/nickname");
   };
 
@@ -30,15 +32,15 @@ const PlantGuidePage = () => {
           <PageTitle title={["친구와 함께 키울 식물을", "골라보세요!"]} />
         </div>
         <PlantCarousel
-          selectedId={selectedPlantId}
+          selectedId={selectedPlant}
           onPlantClick={handlePlantSelect}
         />
       </div>
 
       <div className="z-99 mb-[42px] px-4 py-[10px]">
         <FullButton
-          disabled={!selectedPlantId}
-          isActive={!!selectedPlantId}
+          disabled={!selectedPlant}
+          isActive={!!selectedPlant}
           onClick={handleNextStep}
         >
           선택완료
