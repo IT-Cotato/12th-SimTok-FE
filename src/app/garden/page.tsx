@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import "swiper/css";
 import { Keyboard } from "swiper/modules";
@@ -20,9 +20,9 @@ import { PlantColletction } from "@/components/garden/PlantColletction";
 
 import { PLANTS_PER_PAGE } from "@/constants/garden/gardenHome";
 
-import plantList from "@/mock/plantProgress.json";
-
 import { GardenPlantItem } from "@/types/plant.type";
+
+import { getPlantList } from "../api/garden/care.api";
 
 const Garden = () => {
   const router = useRouter();
@@ -31,11 +31,30 @@ const Garden = () => {
   const [openRules, setOpenRules] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
 
-  const plantCompleted = plantList.filter(
-    plant => plant.status === "COMPLETED",
-  );
+  const [allPlants, setAllPlants] = useState<GardenPlantItem[]>([]);
+  const [plantCompleted, setPlantCompleted] = useState<GardenPlantItem[]>([]);
 
-  const havePlant = plantList.length > 0;
+  useEffect(() => {
+    const fetchPlantList = async () => {
+      try {
+        const [growingRes, completedRes] = await Promise.all([
+          getPlantList("GROWING"),
+          getPlantList("COMPLETED"),
+        ]);
+
+        setAllPlants(growingRes.sharedPlants ?? []);
+        setPlantCompleted(completedRes.sharedPlants ?? []);
+        console.log("growningRes", growingRes);
+        console.log("completedRes", completedRes.sharedPlants);
+      } catch (error) {
+        console.error("식물 목록을 불러오는데 실패했습니다.", error);
+      }
+    };
+
+    fetchPlantList();
+  }, []);
+
+  const havePlant = allPlants.length > 0;
   const haveFlower = plantCompleted.length > 0;
   const carouselPage = Math.ceil(plantCompleted.length / PLANTS_PER_PAGE);
 
