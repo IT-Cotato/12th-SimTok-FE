@@ -44,7 +44,7 @@ export const GardenCareContent = ({
 
     let myTurn = !localStatus.isMe;
 
-    if (effectiveState === "AFTER_NUTRITION") myTurn = localStatus.isMe;
+    if (effectiveState === "AFTER_NUTRITION") myTurn = true;
     if (effectiveState === "GROWING" && plant.percentage === 0) myTurn = true;
 
     const stageNames: Record<GrowthStage, string> = {

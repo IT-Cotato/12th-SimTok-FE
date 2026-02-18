@@ -11,7 +11,7 @@ export const getPlantList = async (
 
 // 물주기
 export const postWater = async (sharedPlantId: number) => {
-  const { data } = await apiInstance.get(
+  const { data } = await apiInstance.post(
     `shared-plants/${sharedPlantId}/water`,
   );
   return data.data;
@@ -19,7 +19,7 @@ export const postWater = async (sharedPlantId: number) => {
 
 // 영양제 주기
 export const postNutrient = async (sharedPlantId: number) => {
-  const { data } = await apiInstance.get(
+  const { data } = await apiInstance.post(
     `shared-plants/${sharedPlantId}/nutrient`,
   );
   return data.data;
@@ -27,7 +27,7 @@ export const postNutrient = async (sharedPlantId: number) => {
 
 // 씨앗 심기
 export const postSeed = async (sharedPlantId: number) => {
-  const { data } = await apiInstance.get(
+  const { data } = await apiInstance.post(
     `shared-plants/${sharedPlantId}/plant`,
   );
   return data.data;

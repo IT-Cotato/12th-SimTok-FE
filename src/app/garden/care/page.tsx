@@ -8,8 +8,13 @@ import "swiper/css";
 import { Keyboard } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { getPlantList } from "@/app/api/garden/care.api";
+import {
+  getPlantList,
+  postNutrient,
+  postWater,
+} from "@/app/api/garden/care.api";
 
+import { OnlyLoader } from "@/components/common/OnlyLoader";
 import { ProgressDots } from "@/components/common/ProgressDot";
 import { GardenAnimationView } from "@/components/garden/care/GardenAnimationView";
 import { GardenBackgroundColor } from "@/components/garden/care/GardenBackgrounColor";
@@ -33,11 +38,11 @@ const GardenCare = () => {
     const fetchPlantList = async () => {
       try {
         const data = await getPlantList("GROWING");
+        console.log(data);
         setNutrientCount(data.nutrientCount);
         setPlantList(data.sharedPlants ?? []);
-        console.log("식물목록", data.sharedPlants);
       } catch (error) {
-        console.error("식물 목록 로드 실패:", error);
+        console.error("데이터 로드 실패:", error);
       } finally {
         setIsLoading(false);
       }
@@ -56,7 +61,6 @@ const GardenCare = () => {
     handleAction,
   } = useGardenStatus(plantList);
 
-  // 로딩 중이거나 데이터가 없을 때의 배경색 처리
   const displayState =
     optimisticState ??
     (currentPlant
@@ -64,33 +68,49 @@ const GardenCare = () => {
       : "EMPTY") ??
     "EMPTY";
 
-  const handleNav = (value: "left" | "right") => {
-    setSelectTitle(value);
-    if (value === "left") router.push("/garden");
-  };
-
-  const handleNutritionClick = (plantId: number) => {
-    // 2. 영양제 수량 체크 로직
+  const handleNutritionClick = async (plantId: number): Promise<void> => {
     if (nutrientCount <= 0) {
-      setNoNutrientModal(true); // 수량이 없으면 모달 오픈
+      setNoNutrientModal(true);
       return;
     }
 
-    // 수량이 있으면 기존 애니메이션 및 액션 실행
-    handleAction(plantId, "AFTER_NUTRITION", [
-      { phase: "NUTRITION_BLACK", duration: 1000 },
-      { phase: "NUTRITION_AFTER_SHORTLY", duration: 1000 },
-    ]);
+    await handleAction(
+      plantId,
+      "AFTER_NUTRITION",
+      [
+        { phase: "NUTRITION_BLACK", duration: 1000 },
+        { phase: "NUTRITION_AFTER_SHORTLY", duration: 1000 },
+      ],
+      async () => {
+        await postNutrient(plantId);
+      },
+    );
+    setNutrientCount(prev => Math.max(0, prev - 1));
   };
 
-  if (isLoading) return <div className="bg-brown h-screen" />;
+  const handleWaterClick = async (plantId: number): Promise<void> => {
+    await handleAction(
+      plantId,
+      "WATERED_RECENTLY",
+      [{ phase: "WATERING", duration: 1000 }],
+      async () => {
+        await postWater(plantId);
+      },
+    );
+  };
+
+  // 초기 로딩 중 Loader 표시
+  if (isLoading) return <OnlyLoader />;
 
   return (
     <main className="relative flex h-screen flex-col">
       <GardenBackgroundColor gardenState={displayState} viewPhase={viewPhase} />
       <GardenCareHeader
         selectTitle={selectTitle}
-        onChangeSelectTitle={handleNav}
+        onChangeSelectTitle={v => {
+          setSelectTitle(v);
+          if (v === "left") router.push("/garden");
+        }}
       />
 
       {viewPhase !== "IDLE" ? (
@@ -130,16 +150,17 @@ const GardenCare = () => {
                       plant.sharedPlantId === currentPlant.sharedPlantId
                     }
                     optimisticState={optimisticState}
-                    onWater={() =>
-                      handleAction(plant.sharedPlantId, "WATERED_RECENTLY", [
-                        { phase: "WATERING", duration: 1000 },
-                      ])
-                    }
+                    onWater={() => handleWaterClick(plant.sharedPlantId)}
                     onNutrition={() =>
                       handleNutritionClick(plant.sharedPlantId)
                     }
                     onPlant={() =>
-                      handleAction(plant.sharedPlantId, "GROWING", [])
+                      handleAction(
+                        plant.sharedPlantId,
+                        "GROWING",
+                        [],
+                        async () => {},
+                      )
                     }
                   />
                 </SwiperSlide>
@@ -152,6 +173,7 @@ const GardenCare = () => {
           )}
         </div>
       )}
+
       {noNutrientModal && (
         <NoNutrition onClose={() => setNoNutrientModal(false)} />
       )}
