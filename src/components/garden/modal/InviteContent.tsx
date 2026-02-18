@@ -11,16 +11,20 @@ import { ChosenPlant } from "../ChosenPlant";
 
 interface InviteContentProps {
   onClose: () => void;
+  onAccept: () => void;
+  onDecline: () => void;
   setStep: (step: number) => void;
   inviteData: InvitationContent;
 }
 export const InviteContent = ({
   onClose,
+  onAccept,
+  onDecline,
   setStep,
   inviteData,
 }: InviteContentProps) => {
   const plantMeans = PLANT_SORT_INFO.find(
-    plant => plant.id === inviteData.plantSort,
+    plant => plant.id === inviteData.plantName,
   )?.meanings;
 
   if (!inviteData) {
@@ -28,7 +32,7 @@ export const InviteContent = ({
   }
 
   return (
-    <section className="relative flex h-[545px] w-[353px] flex-col items-center rounded-2xl bg-white">
+    <section className="relative flex w-[353px] flex-col items-center rounded-2xl bg-white pb-[30px]">
       <CloseButton
         className="text-neutral-04 absolute top-4 right-4 h-4 w-4 cursor-pointer"
         onClick={onClose}
@@ -37,7 +41,7 @@ export const InviteContent = ({
         <ChosenPlant
           isNicknameEditable={false}
           nickname={inviteData.nickname}
-          plantSort={inviteData.plantSort as PlantSort}
+          plantSort={inviteData.plantName as PlantSort}
           width={126}
           height={87}
           bgWidth={128}
@@ -64,12 +68,21 @@ export const InviteContent = ({
 
       {/* 버튼 */}
       <div className="flex w-full gap-2 px-4">
-        <button className="bg-neutral-11 text-button-sb text-neutral-05 w-full flex-1 cursor-pointer rounded-2xl p-[10px]">
+        <button
+          className="bg-neutral-11 text-button-sb text-neutral-05 w-full flex-1 cursor-pointer rounded-2xl p-[10px]"
+          onClick={() => {
+            onDecline();
+            setStep(1);
+          }}
+        >
           거절하기
         </button>
         <button
           className="bg-mint-01 text-button-sb w-full flex-1 cursor-pointer rounded-2xl p-[10px] text-white"
-          onClick={() => setStep(3)}
+          onClick={() => {
+            onAccept();
+            setStep(3);
+          }}
         >
           초대 수락하기
         </button>
