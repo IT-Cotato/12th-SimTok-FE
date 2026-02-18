@@ -564,6 +564,7 @@ const Chatting = () => {
                 </div>
               );
             })}
+            <div className="h-32 flex-shrink-0" />
           </div>
         </section>
 
