@@ -11,9 +11,7 @@ import {
   PlantWaterStatus,
 } from "@/constants/garden/plantStatus";
 
-import plantProgressData from "@/mock/plantProgress.json";
-
-import { GardenPlantItem } from "@/types/plant.type";
+import { GardenListResponse } from "@/types/plant.type";
 
 import { getGrowthImage } from "@/utils/getGrowthImage";
 import { getPlantStatus, getPlantStatusMinutes } from "@/utils/getPlantStatus";
@@ -24,9 +22,12 @@ import ProgressDots from "../onboarding/ProgressDots";
 import { Bubble } from "./Bubble";
 import { PlantWithBubble } from "./PlantWithBubble";
 
-export const PlantProgress = () => {
-  const plants = plantProgressData as GardenPlantItem[];
-  const plantLength = plantProgressData.length;
+interface PlantProgressProps {
+  plantProgressData: GardenListResponse;
+}
+export const PlantProgress = ({ plantProgressData }: PlantProgressProps) => {
+  const plantLength = plantProgressData.totalCount;
+  const plantList = plantProgressData.sharedPlants;
 
   return (
     <section className="h-full">
@@ -57,7 +58,7 @@ export const PlantProgress = () => {
             </div>
           </SwiperSlide>
         ) : (
-          plants.map((plant, index) => {
+          plantList.map((plant, index) => {
             const plantStatus = getPlantStatus(plant.lastWateredAt);
 
             const growthImage =
