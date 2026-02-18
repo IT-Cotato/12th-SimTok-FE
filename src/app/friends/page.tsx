@@ -16,6 +16,8 @@ import { CombinedFriend } from "@/types/friendProfile.type";
 
 import { getFriendName } from "@/utils/getFriendName";
 
+import { deleteFriendship } from "../api/friendships/friend.api";
+
 const FriendsListPage = () => {
   const router = useRouter();
 
@@ -35,6 +37,38 @@ const FriendsListPage = () => {
 
   const clickDeleteButton = () => {
     setClickDelete(prev => !prev);
+  };
+
+  const handleDeleteConfirm = async () => {
+    try {
+      console.log(
+        "삭제 대상 IDs:",
+        selectedFriends.map(f => f.friendshipId),
+      );
+      const deletePromises = selectedFriends.map(friend =>
+        deleteFriendship(friend.friendshipId),
+      );
+
+      const results = await Promise.all(deletePromises);
+      console.log("서버 응답 결과:", results);
+
+      const isAllSuccessful = results.every(
+        res => res && (res.success || res.status === 200),
+      );
+
+      if (isAllSuccessful) {
+        alert("성공적으로 삭제되었습니다.");
+
+        setSelectedFriends([]);
+        setIsEditMode(false);
+        setClickDelete(false);
+
+        window.location.reload();
+      }
+    } catch (err) {
+      console.error("삭제 실패:", err);
+      alert("삭제 중 오류가 발생했습니다.");
+    }
   };
 
   return (
@@ -101,6 +135,7 @@ const FriendsListPage = () => {
           selectedProfileImg={selectedFriends[0].profileImageUrl}
           selectedName={getFriendName(selectedFriends[0], false)}
           onClose={clickDeleteButton}
+          onConfirm={handleDeleteConfirm}
         />
       )}
     </main>
