@@ -10,14 +10,14 @@ import { PLANT_IMAGE_MAP } from "@/constants/garden/plantList";
 import { GrowthStage } from "@/types/plant.type";
 
 interface WaterRecentlyProps {
+  pageTitle?: string[];
   growthStage: GrowthStage;
 }
 
-export const WaterRecently = ({ growthStage }: WaterRecentlyProps) => {
-  const pageTitle = GARDEN_STATE_ITEM.find(
-    item => item.state === "WATERED_RECENTLY",
-  )?.title;
-
+export const WaterRecently = ({
+  pageTitle,
+  growthStage,
+}: WaterRecentlyProps) => {
   const plantImg =
     PLANT_IMAGE_MAP[growthStage as keyof typeof PLANT_IMAGE_MAP].good;
 

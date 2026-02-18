@@ -1,4 +1,5 @@
-//import clsx from "clsx";
+import clsx from "clsx";
+
 import { PLANT_GROWTH_KOREAN } from "@/constants/garden/plantList";
 
 import { GardenState, GrowthStage } from "@/types/plant.type";
@@ -46,7 +47,7 @@ export const ProgressSection = ({
 
       <div className="flex w-full items-center gap-[49px]">
         {/* progress bar 영역 */}
-        {/* <div className="bg-neutral-08 h-2 flex-1 overflow-hidden rounded-sm">
+        <div className="bg-neutral-08 h-2 flex-1 overflow-hidden rounded-sm">
           <div
             className={clsx(
               progressBarColor,
@@ -54,7 +55,7 @@ export const ProgressSection = ({
             )}
             style={{ width: `${percentage}%` }}
           />
-        </div> */}
+        </div>
 
         {/* percentage text */}
         <p className="text-sub1-sb text-neutral-03 whitespace-nowrap">

@@ -2,8 +2,6 @@
 
 import Lottie from "react-lottie-player";
 
-import Cloud from "@/assets/garden/cloud.svg";
-
 import { GardenAction } from "@/types/plant.type";
 
 import needWaterAnimation from "@/public/lotties/needWater.json";

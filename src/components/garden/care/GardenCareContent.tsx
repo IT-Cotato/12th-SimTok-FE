@@ -1,4 +1,4 @@
-import { JSX } from "react";
+import { useMemo } from "react";
 
 import { FullButton } from "@/components/common/FullButton";
 import { ActionButton } from "@/components/garden/care/ActionButton";
@@ -6,91 +6,108 @@ import { ProgressSection } from "@/components/garden/care/ProgressSection";
 
 import { GARDEN_STATE_ITEM } from "@/constants/garden/gardenCare";
 
-import { GardenState, GrowthStage, PlantSort } from "@/types/plant.type";
+import {
+  GardenAction,
+  GardenPlantItem,
+  GardenState,
+  GrowthStage,
+} from "@/types/plant.type";
 
-import { AfterNutrition } from "./gardenState/AfterNutriltion";
-import { Completed } from "./gardenState/Completed";
-import { Growning } from "./gardenState/Growning";
-import { NutritionAvailable } from "./gardenState/NutritionAvailable";
-import { SeedReady } from "./gardenState/SeedReady";
-import { WaterRecently } from "./gardenState/WaterRecently";
-import { Waterable } from "./gardenState/Waterable";
-import { Withered } from "./gardenState/Withered";
+import { GardenStatusRenderer } from "./GardenStatusRenderer";
 
-export const GardenCareContent = ({
-  plantName,
-  percentage,
-  gardenState,
-  growthStage,
-  plantSort,
-  onWater,
-  onNutrition,
-  onPlant,
-}: {
-  plantName?: string;
-  percentage?: number;
-  gardenState: GardenState;
-  growthStage: GrowthStage;
-  plantSort: PlantSort;
+interface ContentProps {
+  plant: GardenPlantItem;
+  localStatus: { gardenState: GardenState; isMe: boolean };
+  isOptimistic: boolean;
+  optimisticState: GardenState | null;
   onWater: () => void;
   onNutrition: () => void;
   onPlant: () => void;
-}) => {
-  let Content: JSX.Element | null;
-  const activeButtonList =
-    GARDEN_STATE_ITEM.find(item => item.state === gardenState)?.action ?? [];
+}
 
-  switch (gardenState) {
-    case "SEED_READY":
-      Content = <SeedReady onPlant={onPlant} />;
-      break;
-    case "GROWING":
-      Content = <Growning growthStage={growthStage} />;
-      break;
-    case "WATERED_RECENTLY":
-      Content = <WaterRecently growthStage={growthStage} />;
-      break;
-    case "WATERABLE":
-      Content = <Waterable growthStage={growthStage} />;
-      break;
-    case "WITHERED":
-      Content = <Withered growthStage={growthStage} />;
-      break;
-    case "NUTRITION_AVAILABLE":
-      Content = <NutritionAvailable growthStage={growthStage} />;
-      break;
-    case "AFTER_NUTRITION":
-      Content = <AfterNutrition growthStage={growthStage} />;
-      break;
-    case "COMPLETED":
-      Content = <Completed plantSort={plantSort} />;
-      break;
-    default:
-      Content = null;
-  }
+export const GardenCareContent = ({
+  plant,
+  localStatus,
+  isOptimistic,
+  optimisticState,
+  onWater,
+  onNutrition,
+  onPlant,
+}: ContentProps) => {
+  const effectiveState =
+    isOptimistic && optimisticState ? optimisticState : localStatus.gardenState;
+
+  const { actualMyTurn, displayTitle } = useMemo(() => {
+    let myTurn = !localStatus.isMe;
+
+    // 특수 케이스 처리
+    if (effectiveState === "AFTER_NUTRITION") myTurn = localStatus.isMe;
+    if (effectiveState === "GROWING" && plant.percentage === 0) myTurn = true;
+
+    const stageNames: Record<GrowthStage, string> = {
+      SEED: "씨앗이",
+      SPROUT: "새싹이",
+      STEM: "줄기가",
+      BUD: "꽃봉오리가",
+      BLOOM: "꽃이",
+    };
+    const stageName = stageNames[plant.growthStage];
+
+    // 제공된 타입 구조에 맞춘 타이틀 매핑
+    const titles: Partial<Record<GardenState, string[]>> = {
+      WITHERED: myTurn
+        ? ["물이 부족해요!", `${stageName} 말라버렸어요`]
+        : ["친구가 물을 줄 차례예요"],
+      NUTRITION_AVAILABLE: myTurn
+        ? [`${stageName} 말라버렸어요!`, "영양제로 회복이 필요해요"]
+        : ["친구가 물을 줄 차례예요"],
+      WATERABLE: myTurn
+        ? ["내가 물을 줄 차례예요"]
+        : ["친구가 물을 줄 차례예요"],
+      WATERED_RECENTLY: myTurn
+        ? ["물을 줄 시간이에요!"]
+        : ["친구가 물을 줄 차례예요"],
+    };
+
+    return { actualMyTurn: myTurn, displayTitle: titles[effectiveState] || [] };
+  }, [effectiveState, localStatus, plant]);
+
+  const activeButtons = useMemo((): GardenAction[] => {
+    if (!actualMyTurn) return [];
+    const config = GARDEN_STATE_ITEM.find(
+      i =>
+        i.state === effectiveState &&
+        (i.growthStage === null || i.growthStage === plant.growthStage),
+    );
+    return (config?.action as GardenAction[]) ?? [];
+  }, [actualMyTurn, effectiveState, plant.growthStage]);
 
   return (
-    <div className="flex flex-1 flex-col justify-between">
-      {Content}
+    <div className="flex h-full flex-col justify-between">
+      <GardenStatusRenderer
+        state={effectiveState}
+        stage={plant.growthStage}
+        sort={plant.plantName}
+        title={displayTitle}
+        onPlant={onPlant}
+      />
 
-      {/* 공통 UI */}
       <div className="z-99 mt-[23px] flex flex-col gap-[10px]">
         <div className="px-4">
           <ProgressSection
-            plantName={plantName}
-            percentage={percentage}
-            growthStage={growthStage}
-            gardenStatus={gardenState}
+            plantName={plant.nickname}
+            percentage={plant.percentage}
+            growthStage={plant.growthStage}
+            gardenStatus={effectiveState}
           />
         </div>
-        {gardenState === "COMPLETED" ? (
+        {effectiveState === "COMPLETED" ? (
           <div className="mb-[42px] px-4 py-[10px]">
             <FullButton>정원에 심으러가기</FullButton>
           </div>
         ) : (
-          // TODO: WATER_RECENTLY 상태에서 마지막 물준 사람이 나인 경우에 액션 버튼 제거
           <ActionButton
-            activeButton={activeButtonList}
+            activeButton={activeButtons}
             onNutrition={onNutrition}
             onWater={onWater}
           />
