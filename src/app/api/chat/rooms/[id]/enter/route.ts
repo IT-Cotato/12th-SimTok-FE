@@ -11,16 +11,13 @@ export async function POST(request: NextRequest, context: RouteContext) {
     const { id: roomId } = await context.params;
     const authHeader = request.headers.get("Authorization");
 
-    const res = await fetch(
-      `${BACKEND_BASE_URL}/api/chat/rooms/${roomId}/enter`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(authHeader && { Authorization: authHeader }),
-        },
+    const res = await fetch(`${BACKEND_BASE_URL}/chat/rooms/${roomId}/enter`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(authHeader && { Authorization: authHeader }),
       },
-    );
+    });
 
     const result = await res.json();
     return NextResponse.json(result);
