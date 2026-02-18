@@ -31,6 +31,7 @@ interface ChatMessage {
   type: "mine" | "friend";
   content: string;
   time: string;
+  createdAt: string;
   messageSeq?: number;
   isImage?: boolean;
 }
@@ -174,6 +175,7 @@ const Chatting = () => {
             type: msg.senderMemberId === myMemberId ? "mine" : "friend",
             content: msg.content,
             time: formatTime(msg.createdAt),
+            createdAt: msg.createdAt,
             messageSeq: msg.messageSeq,
           }));
           setMessages(history.reverse());
@@ -235,6 +237,7 @@ const Chatting = () => {
                 type: body.senderMemberId === myMemberId ? "mine" : "friend",
                 content: body.content,
                 time: formatTime(body.createdAt),
+                createdAt: body.createdAt, // 필드 반드시 추가
               },
             ]);
           }),
@@ -298,6 +301,16 @@ const Chatting = () => {
     } catch (err) {
       console.error("메시지 전송 에러:", err);
     }
+  };
+
+  const formatDateForDivider = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return new Intl.DateTimeFormat("ko-KR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      weekday: "long",
+    }).format(date);
   };
 
   const handleBack = async () => {
@@ -373,6 +386,7 @@ const Chatting = () => {
         hour: "2-digit",
         minute: "2-digit",
       }),
+      createdAt: new Date().toISOString(),
     };
     setMessages(prev => [...prev, newMessage]);
   };
@@ -412,9 +426,14 @@ const Chatting = () => {
           ref={scrollRef}
           className="scrollbar-hide flex-1 overflow-y-auto scroll-smooth"
         >
-          <ChatDateDivider date="2025년 12월 18일 목요일" />
           <div className="flex flex-col">
             {messages.map((msg, index) => {
+              const prevMsg = messages[index - 1];
+              const isNewDay =
+                !prevMsg ||
+                new Date(prevMsg.createdAt).toDateString() !==
+                  new Date(msg.createdAt).toDateString();
+
               const isPrevSame =
                 index > 0 &&
                 messages[index - 1].type === msg.type &&
@@ -424,24 +443,34 @@ const Chatting = () => {
                 messages[index + 1].type === msg.type &&
                 messages[index + 1].time === msg.time;
 
-              return msg.type === "mine" ? (
-                <MyMessage
-                  key={msg.id}
-                  content={msg.content}
-                  time={msg.time}
-                  isPrevSame={isPrevSame}
-                  isNextSame={isNextSame}
-                />
-              ) : (
-                <FriendMessage
-                  key={msg.id}
-                  userName={displayName}
-                  profileImage={opponentProfileImg ?? undefined}
-                  content={msg.content}
-                  time={msg.time}
-                  isPrevSame={isPrevSame}
-                  isNextSame={isNextSame}
-                />
+              return (
+                <div key={msg.id}>
+                  {isNewDay && (
+                    <ChatDateDivider
+                      date={formatDateForDivider(msg.createdAt)}
+                    />
+                  )}
+
+                  {msg.type === "mine" ? (
+                    <MyMessage
+                      key={msg.id}
+                      content={msg.content}
+                      time={msg.time}
+                      isPrevSame={isPrevSame}
+                      isNextSame={isNextSame}
+                    />
+                  ) : (
+                    <FriendMessage
+                      key={msg.id}
+                      userName={displayName}
+                      profileImage={opponentProfileImg ?? undefined}
+                      content={msg.content}
+                      time={msg.time}
+                      isPrevSame={isPrevSame}
+                      isNextSame={isNextSame}
+                    />
+                  )}
+                </div>
               );
             })}
           </div>
