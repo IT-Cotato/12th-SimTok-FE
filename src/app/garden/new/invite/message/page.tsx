@@ -12,6 +12,8 @@ import ProgressDots from "@/components/onboarding/ProgressDots";
 
 import { PLANT_SORT_INFO } from "@/constants/garden/plantList";
 
+import { getFriendName } from "@/utils/getFriendName";
+
 const InviteMessagePage = () => {
   const router = useRouter();
   const nickname = useGardenStore(state => state.nickname);
@@ -24,7 +26,7 @@ const InviteMessagePage = () => {
   const selectedPlant = PLANT_SORT_INFO.find(plant => plant.id === plantId);
 
   const invitedFriend = useGardenStore(state => state.invitedFriend);
-  const friendName = invitedFriend?.showName;
+  const friendName = invitedFriend && getFriendName(invitedFriend, true);
 
   useEffect(() => {
     if (!selectedPlant || !invitedFriend) {
