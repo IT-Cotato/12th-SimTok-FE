@@ -40,3 +40,8 @@ export const getFriendshipSettings = async (friendshipId: number) => {
   );
   return data;
 };
+
+export const deleteFriendship = async (friendshipId: number) => {
+  const { data } = await apiInstance.delete(`/friendships/${friendshipId}`);
+  return data;
+};
