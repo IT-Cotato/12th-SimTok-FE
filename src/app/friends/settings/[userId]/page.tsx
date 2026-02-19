@@ -149,7 +149,7 @@ const FriendSetting = () => {
           name={nickname}
           onChangeName={setNickName}
           placeholder="닉네임을 입력해주세요"
-          canEdit={true}
+          canEdit={false}
         />
       </section>
       <section className="pb-[125px]">
