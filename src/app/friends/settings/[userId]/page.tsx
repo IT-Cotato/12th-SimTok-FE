@@ -14,8 +14,13 @@ import { FullButton } from "@/components/common/FullButton";
 import { ProfileWrapper } from "@/components/common/ProfileWrapper";
 import { SettingField } from "@/components/friends/SettingField";
 
-import { ChatStyle, ChatTopic } from "@/types/friendProfile.type";
-import { UpdateFriendshipPayload } from "@/types/friendProfile.type";
+
+import {
+  ChatStyle,
+  ChatTopic,
+  FriendShipProfile,
+} from "@/types/friendProfile.type";
+
 
 const FriendSetting = () => {
   const params = useParams();
@@ -24,9 +29,11 @@ const FriendSetting = () => {
   const searchParams = useSearchParams();
   const mode = searchParams.get("mode");
 
-  const [profileImg, setProfileImg] = useState("");
-  const [userName, setUserName] = useState(""); // 친구의 실제 본명 (수정 불가 영역용)
-  const [nickname, setNickName] = useState(""); // 상단 닉네임 (수정 가능 영역용)
+  const initialName = searchParams.get("name") || "";
+  const initialImg = searchParams.get("img") || "";
+  const [profileImg, setProfileImg] = useState(initialImg);
+  const [nickname, setNickName] = useState(initialName); // 상단 닉네임 (수정 가능 영역용)
+  const [userName, setUserName] = useState(initialName); // 친구의 실제 본명 (수정 불가 영역용)
   const [goalDays, setGoalDays] = useState<number | undefined>();
   const [chatStyle, setChatStyle] = useState<ChatStyle | undefined>();
   const [chatTopic, setChatTopic] = useState<ChatTopic[]>([]);
@@ -41,39 +48,47 @@ const FriendSetting = () => {
   const initData = async () => {
     try {
       setIsLoading(true);
-      const result = await friendsApi.getFriendDetail(friendId);
+      // params.userId에 담긴 값은 실제로는 friendshipId임
+      const fsIdFromParams = Number(params.userId);
+
+      const result = await friendsApi.getFriendDetail(fsIdFromParams);
       const list = result?.data?.friendshipList;
 
       if (result?.success && Array.isArray(list)) {
-        const friendInfo = list.find(f => f.friendId === friendId);
+        const friendInfo = list.find(
+          f => Number(f.friendshipId) === fsIdFromParams,
+        );
 
         if (friendInfo) {
-          const fsId = friendInfo.friendshipId;
-          setActualFriendshipId(fsId);
-
+          setActualFriendshipId(friendInfo.friendshipId);
           setUserName(friendInfo.showName);
           setProfileImg(friendInfo.profileImageUrl || "");
 
-          const detailResult = await getFriendshipSettings(fsId);
+          const detailResult = await getFriendshipSettings(
+            friendInfo.friendshipId,
+          );
 
           if (detailResult?.success && detailResult?.data) {
             const detail = detailResult.data;
-
             setNickName(detail.nickname || friendInfo.showName);
-            const mappedStyle: ChatStyle =
-              detail.speechStyle === "반말" ? "반말" : "존댓말";
-            setChatStyle(mappedStyle);
+            setChatStyle(detail.speechStyle);
             setChatTopic(detail.topicCodes || []);
-            if (detail.chatGoal !== undefined && detail.chatGoal !== null) {
-              const goalStr = String(detail.chatGoal);
-              const goalNum = parseInt(goalStr.replace(/[^0-9]/g, ""));
+
+            if (detail.chatGoal) {
+              const goalNum = parseInt(
+                String(detail.chatGoal).replace(/[^0-9]/g, ""),
+              );
               setGoalDays(isNaN(goalNum) ? undefined : goalNum);
+            } else {
+              setGoalDays(undefined);
             }
           }
+        } else {
+          console.error("리스트에서 해당 friendshipId를 찾을 수 없음.");
         }
       }
     } catch (err) {
-      console.error("❌ 데이터 로드 에러:", err);
+      console.error("데이터 로드 에러:", err);
     } finally {
       setIsLoading(false);
     }
@@ -87,26 +102,34 @@ const FriendSetting = () => {
 
   // 저장 처리
   const handleSubmit = async () => {
+    console.log({
+      actualFriendshipId,
+      nickname,
+      chatStyle,
+      goalDays,
+      chatTopic,
+    });
     if (
       !actualFriendshipId ||
-      !nickname ||
       !chatStyle ||
-      goalDays === undefined
+      goalDays === undefined ||
+      chatTopic.length === 0
     ) {
       alert("모든 설정 값을 선택해 주세요.");
       return;
     }
 
     try {
-      const mappedStyle: "존댓말" | "반말" =
-        chatStyle === "존댓말" ? "존댓말" : "반말";
-
-      const payload: UpdateFriendshipPayload = {
-        nickname: nickname.trim(),
-        speechStyle: mappedStyle,
-        chatGoal: goalDays,
-        topicCodes: chatTopic,
+      const styleReverseMap: Record<string, string> = {
+        CASUAL: "반말",
+        FORMAL: "존댓말",
       };
+      const payload = {
+        nickname: nickname,
+        speechStyle: (styleReverseMap[chatStyle!] || chatStyle) as
+          | "반말"
+          | "존댓말",
+        chatGoal: String(goalDays),
 
       const result = await updateFriendship(actualFriendshipId, payload);
 

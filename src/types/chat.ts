@@ -6,6 +6,7 @@ export interface ChatOpponent {
 export interface ChatRoomItem {
   roomId: number;
   roomName: string;
+  friendShipId: number;
   lastMessagePreview: string;
   lastMessageAt: string;
   unreadCount: number;
