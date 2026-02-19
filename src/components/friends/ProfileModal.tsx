@@ -36,6 +36,7 @@ export const ProfileModal = ({
             aria-label="설정"
             onClick={() => {
               router.push(`/friends/settings/${userId}?mode=edit`);
+              console.log(userId);
             }}
             className="text-neutral-09 h-6 w-6"
           >
