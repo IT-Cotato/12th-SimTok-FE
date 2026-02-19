@@ -12,24 +12,8 @@ import { HeaderWithIcon } from "@/components/common/HeaderWithIcon";
 import { NavBar } from "@/components/common/NavBar";
 import { SearchField } from "@/components/common/SearchField";
 
-interface ChatRoomItem {
-  roomId: number;
-  roomName: string;
-  lastMessagePreview: string;
-  lastMessageAt: string;
-  unreadCount: number;
-  opponent: {
-    name: string;
-    profileImageUrl: string;
-  } | null;
-}
-
-export interface ApiResponse {
-  success: boolean;
-  data: {
-    items: ChatRoomItem[];
-  };
-}
+import { ChatListResponse, ChatRoomItem } from "@/types/chat";
+import { ApiResponse } from "@/types/common";
 
 const ChatListPage = () => {
   const router = useRouter();
@@ -52,7 +36,7 @@ const ChatListPage = () => {
       const res = await fetch("/api/chat/rooms", {
         cache: "no-store",
       });
-      const result: ApiResponse = await res.json();
+      const result: ApiResponse<ChatListResponse> = await res.json();
       if (result.success) {
         setChats(result.data.items);
       }
