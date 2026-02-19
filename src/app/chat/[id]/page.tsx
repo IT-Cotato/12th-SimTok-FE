@@ -523,7 +523,7 @@ const Chatting = () => {
                 </div>
               );
             })}
-            <div className="h-[150px] w-full flex-shrink-0" />
+            <div className="h-[100px] w-full flex-shrink-0" />
           </div>
         </section>
 

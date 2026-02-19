@@ -16,7 +16,7 @@ export const ProfileWrapper = ({
   name = "",
   onChangeName = () => {},
   onProfileClick,
-  canEdit = false,
+  canEdit = true,
   placeholder = "이름을 입력해주세요",
   showInput = true,
 }: ProfileWrapperProps) => {

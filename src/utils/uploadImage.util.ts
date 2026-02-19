@@ -3,11 +3,11 @@ export type UploadFolderType =
   | "PROFILE"
   | "CHALLENGE"
   | "CHAT"
-  | "CHAT/attachments";
+  | "ATTACHMENTS";
 
 export const uploadToS3 = async (
   file: File,
-  folder: UploadFolderType = "DIARY",
+  folder: UploadFolderType = "PROFILE",
 ) => {
   const token = localStorage.getItem("accessToken");
 
@@ -17,20 +17,13 @@ export const uploadToS3 = async (
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({
-      fileName: file.name,
-      folder: folder,
-    }),
+    body: JSON.stringify({ fileName: file.name, folder }),
   });
 
-  if (!res.ok) {
-    const errorDetail = await res.json().catch(() => ({}));
-    console.error("서버 응답 에러 상세:", errorDetail); // 서버가 보낸 'reasons' 확인 가능
-    throw new Error(`Presigned URL 발급 실패: ${res.status}`);
-  }
+  if (!res.ok) throw new Error("Presigned URL 발급 실패");
 
-  const response = await res.json();
-  const { presignedUrl, imageUrl } = response.data;
+  const { data } = await res.json();
+  const { presignedUrl, imageUrl, contentType } = data;
 
   const uploadRes = await fetch(presignedUrl, {
     method: "PUT",
