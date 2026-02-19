@@ -34,7 +34,7 @@ export const FriendList = ({
 }: FriendListProps) => {
   const [friends, setFriends] = useState<CombinedFriend[]>([]);
 
-  const [activeFriendsCount, setActiveFriendsCount] = useState(0);
+  const [totalFriendsCount, setTotalFriendsCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -44,13 +44,21 @@ export const FriendList = ({
           const data = await getGardenInviteFriends();
           // FriendGardenList 구조: { count: number, friends: Friend[] }
           setFriends(data.friends);
-          setActiveFriendsCount(data.count);
+          setTotalFriendsCount(data.count);
           console.log("초대 가능한 친구 목록:", data.friends);
         } else {
-          const data = await getFriendsList("ACTIVE");
-          // FriendList 구조: { count: number, friendshipList: FriendShipProfile[] }
-          setFriends(data.friendshipList);
-          setActiveFriendsCount(data.count);
+          const [activeData, pendingData] = await Promise.all([
+            getFriendsList("ACTIVE"),
+            getFriendsList("PENDING"),
+          ]);
+          const combined = [
+            ...activeData.friendshipList,
+            ...pendingData.friendshipList,
+          ];
+          // 카운트 합치기
+          const totalCount = activeData.count + pendingData.count;
+          setFriends(combined);
+          setTotalFriendsCount(totalCount);
         }
       } catch (error) {
         console.error("친구 목록 로드 실패:", error);
@@ -90,7 +98,7 @@ export const FriendList = ({
       {!searchText && (
         <div className="flex gap-1 px-4">
           <p className="text-sub1-r text-neutral-04">친구</p>
-          <p className="text-sub1-r text-neutral-04">{activeFriendsCount}</p>
+          <p className="text-sub1-r text-neutral-04">{totalFriendsCount}</p>
         </div>
       )}
       {filteredFriends.map(friend => {

@@ -57,8 +57,6 @@ const FriendsListPage = () => {
       );
 
       if (isAllSuccessful) {
-        alert("성공적으로 삭제되었습니다.");
-
         setSelectedFriends([]);
         setIsEditMode(false);
         setClickDelete(false);
@@ -67,7 +65,6 @@ const FriendsListPage = () => {
       }
     } catch (err) {
       console.error("삭제 실패:", err);
-      alert("삭제 중 오류가 발생했습니다.");
     }
   };
 
