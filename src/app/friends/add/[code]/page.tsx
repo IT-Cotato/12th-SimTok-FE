@@ -12,6 +12,7 @@ import {
 import { BackHeader } from "@/components/common/BackHeader";
 import { FullButton } from "@/components/common/FullButton";
 import { OnlyLoader } from "@/components/common/OnlyLoader";
+import { ProfileImagePicker } from "@/components/common/ProfileImagePicker";
 
 import { SearchFriendByInviteCodeResponse } from "@/types/friendProfile.type";
 
@@ -54,7 +55,7 @@ const FriendAddPage = () => {
   if (!opponentData) return <OnlyLoader />;
 
   return (
-    <main className="bg-radial-yellowgreen-mintgreen flex w-full flex-col">
+    <main className="bg-radial-yellowgreen-mintgreen flex h-full w-full flex-col">
       <div className="flex flex-1 flex-col">
         <section className="mt-[8.5px]">
           <BackHeader />
@@ -62,13 +63,13 @@ const FriendAddPage = () => {
         <h1 className="text-d2 text-neutral-02 mt-[58.5px] px-4 py-[10px]">
           친구를 목록에 추가할까요?
         </h1>
-        <section className="mt-[171px] flex flex-col items-center justify-center gap-4">
-          <Image
-            src={opponentData.profileImageUrl}
-            alt="프로필 이미지"
+        <section className="flex flex-1 flex-col items-center justify-center gap-4">
+          <ProfileImagePicker
+            canEdit={false}
+            imageUrl={opponentData.profileImageUrl}
             width={174}
             height={174}
-            className="h-[174px] w-[174px] rounded-[36px] object-cover"
+            radius={36}
           />
           <p className="text-h2 text-neutral-01">{opponentData.memberName}</p>
         </section>
