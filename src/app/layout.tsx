@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     siteName: "심톡",
     images: [
       {
-        url: "/images/serviceImage.png",
+        url: "/serviceImage.png",
         width: 1200,
         height: 630,
       },
