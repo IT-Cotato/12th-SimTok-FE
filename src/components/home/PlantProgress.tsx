@@ -154,8 +154,17 @@ export const PlantProgress = ({ plantProgressData }: PlantProgressProps) => {
                         growthImage={growthImage}
                       />
                     </div>
-
-                    <div className="absolute bottom-0 z-[100] w-full bg-white px-4 py-[10px]">
+                    <div className="bg-blur pointer-events-none absolute bottom-0 z-10 h-[329px] w-full max-w-[440px]" />
+                    <div className="absolute bottom-[73px] z-30 flex w-full items-center justify-center px-4 py-[10px]">
+                      {plantLength > 0 ? (
+                        <p className="text-h3 text-neutral-05 bg-glass-style z-99 rounded-2xl p-[10px]">
+                          {plant.nickname}
+                        </p>
+                      ) : (
+                        <InfoMessage text="원하는 식물을 골라보세요!" />
+                      )}
+                    </div>
+                    <div className="absolute bottom-0 z-[50] w-full bg-white px-4 py-[10px]">
                       <FullButton
                         isActive={!plant.lastWateredBy.isMe}
                         colorScheme={
