@@ -1,13 +1,19 @@
-import Image from "next/image";
+import { QRCodeCanvas } from "qrcode.react";
 
 import ShareIcon from "@/assets/share.svg";
 
-import MyProfileData from "@/mock/myProfile.json";
+import { MyProfile } from "@/types/myProfile.type";
+
+import { ProfileImagePicker } from "../common/ProfileImagePicker";
 
 interface QRCodeWrapperProps {
   textCodeMode: boolean;
+  myData: MyProfile;
 }
-export const QRCodeWrapper = ({ textCodeMode = false }: QRCodeWrapperProps) => {
+export const QRCodeWrapper = ({
+  textCodeMode = false,
+  myData,
+}: QRCodeWrapperProps) => {
   // 구멍이 뚫릴 위치 (상단에서부터의 거리)
   const CUTOUT_Y = "105px";
   const CUTOUT_RADIUS = "18px"; // 구멍 반지름
@@ -35,18 +41,16 @@ export const QRCodeWrapper = ({ textCodeMode = false }: QRCodeWrapperProps) => {
       >
         <div className="flex items-center justify-between px-[29px] pt-[20.05px]">
           <div className="flex gap-2">
-            <div className="">
-              <Image
-                src={MyProfileData.profileImg}
-                alt="내 프로필이미지"
-                width={60}
-                height={60}
-                className="h-15 w-15 rounded-2xl object-cover"
-              />
-            </div>
+            <ProfileImagePicker
+              imageUrl={myData.profileImageUrl ?? null}
+              canEdit={false}
+              width={60}
+              height={60}
+              radius={16}
+            />
 
             <p className="text-h2 text-neutral-04 flex items-center justify-center p-[10px]">
-              {MyProfileData.userName}
+              {myData.name}
             </p>
           </div>
           <ShareIcon className="text-neutral-07 h-9 w-9" />
@@ -62,13 +66,23 @@ export const QRCodeWrapper = ({ textCodeMode = false }: QRCodeWrapperProps) => {
           />
         </div>
         <div className="h-[330px] w-full px-[38.5px] pb-[27.23px]">
-          {/* TODO: QR 코드가 들어갈 자리, 배포되면 실제 주소로 만들기 */}
           <div className="relative flex h-full w-full items-center justify-center rounded-xl bg-neutral-100 text-neutral-400">
-            QR Code Area
+            <QRCodeCanvas
+              value={`https://simtalk.vercel.app//friends/add/${myData.inviteCode}`}
+              size={512} // 충분히 큰 해상도로 생성
+              style={{
+                width: "100%",
+                height: "100%",
+                maxWidth: "330px", // 패딩 효과를 위해 살짝 줄임
+                maxHeight: "330px",
+                // textCodeMode일 때 투명도를 10%로 낮춤
+                opacity: textCodeMode ? 0.1 : 1,
+                transition: "opacity 0.3s ease",
+              }}
+              level="H"
+            />
             {textCodeMode && (
-              <p className="text-d1 absolute text-black">
-                {MyProfileData.inviteCode}
-              </p>
+              <p className="text-d1 absolute text-black">{myData.inviteCode}</p>
             )}
           </div>
         </div>
