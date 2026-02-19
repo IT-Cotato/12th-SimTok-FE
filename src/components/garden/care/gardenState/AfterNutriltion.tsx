@@ -26,7 +26,7 @@ export const AfterNutrition = ({ growthStage }: AfterNutritionProps) => {
       <PageTitle title={pageTitle} />
       <div className="relative z-99 flex items-center justify-center">
         {/* 식물 이미지 */}
-        <div className="relative flex items-center justify-center">
+        <div className="relative flex items-center justify-center pt-[150px]">
           <div className="absolute bottom-[153px] left-1/2 flex -translate-x-1/2 flex-col gap-[10px]">
             <InfoMessage text="물이 필요해요!" triangleUp={false} />
             <Image

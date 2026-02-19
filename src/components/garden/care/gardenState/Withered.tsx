@@ -26,7 +26,7 @@ export const Withered = ({ pageTitle, growthStage }: WitheredProps) => {
     <section className="z-99 flex flex-1 flex-col justify-between">
       <PageTitle title={pageTitle} />
       <div className="relative z-99 flex items-center justify-center">
-        <div className="relative flex items-center justify-center">
+        <div className="relative flex items-center justify-center pt-[150px]">
           {/* 식물 이미지 영역 */}
           <div
             className={`absolute ${isSeed ? "bottom-[143px]" : "bottom-[153px]"} left-1/2 flex -translate-x-1/2 flex-col items-center justify-center`}
