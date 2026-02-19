@@ -14,12 +14,12 @@ import { CHAT_LIST_ITEMS } from "@/constants/chatSettings";
 
 const SettingChatPage = () => {
   const router = useRouter();
-  const { id } = useParams();
+  const { id } = useParams(); //roomId
   const searchParams = useSearchParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const opponentName = searchParams.get("name") || "대화 상대";
   const opponentImg = searchParams.get("img") || "";
-
+  const fsId = searchParams.get("fsId"); //friendshipId
   const handleConfirmExit = async () => {
     const token = localStorage.getItem("accessToken");
 
@@ -60,7 +60,7 @@ const SettingChatPage = () => {
               }}
               onEdit={() =>
                 router.push(
-                  `/friends/settings/${id}?name=${encodeURIComponent(opponentName)}&img=${encodeURIComponent(opponentImg)}`,
+                  `/friends/settings/${fsId}?name=${encodeURIComponent(opponentName)}&img=${encodeURIComponent(opponentImg)}`,
                 )
               }
             />

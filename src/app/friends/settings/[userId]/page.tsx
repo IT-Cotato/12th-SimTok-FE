@@ -69,15 +69,7 @@ const FriendSetting = () => {
           if (detailResult?.success && detailResult?.data) {
             const detail = detailResult.data;
             setNickName(detail.nickname || friendInfo.showName);
-            if (detail.speechStyle) {
-              const styleMap: Record<string, ChatStyle> = {
-                반말: "CASUAL",
-                존댓말: "FORMAL",
-              };
-              const mappedStyle = styleMap[detail.speechStyle.trim()];
-              if (mappedStyle) setChatStyle(mappedStyle);
-            }
-
+            setChatStyle(detail.speechStyle);
             setChatTopic(detail.topicCodes || []);
 
             if (detail.chatGoal) {

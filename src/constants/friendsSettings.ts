@@ -21,8 +21,8 @@ export const CHAT_FREQUENCY_OPTIONS = [
 ] as const;
 
 export const CHAT_STYLE = [
-  { key: "FORMAL", label: "존댓말" },
-  { key: "CASUAL", label: "반말" },
+  { key: "존댓말", label: "존댓말" },
+  { key: "반말", label: "반말" },
 ] as const;
 
 export const CHAT_TOPIC = [
