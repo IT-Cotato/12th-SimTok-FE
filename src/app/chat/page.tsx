@@ -114,7 +114,7 @@ const ChatListPage = () => {
           <SearchField onChangeSearchText={setSearchText} />
         </div>
 
-        <section className="mt-5 flex flex-col overflow-y-auto">
+        <section className="mt-5 flex flex-col overflow-y-auto pb-[210px]">
           {filteredChats.map((chat: ChatRoomItem) => {
             const displayChatName = chat.opponent?.name || "알 수 없는 사용자";
 
