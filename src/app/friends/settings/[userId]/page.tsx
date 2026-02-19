@@ -68,7 +68,7 @@ const FriendSetting = () => {
       const list = result?.data?.friendshipList;
 
       if (result?.success && Array.isArray(list)) {
-        const friendInfo = list.find(f => f.friendId === friendshipId);
+        const friendInfo = list.find(f => f.friendId === friendId);
 
         if (friendInfo) {
           const fsId = friendInfo.friendshipId;
