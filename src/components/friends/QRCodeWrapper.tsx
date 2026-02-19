@@ -69,13 +69,12 @@ export const QRCodeWrapper = ({
           <div className="relative flex h-full w-full items-center justify-center rounded-xl bg-neutral-100 text-neutral-400">
             <QRCodeCanvas
               value={`https://simtalk.vercel.app//friends/add/${myData.inviteCode}`}
-              size={512} // 충분히 큰 해상도로 생성
+              size={512}
               style={{
                 width: "100%",
                 height: "100%",
-                maxWidth: "330px", // 패딩 효과를 위해 살짝 줄임
+                maxWidth: "330px",
                 maxHeight: "330px",
-                // textCodeMode일 때 투명도를 10%로 낮춤
                 opacity: textCodeMode ? 0.1 : 1,
                 transition: "opacity 0.3s ease",
               }}
