@@ -20,11 +20,7 @@ export const CHAT_FREQUENCY_OPTIONS = [
   { value: 0, label: "선택하지않음" },
 ] as const;
 
-
-export const CHAT_STYLE = [
-  { key: "존댓말", label: "존댓말" },
-  { key: "반말", label: "반말" },
-] as const;
+export const CHAT_STYLE = ["존댓말", "반말"];
 
 export const CHAT_TOPIC = [
   {

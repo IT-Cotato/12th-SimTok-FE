@@ -14,13 +14,7 @@ import { FullButton } from "@/components/common/FullButton";
 import { ProfileWrapper } from "@/components/common/ProfileWrapper";
 import { SettingField } from "@/components/friends/SettingField";
 
-
-import {
-  ChatStyle,
-  ChatTopic,
-  FriendShipProfile,
-} from "@/types/friendProfile.type";
-
+import { ChatStyle, ChatTopic } from "@/types/friendProfile.type";
 
 const FriendSetting = () => {
   const params = useParams();
@@ -48,15 +42,14 @@ const FriendSetting = () => {
   const initData = async () => {
     try {
       setIsLoading(true);
-      // params.userId에 담긴 값은 실제로는 friendshipId임
-      const fsIdFromParams = Number(params.userId);
+      const friendShipId = Number(params.userId);
 
-      const result = await friendsApi.getFriendDetail(fsIdFromParams);
+      const result = await friendsApi.getFriendDetail(friendShipId);
       const list = result?.data?.friendshipList;
 
       if (result?.success && Array.isArray(list)) {
         const friendInfo = list.find(
-          f => Number(f.friendshipId) === fsIdFromParams,
+          f => Number(f.friendshipId) === friendShipId,
         );
 
         if (friendInfo) {
@@ -78,7 +71,7 @@ const FriendSetting = () => {
               const goalNum = parseInt(
                 String(detail.chatGoal).replace(/[^0-9]/g, ""),
               );
-              setGoalDays(isNaN(goalNum) ? undefined : goalNum);
+              setGoalDays(goalNum);
             } else {
               setGoalDays(undefined);
             }
@@ -102,34 +95,21 @@ const FriendSetting = () => {
 
   // 저장 처리
   const handleSubmit = async () => {
-    console.log({
-      actualFriendshipId,
-      nickname,
-      chatStyle,
-      goalDays,
-      chatTopic,
-    });
     if (
       !actualFriendshipId ||
+      !nickname ||
       !chatStyle ||
-      goalDays === undefined ||
-      chatTopic.length === 0
-    ) {
-      alert("모든 설정 값을 선택해 주세요.");
+      !chatTopic ||
+      goalDays === undefined
+    )
       return;
-    }
-
     try {
-      const styleReverseMap: Record<string, string> = {
-        CASUAL: "반말",
-        FORMAL: "존댓말",
-      };
       const payload = {
         nickname: nickname,
-        speechStyle: (styleReverseMap[chatStyle!] || chatStyle) as
-          | "반말"
-          | "존댓말",
-        chatGoal: String(goalDays),
+        speechStyle: chatStyle,
+        chatGoal: goalDays,
+        topicCodes: chatTopic,
+      };
 
       const result = await updateFriendship(actualFriendshipId, payload);
 
@@ -141,8 +121,8 @@ const FriendSetting = () => {
           router.back();
         }
       }
-    } catch (err) {
-      alert("네트워크 오류가 발생했습니다.");
+    } catch (error) {
+      console.error("친구설정 오류:", error);
     }
   };
 
