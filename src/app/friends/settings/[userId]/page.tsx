@@ -77,12 +77,9 @@ const FriendSetting = () => {
               if (mappedStyle) setChatStyle(mappedStyle);
             }
 
-            // 2. 주제: 빈 배열이 오더라도 상태 업데이트
             setChatTopic(detail.topicCodes || []);
 
-            // 3. 목표 일수: "주 5일" 또는 5 등의 값을 숫자로만 추출
             if (detail.chatGoal) {
-              // 문자열에서 숫자만 추출 (예: "주 5일" -> 5)
               const goalNum = parseInt(
                 String(detail.chatGoal).replace(/[^0-9]/g, ""),
               );
@@ -92,11 +89,11 @@ const FriendSetting = () => {
             }
           }
         } else {
-          console.error("❌ 리스트에서 해당 friendshipId를 찾을 수 없음.");
+          console.error("리스트에서 해당 friendshipId를 찾을 수 없음.");
         }
       }
     } catch (err) {
-      console.error("❌ 데이터 로드 에러:", err);
+      console.error("데이터 로드 에러:", err);
     } finally {
       setIsLoading(false);
     }
