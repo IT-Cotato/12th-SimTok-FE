@@ -42,8 +42,22 @@ const FriendSetting = () => {
   const initData = async () => {
     try {
       setIsLoading(true);
-      const friendShipId = Number(params.userId);
 
+      const currentParams = new URLSearchParams(window.location.search);
+      const nameFromUrl = currentParams.get("name") || "";
+      const imgFromUrl = currentParams.get("img") || "";
+
+      if (mode === "add") {
+        setNickName(nameFromUrl);
+        setUserName(nameFromUrl);
+        setProfileImg(imgFromUrl);
+        setActualFriendshipId(friendId);
+
+        setIsLoading(false);
+        return;
+      }
+
+      const friendShipId = Number(params.userId);
       const result = await friendsApi.getFriendDetail(friendShipId);
       const list = result?.data?.friendshipList;
 
@@ -96,14 +110,8 @@ const FriendSetting = () => {
 
   // 저장 처리
   const handleSubmit = async () => {
-    if (
-      !actualFriendshipId ||
-      !nickname ||
-      !chatStyle ||
-      !chatTopic ||
-      goalDays === undefined
-    )
-      return;
+    if (!actualFriendshipId) return;
+
     try {
       const payload = {
         nickname: nickname,
@@ -126,12 +134,7 @@ const FriendSetting = () => {
       console.error("친구설정 오류:", error);
     }
   };
-
-  const isValid =
-    nickname.trim().length > 0 &&
-    !!chatStyle &&
-    chatTopic.length > 0 &&
-    goalDays !== undefined;
+  const isValid = true;
 
   if (isLoading) return null;
 
@@ -146,7 +149,7 @@ const FriendSetting = () => {
           name={nickname}
           onChangeName={setNickName}
           placeholder="닉네임을 입력해주세요"
-          canEdit={true}
+          canEdit={false}
         />
       </section>
       <section className="pb-[125px]">
