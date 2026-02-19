@@ -14,11 +14,13 @@ import { FullButton } from "@/components/common/FullButton";
 import { ProfileWrapper } from "@/components/common/ProfileWrapper";
 import { SettingField } from "@/components/friends/SettingField";
 
+
 import {
   ChatStyle,
   ChatTopic,
   FriendShipProfile,
 } from "@/types/friendProfile.type";
+
 
 const FriendSetting = () => {
   const params = useParams();
@@ -128,8 +130,6 @@ const FriendSetting = () => {
           | "반말"
           | "존댓말",
         chatGoal: String(goalDays),
-        topicCodes: chatTopic,
-      };
 
       const result = await updateFriendship(actualFriendshipId, payload);
 
