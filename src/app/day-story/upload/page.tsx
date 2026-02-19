@@ -50,10 +50,10 @@ const DayStoryUpload = () => {
   }
 
   return (
-    <main className="h-full w-full bg-black">
+    <main className="flex h-full w-full flex-col bg-black">
       <BackHeader title="하루한컷" titleColor="white" />
       <DailyMissionProgress weeklyStatus={weeklyStatus} />
-      <div className="mt-[120px] flex items-center justify-center">
+      <div className="flex flex-1 items-center justify-center">
         <DailyMissionCard
           status={status}
           setStatus={setStatus}
