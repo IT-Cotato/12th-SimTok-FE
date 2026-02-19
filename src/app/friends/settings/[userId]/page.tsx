@@ -115,9 +115,9 @@ const FriendSetting = () => {
     try {
       const payload = {
         nickname: nickname,
-        speechStyle: chatStyle,
-        chatGoal: goalDays,
-        topicCodes: chatTopic,
+        speechStyle: chatStyle || "존댓말",
+        chatGoal: goalDays || 1,
+        topicCodes: chatTopic || [],
       };
 
       const result = await updateFriendship(actualFriendshipId, payload);
