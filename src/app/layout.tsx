@@ -5,6 +5,8 @@ import { StompProvider } from "@/context/StompContext";
 
 import "@/styles/globals.css";
 
+import ReactQueryProvider from "@/providers/ReactQueryProvider";
+
 export const metadata: Metadata = {
   title: "심톡- 함께 자라는 감정 소통 플랫폼",
   description:
@@ -70,7 +72,9 @@ export default function RootLayout({
       <body className="flex w-full justify-center bg-white">
         <div className="w-full max-w-[440px] shadow-2xl">
           <div className="scrollbar-hide h-screen overflow-y-scroll">
-            <StompProvider>{children}</StompProvider>
+            <ReactQueryProvider>
+              <StompProvider>{children}</StompProvider>
+            </ReactQueryProvider>
           </div>
         </div>
       </body>
