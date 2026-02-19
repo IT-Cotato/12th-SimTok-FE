@@ -56,6 +56,7 @@ const FriendSetting = () => {
         const friendInfo = list.find(
           f => Number(f.friendshipId) === fsIdFromParams,
         );
+
         if (friendInfo) {
           setActualFriendshipId(friendInfo.friendshipId);
           setUserName(friendInfo.showName);
