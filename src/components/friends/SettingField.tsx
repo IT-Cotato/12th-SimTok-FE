@@ -93,34 +93,38 @@ export const SettingField = (props: SettingFieldProps) => {
 
     chatStyle: () => (
       <div className="flex gap-[45px]">
-        {CHAT_STYLE.map(style => (
-          <div
-            key={style}
-            className="flex cursor-pointer items-center gap-[10px]"
-            onClick={() => onChangeChatStyle(style as ChatStyle)}
-          >
-            <div
-              className={`relative flex h-6 w-6 items-center justify-center rounded-full border ${
-                chatStyle === style
-                  ? "bg-mint-01 border-mint-01"
-                  : "border-neutral-08 bg-transparent"
-              }`}
-            >
-              {chatStyle === style && (
-                <CheckIcon className="h-5 w-5 text-white" />
-              )}
+        {CHAT_STYLE.map(({ key, label }) => {
+          const styleKey = key as ChatStyle;
+          const isSelected = chatStyle === styleKey;
+
+          return (
+            <div key={key} className="flex items-center gap-[10px]">
+              <button
+                type="button" // form 전송 방지
+                className={`relative h-6 w-6 cursor-pointer rounded-full transition-colors ${
+                  isSelected
+                    ? "bg-mint-01 border-none"
+                    : "border-neutral-08 border"
+                }`}
+                onClick={() => onChangeChatStyle(key as ChatStyle)}
+              >
+                {isSelected && (
+                  <CheckIcon className="absolute inset-0 m-auto h-5 w-5 text-white" />
+                )}
+              </button>
+              <span
+                className={`text-h2 transition-colors ${
+                  isSelected ? "text-neutral-01 font-bold" : "text-neutral-07"
+                }`}
+              >
+                {label}
+              </span>
             </div>
-            <span
-              className={`text-h2 ${
-                chatStyle === style ? "text-neutral-03" : "text-neutral-07"
-              }`}
-            >
-              {style}
-            </span>
-          </div>
-        ))}
+          );
+        })}
       </div>
     ),
+
 
     chatTopic: () => (
       <div className="grid grid-cols-3 gap-[10px]">
