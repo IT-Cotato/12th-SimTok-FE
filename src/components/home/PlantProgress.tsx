@@ -137,7 +137,7 @@ export const PlantProgress = ({ plantProgressData }: PlantProgressProps) => {
                     </div>
                     <div className="absolute bottom-0 z-[100] w-full bg-white px-4 py-[10px]">
                       <FullButton
-                        isActive={plant.lastWateredBy.isMe === true}
+                        isActive={plant.lastWateredBy.isMe === false}
                         colorScheme={
                           (plantStatus === "WATERABLE" && "blue") ||
                           (plantStatus === "WITHERED" && "orange") ||
