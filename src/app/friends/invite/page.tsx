@@ -7,7 +7,6 @@ import { getMyProfile } from "@/app/api/profile/profile.api";
 
 import { FullButton } from "@/components/common/FullButton";
 import { GlassStyleHeader } from "@/components/common/GlassStyleHeader";
-import { OnlyLoader } from "@/components/common/OnlyLoader";
 import { InputField } from "@/components/friends/InputField";
 import { QRCodeWrapper } from "@/components/friends/QRCodeWrapper";
 
