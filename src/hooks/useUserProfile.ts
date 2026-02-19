@@ -4,16 +4,16 @@ import { useEffect, useState } from "react";
 
 import { profileApi } from "@/app/api/profile";
 
-import type { UserProfile } from "@/types/user.type";
+import type { MyProfile } from "@/types/myProfile.type";
 
 interface UseUserProfileResult {
-  userProfileData: UserProfile | null;
+  userProfileData: MyProfile | null;
   isLoading: boolean;
   error: Error | null;
 }
 
 export const useUserProfile = (): UseUserProfileResult => {
-  const [userProfileData, setUserProfileData] = useState<UserProfile | null>(
+  const [userProfileData, setUserProfileData] = useState<MyProfile | null>(
     null,
   );
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -38,20 +38,6 @@ export const useUserProfile = (): UseUserProfileResult => {
 
     fetchProfileData();
   }, []);
-
-  //       await new Promise(resolve => setTimeout(resolve, 500));
-
-  //       const data = myProfileMock as UserProfile;
-  //       setUserProfileData(data);
-  //     } catch (err) {
-  //       setError(err as Error);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-
-  //   fetchProfileData();
-  // }, []);
 
   return { userProfileData, isLoading, error };
 };
