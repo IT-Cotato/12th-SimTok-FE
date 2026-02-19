@@ -12,7 +12,10 @@ import LoadingModal from "@/components/common/LoadingModal";
 import { InfoRow } from "@/components/mypage/InfoRow";
 import UploadButton from "@/components/onboarding/UploadButton";
 
+import { useImageUpload } from "@/hooks/useImageUpload";
 import { useProfileImageUpload } from "@/hooks/useProfileImageUpload";
+
+import { ApiResponse } from "@/types/common";
 
 import { ProfileWrapper } from "../common/ProfileWrapper";
 
@@ -25,9 +28,14 @@ export const ProfileSummary = ({
 }) => {
   const [data, setData] = useState<ProfileData | null>(userProfileData || null);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
+  // const [isUploading, setIsUploading] = useState(false);
   const { profileImage, isLoading, resetImage, cancelUpload } =
     useProfileImageUpload();
+
+  const { inputRef, onChangeFile, isUploading } = useImageUpload({
+    folder: "PROFILE",
+    onSelect: url => handleUpdateProfile(url),
+  });
 
   useEffect(() => {
     onModalStateChange?.(isUploadOpen || isLoading);
@@ -53,62 +61,77 @@ export const ProfileSummary = ({
     }
   }, [userProfileData]);
 
-  if (!data) return null;
+  const handleUpdateProfile = async (imageUrl: string) => {
+    try {
+      const result = await profileApi.updateProfile(imageUrl);
+      if (result.success) {
+        setData(result.data);
+      }
+    } catch (error) {
+      console.error("프로필 갱신 실패:", error);
+    } finally {
+      setIsUploadOpen(false);
+    }
+  };
 
   const handleCloseModal = () => setIsUploadOpen(false);
-  const currentProfileImage = profileImage ?? data.profileImageUrl;
+  // const currentProfileImage = profileImage ?? data.profileImageUrl;
 
-  const handleImageUpload = async (file: File) => {
-    setIsUploading(true);
-    try {
-      // Presigned URL 발급 받기
-      const preRes = await profileApi.getPresignedUrl(file.name);
-      if (!preRes.success) throw new Error("URL 발급 실패");
+  // const handleImageUpload = async (file: File) => {
+  //   setIsUploading(true);
+  //   try {
+  //     // Presigned URL 발급 받기
+  //     const preRes = await profileApi.getPresignedUrl(file.name);
+  //     if (!preRes.success) throw new Error("URL 발급 실패");
 
-      const { presignedUrl, imageUrl, contentType } = preRes.data;
+  //     const { presignedUrl, imageUrl, contentType } = preRes.data;
 
-      // S3에 파일 직접 업로드
-      const isS3Success = await profileApi.uploadToS3(
-        presignedUrl,
-        file,
-        contentType,
-      );
-      if (!isS3Success) throw new Error("S3 업로드 실패");
+  //     // S3에 파일 직접 업로드
+  //     const isS3Success = await profileApi.uploadToS3(
+  //       presignedUrl,
+  //       file,
+  //       contentType,
+  //     );
+  //     if (!isS3Success) throw new Error("S3 업로드 실패");
 
-      // 백엔드 DB에 최종 S3 이미지 경로 저장
-      const updateRes = await profileApi.updateProfile(imageUrl);
+  //     // 백엔드 DB에 최종 S3 이미지 경로 저장
+  //     const updateRes = await profileApi.updateProfile(imageUrl);
 
-      if (updateRes.success) {
-        setData(updateRes.data); // 프로필 정보 갱신 (이미지 포함)
-      }
-    } catch (error) {
-      console.error("업로드 과정 중 에러:", error);
-    } finally {
-      setIsUploading(false);
-      handleCloseModal();
-    }
-  };
+  //     if (updateRes.success) {
+  //       setData(updateRes.data); // 프로필 정보 갱신 (이미지 포함)
+  //     }
+  //   } catch (error) {
+  //     console.error("업로드 과정 중 에러:", error);
+  //   } finally {
+  //     setIsUploading(false);
+  //     handleCloseModal();
+  //   }
+  // };
 
-  const handleDefaultImage = async () => {
-    try {
-      setIsUploading(true);
-      const result = await profileApi.updateProfile(""); // 빈 값 혹은 null 전달
-      if (result.success) {
-        resetImage(); // 로컬 미리보기 초기화
-        setData(result.data); // 서버 데이터 동기화
-        handleCloseModal();
-      }
-    } catch (error) {
-      alert("기본 이미지 변경 실패");
-    } finally {
-      setIsUploading(false);
-    }
-  };
+  // const handleDefaultImage = async () => {
+  //   try {
+  //     setIsUploading(true);
+  //     const result = await profileApi.updateProfile(""); // 빈 값 혹은 null 전달
+  //     if (result.success) {
+  //       resetImage(); // 로컬 미리보기 초기화
+  //       setData(result.data); // 서버 데이터 동기화
+  //       handleCloseModal();
+  //     }
+  //   } catch (error) {
+  //     alert("기본 이미지 변경 실패");
+  //   } finally {
+  //     setIsUploading(false);
+  //   }
+  // };
+
+  const handleDefaultImage = () => handleUpdateProfile("");
+
+  if (!data) return null;
 
   return (
     <div className="flex w-full max-w-[440px] flex-col items-center">
       <ProfileWrapper
-        imageUrl={currentProfileImage}
+        imageUrl={data.profileImageUrl}
         onProfileClick={() => setIsUploadOpen(true)}
         canEdit
         showInput={false}
@@ -120,10 +143,18 @@ export const ProfileSummary = ({
         <InfoRow Icon={PhoneIcon} value={data.phoneNumber} />
       </div>
 
+      <input
+        type="file"
+        ref={inputRef}
+        onChange={onChangeFile}
+        accept="image/*"
+        className="hidden"
+      />
+
       <UploadButton
         isOpen={isUploadOpen}
         onClose={handleCloseModal}
-        onSelectAlbum={handleImageUpload}
+        onSelectAlbum={() => inputRef.current?.click()}
         onSelectDefault={handleDefaultImage}
       />
 
