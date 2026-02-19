@@ -27,7 +27,7 @@ export const ProfileModal = ({
             type="button"
             aria-label="닫기"
             onClick={onClose}
-            className="text-neutral-09 h-5 w-5"
+            className="text-neutral-09 h-5 w-5 cursor-pointer"
           >
             <CloseIcon className="h-5 w-5" />
           </button>
@@ -37,7 +37,7 @@ export const ProfileModal = ({
             onClick={() => {
               router.push(`/friends/settings/${userId}?mode=edit`);
             }}
-            className="text-neutral-09 h-6 w-6"
+            className="text-neutral-09 h-6 w-6 cursor-pointer"
           >
             <SettingIcon className="h-6 w-6" />
           </button>
