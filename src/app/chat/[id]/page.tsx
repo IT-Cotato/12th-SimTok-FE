@@ -21,6 +21,9 @@ import { InfoMessage } from "@/components/dailyRecord/InfoMessage";
 
 import { CHAT_TOPIC } from "@/constants/friendsSettings";
 
+import { ApiMessageItem, ChatMessage, ChatTopicItem } from "@/types/chat";
+import { ApiResponse, CustomJwtPayload } from "@/types/common";
+
 import { uploadToS3 } from "@/utils/uploadImage.util";
 
 import {
@@ -28,38 +31,6 @@ import {
   getTopicTemplates,
   postAiPhrases,
 } from "../../api/chat/chatTopics.api";
-
-interface ChatMessage {
-  id: string | number;
-  type: "mine" | "friend";
-  content: string;
-  time: string;
-  createdAt: string;
-  messageSeq?: number;
-  isImage?: boolean;
-}
-
-interface ApiMessageItem {
-  messageId: number;
-  messageSeq: number;
-  senderMemberId: number;
-  messageType: "TEXT" | "ATTACHMENT";
-  content: string | null;
-  createdAt: string;
-  attachment?: {
-    attachmentType: string;
-    objectKey: string;
-  } | null;
-}
-
-interface ChatTopicItem {
-  name: string;
-  code: string;
-}
-
-interface CustomJwtPayload extends JwtPayload {
-  memberId?: string | number;
-}
 
 const Chatting = () => {
   const { client, isConnected } = useStomp();
