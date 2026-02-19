@@ -12,12 +12,6 @@ import { ProfileCard } from "@/components/mypage/ProfileCard";
 
 import { CHAT_LIST_ITEMS } from "@/constants/chatSettings";
 
-interface Friend {
-  userId: number;
-  userName: string;
-  profileImg: string;
-}
-
 const SettingChatPage = () => {
   const router = useRouter();
   const { id } = useParams();
@@ -64,7 +58,11 @@ const SettingChatPage = () => {
                 name: opponentName,
                 profileImageUrl: opponentImg,
               }}
-              onEdit={() => router.push(`/friends/settings/${id}`)}
+              onEdit={() =>
+                router.push(
+                  `/friends/settings/${id}?name=${encodeURIComponent(opponentName)}&img=${encodeURIComponent(opponentImg)}`,
+                )
+              }
             />
           </section>
           <nav className="mt-10">
