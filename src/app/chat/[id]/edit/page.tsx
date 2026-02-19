@@ -60,7 +60,6 @@ const EditPage = () => {
 
   const handleSaveAndRedirect = () => {
     if (isValid) {
-      // TODO: 변경된 설정값(nickname, goalDays 등)을 서버나 상태 관리에 저장하는 로직 필요
       router.push(`/chat/${friendId}`);
     }
   };
@@ -97,9 +96,7 @@ const EditPage = () => {
       </section>
 
       <div className="fixed bottom-0 w-full max-w-[440px] bg-white px-4 pt-[10px] pb-[52px] shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.05),0_-4px_6px_-4px_rgba(0,0,0,0.05)]">
-        <FullButton isActive={isValid} onClick={handleSaveAndRedirect}>
-          확인완료
-        </FullButton>
+        <FullButton onClick={handleSaveAndRedirect}>확인완료</FullButton>
       </div>
     </main>
   );
