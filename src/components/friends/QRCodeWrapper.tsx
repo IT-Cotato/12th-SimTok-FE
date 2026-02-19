@@ -1,3 +1,5 @@
+import { QRCodeCanvas } from "qrcode.react";
+
 import ShareIcon from "@/assets/share.svg";
 
 import { MyProfile } from "@/types/myProfile.type";
@@ -64,9 +66,21 @@ export const QRCodeWrapper = ({
           />
         </div>
         <div className="h-[330px] w-full px-[38.5px] pb-[27.23px]">
-          {/* TODO: QR 코드가 들어갈 자리, 배포되면 실제 주소로 만들기 */}
           <div className="relative flex h-full w-full items-center justify-center rounded-xl bg-neutral-100 text-neutral-400">
-            QR Code Area
+            <QRCodeCanvas
+              value={`https://simtalk.vercel.app//friends/add/${myData.inviteCode}`}
+              size={512} // 충분히 큰 해상도로 생성
+              style={{
+                width: "100%",
+                height: "100%",
+                maxWidth: "330px", // 패딩 효과를 위해 살짝 줄임
+                maxHeight: "330px",
+                // textCodeMode일 때 투명도를 10%로 낮춤
+                opacity: textCodeMode ? 0.1 : 1,
+                transition: "opacity 0.3s ease",
+              }}
+              level="H"
+            />
             {textCodeMode && (
               <p className="text-d1 absolute text-black">{myData.inviteCode}</p>
             )}
