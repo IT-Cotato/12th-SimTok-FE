@@ -146,7 +146,6 @@ const Chatting = () => {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      console.log(`Room ${id} 읽음 처리 완료`);
     } catch (err) {
       console.error("읽음 처리 요청 실패:", err);
     }
@@ -265,9 +264,7 @@ const Chatting = () => {
             ]);
           }),
 
-          client.subscribe("/user/queue/connection/ack", msg => {
-            console.log("Connection ACK:", JSON.parse(msg.body));
-          }),
+          client.subscribe("/user/queue/connection/ack", msg => {}),
         );
 
         // 연결 확인용 ACK

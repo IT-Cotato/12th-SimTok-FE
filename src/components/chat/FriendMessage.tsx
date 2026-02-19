@@ -1,3 +1,5 @@
+import { ProfileImagePicker } from "../common/ProfileImagePicker";
+
 interface FriendMessageProps {
   userName: string;
   profileImage?: string;
@@ -25,15 +27,13 @@ export const FriendMessage = ({
     >
       <div className="w-12 flex-shrink-0">
         {!isPrevSame ? (
-          <div className="bg-neutral-08 h-12 w-12 overflow-hidden rounded-2xl">
-            {profileImage && (
-              <img
-                src={profileImage}
-                alt={userName}
-                className="h-full w-full object-cover"
-              />
-            )}
-          </div>
+          <ProfileImagePicker
+            imageUrl={profileImage || null}
+            radius={16}
+            width={48}
+            height={48}
+            canEdit={false}
+          />
         ) : (
           /* 시간까지 같은 연속 메시지일 경우 빈 공간 확보 */
           <div className="w-12" />

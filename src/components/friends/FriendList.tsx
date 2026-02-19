@@ -45,7 +45,6 @@ export const FriendList = ({
           // FriendGardenList 구조: { count: number, friends: Friend[] }
           setFriends(data.friends);
           setTotalFriendsCount(data.count);
-          console.log("초대 가능한 친구 목록:", data.friends);
         } else {
           const [activeData, pendingData] = await Promise.all([
             getFriendsList("ACTIVE"),

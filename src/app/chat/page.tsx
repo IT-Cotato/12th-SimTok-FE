@@ -51,7 +51,6 @@ const ChatListPage = () => {
     fetchChatRooms();
 
     const handleRefresh = () => {
-      console.log("새로고침 실행");
       fetchChatRooms();
     };
 
@@ -89,13 +88,11 @@ const ChatListPage = () => {
 
       if (result.success) {
         setChats(prev => prev.filter(chat => chat.roomId !== roomId));
-        alert("대화방에서 나갔습니다.");
       } else {
-        alert(result.message || "방 나가기 실패");
+        console.error(result.message || "방 나가기 실패");
       }
     } catch (error) {
       console.error("삭제 에러:", error);
-      alert("네트워크 오류가 발생했습니다.");
     } finally {
       setIsModalOpen(false);
       setSelectedChat(null);
@@ -117,7 +114,7 @@ const ChatListPage = () => {
           <SearchField onChangeSearchText={setSearchText} />
         </div>
 
-        <section className="mt-5 flex flex-col overflow-y-auto">
+        <section className="mt-5 flex flex-col overflow-y-auto pb-[210px]">
           {filteredChats.map((chat: ChatRoomItem) => {
             const displayChatName = chat.opponent?.name || "알 수 없는 사용자";
 

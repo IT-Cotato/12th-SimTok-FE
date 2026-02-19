@@ -20,7 +20,6 @@ export const EmotionSelectSection = ({
     const emotionCode = SERVER_EMOTION_REVERSE_MAP[isActive][index];
 
     onSelect?.(emotionCode);
-    console.log(emotionCode);
   };
 
   return (

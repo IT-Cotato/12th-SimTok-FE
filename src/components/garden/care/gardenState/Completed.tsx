@@ -21,7 +21,7 @@ export const Completed = ({ plantSort }: CompletedProps) => {
   return (
     <section className="z-99 flex flex-1 flex-col justify-between">
       <PageTitle title={pageTitle} />
-      <div className="relative z-99 flex items-center justify-center">
+      <div className="relative z-99 flex items-center justify-center pt-[150px]">
         {/* 식물 이미지 */}
         <div className="relative flex items-center justify-center">
           <div className="absolute bottom-[153px] left-1/2 flex w-max -translate-x-1/2 flex-col items-center">

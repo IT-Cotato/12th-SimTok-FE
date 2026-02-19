@@ -91,7 +91,6 @@ const FriendSetting = () => {
             }
           }
         } else {
-          console.log(friendInfo);
           console.error("리스트에서 해당 friendshipId를 찾을 수 없음.");
         }
       }

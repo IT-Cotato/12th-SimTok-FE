@@ -37,10 +37,6 @@ const DayStoryUpload = () => {
           setStatus("IMAGE_CONFIRMED");
         }
         setIsLoading(false);
-
-        console.log("주간 미션 진행 상황:", data.weeklyStatus);
-        console.log("오늘의 미션 정보:", data.mission);
-        console.log("나의 챌린지 정보:", data.myChallenge);
       } catch (error) {
         console.error("미션 정보 로드 실패:", error);
         setIsLoading(false);
@@ -54,10 +50,10 @@ const DayStoryUpload = () => {
   }
 
   return (
-    <main className="h-full w-full bg-black">
+    <main className="flex h-full w-full flex-col bg-black">
       <BackHeader title="하루한컷" titleColor="white" />
       <DailyMissionProgress weeklyStatus={weeklyStatus} />
-      <div className="mt-[120px] flex items-center justify-center">
+      <div className="flex flex-1 items-center justify-center">
         <DailyMissionCard
           status={status}
           setStatus={setStatus}

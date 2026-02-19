@@ -27,7 +27,7 @@ const DailyStory = () => {
       setLoading(true);
       try {
         const response = await getChallengeDetail(numericId);
-        console.log("챌린지 상세 정보:", response);
+
         setStory(response);
       } catch (error) {
         console.error("챌린지 상세 정보 로드 실패:", error);
