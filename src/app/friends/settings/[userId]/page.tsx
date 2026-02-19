@@ -15,30 +15,7 @@ import { ProfileWrapper } from "@/components/common/ProfileWrapper";
 import { SettingField } from "@/components/friends/SettingField";
 
 import { ChatStyle, ChatTopic } from "@/types/friendProfile.type";
-
-interface UpdateFriendshipPayload {
-  nickname: string;
-  speechStyle: "존댓말" | "반말";
-  chatGoal: string;
-  topicCodes: ChatTopic[];
-}
-
-interface Friendship {
-  friendshipId: number;
-  friendId: number;
-  showName: string;
-  profileImageUrl: string | null;
-  status: string;
-  lastInteractedAt: string;
-}
-
-interface FriendDetailResponse {
-  success: boolean;
-  data: {
-    count: number;
-    friendshipList: Friendship[];
-  };
-}
+import { UpdateFriendshipPayload } from "@/types/friendProfile.type";
 
 const FriendSetting = () => {
   const params = useParams();
@@ -84,7 +61,7 @@ const FriendSetting = () => {
 
             setNickName(detail.nickname || friendInfo.showName);
             const mappedStyle: ChatStyle =
-              detail.speechStyle === "반말" ? "CASUAL" : "FORMAL";
+              detail.speechStyle === "반말" ? "반말" : "존댓말";
             setChatStyle(mappedStyle);
             setChatTopic(detail.topicCodes || []);
             if (detail.chatGoal !== undefined && detail.chatGoal !== null) {
@@ -122,13 +99,12 @@ const FriendSetting = () => {
 
     try {
       const mappedStyle: "존댓말" | "반말" =
-        chatStyle === "FORMAL" ? "존댓말" : "반말";
-      const formattedGoal = `${goalDays}`;
+        chatStyle === "존댓말" ? "존댓말" : "반말";
 
       const payload: UpdateFriendshipPayload = {
         nickname: nickname.trim(),
         speechStyle: mappedStyle,
-        chatGoal: formattedGoal,
+        chatGoal: goalDays,
         topicCodes: chatTopic,
       };
 
