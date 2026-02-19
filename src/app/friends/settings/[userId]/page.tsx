@@ -53,17 +53,14 @@ const FriendSetting = () => {
       const list = result?.data?.friendshipList;
 
       if (result?.success && Array.isArray(list)) {
-        // 🔍 변경된 부분: f.friendId가 아니라 f.friendshipId로 검색
         const friendInfo = list.find(
           f => Number(f.friendshipId) === fsIdFromParams,
         );
         if (friendInfo) {
-          // 찾은 데이터의 고유 friendshipId 설정
           setActualFriendshipId(friendInfo.friendshipId);
           setUserName(friendInfo.showName);
           setProfileImg(friendInfo.profileImageUrl || "");
 
-          // 상세 설정(말투, 주제 등) 조회
           const detailResult = await getFriendshipSettings(
             friendInfo.friendshipId,
           );
@@ -71,12 +68,27 @@ const FriendSetting = () => {
           if (detailResult?.success && detailResult?.data) {
             const detail = detailResult.data;
             setNickName(detail.nickname || friendInfo.showName);
-            setChatStyle(detail.speechStyle);
+            if (detail.speechStyle) {
+              const styleMap: Record<string, ChatStyle> = {
+                반말: "CASUAL",
+                존댓말: "FORMAL",
+              };
+              const mappedStyle = styleMap[detail.speechStyle.trim()];
+              if (mappedStyle) setChatStyle(mappedStyle);
+            }
+
+            // 2. 주제: 빈 배열이 오더라도 상태 업데이트
             setChatTopic(detail.topicCodes || []);
 
+            // 3. 목표 일수: "주 5일" 또는 5 등의 값을 숫자로만 추출
             if (detail.chatGoal) {
-              const goalNum = parseInt(detail.chatGoal.replace(/[^0-9]/g, ""));
+              // 문자열에서 숫자만 추출 (예: "주 5일" -> 5)
+              const goalNum = parseInt(
+                String(detail.chatGoal).replace(/[^0-9]/g, ""),
+              );
               setGoalDays(isNaN(goalNum) ? undefined : goalNum);
+            } else {
+              setGoalDays(undefined);
             }
           }
         } else {
@@ -116,10 +128,16 @@ const FriendSetting = () => {
     }
 
     try {
+      const styleReverseMap: Record<string, string> = {
+        CASUAL: "반말",
+        FORMAL: "존댓말",
+      };
       const payload = {
         nickname: nickname,
-        speechStyle: chatStyle,
-        chatGoal: `${goalDays}`,
+        speechStyle: (styleReverseMap[chatStyle!] || chatStyle) as
+          | "반말"
+          | "존댓말",
+        chatGoal: String(goalDays),
         topicCodes: chatTopic,
       };
 
