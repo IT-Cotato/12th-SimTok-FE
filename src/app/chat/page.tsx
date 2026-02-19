@@ -133,7 +133,7 @@ const ChatListPage = () => {
                 onDelete={() => handleOpenModal(chat)}
                 onClick={() => {
                   router.push(
-                    `/chat/${chat.roomId}?name=${encodeURIComponent(displayChatName)}&img=${encodeURIComponent(chat.opponent?.profileImageUrl || "")}`,
+                    `/chat/${chat.roomId}?name=${encodeURIComponent(displayChatName)}&img=${encodeURIComponent(chat.opponent?.profileImageUrl || "")}&fsId=${chat.friendShipId}`,
                   );
                 }}
               />
