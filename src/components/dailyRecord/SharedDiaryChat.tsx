@@ -34,7 +34,6 @@ export const SharedDiaryComment = ({
       try {
         const profile = await getMyProfile();
         setProfile(profile);
-        console.log(profile);
       } catch (error) {
         console.error("프로필 가져오기 실패:", error);
       }

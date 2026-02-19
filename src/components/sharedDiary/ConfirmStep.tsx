@@ -45,7 +45,7 @@ export const ConfirmStep = ({
       );
       onSubmit();
     } catch (error) {
-      alert("일기 저장에 실패했습니다. 다시 시도해 주세요.");
+      console.error("일기 저장에 실패했습니다. 다시 시도해 주세요.");
     } finally {
       setIsLoading(false);
     }

@@ -26,7 +26,7 @@ export const InvitationModal = ({
     onClose();
     setStep(1);
   };
-  console.log(inviteContent);
+
   return (
     <div className="fixed inset-0 z-[100] mx-auto flex max-w-[440px] items-center justify-center bg-black/83 px-4">
       {step === 1 && (

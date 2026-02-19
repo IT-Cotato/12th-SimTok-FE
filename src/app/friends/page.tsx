@@ -41,16 +41,11 @@ const FriendsListPage = () => {
 
   const handleDeleteConfirm = async () => {
     try {
-      console.log(
-        "삭제 대상 IDs:",
-        selectedFriends.map(f => f.friendshipId),
-      );
       const deletePromises = selectedFriends.map(friend =>
         deleteFriendship(friend.friendshipId),
       );
 
       const results = await Promise.all(deletePromises);
-      console.log("서버 응답 결과:", results);
 
       const isAllSuccessful = results.every(
         res => res && (res.success || res.status === 200),

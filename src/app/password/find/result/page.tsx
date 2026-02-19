@@ -48,15 +48,13 @@ const FindPage = () => {
       const result = await res.json();
 
       if (result.success) {
-        alert("비밀번호 재설정이 완료되었습니다.");
         sessionStorage.removeItem("pw_reset_key"); // 키 삭제
         router.push("/login/phone");
       } else {
-        alert(result.message || "다시 시도해주세요.");
+        console.error(result.message || "다시 시도해주세요.");
       }
     } catch (error) {
       console.error("최종 단계 오류:", error);
-      alert("네트워크 오류가 발생했습니다.");
     } finally {
       setIsLoading(false);
     }

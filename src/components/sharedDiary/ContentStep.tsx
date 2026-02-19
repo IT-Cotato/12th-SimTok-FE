@@ -108,7 +108,7 @@ export const ContentStep = ({
           isActive={hasInput}
           onClick={() => {
             if (!text) return;
-            console.log("Next 버튼 클릭 시 imageUrl 상태:", imageUrl);
+
             onNext(text, imageUrl);
           }}
         >

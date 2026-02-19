@@ -64,11 +64,10 @@ export const PasswordForm = () => {
         setCode("");
         start(180);
       } else {
-        alert(result.message || "서버 내부 오류입니다.");
+        console.error(result.message || "서버 내부 오류입니다.");
       }
     } catch (error) {
       console.error("Catch 에러:", error);
-      alert("네트워크 연결에 실패했습니다.");
     } finally {
       setIsLoading(false);
     }

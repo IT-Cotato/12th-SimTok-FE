@@ -40,7 +40,7 @@ const GardenCare = () => {
     const fetchPlantList = async () => {
       try {
         const data = await getPlantList("GROWING");
-        console.log(data);
+
         setNutrientCount(data.nutrientCount);
         setPlantList(data.sharedPlants ?? []);
       } catch (error) {
@@ -99,10 +99,6 @@ const GardenCare = () => {
         async () => {
           await postSeed(plantId);
         },
-      );
-      console.log(
-        `%c[Seed Success]: ${plantId}번 식물 심기 완료`,
-        "color: #2ecc71; font-weight: bold",
       );
     } catch (error) {
       console.error("씨앗 심기 실패:", error);

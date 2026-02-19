@@ -50,7 +50,7 @@ const OnboardingProfileClient = () => {
       if (result.success) {
         router.replace("/");
       } else {
-        alert("프로필 생성에 실패했습니다.");
+        console.error("프로필 생성에 실패했습니다.");
       }
     } catch (e) {
       console.error("프로필 생성 에러:", e);
