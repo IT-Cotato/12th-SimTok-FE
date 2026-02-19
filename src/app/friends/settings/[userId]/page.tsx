@@ -16,30 +16,6 @@ import { SettingField } from "@/components/friends/SettingField";
 
 import { ChatStyle, ChatTopic } from "@/types/friendProfile.type";
 
-interface UpdateFriendshipPayload {
-  nickname: string;
-  speechStyle: "존댓말" | "반말";
-  chatGoal: string;
-  topicCodes: ChatTopic[];
-}
-
-interface Friendship {
-  friendshipId: number;
-  friendId: number;
-  showName: string;
-  profileImageUrl: string | null;
-  status: string;
-  lastInteractedAt: string;
-}
-
-interface FriendDetailResponse {
-  success: boolean;
-  data: {
-    count: number;
-    friendshipList: Friendship[];
-  };
-}
-
 const FriendSetting = () => {
   const params = useParams();
   const router = useRouter();

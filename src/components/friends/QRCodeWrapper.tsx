@@ -1,13 +1,17 @@
-import Image from "next/image";
-
 import ShareIcon from "@/assets/share.svg";
 
-import MyProfileData from "@/mock/myProfile.json";
+import { MyProfile } from "@/types/myProfile.type";
+
+import { ProfileImagePicker } from "../common/ProfileImagePicker";
 
 interface QRCodeWrapperProps {
   textCodeMode: boolean;
+  myData: MyProfile;
 }
-export const QRCodeWrapper = ({ textCodeMode = false }: QRCodeWrapperProps) => {
+export const QRCodeWrapper = ({
+  textCodeMode = false,
+  myData,
+}: QRCodeWrapperProps) => {
   // 구멍이 뚫릴 위치 (상단에서부터의 거리)
   const CUTOUT_Y = "105px";
   const CUTOUT_RADIUS = "18px"; // 구멍 반지름
@@ -35,18 +39,16 @@ export const QRCodeWrapper = ({ textCodeMode = false }: QRCodeWrapperProps) => {
       >
         <div className="flex items-center justify-between px-[29px] pt-[20.05px]">
           <div className="flex gap-2">
-            <div className="">
-              <Image
-                src={MyProfileData.profileImg}
-                alt="내 프로필이미지"
-                width={60}
-                height={60}
-                className="h-15 w-15 rounded-2xl object-cover"
-              />
-            </div>
+            <ProfileImagePicker
+              imageUrl={myData.profileImageUrl ?? null}
+              canEdit={false}
+              width={60}
+              height={60}
+              radius={16}
+            />
 
             <p className="text-h2 text-neutral-04 flex items-center justify-center p-[10px]">
-              {MyProfileData.userName}
+              {myData.name}
             </p>
           </div>
           <ShareIcon className="text-neutral-07 h-9 w-9" />
@@ -66,9 +68,7 @@ export const QRCodeWrapper = ({ textCodeMode = false }: QRCodeWrapperProps) => {
           <div className="relative flex h-full w-full items-center justify-center rounded-xl bg-neutral-100 text-neutral-400">
             QR Code Area
             {textCodeMode && (
-              <p className="text-d1 absolute text-black">
-                {MyProfileData.inviteCode}
-              </p>
+              <p className="text-d1 absolute text-black">{myData.inviteCode}</p>
             )}
           </div>
         </div>
