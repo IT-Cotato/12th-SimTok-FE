@@ -57,10 +57,8 @@ export const DailyMissionCard = ({
     });
 
   const handleConfirmClick = async () => {
-    if (!finalImageUrl) {
-      alert("이미지 업로드 중입니다. 잠시만 기다려주세요.");
-      return;
-    }
+    if (!finalImageUrl) return <OnlyLoader />;
+
     try {
       await postChallenge(missionData.missionId, finalImageUrl);
       setStatus("IMAGE_CONFIRMED");

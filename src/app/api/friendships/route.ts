@@ -19,7 +19,7 @@ export async function GET(request: Request) {
     const data = await res.json();
     return NextResponse.json(data);
   } catch (error) {
-    console.error("🔥 Route Handler 에러:", error);
+    console.error("Route Handler 에러:", error);
     return NextResponse.json(
       { success: false, message: "서버 연결 실패" },
       { status: 500 },

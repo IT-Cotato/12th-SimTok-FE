@@ -71,11 +71,10 @@ const AgreePage = () => {
       if (result.success) {
         router.push("/signup/profile");
       } else {
-        alert(result.message || "약관 동의 제출에 실패했습니다.");
+        console.error(result.message || "약관 동의 제출에 실패했습니다.");
       }
     } catch (error) {
       console.error("제출 실패:", error);
-      alert("네트워크 오류가 발생했습니다.");
     } finally {
       setIsSubmitting(false);
     }

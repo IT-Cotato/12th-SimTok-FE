@@ -57,10 +57,7 @@ export const useGardenStatus = (plantList: GardenPlantItem[]) => {
 
       // 3. API 결과 확정 대기
       await apiPromise;
-      console.log(
-        `%c[Garden Action Success]: ${nextState} 반영 완료`,
-        "color: #2ecc71; font-weight: bold",
-      );
+
       // 4. [성공 시에만] 상태를 영구적으로 업데이트
       setManualUpdates(prev => ({
         ...prev,

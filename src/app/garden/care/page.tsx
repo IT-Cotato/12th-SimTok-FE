@@ -40,7 +40,7 @@ const GardenCare = () => {
     const fetchPlantList = async () => {
       try {
         const data = await getPlantList("GROWING");
-        console.log(data);
+
         setNutrientCount(data.nutrientCount);
         setPlantList(data.sharedPlants ?? []);
       } catch (error) {
@@ -80,8 +80,8 @@ const GardenCare = () => {
       plantId,
       "AFTER_NUTRITION",
       [
-        { phase: "NUTRITION_BLACK", duration: 1000 },
-        { phase: "NUTRITION_AFTER_SHORTLY", duration: 1000 },
+        { phase: "NUTRITION_BLACK", duration: 10000 },
+        { phase: "NUTRITION_AFTER_SHORTLY", duration: 10000 },
       ],
       async () => {
         await postNutrient(plantId);
@@ -100,10 +100,6 @@ const GardenCare = () => {
           await postSeed(plantId);
         },
       );
-      console.log(
-        `%c[Seed Success]: ${plantId}번 식물 심기 완료`,
-        "color: #2ecc71; font-weight: bold",
-      );
     } catch (error) {
       console.error("씨앗 심기 실패:", error);
     }
@@ -113,7 +109,7 @@ const GardenCare = () => {
     await handleAction(
       plantId,
       "WATERED_RECENTLY",
-      [{ phase: "WATERING", duration: 1000 }],
+      [{ phase: "WATERING", duration: 10000 }],
       async () => {
         await postWater(plantId);
       },

@@ -60,7 +60,7 @@ const SettingPage = () => {
         const refresh = tokens?.refreshToken?.refreshToken;
 
         if (!access || !refresh) {
-          alert("토큰 정보를 받아오지 못했습니다.");
+          console.error("토큰 정보를 받아오지 못했습니다.");
           return;
         }
 
@@ -69,11 +69,12 @@ const SettingPage = () => {
 
         router.push("/onboarding");
       } else {
-        alert(result.message || "비밀번호 설정 중 오류가 발생했습니다.");
+        console.error(
+          result.message || "비밀번호 설정 중 오류가 발생했습니다.",
+        );
       }
     } catch (error) {
       console.error("비밀번호 제출 에러:", error);
-      alert("네트워크 오류가 발생했습니다.");
     } finally {
       setIsSubmitting(false);
     }

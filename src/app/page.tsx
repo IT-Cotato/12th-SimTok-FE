@@ -80,7 +80,7 @@ export default function HomePage() {
         <ChatProgress />
       </div>
 
-      <div className="fixed bottom-0 w-full max-w-[440px]">
+      <div className="fixed bottom-0 z-100 w-full max-w-[440px]">
         <NavBar />
       </div>
 

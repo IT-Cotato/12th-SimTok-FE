@@ -1,12 +1,11 @@
 export const refreshAccessToken = async () => {
   const refreshToken = localStorage.getItem("refreshToken");
-  console.log("🔍 [Step 1] 저장된 리프레시 토큰:", refreshToken);
   if (
     !refreshToken ||
     refreshToken === "undefined" ||
     refreshToken === "null"
   ) {
-    console.error("❌ 리프레시 토큰이 로컬스토리지에 없음");
+    console.error("리프레시 토큰이 로컬스토리지에 없음");
     return null;
   }
 
@@ -18,7 +17,6 @@ export const refreshAccessToken = async () => {
     });
 
     const result = await response.json();
-    console.log("[Refresh API Response]:", result);
 
     if (result.success && result.data?.accessToken) {
       const newToken = result.data.accessToken;
@@ -27,7 +25,7 @@ export const refreshAccessToken = async () => {
     }
 
     console.error(
-      "❌ [Step 3] 재발급 조건 미충족 (success false 또는 데이터 없음)",
+      "[Step 3] 재발급 조건 미충족 (success false 또는 데이터 없음)",
     );
     return null;
   } catch (error) {

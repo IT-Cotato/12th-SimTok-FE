@@ -44,8 +44,6 @@ const Garden = () => {
 
         setAllPlants(growingRes.sharedPlants ?? []);
         setPlantCompleted(completedRes.sharedPlants ?? []);
-        console.log("growningRes", growingRes);
-        console.log("completedRes", completedRes.sharedPlants);
       } catch (error) {
         console.error("식물 목록을 불러오는데 실패했습니다.", error);
       }

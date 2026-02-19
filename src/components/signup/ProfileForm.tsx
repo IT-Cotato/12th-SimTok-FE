@@ -54,9 +54,6 @@ export const ProfileForm = () => {
 
     //재전송 횟수 체크
     if (remainingResend === 0) {
-      alert(
-        "문자 재발송 횟수를 모두 사용하셨습니다. 처음부터 다시 시도해주세요.",
-      );
       router.replace("/login"); // 처음으로 리다이렉트
       return;
     }
@@ -72,13 +69,11 @@ export const ProfileForm = () => {
         setIsVerified(false);
         setCode("");
         start(180);
-        console.log("SMS 발송 성공:");
       } else {
-        alert(result.message || "문자 발송 제한을 초과했습니다.");
+        console.error(result.message || "문자 발송 제한을 초과했습니다.");
       }
     } catch (error) {
       console.error("SMS 요청 에러:", error);
-      alert("네트워크 오류가 발생했습니다.");
     } finally {
       setIsSubmitting(false);
     }
@@ -100,8 +95,6 @@ export const ProfileForm = () => {
       const res = await signupApi.verifyOtp(code);
       const result = await res.json();
 
-      console.log("OTP 검증 결과:", result);
-
       //검증 성공 시
       if (result.success && result.data?.step !== "OTP_REQUIRED") {
         setIsVerified(true);
@@ -113,15 +106,15 @@ export const ProfileForm = () => {
         const remainingAttempts = result.data?.flags?.remainingOtpAttempts;
 
         if (remainingAttempts === 0) {
-          alert(
+          (console.error(
             "인증 시도 횟수(3회)를 초과했습니다. 인증번호를 다시 요청해주세요.",
-          );
-          stop();
+          ),
+            stop());
           setIsVerified(false);
           setCode("");
         } else {
           // 남은 횟수 안내 포함 에러 처리
-          alert(
+          console.error(
             `인증번호가 올바르지 않습니다. (남은 횟수: ${remainingAttempts}회)`,
           );
           setModalType("error");
@@ -149,7 +142,7 @@ export const ProfileForm = () => {
         const cleanBirth = birth.replace(/\D/g, "");
 
         if (cleanBirth.length !== 8) {
-          alert("생년월일 8자리를 정확히 입력해주세요.");
+          console.error("생년월일 8자리를 정확히 입력해주세요.");
           return;
         }
 
@@ -165,12 +158,12 @@ export const ProfileForm = () => {
           setModalType(null);
           router.push("/signup/password");
         } else {
-          alert(result.message || "프로필 정보 등록에 실패했습니다.");
+          console.error(result.message || "프로필 정보 등록에 실패했습니다.");
           setModalType(null);
         }
       } catch (error) {
         console.error("프로필 제출 에러:", error);
-        alert("네트워크 오류가 발생했습니다.");
+        console.error("네트워크 오류가 발생했습니다.");
         setModalType(null);
       } finally {
         setIsSubmitting(false);

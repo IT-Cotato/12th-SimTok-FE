@@ -24,7 +24,7 @@ export const useImageUpload = ({ onSelect, folder }: useImageUploadProps) => {
       const imageUrl = await uploadToS3(file, folder);
       onSelect(imageUrl); // 부모에게 최종 S3 URL 전달
     } catch (error) {
-      alert(error instanceof Error ? error.message : "업로드 실패");
+      console.error(error instanceof Error ? error.message : "업로드 실패");
     } finally {
       setIsUploading(false);
       e.target.value = "";

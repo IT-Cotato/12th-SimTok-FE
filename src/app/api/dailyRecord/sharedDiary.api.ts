@@ -21,7 +21,7 @@ export const postSharedDiary = async (
   };
 
   const { data } = await apiInstance.post(`/diaries`, body);
-  console.log("업로드 응답:", data);
+
   return data;
 };
 
@@ -31,7 +31,7 @@ export const getSharedDiaryList = async (size: number, lastId?: number) => {
     : `/diaries?size=${size}`;
 
   const { data } = await apiInstance.get(url);
-  console.log("공유 일기 목록 응답:", data.data);
+
   return data.data;
 };
 
