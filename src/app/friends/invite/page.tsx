@@ -3,8 +3,6 @@ import { useRouter } from "next/navigation";
 
 import { useEffect, useState } from "react";
 
-import { data } from "framer-motion/client";
-
 import { getMyProfile } from "@/app/api/profile/profile.api";
 
 import { FullButton } from "@/components/common/FullButton";

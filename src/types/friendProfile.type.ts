@@ -33,7 +33,7 @@ export type ChatTopic =
   | "HOBBY"
   | "JOKE";
 
-export type ChatStyle = "존댓말" | "반말";
+export type ChatStyle = "FORMAL" | "CASUAL";
 
 export type FriendSetting = {
   friendshipId: number;
