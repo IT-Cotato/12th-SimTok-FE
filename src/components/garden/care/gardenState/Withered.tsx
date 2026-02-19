@@ -1,21 +1,28 @@
 import Image from "next/image";
 
+import ClockIcon from "@/assets/clock.svg";
 import Pot from "@/assets/garden/pot.svg";
 
 import { PageTitle } from "@/components/common/PageTitle";
 import { InfoMessage } from "@/components/dailyRecord/InfoMessage";
 
-import { GARDEN_STATE_ITEM } from "@/constants/garden/gardenCare";
 import { PLANT_IMAGE_MAP } from "@/constants/garden/plantList";
 
 import { GrowthStage } from "@/types/plant.type";
 
+import { getPlantStatusMinutes } from "@/utils/getPlantStatus";
+
 interface WitheredProps {
   pageTitle?: string[];
   growthStage: GrowthStage;
+  lastWateredTime: string;
 }
 
-export const Withered = ({ pageTitle, growthStage }: WitheredProps) => {
+export const Withered = ({
+  pageTitle,
+  growthStage,
+  lastWateredTime,
+}: WitheredProps) => {
   const plantImg =
     PLANT_IMAGE_MAP[growthStage as keyof typeof PLANT_IMAGE_MAP].bad;
 
@@ -24,7 +31,15 @@ export const Withered = ({ pageTitle, growthStage }: WitheredProps) => {
 
   return (
     <section className="z-99 flex flex-1 flex-col justify-between">
-      <PageTitle title={pageTitle} />
+      <div className="flex flex-col">
+        <div className="flex self-center">
+          <ClockIcon className="text-red-00 h-9 w-9" />
+          <h1 className="text-red-00 text-h1">
+            {getPlantStatusMinutes(lastWateredTime)}
+          </h1>
+        </div>
+        <PageTitle title={pageTitle} />
+      </div>
       <div className="relative z-99 flex items-center justify-center">
         <div className="relative flex items-center justify-center pt-[150px]">
           {/* 식물 이미지 영역 */}

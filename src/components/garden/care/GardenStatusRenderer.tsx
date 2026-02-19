@@ -15,6 +15,7 @@ interface RendererProps {
   state: GardenState;
   stage: GrowthStage;
   sort: PlantSort;
+  lastWateredTime: string;
   title: string[];
   onPlant: () => void;
 }
@@ -29,6 +30,7 @@ export const GardenStatusRenderer = ({
   stage,
   sort,
   title,
+  lastWateredTime,
   onPlant,
 }: RendererProps) => {
   switch (state) {
@@ -42,16 +44,36 @@ export const GardenStatusRenderer = ({
       return <WaterRecently pageTitle={title} growthStage={stage} />;
 
     case "WATERABLE":
-      return <Waterable pageTitle={title} growthStage={stage} />;
+      return (
+        <Waterable
+          pageTitle={title}
+          growthStage={stage}
+          lastWateredTime={lastWateredTime}
+        />
+      );
 
     case "WITHERED":
-      return <Withered pageTitle={title} growthStage={stage} />;
+      return (
+        <Withered
+          pageTitle={title}
+          growthStage={stage}
+          lastWateredTime={lastWateredTime}
+        />
+      );
 
     case "NUTRITION_AVAILABLE":
-      return <NutritionAvailable pageTitle={title} growthStage={stage} />;
+      return (
+        <NutritionAvailable
+          pageTitle={title}
+          growthStage={stage}
+          lastWateredTime={lastWateredTime}
+        />
+      );
 
     case "AFTER_NUTRITION":
-      return <AfterNutrition growthStage={stage} />;
+      return (
+        <AfterNutrition growthStage={stage} lastWateredTime={lastWateredTime} />
+      );
 
     case "COMPLETED":
       return <Completed plantSort={sort} />;

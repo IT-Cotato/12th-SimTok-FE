@@ -95,6 +95,7 @@ export const GardenCareContent = ({
         state={effectiveState}
         stage={plant.growthStage}
         sort={plant.plantName}
+        lastWateredTime={plant.lastWateredAt}
         title={displayTitle}
         onPlant={onPlant}
       />
