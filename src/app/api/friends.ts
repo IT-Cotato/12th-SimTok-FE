@@ -1,3 +1,5 @@
+import { ChatStyle, ChatTopic } from "@/types/friendProfile.type";
+
 interface FriendSettingPayload {
   showName?: string;
   isFavorite?: boolean;
