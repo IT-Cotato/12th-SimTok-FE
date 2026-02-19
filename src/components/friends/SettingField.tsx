@@ -93,24 +93,29 @@ export const SettingField = (props: SettingFieldProps) => {
 
     chatStyle: () => (
       <div className="flex gap-[45px]">
-        {CHAT_STYLE.map(({ key, label }) => (
-          <div key={key} className="flex items-center gap-[10px]">
-            <button
-              className={`relative h-6 w-6 cursor-pointer rounded-full ${
-                chatStyle === key ? "bg-mint-01" : "border-neutral-08 border"
+        {CHAT_STYLE.map(style => (
+          <div
+            key={style}
+            className="flex cursor-pointer items-center gap-[10px]"
+            onClick={() => onChangeChatStyle(style as ChatStyle)}
+          >
+            <div
+              className={`relative flex h-6 w-6 items-center justify-center rounded-full border ${
+                chatStyle === style
+                  ? "bg-mint-01 border-mint-01"
+                  : "border-neutral-08 bg-transparent"
               }`}
-              onClick={() => onChangeChatStyle(key)}
             >
-              {chatStyle === key && (
-                <CheckIcon className="absolute inset-0 m-auto h-5 w-5 text-white" />
+              {chatStyle === style && (
+                <CheckIcon className="h-5 w-5 text-white" />
               )}
-            </button>
+            </div>
             <span
               className={`text-h2 ${
-                chatStyle === key ? "text-neutral-03" : "text-neutral-07"
+                chatStyle === style ? "text-neutral-03" : "text-neutral-07"
               }`}
             >
-              {label}
+              {style}
             </span>
           </div>
         ))}
