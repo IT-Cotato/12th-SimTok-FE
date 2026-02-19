@@ -41,6 +41,7 @@ const Chatting = () => {
 
   const roomId = params?.id as string;
   const targetId = searchParams.get("target");
+  const fsId = searchParams.get("fsId");
   const [apiTopics, setApiTopics] = useState<ChatTopicItem[]>([]);
   const getTopicMeta = (code: string) => {
     return (
@@ -176,7 +177,7 @@ const Chatting = () => {
                 const signedUrl = await getPresignedUrl(
                   msg.attachment.objectKey,
                 );
-                content = signedUrl || ""; // 실패 시 빈 값
+                content = signedUrl || "";
               }
 
               return {
@@ -186,7 +187,7 @@ const Chatting = () => {
                 time: formatTime(msg.createdAt),
                 createdAt: msg.createdAt,
                 messageSeq: msg.messageSeq,
-                isImage: isAttachment, // 렌더링 시 이미지 컴포넌트 사용 여부 결정
+                isImage: isAttachment,
               };
             }),
           );
@@ -228,7 +229,6 @@ const Chatting = () => {
       subscriptions.push(
         client.subscribe("/user/queue/chat/events", async msg => {
           const body = JSON.parse(msg.body);
-          console.log("📩 [EVENT 수신]:", body);
 
           if (body.type === "ROOM_CREATED" && body.roomId) {
             const newUrl = `/chat/${body.roomId}?target=${targetId}&name=${encodeURIComponent(displayName)}&img=${encodeURIComponent(opponentProfileImg || "")}`;
@@ -252,8 +252,6 @@ const Chatting = () => {
               );
               messageContent = signedUrl || "";
             }
-
-            console.log("📩 메시지 수신 성공:", body.messageId);
             setMessages(prev => [
               ...prev,
               {
@@ -315,8 +313,6 @@ const Chatting = () => {
         content: text,
       };
 
-      console.log("📤 [최종 전송 페이로드]:", payload);
-
       client.publish({
         destination: "/app/chat/messages/send",
         headers: { "content-type": "application/json" },
@@ -372,29 +368,24 @@ const Chatting = () => {
   }, []);
 
   const handleRefreshAiPhrases = useCallback(async () => {
-    console.log("🔄 [AI Refresh] 요청 시작");
-
     if (!selectedTopicKey) {
-      console.warn("⚠️ [AI Refresh] selectedTopicKey 없음");
       return;
     }
 
     const topicMeta = apiTopics.find(t => t.code === selectedTopicKey);
     if (!topicMeta) {
-      console.warn("⚠️ [AI Refresh] 매칭되는 topicMeta 없음");
       return;
     }
 
     try {
       const response = await postAiPhrases({
-        topic: topicMeta.name, // 현재 선택된 주제 명칭
+        topic: topicMeta.name,
         existingPhrases: recommendations, // 현재 화면에 떠 있는 문구들
         count: 5, // 새로 받을 개수
       });
 
       if (response?.success && response?.data?.phrases) {
-        console.log("📥 [AI Refresh] 결과:", response.data.phrases);
-        setRecommendations(response.data.phrases); // 새로운 리스트로 교체
+        setRecommendations(response.data.phrases);
       }
     } catch (error) {
       console.error("AI 문구 갱신 실패:", error);
@@ -439,7 +430,7 @@ const Chatting = () => {
         body: JSON.stringify(payload),
       });
     } catch (err) {
-      console.error("❌ 이미지 전송 중 최종 에러:", err);
+      console.error("이미지 전송 중 최종 에러:", err);
     }
   };
 
@@ -470,7 +461,7 @@ const Chatting = () => {
           onBack={handleBack}
           menuIcon={() => {
             router.push(
-              `/chat/${roomId}/setting?name=${encodeURIComponent(displayName)}&img=${opponentProfileImg}`,
+              `/chat/${roomId}/setting?name=${encodeURIComponent(displayName)}&img=${opponentProfileImg}&fsId=${fsId}`,
             );
           }}
         />
