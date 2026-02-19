@@ -20,7 +20,6 @@ const FriendAddPage = () => {
   const router = useRouter();
   const params = useParams();
   const inviteCode = params?.code as string;
-
   const [opponentData, setOpponentData] =
     useState<SearchFriendByInviteCodeResponse>();
 
@@ -44,11 +43,12 @@ const FriendAddPage = () => {
     if (!opponentData) return;
     try {
       const response = await postFriendRequest(opponentData?.memberId);
+      const fsId = response.friendshipId;
 
       if (response) {
         const name = encodeURIComponent(opponentData.memberName);
         const img = encodeURIComponent(opponentData.profileImageUrl);
-        const fsId = opponentData.memberId;
+
         router.push(
           `/friends/settings/${fsId}?mode=add&name=${name}&img=${img}`,
         );
