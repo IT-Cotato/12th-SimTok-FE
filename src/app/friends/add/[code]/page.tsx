@@ -4,7 +4,10 @@ import { useParams, useRouter } from "next/navigation";
 
 import { useEffect, useState } from "react";
 
-import { searchFriendByInviteCode } from "@/app/api/friendships/friend.api";
+import {
+  postFriendRequest,
+  searchFriendByInviteCode,
+} from "@/app/api/friendships/friend.api";
 
 import { BackHeader } from "@/components/common/BackHeader";
 import { FullButton } from "@/components/common/FullButton";
@@ -36,6 +39,18 @@ const FriendAddPage = () => {
     fetchOpponentData();
   }, [inviteCode]);
 
+  const handleFriendRequest = async () => {
+    if (!opponentData) return;
+    try {
+      const response = await postFriendRequest(opponentData?.memberId);
+      if (response) {
+        router.push(`/friends/settings/${opponentData.memberId}?mode=add`);
+      }
+    } catch (error) {
+      console.error("친구 신청 실패:", error);
+    }
+  };
+
   if (!opponentData) return <OnlyLoader />;
 
   return (
@@ -60,13 +75,7 @@ const FriendAddPage = () => {
       </div>
 
       <section className="w-full bg-white px-4 py-[52px] pt-[10px]">
-        <FullButton
-          onClick={() =>
-            router.push(`/friends/settings/${opponentData.memberId}`)
-          }
-        >
-          추가하기
-        </FullButton>
+        <FullButton onClick={() => handleFriendRequest()}>추가하기</FullButton>
       </section>
     </main>
   );
