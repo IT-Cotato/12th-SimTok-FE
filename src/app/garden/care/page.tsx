@@ -80,8 +80,8 @@ const GardenCare = () => {
       plantId,
       "AFTER_NUTRITION",
       [
-        { phase: "NUTRITION_BLACK", duration: 1000 },
-        { phase: "NUTRITION_AFTER_SHORTLY", duration: 1000 },
+        { phase: "NUTRITION_BLACK", duration: 10000 },
+        { phase: "NUTRITION_AFTER_SHORTLY", duration: 10000 },
       ],
       async () => {
         await postNutrient(plantId);
@@ -109,7 +109,7 @@ const GardenCare = () => {
     await handleAction(
       plantId,
       "WATERED_RECENTLY",
-      [{ phase: "WATERING", duration: 1000 }],
+      [{ phase: "WATERING", duration: 10000 }],
       async () => {
         await postWater(plantId);
       },

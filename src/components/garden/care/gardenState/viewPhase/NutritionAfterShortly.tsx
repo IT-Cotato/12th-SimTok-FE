@@ -22,7 +22,7 @@ export const NutritionAfterShortly = ({
       <PageTitle title={["회복되었어요!", "더 자라려면 물이 필요해요"]} />
       <div className="relative z-99 flex items-center justify-center">
         {/* 식물 이미지 */}
-        <div className="relative bottom-[200px] flex items-center justify-center">
+        <div className="relative bottom-[180px] flex items-center justify-center">
           <div className="absolute bottom-[153px] left-1/2 flex -translate-x-1/2 flex-col gap-[10px]">
             <Image
               src={plantImg}
