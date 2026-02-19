@@ -29,7 +29,6 @@ const FriendInvitePage = () => {
       try {
         const data = await getMyProfile();
         setMyData(data);
-        console.log("내프로필", data);
       } catch (error) {
         console.error("Failed to fetch profile:", error);
       }

@@ -19,7 +19,6 @@ const DailyRecordPage = () => {
       try {
         const data = await getMyDayLog();
         setMyData(data);
-        console.log("내 하루기록:", data);
       } catch (error) {
         console.error("내 하루기록 로드 실패:", error);
       }

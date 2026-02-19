@@ -80,7 +80,6 @@ export const SharedDiaryFunnel = () => {
           text={content}
           file={imageUrl}
           onSubmit={() => {
-            console.log("최종 제출 데이터:", { emojiCode, content, imageUrl });
             funnel.history.push("complete");
           }}
           onBack={() => funnel.history.back()}

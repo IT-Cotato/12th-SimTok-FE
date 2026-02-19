@@ -39,7 +39,6 @@ export const StompProvider = ({ children }: { children: React.ReactNode }) => {
           };
         }
       },
-      debug: str => console.log("[STOMP Debug]", str),
       reconnectDelay: 5000,
       heartbeatIncoming: 10000,
       heartbeatOutgoing: 10000,
@@ -47,18 +46,16 @@ export const StompProvider = ({ children }: { children: React.ReactNode }) => {
 
     // 1. 연결 성공 콜백
     clientInstance.onConnect = () => {
-      console.log("🚀 STOMP Connected");
       setIsConnected(true);
       setClient(clientInstance);
 
       // 2.2 에러 수신 채널 구독
       clientInstance.subscribe("/user/queue/errors", msg => {
-        console.error("❌ 서버 에러 수신:", JSON.parse(msg.body));
+        console.error("서버 에러 수신:", JSON.parse(msg.body));
       });
 
       // 2.1 ACK 수신 채널 구독
       // clientInstance.subscribe("/user/queue/chat/events", (msg) => {
-      //   console.log("✅:", JSON.parse(msg.body));
       // });
 
       // 3.1 ACK 요청 전송

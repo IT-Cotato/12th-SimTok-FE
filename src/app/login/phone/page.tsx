@@ -46,7 +46,7 @@ const LoginPage = () => {
         if (AT && RT) {
           localStorage.setItem("accessToken", AT);
           localStorage.setItem("refreshToken", RT);
-          console.log("토큰 저장 완료");
+
           window.location.href = "/";
         } else {
           console.error("토큰 데이터 누락:", result.data);
@@ -78,14 +78,12 @@ const LoginPage = () => {
           router.push("/password/find");
         } else {
           console.warn("Draft Key가 헤더에 포함되지 않았습니다.");
-          alert("일시적인 오류가 발생했습니다. 다시 시도해주세요.");
         }
       } else {
-        alert(result.message || "프로세스 시작 실패");
+        console.error(result.message || "프로세스 시작 실패");
       }
     } catch (error) {
       console.error("Draft 생성 에러:", error);
-      alert("네트워크 오류가 발생했습니다. 다시 시도해주세요.");
     }
   };
 

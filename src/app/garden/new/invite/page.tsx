@@ -25,7 +25,6 @@ const PlantInvite = () => {
   const setInvitedFriendId = useGardenStore(state => state.setInvitedFriendId);
 
   const handleNext = () => {
-    console.log("선택된 친구 ID:", selectedFriends[0]?.friendshipId);
     router.push("/garden/new/invite/message");
   };
 

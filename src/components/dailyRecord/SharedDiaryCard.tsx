@@ -45,7 +45,6 @@ export const SharedDiaryCard = () => {
 
         lastIdRef.current = resData.lastId;
         hasNextRef.current = resData.hasNext;
-        console.log("다음 lastId 준비 완료:", resData.lastId);
       }
     } catch (error) {
       console.error("비동기 처리 중 예외 발생:", error);
