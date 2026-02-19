@@ -44,8 +44,14 @@ const FriendAddPage = () => {
     if (!opponentData) return;
     try {
       const response = await postFriendRequest(opponentData?.memberId);
+
       if (response) {
-        router.push(`/friends/settings/${opponentData.memberId}?mode=add`);
+        const name = encodeURIComponent(opponentData.memberName);
+        const img = encodeURIComponent(opponentData.profileImageUrl);
+        const fsId = opponentData.memberId;
+        router.push(
+          `/friends/settings/${fsId}?mode=add&name=${name}&img=${img}`,
+        );
       }
     } catch (error) {
       console.error("친구 신청 실패:", error);

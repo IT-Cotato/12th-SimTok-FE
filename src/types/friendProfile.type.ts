@@ -59,10 +59,10 @@ export type ChatStyle = "존댓말" | "반말";
 
 // 친구 관계 조회
 export type UpdateFriendshipPayload = {
-  nickname: string;
-  speechStyle: ChatStyle;
-  chatGoal: number;
-  topicCodes: ChatTopic[];
+  nickname?: string;
+  speechStyle?: ChatStyle;
+  chatGoal?: number;
+  topicCodes?: ChatTopic[];
 };
 
 export interface FriendSetting extends UpdateFriendshipPayload {
