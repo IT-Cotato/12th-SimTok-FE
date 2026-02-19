@@ -93,27 +93,36 @@ export const SettingField = (props: SettingFieldProps) => {
 
     chatStyle: () => (
       <div className="flex gap-[45px]">
-        {CHAT_STYLE.map(({ key, label }) => (
-          <div key={key} className="flex items-center gap-[10px]">
-            <button
-              className={`relative h-6 w-6 cursor-pointer rounded-full ${
-                chatStyle === key ? "bg-mint-01" : "border-neutral-08 border"
-              }`}
-              onClick={() => onChangeChatStyle(key)}
-            >
-              {chatStyle === key && (
-                <CheckIcon className="absolute inset-0 m-auto h-5 w-5 text-white" />
-              )}
-            </button>
-            <span
-              className={`text-h2 ${
-                chatStyle === key ? "text-neutral-03" : "text-neutral-07"
-              }`}
-            >
-              {label}
-            </span>
-          </div>
-        ))}
+        {CHAT_STYLE.map(({ key, label }) => {
+          // 🟢 해결: key를 ChatStyle로 취급하여 비교
+          const styleKey = key as ChatStyle;
+          const isSelected = chatStyle === styleKey;
+
+          return (
+            <div key={key} className="flex items-center gap-[10px]">
+              <button
+                type="button" // form 전송 방지
+                className={`relative h-6 w-6 cursor-pointer rounded-full transition-colors ${
+                  isSelected
+                    ? "bg-mint-01 border-none"
+                    : "border-neutral-08 border"
+                }`}
+                onClick={() => onChangeChatStyle(key as ChatStyle)}
+              >
+                {isSelected && (
+                  <CheckIcon className="absolute inset-0 m-auto h-5 w-5 text-white" />
+                )}
+              </button>
+              <span
+                className={`text-h2 transition-colors ${
+                  isSelected ? "text-neutral-01 font-bold" : "text-neutral-07"
+                }`}
+              >
+                {label}
+              </span>
+            </div>
+          );
+        })}
       </div>
     ),
 
