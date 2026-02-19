@@ -12,12 +12,6 @@ import { ProfileCard } from "@/components/mypage/ProfileCard";
 
 import { CHAT_LIST_ITEMS } from "@/constants/chatSettings";
 
-interface Friend {
-  userId: number;
-  userName: string;
-  profileImg: string;
-}
-
 const SettingChatPage = () => {
   const router = useRouter();
   const { id } = useParams();
