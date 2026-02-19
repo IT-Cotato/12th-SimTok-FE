@@ -57,21 +57,11 @@ export const PlantCarousel = ({
                 className="relative flex h-[451px] cursor-pointer flex-col overflow-hidden rounded-2xl bg-white shadow-[0_0_14px_0_rgba(0,0,0,0.12)]"
               >
                 {/* 상단 텍스트 영역 */}
-                <section className="relative z-10 flex flex-col gap-[10px] px-4 py-[10px]">
-                  <div className="flex justify-between">
-                    <div className="flex flex-col items-center">
-                      <div className="text-sub-number text-neutral-01">
-                        {plant.name}
-                      </div>
-                      <div
-                        className={`text-h2 ${plant.textColor} rounded-2xl px-4 ${plant.bgColor}`}
-                      >
-                        {plant.duration}일
-                      </div>
-                    </div>
-                    <div className={`text-sub-number ${plant.textColor}`}>
-                      {plant.length}cm
-                    </div>
+                <section className="relative z-10 flex px-4 py-[10px]">
+                  <div
+                    className={`text-sub-number ${plant.textColor} ${plant.bgColor} rounded-2xl px-4`}
+                  >
+                    {plant.name}
                   </div>
                 </section>
 
