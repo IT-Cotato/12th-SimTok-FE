@@ -12,6 +12,7 @@ import UploadButton from "@/components/onboarding/UploadButton";
 
 import { useImageUpload } from "@/hooks/useImageUpload";
 
+import { OnlyLoader } from "../common/OnlyLoader";
 import { ProfileWrapper } from "../common/ProfileWrapper";
 
 const OnboardingProfileClient = () => {
@@ -20,7 +21,21 @@ const OnboardingProfileClient = () => {
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
+  //const [isUploading, setIsUploading] = useState(false);
+
+  const { inputRef, openFilePicker, onChangeFile, isUploading } =
+    useImageUpload({
+      folder: "PROFILE",
+      onSelect: (url: string) => {
+        const isS3Url = url.startsWith("http");
+
+        setUploadedImageUrl(url);
+        if (isS3Url) {
+          setIsUploadOpen(false);
+        }
+      },
+    });
+
   useEffect(() => {
     const loadInitialData = async () => {
       try {
@@ -35,54 +50,81 @@ const OnboardingProfileClient = () => {
     loadInitialData();
   }, []);
 
-  const isNameLoaded = name.trim().length > 0;
-
   const handleCreateProfile = async () => {
-    if (!isNameLoaded || isSubmitting) return;
-    setIsSubmitting(true);
+    if (!isNameLoaded || isSubmitting || isUploading) return;
 
+    setIsSubmitting(true);
     try {
       const result = await profileApi.createProfile(
         name.trim(),
-        uploadedImageUrl,
+        uploadedImageUrl, // 최종 S3 URL 전달
       );
 
       if (result.success) {
         router.replace("/");
-      } else {
-        console.error("프로필 생성에 실패했습니다.");
       }
     } catch (e) {
       console.error("프로필 생성 에러:", e);
-    }
-  };
-
-  const handleImageUpload = async (file: File) => {
-    setIsUploading(true);
-    try {
-      const preRes = await profileApi.getPresignedUrl(file.name);
-      if (!preRes.success) return;
-
-      const { presignedUrl, imageUrl, contentType } = preRes.data;
-      const isS3Success = await profileApi.uploadToS3(
-        presignedUrl,
-        file,
-        contentType,
-      );
-
-      if (isS3Success) {
-        setUploadedImageUrl(imageUrl); // 최종 S3 주소 저장
-      }
-    } catch (error) {
-      console.error("이미지 업로드 실패:", error);
     } finally {
-      setIsUploading(false);
-      setIsUploadOpen(false);
+      setIsSubmitting(false);
     }
   };
+
+  const isNameLoaded = name.trim().length > 0;
+
+  // const handleCreateProfile = async () => {
+  //   if (!isNameLoaded || isSubmitting) return;
+  //   setIsSubmitting(true);
+
+  //   try {
+  //     const result = await profileApi.createProfile(
+  //       name.trim(),
+  //       uploadedImageUrl,
+  //     );
+
+  //     if (result.success) {
+  //       router.replace("/");
+  //     } else {
+  //       console.error("프로필 생성에 실패했습니다.");
+  //     }
+  //   } catch (e) {
+  //     console.error("프로필 생성 에러:", e);
+  //   }
+  // };
+
+  // const handleImageUpload = async (file: File) => {
+  //   setIsUploading(true);
+  //   try {
+  //     const preRes = await profileApi.getPresignedUrl(file.name);
+  //     if (!preRes.success) return;
+
+  //     const { presignedUrl, imageUrl, contentType } = preRes.data;
+  //     const isS3Success = await profileApi.uploadToS3(
+  //       presignedUrl,
+  //       file,
+  //       contentType,
+  //     );
+
+  //     if (isS3Success) {
+  //       setUploadedImageUrl(imageUrl); // 최종 S3 주소 저장
+  //     }
+  //   } catch (error) {
+  //     console.error("이미지 업로드 실패:", error);
+  //   } finally {
+  //     setIsUploading(false);
+  //     setIsUploadOpen(false);
+  //   }
+  // };
 
   return (
     <>
+      <input
+        type="file"
+        ref={inputRef}
+        onChange={onChangeFile}
+        className="hidden"
+        accept="image/*"
+      />
       <main className="flex min-h-dvh w-full justify-center">
         <div className="flex w-full max-w-110 flex-col">
           <div className="flex flex-1 flex-col">
@@ -96,6 +138,7 @@ const OnboardingProfileClient = () => {
               <ProfileWrapper
                 imageUrl={uploadedImageUrl}
                 name={name}
+                onChangeName={setName}
                 onProfileClick={() => setIsUploadOpen(true)}
                 canEdit={true}
                 showInput={true}
@@ -119,7 +162,7 @@ const OnboardingProfileClient = () => {
       <UploadButton
         isOpen={isUploadOpen}
         onClose={() => setIsUploadOpen(false)}
-        onSelectAlbum={handleImageUpload}
+        onSelectAlbum={openFilePicker}
         onSelectDefault={() => {
           setUploadedImageUrl(null);
           setIsUploadOpen(false);
@@ -132,7 +175,7 @@ const OnboardingProfileClient = () => {
         confirmLabel="취소하기"
         isLoading
         backdrop="blur"
-        onClose={() => setIsUploading(false)}
+        onClose={() => {}}
       />
     </>
   );
