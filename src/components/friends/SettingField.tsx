@@ -94,7 +94,6 @@ export const SettingField = (props: SettingFieldProps) => {
     chatStyle: () => (
       <div className="flex gap-[45px]">
         {CHAT_STYLE.map(({ key, label }) => {
-          // 🟢 해결: key를 ChatStyle로 취급하여 비교
           const styleKey = key as ChatStyle;
           const isSelected = chatStyle === styleKey;
 

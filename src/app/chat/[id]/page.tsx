@@ -255,15 +255,15 @@ const Chatting = () => {
       );
 
       subscriptions.push(
-        client.subscribe("/user/queue/chat/events", msg => {
+        client.subscribe("/user/queue/chat/events", async msg => {
           const body = JSON.parse(msg.body);
           console.log("📩 [EVENT 수신]:", body);
 
           if (body.type === "ROOM_CREATED" && body.roomId) {
-            router.replace(
-              `/chat/${body.roomId}?target=${targetId}&name=${encodeURIComponent(displayName)}`,
-            );
-            fetchHistory(body.roomId.toString());
+            const newUrl = `/chat/${body.roomId}?target=${targetId}&name=${encodeURIComponent(displayName)}&img=${encodeURIComponent(opponentProfileImg || "")}`;
+            window.history.replaceState(null, "", newUrl);
+
+            await fetchHistory(body.roomId.toString());
           }
         }),
       );
