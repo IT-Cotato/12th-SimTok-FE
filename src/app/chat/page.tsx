@@ -10,6 +10,7 @@ import { ChatItem } from "@/components/chat/ChatItem";
 import { ExitChatModal } from "@/components/chat/ExitChatModal";
 import { HeaderWithIcon } from "@/components/common/HeaderWithIcon";
 import { NavBar } from "@/components/common/NavBar";
+import { OnlyLoader } from "@/components/common/OnlyLoader";
 import { SearchField } from "@/components/common/SearchField";
 
 import { ChatListResponse, ChatRoomItem } from "@/types/chat";
@@ -21,6 +22,7 @@ const ChatListPage = () => {
   const [searchText, setSearchText] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedChat, setSelectedChat] = useState<ChatRoomItem | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const formatDate = (dateString: string) => {
     if (!dateString) return "";
@@ -33,28 +35,32 @@ const ChatListPage = () => {
 
   const fetchChatRooms = useCallback(async () => {
     try {
+      setIsLoading(true);
+
       const res = await fetch("/api/chat/rooms", {
         cache: "no-store",
       });
+
       const result: ApiResponse<ChatListResponse> = await res.json();
+
       if (result.success) {
         setChats(result.data.items);
       }
     } catch (error) {
       console.error("목록 로드 실패:", error);
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
   // 2. 초기 로드 및 포커스 이벤트 등록
   useEffect(() => {
-    // 1. 최초 로드
     fetchChatRooms();
 
     const handleRefresh = () => {
       fetchChatRooms();
     };
 
-    // 2. 뒤로가기(BFCache) 및 포커스 시 갱신
     window.addEventListener("pageshow", handleRefresh);
     window.addEventListener("focus", handleRefresh);
 
@@ -104,6 +110,10 @@ const ChatListPage = () => {
     const name = chat.opponent?.name ?? "";
     return name.toLowerCase().includes(searchText.toLowerCase());
   });
+
+  if (isLoading) {
+    return <OnlyLoader />;
+  }
 
   return (
     <main className="relative flex min-h-dvh w-full justify-center bg-white">
