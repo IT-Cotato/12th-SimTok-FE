@@ -1,3 +1,12 @@
+const getAuthHeaders = () => {
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
+  return {
+    "Content-Type": "application/json",
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+};
+
 export interface ProfileData {
   profileImageUrl: string;
   name: string;
@@ -9,7 +18,7 @@ export const profileApi = {
   getProfile: async () => {
     const res = await fetch("/api/profile", {
       method: "GET",
-      headers: { "Content-Type": "application/json" },
+      headers: getAuthHeaders(),
     });
     return res.json();
   },
