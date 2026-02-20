@@ -3,6 +3,9 @@ import localfont from "next/font/local";
 
 import { StompProvider } from "@/context/StompContext";
 
+import AuthGuard from "@/components/auth/AuthGuard";
+import AuthInitializer from "@/components/auth/AuthInitializer";
+
 import "@/styles/globals.css";
 
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
@@ -72,8 +75,11 @@ export default function RootLayout({
       <body className="flex w-full justify-center bg-white">
         <div className="w-full max-w-[440px] shadow-2xl">
           <div className="scrollbar-hide h-screen overflow-y-scroll">
+            <AuthInitializer />
             <ReactQueryProvider>
-              <StompProvider>{children}</StompProvider>
+              <StompProvider>
+                <AuthGuard>{children}</AuthGuard>
+              </StompProvider>
             </ReactQueryProvider>
           </div>
         </div>
