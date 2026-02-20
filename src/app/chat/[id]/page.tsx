@@ -84,7 +84,7 @@ const Chatting = () => {
     setMessages([]);
   }
 
-  const selectedTopic = CHAT_TOPIC.find(t => t.key === selectedTopicKey);
+  const selectedTopic = apiTopics.find(t => t.code === selectedTopicKey);
   const isDimmed = isTopicOpen && Boolean(selectedTopicKey);
 
   const getPresignedUrl = async (objectKey: string) => {
