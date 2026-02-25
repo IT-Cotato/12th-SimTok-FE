@@ -54,6 +54,7 @@ export const FriendList = ({
             ...activeData.friendshipList,
             ...pendingData.friendshipList,
           ];
+          console.log(combined);
           // 카운트 합치기
           const totalCount = activeData.count + pendingData.count;
           setFriends(combined);
