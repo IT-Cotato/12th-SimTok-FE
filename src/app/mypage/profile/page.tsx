@@ -8,7 +8,6 @@ import { BackHeader } from "@/components/common/BackHeader";
 import { FullButton } from "@/components/common/FullButton";
 import { ProfileSummary } from "@/components/profile/ProfileSummary";
 
-import { useImageUpload } from "@/hooks/useImageUpload";
 import { useUserProfile } from "@/hooks/useUserProfile";
 
 import { formatDateWithSlash, formatPhone } from "@/utils/format";
@@ -25,34 +24,20 @@ const ProfileSettingPage = () => {
     }
   }, [userProfileData]);
 
-  const { inputRef, openFilePicker, onChangeFile, isUploading } =
-    useImageUpload({
-      folder: "PROFILE",
-      onSelect: (url: string) => {
-        // blob(미리보기) -> S3 URL 순으로 profileImageUrl 상태 업데이트
-        setProfileImageUrl(url);
-      },
-    });
+  const isUploading = profileImageUrl.startsWith("blob:");
 
   const handleUpdateProfile = async () => {
-    if (isUploading || !profileImageUrl) return;
+    if (isUploading) return;
     try {
-      const token = localStorage.getItem("accessToken");
       const res = await fetch("/api/profile", {
-        method: "PUT", // 프로필 이미지 수정 API
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          profileImageUrl: profileImageUrl, // 최종 S3 URL 제출
-        }),
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ profileImageUrl }),
       });
 
       if (!res.ok) throw new Error("프로필 수정 실패");
       router.push("/mypage");
     } catch (error) {
-      console.error(error);
       alert("프로필 저장에 실패했습니다.");
     }
   };
@@ -80,13 +65,7 @@ const ProfileSettingPage = () => {
                   : null
               }
               onModalStateChange={setIsModalOpen}
-            />
-            <input
-              type="file"
-              ref={inputRef}
-              onChange={onChangeFile}
-              className="hidden"
-              accept="image/*"
+              onImageUrlChange={setProfileImageUrl}
             />
           </section>
         </div>

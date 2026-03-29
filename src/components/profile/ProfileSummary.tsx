@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { type ProfileData, profileApi } from "@/app/api/profile";
 
@@ -15,47 +15,57 @@ import UploadButton from "@/components/onboarding/UploadButton";
 import { useImageUpload } from "@/hooks/useImageUpload";
 import { useProfileImageUpload } from "@/hooks/useProfileImageUpload";
 
+import { ApiResponse } from "@/types/common";
+
 import { ProfileWrapper } from "../common/ProfileWrapper";
 
 export const ProfileSummary = ({
   userProfileData,
   onModalStateChange,
+
+  onImageUrlChange,
 }: {
   userProfileData?: ProfileData | null;
   onModalStateChange?: (open: boolean) => void;
+  onImageUrlChange?: (url: string) => void;
 }) => {
-  const [data, setData] = useState<ProfileData | null>(userProfileData || null);
+  const [fetchedData, setFetchedData] = useState<ProfileData | null>(null);
+  const [overrideImageUrl, setOverrideImageUrl] = useState<string | null>(null);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
-  const { profileImage, isLoading, resetImage, cancelUpload } =
-    useProfileImageUpload();
+  const { isLoading, cancelUpload } = useProfileImageUpload();
 
-  const { inputRef, openFilePicker, onChangeFile, isUploading } =
-    useImageUpload({
-      folder: "PROFILE",
-      onSelect: url => {
-        // blob URL(미리보기)이 아닌 실제 S3 URL일 때만 서버 업데이트
-        if (!url.startsWith("blob:")) {
-          handleUpdateProfile(url);
-        }
-      },
-    });
+  const { uploadFile, isUploading } = useImageUpload({
+    folder: "PROFILE",
+    onSelect: url => {
+      // blob URL은 미리보기용으로 바로 표시
+      setOverrideImageUrl(url);
+      if (!url.startsWith("blob:")) {
+        // S3 URL이 확정되면 부모에 알림
+        onImageUrlChange?.(url);
+        setIsUploadOpen(false);
+      }
+    },
+  });
+
+  const baseData = userProfileData ?? fetchedData;
+  const data = useMemo<ProfileData | null>(() => {
+    if (!baseData) return null;
+    if (overrideImageUrl !== null)
+      return { ...baseData, profileImageUrl: overrideImageUrl };
+    return baseData;
+  }, [baseData, overrideImageUrl]);
 
   useEffect(() => {
     onModalStateChange?.(isUploadOpen || isLoading);
   }, [isUploadOpen, isLoading, onModalStateChange]);
 
   useEffect(() => {
-    if (userProfileData) {
-      setData(userProfileData);
-    }
-  }, [userProfileData]);
-
-  useEffect(() => {
     if (!userProfileData) {
       const loadData = async () => {
         try {
           const result = await profileApi.getProfile();
-          if (result.success) setData(result.data);
+
+          if (result.success) setFetchedData(result.data);
         } catch (error) {
           console.error("데이터 조회 실패:", error);
         }
@@ -64,21 +74,12 @@ export const ProfileSummary = ({
     }
   }, [userProfileData]);
 
-  const handleUpdateProfile = async (imageUrl: string) => {
-    try {
-      const result = await profileApi.updateProfile(imageUrl);
-      if (result.success) {
-        setData(result.data);
-      }
-    } catch (error) {
-      console.error("프로필 갱신 실패:", error);
-    } finally {
-      setIsUploadOpen(false);
-    }
-  };
-
   const handleCloseModal = () => setIsUploadOpen(false);
-  const handleDefaultImage = () => handleUpdateProfile("");
+  const handleDefaultImage = () => {
+    setOverrideImageUrl("");
+    onImageUrlChange?.("");
+    setIsUploadOpen(false);
+  };
 
   if (!data) return null;
 
@@ -97,18 +98,10 @@ export const ProfileSummary = ({
         <InfoRow Icon={PhoneIcon} value={data.phoneNumber} />
       </div>
 
-      <input
-        type="file"
-        ref={inputRef}
-        onChange={onChangeFile}
-        accept="image/*"
-        className="hidden"
-      />
-
       <UploadButton
         isOpen={isUploadOpen}
         onClose={handleCloseModal}
-        onSelectAlbum={openFilePicker}
+        onSelectAlbum={uploadFile}
         onSelectDefault={handleDefaultImage}
       />
 

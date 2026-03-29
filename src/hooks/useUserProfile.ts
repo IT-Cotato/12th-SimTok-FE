@@ -4,16 +4,16 @@ import { useEffect, useState } from "react";
 
 import { profileApi } from "@/app/api/profile";
 
-import type { MyProfile } from "@/types/myProfile.type";
+import type { UserProfile } from "@/types/user.type";
 
 interface UseUserProfileResult {
-  userProfileData: MyProfile | null;
+  userProfileData: UserProfile | null;
   isLoading: boolean;
   error: Error | null;
 }
 
 export const useUserProfile = (): UseUserProfileResult => {
-  const [userProfileData, setUserProfileData] = useState<MyProfile | null>(
+  const [userProfileData, setUserProfileData] = useState<UserProfile | null>(
     null,
   );
   const [isLoading, setIsLoading] = useState<boolean>(true);
