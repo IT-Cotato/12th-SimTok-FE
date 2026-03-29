@@ -27,11 +27,15 @@ const ProfileSettingPage = () => {
 
   const { inputRef, openFilePicker, onChangeFile, isUploading } =
     useImageUpload({
-      onSelect: url => setProfileImageUrl(url), // 미리보기 및 S3 URL 순차 반영
       folder: "PROFILE",
+      onSelect: (url: string) => {
+        // blob(미리보기) -> S3 URL 순으로 profileImageUrl 상태 업데이트
+        setProfileImageUrl(url);
+      },
     });
 
   const handleUpdateProfile = async () => {
+    if (isUploading || !profileImageUrl) return;
     try {
       const token = localStorage.getItem("accessToken");
       const res = await fetch("/api/profile", {
@@ -41,13 +45,14 @@ const ProfileSettingPage = () => {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          profileImageUrl: profileImageUrl, // S3에서 받은 URL
+          profileImageUrl: profileImageUrl, // 최종 S3 URL 제출
         }),
       });
 
       if (!res.ok) throw new Error("프로필 수정 실패");
       router.push("/mypage");
     } catch (error) {
+      console.error(error);
       alert("프로필 저장에 실패했습니다.");
     }
   };

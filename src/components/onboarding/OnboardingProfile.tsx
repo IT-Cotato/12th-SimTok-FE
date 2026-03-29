@@ -12,7 +12,6 @@ import UploadButton from "@/components/onboarding/UploadButton";
 
 import { useImageUpload } from "@/hooks/useImageUpload";
 
-import { OnlyLoader } from "../common/OnlyLoader";
 import { ProfileWrapper } from "../common/ProfileWrapper";
 
 const OnboardingProfileClient = () => {
@@ -21,7 +20,6 @@ const OnboardingProfileClient = () => {
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
-  //const [isUploading, setIsUploading] = useState(false);
 
   const { inputRef, openFilePicker, onChangeFile, isUploading } =
     useImageUpload({
@@ -72,50 +70,6 @@ const OnboardingProfileClient = () => {
 
   const isNameLoaded = name.trim().length > 0;
 
-  // const handleCreateProfile = async () => {
-  //   if (!isNameLoaded || isSubmitting) return;
-  //   setIsSubmitting(true);
-
-  //   try {
-  //     const result = await profileApi.createProfile(
-  //       name.trim(),
-  //       uploadedImageUrl,
-  //     );
-
-  //     if (result.success) {
-  //       router.replace("/");
-  //     } else {
-  //       console.error("프로필 생성에 실패했습니다.");
-  //     }
-  //   } catch (e) {
-  //     console.error("프로필 생성 에러:", e);
-  //   }
-  // };
-
-  // const handleImageUpload = async (file: File) => {
-  //   setIsUploading(true);
-  //   try {
-  //     const preRes = await profileApi.getPresignedUrl(file.name);
-  //     if (!preRes.success) return;
-
-  //     const { presignedUrl, imageUrl, contentType } = preRes.data;
-  //     const isS3Success = await profileApi.uploadToS3(
-  //       presignedUrl,
-  //       file,
-  //       contentType,
-  //     );
-
-  //     if (isS3Success) {
-  //       setUploadedImageUrl(imageUrl); // 최종 S3 주소 저장
-  //     }
-  //   } catch (error) {
-  //     console.error("이미지 업로드 실패:", error);
-  //   } finally {
-  //     setIsUploading(false);
-  //     setIsUploadOpen(false);
-  //   }
-  // };
-
   return (
     <>
       <input
@@ -138,7 +92,7 @@ const OnboardingProfileClient = () => {
               <ProfileWrapper
                 imageUrl={uploadedImageUrl}
                 name={name}
-                onChangeName={setName}
+                onChangeName={val => setName(val)}
                 onProfileClick={() => setIsUploadOpen(true)}
                 canEdit={true}
                 showInput={true}
