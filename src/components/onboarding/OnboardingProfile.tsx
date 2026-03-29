@@ -58,6 +58,7 @@ const OnboardingProfileClient = () => {
         name.trim(),
         uploadedImageUrl, // 최종 S3 URL 전달
       );
+      console.log("createProfile result:", result);
 
       if (result.success) {
         router.replace("/");
