@@ -23,18 +23,17 @@ const OnboardingProfileClient = () => {
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
   //const [isUploading, setIsUploading] = useState(false);
 
-  const { inputRef, openFilePicker, onChangeFile, isUploading } =
-    useImageUpload({
-      folder: "PROFILE",
-      onSelect: (url: string) => {
-        const isS3Url = url.startsWith("http");
+  const { uploadFile, isUploading } = useImageUpload({
+    folder: "PROFILE",
+    onSelect: (url: string) => {
+      const isS3Url = url.startsWith("http");
 
-        setUploadedImageUrl(url);
-        if (isS3Url) {
-          setIsUploadOpen(false);
-        }
-      },
-    });
+      setUploadedImageUrl(url);
+      if (isS3Url) {
+        setIsUploadOpen(false);
+      }
+    },
+  });
 
   useEffect(() => {
     const loadInitialData = async () => {
@@ -59,6 +58,7 @@ const OnboardingProfileClient = () => {
         name.trim(),
         uploadedImageUrl, // 최종 S3 URL 전달
       );
+      console.log("createProfile result:", result);
 
       if (result.success) {
         router.replace("/");
@@ -118,13 +118,6 @@ const OnboardingProfileClient = () => {
 
   return (
     <>
-      <input
-        type="file"
-        ref={inputRef}
-        onChange={onChangeFile}
-        className="hidden"
-        accept="image/*"
-      />
       <main className="flex min-h-dvh w-full justify-center">
         <div className="flex w-full max-w-110 flex-col">
           <div className="flex flex-1 flex-col">
@@ -162,7 +155,7 @@ const OnboardingProfileClient = () => {
       <UploadButton
         isOpen={isUploadOpen}
         onClose={() => setIsUploadOpen(false)}
-        onSelectAlbum={openFilePicker}
+        onSelectAlbum={uploadFile}
         onSelectDefault={() => {
           setUploadedImageUrl(null);
           setIsUploadOpen(false);

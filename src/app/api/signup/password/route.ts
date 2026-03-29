@@ -17,7 +17,34 @@ export async function POST(req: Request) {
     });
 
     const data = await res.json();
-    return NextResponse.json(data, { status: res.status });
+    const response = NextResponse.json(data, { status: res.status });
+
+    if (data.success) {
+      const accessToken = data.data?.tokens?.accessToken?.accessToken;
+      const refreshToken = data.data?.tokens?.refreshToken?.refreshToken;
+
+      if (accessToken) {
+        response.cookies.set("accessToken", accessToken, {
+          path: "/",
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          maxAge: 60 * 60 * 24,
+        });
+      }
+
+      if (refreshToken) {
+        response.cookies.set("refreshToken", refreshToken, {
+          path: "/",
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          maxAge: 60 * 60 * 24 * 14,
+        });
+      }
+    }
+
+    return response;
   } catch (error) {
     console.error("Password Proxy Error:", error);
     return NextResponse.json(
