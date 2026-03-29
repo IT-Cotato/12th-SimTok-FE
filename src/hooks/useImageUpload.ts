@@ -31,10 +31,26 @@ export const useImageUpload = ({ onSelect, folder }: useImageUploadProps) => {
     }
   };
 
+  const uploadFile = async (file: File) => {
+    const tempPreviewUrl = URL.createObjectURL(file);
+    onSelect(tempPreviewUrl);
+
+    try {
+      setIsUploading(true);
+      const imageUrl = await uploadToS3(file, folder);
+      onSelect(imageUrl);
+    } catch (error) {
+      console.error(error instanceof Error ? error.message : "업로드 실패");
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   return {
     inputRef,
     openFilePicker: () => inputRef.current?.click(),
     onChangeFile,
+    uploadFile,
     isUploading,
   };
 };

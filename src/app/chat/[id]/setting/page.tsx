@@ -39,10 +39,11 @@ const SettingChatPage = () => {
         // 목록으로 이동하며 캐시 무효화가 필요할 수 있으므로 replace 사용
         router.replace("/chat");
       } else {
-        console.error(result.message || "채팅방 나가기 실패");
+        alert(result.message || "채팅방 나가기 실패");
       }
     } catch (error) {
       console.error("퇴장 처리 중 오류:", error);
+      alert("네트워크 오류가 발생했습니다.");
     }
   };
 

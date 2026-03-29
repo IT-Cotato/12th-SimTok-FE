@@ -8,7 +8,6 @@ import { BackHeader } from "@/components/common/BackHeader";
 import { FullButton } from "@/components/common/FullButton";
 import { ProfileSummary } from "@/components/profile/ProfileSummary";
 
-import { useImageUpload } from "@/hooks/useImageUpload";
 import { useUserProfile } from "@/hooks/useUserProfile";
 
 import { formatDateWithSlash, formatPhone } from "@/utils/format";
@@ -25,24 +24,16 @@ const ProfileSettingPage = () => {
     }
   }, [userProfileData]);
 
-  const { inputRef, openFilePicker, onChangeFile, isUploading } =
-    useImageUpload({
-      onSelect: url => setProfileImageUrl(url), // 미리보기 및 S3 URL 순차 반영
-      folder: "PROFILE",
-    });
+  // blob URL이면 S3 업로드 중이므로 저장 불가
+  const isUploading = profileImageUrl.startsWith("blob:");
 
   const handleUpdateProfile = async () => {
+    if (isUploading) return;
     try {
-      const token = localStorage.getItem("accessToken");
       const res = await fetch("/api/profile", {
-        method: "PUT", // 프로필 이미지 수정 API
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          profileImageUrl: profileImageUrl, // S3에서 받은 URL
-        }),
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ profileImageUrl }),
       });
 
       if (!res.ok) throw new Error("프로필 수정 실패");
@@ -75,13 +66,7 @@ const ProfileSettingPage = () => {
                   : null
               }
               onModalStateChange={setIsModalOpen}
-            />
-            <input
-              type="file"
-              ref={inputRef}
-              onChange={onChangeFile}
-              className="hidden"
-              accept="image/*"
+              onImageUrlChange={setProfileImageUrl}
             />
           </section>
         </div>
