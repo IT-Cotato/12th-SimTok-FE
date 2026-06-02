@@ -111,12 +111,21 @@ const FriendSetting = () => {
   const handleSubmit = async () => {
     if (!actualFriendshipId) return;
 
+    const DEFAULT_TOPICS: ChatTopic[] = [
+      "WEATHER",
+      "HEALTH",
+      "MEAL",
+      "MOOD",
+      "HOBBY",
+      "JOKE",
+    ];
+
     try {
       const payload = {
         nickname: nickname,
-        speechStyle: chatStyle || "존댓말",
-        chatGoal: goalDays || 1,
-        topicCodes: chatTopic || [],
+        speechStyle: chatStyle ?? "존댓말",
+        chatGoal: goalDays ?? 1,
+        topicCodes: chatTopic.length > 0 ? chatTopic : DEFAULT_TOPICS,
       };
 
       const result = await updateFriendship(actualFriendshipId, payload);

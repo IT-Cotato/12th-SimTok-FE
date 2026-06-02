@@ -23,7 +23,7 @@ export const uploadToS3 = async (
   if (!res.ok) throw new Error("Presigned URL 발급 실패");
 
   const { data } = await res.json();
-  const { presignedUrl, imageUrl, contentType } = data;
+  const { presignedUrl, imageUrl } = data;
 
   const uploadRes = await fetch(presignedUrl, {
     method: "PUT",
