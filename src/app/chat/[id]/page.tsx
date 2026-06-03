@@ -233,7 +233,20 @@ const Chatting = () => {
             const newUrl = `/chat/${body.roomId}?target=${targetId}&name=${encodeURIComponent(displayName)}&img=${encodeURIComponent(opponentProfileImg || "")}&fsId=${fsId}`;
             window.history.replaceState(null, "", newUrl);
 
-            await fetchHistory(body.roomId.toString());
+            const newRoomId = body.roomId.toString();
+            const res = await fetch(
+              `/api/chat/rooms/${newRoomId}/messages?limit=500`,
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                },
+              },
+            );
+            const result = await res.json();
+            if (result.success && result.data?.items?.length > 0) {
+              await fetchHistory(newRoomId);
+            }
+            // 히스토리가 비어있으면 optimistic 메시지 유지
           }
         }),
       );
@@ -302,8 +315,9 @@ const Chatting = () => {
       const isNewRoom = currentRoomId === "new";
       const numericRoomId = isNewRoom ? null : Number(currentRoomId);
 
+      const clientMessageId = crypto.randomUUID();
       const payload = {
-        clientMessageId: crypto.randomUUID(),
+        clientMessageId,
         roomId: numericRoomId,
         opponentMemberId: targetIdFromUrl ? Number(targetIdFromUrl) : null,
         messageType: "TEXT",
@@ -315,6 +329,21 @@ const Chatting = () => {
         headers: { "content-type": "application/json" },
         body: JSON.stringify(payload),
       });
+
+      // 새 채팅방: STOMP 토픽 구독이 없으므로 optimistic하게 UI에 즉시 추가
+      if (isNewRoom) {
+        const now = new Date().toISOString();
+        setMessages(prev => [
+          ...prev,
+          {
+            id: clientMessageId,
+            type: "mine" as const,
+            content: text,
+            time: formatTime(now),
+            createdAt: now,
+          },
+        ]);
+      }
 
       setInputValue("");
     } catch (err) {
