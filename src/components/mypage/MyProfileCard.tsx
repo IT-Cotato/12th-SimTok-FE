@@ -44,6 +44,7 @@ export const MyProfileCard = () => {
             src={profile.profileImageUrl || defaultImage}
             alt={`${profile.name} 프로필`}
             fill
+            unoptimized
             className="object-cover"
           />
         </div>

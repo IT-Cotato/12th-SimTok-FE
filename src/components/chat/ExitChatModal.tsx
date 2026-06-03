@@ -31,6 +31,7 @@ export const ExitChatModal = ({
                 src={profileImg}
                 alt={userName}
                 fill
+                unoptimized
                 className="object-cover"
               />
             ) : (

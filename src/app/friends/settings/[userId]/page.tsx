@@ -57,13 +57,13 @@ const FriendSetting = () => {
         return;
       }
 
-      const friendShipId = Number(params.userId);
-      const result = await friendsApi.getFriendDetail(friendShipId);
+      const friendshipId = Number(params.userId);
+      const result = await friendsApi.getFriendDetail(friendshipId);
       const list = result?.data?.friendshipList;
 
       if (result?.success && Array.isArray(list)) {
         const friendInfo = list.find(
-          f => Number(f.friendshipId) === friendShipId,
+          f => Number(f.friendshipId) === friendshipId,
         );
 
         if (friendInfo) {

@@ -152,6 +152,7 @@ export const FriendList = ({
       {modalFriend && (
         <ProfileModal
           userId={modalFriend.friendshipId}
+          friendMemberId={modalFriend.friendId}
           userName={getFriendName(modalFriend, gardenInviteMode)}
           profileImg={modalFriend.profileImageUrl}
           onClose={profileModalClose}

@@ -6,7 +6,15 @@ import { BACKEND_BASE_URL } from "@/lib/constants";
 export async function GET(request: NextRequest) {
   try {
     const cookieStore = await cookies();
-    const token = cookieStore.get("accessToken")?.value;
+    const cookieToken = cookieStore.get("accessToken")?.value;
+    const headerToken = request.headers
+      .get("Authorization")
+      ?.replace("Bearer ", "");
+    const token = cookieToken || headerToken;
+
+    console.log(
+      `[chat/rooms] 요청 - cookie토큰: ${cookieToken ? "있음" : "없음"}, header토큰: ${headerToken ? "있음" : "없음"}`,
+    );
 
     if (!token) {
       return NextResponse.json({ message: "인증 토큰 부재" }, { status: 401 });
@@ -18,6 +26,7 @@ export async function GET(request: NextRequest) {
     const cursorRoomId = searchParams.get("cursorRoomId");
 
     let backendUrl = `${BACKEND_BASE_URL}/chat/rooms?limit=${limit}`;
+    console.log(`[chat/rooms] 백엔드 요청 URL: ${backendUrl}`);
 
     if (cursorAt && cursorRoomId) {
       backendUrl += `&cursorAt=${encodeURIComponent(cursorAt)}&cursorRoomId=${cursorRoomId}`;
@@ -30,8 +39,12 @@ export async function GET(request: NextRequest) {
     });
 
     if (!response.ok) {
+      const errorBody = await response.text().catch(() => "");
+      console.error(
+        `[chat/rooms] 백엔드 오류 - URL: ${backendUrl}, Status: ${response.status}, Body: ${errorBody}`,
+      );
       return NextResponse.json(
-        { message: "백엔드 응답 오류" },
+        { message: "백엔드 응답 오류", status: response.status },
         { status: response.status },
       );
     }

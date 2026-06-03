@@ -9,16 +9,39 @@ import { ProfileImagePicker } from "../common/ProfileImagePicker";
 interface ProfileModalProps {
   profileImg?: string;
   userId: number;
+  friendMemberId: number;
   userName: string;
   onClose: () => void;
 }
 export const ProfileModal = ({
   profileImg,
   userId,
+  friendMemberId,
   userName,
   onClose,
 }: ProfileModalProps) => {
   const router = useRouter();
+
+  const handleStartChat = async () => {
+    try {
+      const res = await fetch(
+        `/api/chat/rooms/direct/resolve?opponentMemberId=${friendMemberId}`,
+      );
+      const result = await res.json();
+      const chatData = result.data;
+      const query = `?name=${encodeURIComponent(userName)}&img=${encodeURIComponent(profileImg || "")}&fsId=${userId}`;
+
+      onClose();
+      if (chatData?.exists) {
+        router.push(`/chat/${chatData.roomId}${query}`);
+      } else {
+        router.push(`/chat/new${query}&target=${friendMemberId}`);
+      }
+    } catch (error) {
+      console.error("채팅방 이동 실패:", error);
+    }
+  };
+
   return (
     <section className="fixed inset-0 z-100">
       <div className="bg-neutral-01/83 relative mx-auto h-full w-full max-w-[440px]">
@@ -55,7 +78,7 @@ export const ProfileModal = ({
           </div>
 
           <div className="mt-[158px] mb-[42px] px-4 py-[10px]">
-            <FullButton>대화하기</FullButton>
+            <FullButton onClick={handleStartChat}>대화하기</FullButton>
           </div>
         </div>
       </div>

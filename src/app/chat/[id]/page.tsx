@@ -230,7 +230,7 @@ const Chatting = () => {
           const body = JSON.parse(msg.body);
 
           if (body.type === "ROOM_CREATED" && body.roomId) {
-            const newUrl = `/chat/${body.roomId}?target=${targetId}&name=${encodeURIComponent(displayName)}&img=${encodeURIComponent(opponentProfileImg || "")}`;
+            const newUrl = `/chat/${body.roomId}?target=${targetId}&name=${encodeURIComponent(displayName)}&img=${encodeURIComponent(opponentProfileImg || "")}&fsId=${fsId}`;
             window.history.replaceState(null, "", newUrl);
 
             await fetchHistory(body.roomId.toString());
