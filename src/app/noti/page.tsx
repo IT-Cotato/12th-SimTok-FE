@@ -23,29 +23,29 @@ const NotiPage = () => {
           </section>
           <NotiSection title="정원">
             <NotiItem
-              imgUrl="/images/sample-cat.png"
+              imgUrl="/images/profile.jpg"
               content="남궁돈님이 초대장을 보냈어요."
               timeText="1초"
             />
             <NotiItem
-              imgUrl="/images/sample-cat2.png"
+              imgUrl="/images/profile.jpg"
               content="🌱믿음소망🌱에 물이 필요해요!"
               timeText="10분"
             />
             <NotiItem
-              imgUrl="/images/sample-dog.png"
+              imgUrl="/images/profile.jpg"
               content="박혜미님이 초대장을 수락했어요."
               timeText="40분"
             />
           </NotiSection>
           <NotiSection title="하루기록">
             <NotiItem
-              imgUrl="/images/sample-cat.png"
+              imgUrl="/images/profile.jpg"
               content="남궁돈님이 초대장을 보냈어요."
               timeText="1초"
             />
             <NotiItem
-              imgUrl="/images/sample-cat2.png"
+              imgUrl="/images/profile.jpg"
               content="🌱믿음소망🌱에 물이 필요해요!"
               timeText="10분"
             />
