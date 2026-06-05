@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useStomp } from "@/context/StompContext";
 import { BACKEND_BASE_URL } from "@/lib/constants";
 import { StompSubscription } from "@stomp/stompjs";
-import { JwtPayload, jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 import AiIcon from "@/assets/AI.svg";
 import BackToKeywordIcon from "@/assets/backtokeyword.svg";
@@ -19,11 +19,10 @@ import { BackHeader } from "@/components/common/BackHeader";
 import { MessageInput } from "@/components/common/MessageInput";
 import { InfoMessage } from "@/components/dailyRecord/InfoMessage";
 
-import { CHAT_TOPIC } from "@/constants/friendsSettings";
-
 import { ApiMessageItem, ChatMessage, ChatTopicItem } from "@/types/chat";
-import { ApiResponse, CustomJwtPayload } from "@/types/common";
+import { CustomJwtPayload } from "@/types/common";
 
+import { getChatTopicMeta } from "@/utils/getChatTopicMeta";
 import { uploadToS3 } from "@/utils/uploadImage.util";
 
 import {
@@ -43,15 +42,6 @@ const Chatting = () => {
   const targetId = searchParams.get("target");
   const fsId = searchParams.get("fsId");
   const [apiTopics, setApiTopics] = useState<ChatTopicItem[]>([]);
-  const getTopicMeta = (code: string) => {
-    return (
-      CHAT_TOPIC.find(t => t.key === code) || {
-        icon: null,
-        recommendations: [],
-      }
-    );
-  };
-
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [myMemberId] = useState<number | null>(() => {
     if (typeof window !== "undefined") {
@@ -288,7 +278,7 @@ const Chatting = () => {
             ]);
           }),
 
-          client.subscribe("/user/queue/connection/ack", msg => {}),
+          client.subscribe("/user/queue/connection/ack", () => {}),
         );
 
         // 연결 확인용 ACK
@@ -314,6 +304,9 @@ const Chatting = () => {
     router,
     displayName,
     searchParams,
+    fsId,
+    opponentProfileImg,
+    targetId,
   ]);
 
   const handleSend = () => {
@@ -392,7 +385,7 @@ const Chatting = () => {
       }
     } catch (error) {
       console.error("추천 문장 로드 실패:", error);
-      const meta = getTopicMeta(topicCode);
+      const meta = getChatTopicMeta(topicCode);
       setRecommendations(meta.recommendations || []);
     }
   }, []);
@@ -626,7 +619,9 @@ const Chatting = () => {
                           <TopicKeyword
                             key={topic.code}
                             label={topic.name}
-                            icon={getTopicMeta(topic.code).icon ?? undefined}
+                            icon={
+                              getChatTopicMeta(topic.code).icon ?? undefined
+                            }
                             isActive={selectedTopicKey === topic.code}
                             onClick={() => handleTopicClick(topic.code)} // API 호출 핸들러 연결
                           />

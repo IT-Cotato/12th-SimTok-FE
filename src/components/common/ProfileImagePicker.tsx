@@ -25,6 +25,12 @@ export const ProfileImagePicker = ({
   height = 160,
 }: ProfileImagePickerProps) => {
   const [imgError, setImgError] = useState(false);
+  const [prevImageUrl, setPrevImageUrl] = useState(imageUrl);
+
+  if (imageUrl !== prevImageUrl) {
+    setPrevImageUrl(imageUrl);
+    setImgError(false);
+  }
 
   return (
     <div
