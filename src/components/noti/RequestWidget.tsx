@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import RightIcon from "@/assets/right-arrow.svg";
+import RightIcon from "@/assets/left-arrow.svg";
 
 import { ProfileImage } from "../common/ProfileImage";
 
@@ -39,7 +39,7 @@ export const RequestWidget = ({
         </div>
       </div>
 
-      <RightIcon className="h-6 w-6 text-black" />
+      <RightIcon className="h-6 w-6 rotate-180 text-black" />
     </button>
   );
 };

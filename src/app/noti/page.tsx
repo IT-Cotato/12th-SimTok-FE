@@ -8,6 +8,12 @@ import { NotiItem } from "@/components/noti/NotiItem";
 import { NotiSection } from "@/components/noti/NotiSection";
 import { RequestWidget } from "@/components/noti/RequestWidget";
 
+import notiList from "@/mock/notiList.json";
+
+type NotiListItem = (typeof notiList)[number];
+
+const SECTIONS = ["정원", "하루기록"] as const;
+
 const NotiPage = () => {
   const router = useRouter();
 
@@ -21,35 +27,20 @@ const NotiPage = () => {
               onClick={() => router.push("/notification/friend-requests")}
             />
           </section>
-          <NotiSection title="정원">
-            <NotiItem
-              imgUrl="/images/profile.jpg"
-              content="남궁돈님이 초대장을 보냈어요."
-              timeText="1초"
-            />
-            <NotiItem
-              imgUrl="/images/profile.jpg"
-              content="🌱믿음소망🌱에 물이 필요해요!"
-              timeText="10분"
-            />
-            <NotiItem
-              imgUrl="/images/profile.jpg"
-              content="박혜미님이 초대장을 수락했어요."
-              timeText="40분"
-            />
-          </NotiSection>
-          <NotiSection title="하루기록">
-            <NotiItem
-              imgUrl="/images/profile.jpg"
-              content="남궁돈님이 초대장을 보냈어요."
-              timeText="1초"
-            />
-            <NotiItem
-              imgUrl="/images/profile.jpg"
-              content="🌱믿음소망🌱에 물이 필요해요!"
-              timeText="10분"
-            />
-          </NotiSection>
+          {SECTIONS.map(section => (
+            <NotiSection key={section} title={section}>
+              {notiList
+                .filter((item: NotiListItem) => item.section === section)
+                .map((item: NotiListItem) => (
+                  <NotiItem
+                    key={item.id}
+                    imgUrl={item.imgUrl}
+                    content={item.content}
+                    timeText={item.timeText}
+                  />
+                ))}
+            </NotiSection>
+          ))}
         </div>
       </div>
       <NavBar />
