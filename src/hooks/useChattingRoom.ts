@@ -65,7 +65,7 @@ export const useChattingRoom = () => {
   const [recommendations, setRecommendations] = useState<string[]>([]);
 
   const [prevRoomId, setPrevRoomId] = useState(roomId);
-  if (roomId !== prevRoomId) {
+  if (prevRoomId !== roomId && prevRoomId !== "new") {
     setPrevRoomId(roomId);
     setMessages([]);
   }
@@ -103,32 +103,28 @@ export const useChattingRoom = () => {
       if (!id || id === "new" || isNaN(Number(id))) return;
       try {
         const items = await getChatMessages(id);
-        if (items.length > 0) {
-          const history = await Promise.all(
-            items.map(async (msg: ApiMessageItem) => {
-              const isAttachment = msg.messageType === "ATTACHMENT";
-              let content = msg.content ?? "";
-              if (isAttachment && msg.attachment?.objectKey) {
-                const signedUrl = await getPresignedUrl(
-                  msg.attachment.objectKey,
-                );
-                content = signedUrl || "";
-              }
-              return {
-                id: msg.messageId,
-                type: (msg.senderMemberId === myMemberId
-                  ? "mine"
-                  : "friend") as "mine" | "friend",
-                content,
-                time: formatChatTime(msg.createdAt),
-                createdAt: msg.createdAt,
-                messageSeq: msg.messageSeq,
-                isImage: isAttachment,
-              };
-            }),
-          );
-          setMessages(history.reverse());
-        }
+        const history = await Promise.all(
+          items.map(async (msg: ApiMessageItem) => {
+            const isAttachment = msg.messageType === "ATTACHMENT";
+            let content = msg.content ?? "";
+            if (isAttachment && msg.attachment?.objectKey) {
+              const signedUrl = await getPresignedUrl(msg.attachment.objectKey);
+              content = signedUrl || "";
+            }
+            return {
+              id: msg.messageId,
+              type: (msg.senderMemberId === myMemberId ? "mine" : "friend") as
+                | "mine"
+                | "friend",
+              content,
+              time: formatChatTime(msg.createdAt),
+              createdAt: msg.createdAt,
+              messageSeq: msg.messageSeq,
+              isImage: isAttachment,
+            };
+          }),
+        );
+        setMessages(history.reverse());
       } catch (err) {
         console.error("히스토리 로드 실패:", err);
       }

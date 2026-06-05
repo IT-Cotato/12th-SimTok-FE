@@ -27,7 +27,7 @@ export const ProfileImagePicker = ({
   const [imgError, setImgError] = useState(false);
   const [prevImageUrl, setPrevImageUrl] = useState(imageUrl);
 
-  if (imageUrl !== prevImageUrl) {
+  if (prevImageUrl !== imageUrl) {
     setPrevImageUrl(imageUrl);
     setImgError(false);
   }
