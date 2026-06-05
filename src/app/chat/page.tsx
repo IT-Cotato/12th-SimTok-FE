@@ -83,9 +83,9 @@ const ChatListPage = () => {
   }, []);
 
   const fetchChatRooms = useCallback(async () => {
+    const token = localStorage.getItem("accessToken");
     try {
       setIsLoading(true);
-      const token = localStorage.getItem("accessToken");
 
       const res = await fetch("/api/chat/rooms", {
         cache: "no-store",
@@ -101,6 +101,7 @@ const ChatListPage = () => {
       }
     } catch (error) {
       console.error("목록 로드 실패:", error);
+      await fetchChatRoomsByFriends(token);
     } finally {
       setIsLoading(false);
     }

@@ -27,8 +27,14 @@ export const ProfileModal = ({
       const res = await fetch(
         `/api/chat/rooms/direct/resolve?opponentMemberId=${friendMemberId}`,
       );
+      if (!res.ok) {
+        throw new Error(`direct resolve 실해 : ${res.status}`);
+      }
       const result = await res.json();
       const chatData = result.data;
+      if (!chatData) {
+        throw new Error("direct resolve 응답에 data가 없습니다.");
+      }
       const query = `?name=${encodeURIComponent(userName)}&img=${encodeURIComponent(profileImg || "")}&fsId=${userId}`;
 
       onClose();
