@@ -7,7 +7,7 @@ import { EMOTION_BUTTONS, EMOTION_ITEMS } from "@/constants/emotionItems";
 import { SERVER_EMOTION_REVERSE_MAP } from "@/constants/emotionItems";
 
 interface EmotionSelectSectionProps {
-  onSelect?: (value: string) => void;
+  onSelect?: (value: string | null) => void;
 }
 
 export const EmotionSelectSection = ({
@@ -35,6 +35,7 @@ export const EmotionSelectSection = ({
             onClick={() => {
               setIsActive(btn.key as keyof typeof EMOTION_ITEMS);
               setSelectedIndex(null); // 탭 바뀔 때 선택 초기화
+              onSelect?.(null);
             }}
             className={`text-sub2-sb cursor-pointer rounded-2xl p-[10px] ${
               isActive === btn.key
