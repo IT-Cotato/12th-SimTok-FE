@@ -34,6 +34,7 @@
       "@/providers/*": ["./src/providers/*"],
       "@/public/*": ["./public/*"],
       "@/assets/*": ["./src/assets/*"],
+      "@/data/*": ["./src/data/*"],
       "@/context/*": ["./src/context/*"]
     }
   },
