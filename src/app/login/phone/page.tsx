@@ -52,10 +52,11 @@ const LoginPage = () => {
           console.error("토큰 데이터 누락:", result.data);
         }
       } else {
-        console.error("로그인 실패:", result.message);
+        alert(result.message || "로그인에 실패했습니다.");
       }
     } catch (error) {
       console.error("네트워크 오류:", error);
+      alert("네트워크 오류가 발생했습니다.");
     } finally {
       setIsLoading(false);
     }
