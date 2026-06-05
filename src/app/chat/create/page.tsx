@@ -43,7 +43,7 @@ const CreateChatPage = () => {
 
       const chatData = result.data;
       const opponentName = getFriendName(opponent, false);
-      const query = `?name=${encodeURIComponent(opponentName || "")}&img=${encodeURIComponent(opponent.profileImageUrl || "")}`;
+      const query = `?name=${encodeURIComponent(opponentName || "")}&img=${encodeURIComponent(opponent.profileImageUrl || "")}&fsId=${opponent.friendshipId}`;
 
       if (chatData && chatData.exists) {
         router.push(`/chat/${chatData.roomId}${query}`);

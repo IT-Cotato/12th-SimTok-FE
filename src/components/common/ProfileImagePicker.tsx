@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 
+import { useState } from "react";
+
 import ProfileIcon from "@/assets/onboarding_profile.svg";
 import PhotoIcon from "@/assets/photo.svg";
 
@@ -22,12 +24,20 @@ export const ProfileImagePicker = ({
   width = 160,
   height = 160,
 }: ProfileImagePickerProps) => {
+  const [imgError, setImgError] = useState(false);
+  const [prevImageUrl, setPrevImageUrl] = useState(imageUrl);
+
+  if (prevImageUrl !== imageUrl) {
+    setPrevImageUrl(imageUrl);
+    setImgError(false);
+  }
+
   return (
     <div
       className={`relative ${canEdit ? "cursor-pointer" : "cursor-default"} `}
       onClick={canEdit ? onClick : undefined}
     >
-      {imageUrl ? (
+      {imageUrl && !imgError ? (
         <Image
           src={imageUrl}
           alt="프로필 이미지"
@@ -35,6 +45,8 @@ export const ProfileImagePicker = ({
           height={height}
           style={{ borderRadius: radius, width, height }}
           className="object-cover"
+          unoptimized
+          onError={() => setImgError(true)}
         />
       ) : (
         <ProfileIcon style={{ width, height }} />

@@ -30,7 +30,6 @@ export const StompProvider = ({ children }: { children: React.ReactNode }) => {
     const clientInstance = new Client({
       brokerURL: WS_BASE_URL,
       connectHeaders: { Authorization: `Bearer ${initialToken}` },
-      webSocketFactory: () => new WebSocket(WS_BASE_URL, ["v12.stomp"]),
       beforeConnect: () => {
         const currentToken = getLatestToken();
         if (currentToken) {

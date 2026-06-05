@@ -14,6 +14,8 @@ import { FullButton } from "@/components/common/FullButton";
 import { ProfileWrapper } from "@/components/common/ProfileWrapper";
 import { SettingField } from "@/components/friends/SettingField";
 
+import { DEFAULT_CHAT_TOPICS } from "@/constants/friendsSettings";
+
 import { ChatStyle, ChatTopic } from "@/types/friendProfile.type";
 
 const FriendSetting = () => {
@@ -57,13 +59,13 @@ const FriendSetting = () => {
         return;
       }
 
-      const friendShipId = Number(params.userId);
-      const result = await friendsApi.getFriendDetail(friendShipId);
+      const friendshipId = Number(params.userId);
+      const result = await friendsApi.getFriendDetail(friendshipId);
       const list = result?.data?.friendshipList;
 
       if (result?.success && Array.isArray(list)) {
         const friendInfo = list.find(
-          f => Number(f.friendshipId) === friendShipId,
+          f => Number(f.friendshipId) === friendshipId,
         );
 
         if (friendInfo) {
@@ -114,9 +116,9 @@ const FriendSetting = () => {
     try {
       const payload = {
         nickname: nickname,
-        speechStyle: chatStyle || "존댓말",
-        chatGoal: goalDays || 1,
-        topicCodes: chatTopic || [],
+        speechStyle: chatStyle ?? "존댓말",
+        chatGoal: goalDays ?? 1,
+        topicCodes: chatTopic.length > 0 ? chatTopic : DEFAULT_CHAT_TOPICS,
       };
 
       const result = await updateFriendship(actualFriendshipId, payload);

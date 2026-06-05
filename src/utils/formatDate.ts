@@ -20,3 +20,9 @@ export const formatDateWithDot = (currentDate: string): string => {
 
   return `${year}.${month}.${day}`;
 };
+
+export const formatChatTime = (dateStr: string): string =>
+  new Date(dateStr).toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });

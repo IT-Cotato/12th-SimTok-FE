@@ -15,6 +15,7 @@ import { SearchField } from "@/components/common/SearchField";
 
 import { ChatListResponse, ChatRoomItem } from "@/types/chat";
 import { ApiResponse } from "@/types/common";
+import { FriendShipProfile } from "@/types/friendProfile.type";
 
 const ChatListPage = () => {
   const router = useRouter();
@@ -34,25 +35,77 @@ const ChatListPage = () => {
     return `${year}.${month}.${day}`;
   };
 
+  const fetchChatRoomsByFriends = useCallback(async (token: string | null) => {
+    const friendsRes = await fetch("/api/friendships?status=ACTIVE", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const friendsData = await friendsRes.json();
+    const friends: FriendShipProfile[] =
+      friendsData?.data?.friendshipList ?? [];
+
+    const results = await Promise.all(
+      friends.map(async friend => {
+        try {
+          const r = await fetch(
+            `/api/chat/rooms/direct/resolve?opponentMemberId=${friend.friendId}`,
+          );
+          const data = await r.json();
+          if (!data?.data?.exists) return null;
+
+          const roomId: number = data.data.roomId;
+
+          const msgRes = await fetch(
+            `/api/chat/rooms/${roomId}/messages?limit=1`,
+            { headers: { Authorization: `Bearer ${token}` } },
+          );
+          const msgData = await msgRes.json();
+          const lastMsg = msgData?.data?.items?.[0];
+
+          return {
+            roomId,
+            roomName: friend.showName,
+            friendshipId: friend.friendshipId,
+            lastMessagePreview: lastMsg?.content ?? "",
+            lastMessageAt: lastMsg?.createdAt ?? "",
+            unreadCount: 0,
+            opponent: {
+              name: friend.showName,
+              profileImageUrl: friend.profileImageUrl,
+            },
+          } as ChatRoomItem;
+        } catch {
+          return null;
+        }
+      }),
+    );
+
+    setChats(results.filter((r): r is ChatRoomItem => r !== null));
+  }, []);
+
   const fetchChatRooms = useCallback(async () => {
+    const token = localStorage.getItem("accessToken");
     try {
       setIsLoading(true);
 
       const res = await fetch("/api/chat/rooms", {
         cache: "no-store",
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       const result: ApiResponse<ChatListResponse> = await res.json();
 
       if (result.success) {
         setChats(result.data.items);
+      } else {
+        await fetchChatRoomsByFriends(token);
       }
     } catch (error) {
       console.error("목록 로드 실패:", error);
+      await fetchChatRoomsByFriends(token);
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [fetchChatRoomsByFriends]);
 
   // 2. 초기 로드 및 포커스 이벤트 등록
   useEffect(() => {
@@ -141,7 +194,7 @@ const ChatListPage = () => {
                 onDelete={() => handleOpenModal(chat)}
                 onClick={() => {
                   router.push(
-                    `/chat/${chat.roomId}?name=${encodeURIComponent(displayChatName)}&img=${encodeURIComponent(chat.opponent?.profileImageUrl || "")}&fsId=${chat.friendShipId}`,
+                    `/chat/${chat.roomId}?name=${encodeURIComponent(displayChatName)}&img=${encodeURIComponent(chat.opponent?.profileImageUrl || "")}&fsId=${chat.friendshipId}`,
                   );
                 }}
               />
