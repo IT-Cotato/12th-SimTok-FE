@@ -4,7 +4,6 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useStomp } from "@/context/StompContext";
-import { BACKEND_BASE_URL } from "@/lib/constants";
 import { StompSubscription } from "@stomp/stompjs";
 import { jwtDecode } from "jwt-decode";
 
@@ -22,9 +21,15 @@ import { InfoMessage } from "@/components/dailyRecord/InfoMessage";
 import { ApiMessageItem, ChatMessage, ChatTopicItem } from "@/types/chat";
 import { CustomJwtPayload } from "@/types/common";
 
+import { formatChatTime } from "@/utils/formatDate";
 import { getChatTopicMeta } from "@/utils/getChatTopicMeta";
 import { uploadToS3 } from "@/utils/uploadImage.util";
 
+import {
+  enterChatRoom,
+  getChatMessages,
+  getPresignedUrl,
+} from "../../api/chat/chatRoom.api";
 import {
   getChatTopics,
   getTopicTemplates,
@@ -77,39 +82,6 @@ const Chatting = () => {
   const selectedTopic = apiTopics.find(t => t.code === selectedTopicKey);
   const isDimmed = isTopicOpen && Boolean(selectedTopicKey);
 
-  const getPresignedUrl = async (objectKey: string) => {
-    const token = localStorage.getItem("accessToken");
-
-    if (!token) {
-      localStorage.removeItem("accessToken");
-      window.location.href = "/login";
-      return null;
-    }
-    try {
-      const res = await fetch(
-        `${BACKEND_BASE_URL}/chat/attachments/presigned-get?objectKey=${encodeURIComponent(objectKey)}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        },
-      );
-      if (!res.ok) return null;
-
-      const result = await res.json();
-      return result.url;
-    } catch (err) {
-      console.error("URL 획득 실패:", err);
-      return null;
-    }
-  };
-
-  const formatTime = (dateStr: string) =>
-    new Date(dateStr).toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-
   const fetchTopics = useCallback(async () => {
     try {
       const response = await getChatTopics();
@@ -128,14 +100,8 @@ const Chatting = () => {
 
   const markAsRead = useCallback(async (id: string) => {
     if (!id || id === "new") return;
-
     try {
-      await fetch(`/api/chat/rooms/${id}/enter`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
+      await enterChatRoom(id);
     } catch (err) {
       console.error("읽음 처리 요청 실패:", err);
     }
@@ -147,17 +113,10 @@ const Chatting = () => {
       if (!id || id === "new" || isNaN(Number(id))) return;
 
       try {
-        const res = await fetch(`/api/chat/rooms/${id}/messages?limit=500`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        });
-
-        const result = await res.json();
-        if (result.success && result.data?.items) {
-          // 모든 메시지를 순회하며 타입별로 처리
+        const items = await getChatMessages(id);
+        if (items.length > 0) {
           const history = await Promise.all(
-            result.data.items.map(async (msg: ApiMessageItem) => {
+            items.map(async (msg: ApiMessageItem) => {
               const isAttachment = msg.messageType === "ATTACHMENT";
               let content = msg.content ?? "";
 
@@ -171,9 +130,11 @@ const Chatting = () => {
 
               return {
                 id: msg.messageId,
-                type: msg.senderMemberId === myMemberId ? "mine" : "friend",
+                type: (msg.senderMemberId === myMemberId
+                  ? "mine"
+                  : "friend") as "mine" | "friend",
                 content: content,
-                time: formatTime(msg.createdAt),
+                time: formatChatTime(msg.createdAt),
                 createdAt: msg.createdAt,
                 messageSeq: msg.messageSeq,
                 isImage: isAttachment,
@@ -271,7 +232,7 @@ const Chatting = () => {
                 id: body.messageId || Date.now(),
                 type: body.senderMemberId === myMemberId ? "mine" : "friend",
                 content: messageContent,
-                time: formatTime(body.createdAt),
+                time: formatChatTime(body.createdAt),
                 createdAt: body.createdAt,
                 isImage: isAttachment,
               },
@@ -343,7 +304,7 @@ const Chatting = () => {
             id: clientMessageId,
             type: "mine" as const,
             content: text,
-            time: formatTime(now),
+            time: formatChatTime(now),
             createdAt: now,
           },
         ]);
