@@ -197,21 +197,27 @@ export const useChattingRoom = () => {
               );
               messageContent = signedUrl || "";
             }
-            setMessages(prev => [
-              ...prev,
-              {
-                id: body.messageId || Date.now(),
-                type: (body.senderMemberId === myMemberId
-                  ? "mine"
-                  : "friend") as "mine" | "friend",
-                content: messageContent,
-                time: formatChatTime(body.createdAt),
-                createdAt: body.createdAt,
-                isImage: isAttachment,
-              },
-            ]);
+            setMessages(prev =>
+              [
+                ...prev,
+                {
+                  id: body.messageId || Date.now(),
+                  type: (body.senderMemberId === myMemberId
+                    ? "mine"
+                    : "friend") as "mine" | "friend",
+                  content: messageContent,
+                  time: formatChatTime(body.createdAt),
+                  createdAt: body.createdAt,
+                  messageSeq: body.messageSeq,
+                  isImage: isAttachment,
+                },
+              ].sort(
+                (a, b) =>
+                  (a.messageSeq ?? Number.MAX_SAFE_INTEGER) -
+                  (b.messageSeq ?? Number.MAX_SAFE_INTEGER),
+              ),
+            );
           }),
-
           client.subscribe("/user/queue/connection/ack", () => {}),
         );
 
