@@ -60,3 +60,5 @@ export const CHAT_TOPIC = [
     recommendations: RECOMMENDATIONS.joke,
   },
 ] as const;
+
+export const DEFAULT_CHAT_TOPICS = CHAT_TOPIC.map(t => t.key);

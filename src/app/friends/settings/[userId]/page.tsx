@@ -14,6 +14,8 @@ import { FullButton } from "@/components/common/FullButton";
 import { ProfileWrapper } from "@/components/common/ProfileWrapper";
 import { SettingField } from "@/components/friends/SettingField";
 
+import { DEFAULT_CHAT_TOPICS } from "@/constants/friendsSettings";
+
 import { ChatStyle, ChatTopic } from "@/types/friendProfile.type";
 
 const FriendSetting = () => {
@@ -111,21 +113,12 @@ const FriendSetting = () => {
   const handleSubmit = async () => {
     if (!actualFriendshipId) return;
 
-    const DEFAULT_TOPICS: ChatTopic[] = [
-      "WEATHER",
-      "HEALTH",
-      "MEAL",
-      "MOOD",
-      "HOBBY",
-      "JOKE",
-    ];
-
     try {
       const payload = {
         nickname: nickname,
         speechStyle: chatStyle ?? "존댓말",
         chatGoal: goalDays ?? 1,
-        topicCodes: chatTopic.length > 0 ? chatTopic : DEFAULT_TOPICS,
+        topicCodes: chatTopic.length > 0 ? chatTopic : DEFAULT_CHAT_TOPICS,
       };
 
       const result = await updateFriendship(actualFriendshipId, payload);
