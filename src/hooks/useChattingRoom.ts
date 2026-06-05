@@ -350,6 +350,21 @@ export const useChattingRoom = () => {
       const fullUrl = await uploadToS3(file, "CHAT");
       if (!fullUrl) return;
 
+      if (roomId === "new") {
+        const now = new Date().toISOString();
+        setMessages(prev => [
+          ...prev,
+          {
+            id: tempId,
+            type: "mine",
+            content: fullUrl,
+            time: formatChatTime(now),
+            createdAt: now,
+            isImage: true,
+          },
+        ]);
+      }
+
       const urlObj = new URL(fullUrl);
       let realObjectKey = urlObj.pathname;
       if (realObjectKey.startsWith("/")) {
