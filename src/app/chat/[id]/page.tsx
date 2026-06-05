@@ -237,7 +237,7 @@ const Chatting = () => {
             });
             if (fsId) query.set("fsId", fsId);
             const newUrl = `/chat/${body.roomId}?${query.toString()}`;
-            window.history.replaceState(null, "", newUrl);
+            router.replace(newUrl, { scroll: false });
 
             const newRoomId = body.roomId.toString();
             try {

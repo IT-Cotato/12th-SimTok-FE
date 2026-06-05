@@ -12,10 +12,6 @@ export async function GET(request: NextRequest) {
       ?.replace("Bearer ", "");
     const token = cookieToken || headerToken;
 
-    console.log(
-      `[chat/rooms] 요청 - cookie토큰: ${cookieToken ? "있음" : "없음"}, header토큰: ${headerToken ? "있음" : "없음"}`,
-    );
-
     if (!token) {
       return NextResponse.json({ message: "인증 토큰 부재" }, { status: 401 });
     }
