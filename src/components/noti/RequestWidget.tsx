@@ -20,7 +20,8 @@ export const RequestWidget = ({
   onClick,
 }: FriendRequestWidgetProps) => {
   return (
-    <div
+    <button
+      type="button"
       onClick={onClick}
       className="flex w-full cursor-pointer items-center justify-between bg-white px-4 py-2 select-none"
     >
@@ -39,6 +40,6 @@ export const RequestWidget = ({
       </div>
 
       <RightIcon className="h-6 w-6 text-black" />
-    </div>
+    </button>
   );
 };
