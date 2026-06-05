@@ -32,6 +32,13 @@ export const getChatMessages = async (
       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
     },
   });
+  if (!res.ok) {
+    throw new Error(`Failed to load chat messages: ${res.status}`);
+  }
   const result = await res.json();
-  return result.success ? (result.data?.items ?? []) : [];
+  if (!result.success) {
+    throw new Error("Failed to load chat messages");
+  }
+
+  return result.data?.items ?? [];
 };
