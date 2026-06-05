@@ -230,23 +230,34 @@ const Chatting = () => {
           const body = JSON.parse(msg.body);
 
           if (body.type === "ROOM_CREATED" && body.roomId) {
-            const newUrl = `/chat/${body.roomId}?target=${targetId}&name=${encodeURIComponent(displayName)}&img=${encodeURIComponent(opponentProfileImg || "")}&fsId=${fsId}`;
+            const query = new URLSearchParams({
+              target: targetId ?? "",
+              name: displayName,
+              img: opponentProfileImg ?? "",
+            });
+            if (fsId) query.set("fsId", fsId);
+            const newUrl = `/chat/${body.roomId}?${query.toString()}`;
             window.history.replaceState(null, "", newUrl);
 
             const newRoomId = body.roomId.toString();
-            const res = await fetch(
-              `/api/chat/rooms/${newRoomId}/messages?limit=500`,
-              {
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            try {
+              const res = await fetch(
+                `/api/chat/rooms/${newRoomId}/messages?limit=500`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                  },
                 },
-              },
-            );
-            const result = await res.json();
-            if (result.success && result.data?.items?.length > 0) {
-              await fetchHistory(newRoomId);
+              );
+              if (!res.ok) return;
+
+              const result = await res.json();
+              if (result.success && result.data?.items?.length > 0) {
+                await fetchHistory(newRoomId);
+              }
+            } catch (error) {
+              console.error("ROOM_CREATED 히스토리 확인 실패:", error);
             }
-            // 히스토리가 비어있으면 optimistic 메시지 유지
           }
         }),
       );

@@ -40,8 +40,10 @@ export async function GET(request: NextRequest) {
 
     if (!response.ok) {
       const errorBody = await response.text().catch(() => "");
+      const safeBodyPreview =
+        errorBody.length > 120 ? `${errorBody.slice(0, 120)}...` : errorBody;
       console.error(
-        `[chat/rooms] 백엔드 오류 - URL: ${backendUrl}, Status: ${response.status}, Body: ${errorBody}`,
+        `[chat/rooms] 백엔드 오류 - URL: ${backendUrl}, Status: ${response.status}, BodyPreview: ${safeBodyPreview}`,
       );
       return NextResponse.json(
         { message: "백엔드 응답 오류", status: response.status },
