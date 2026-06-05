@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 
 import { type ProfileData, profileApi } from "@/app/api/profile";
 
+import { ProfileImage } from "../common/ProfileImage";
+
 export const MyProfileCard = () => {
   const router = useRouter();
   const [profile, setProfile] = useState<ProfileData | null>(null);
@@ -39,15 +41,11 @@ export const MyProfileCard = () => {
       className="border-neutral-10 flex w-full cursor-pointer items-center justify-between border-b px-4 py-2"
     >
       <div className="flex items-center gap-4">
-        <div className="relative h-16 w-16 overflow-hidden rounded-2xl">
-          <Image
-            src={profile.profileImageUrl || defaultImage}
-            alt={`${profile.name} 프로필`}
-            fill
-            unoptimized
-            className="object-cover"
-          />
-        </div>
+        <ProfileImage
+          src={profile.profileImageUrl}
+          alt={`${profile.name} 프로필`}
+          size="md"
+        />
         <span className="text-h2 text-neutral-01">{profile.name}</span>
       </div>
 

@@ -1,8 +1,6 @@
 "use client";
 import { useState } from "react";
 
-import { Emotion } from "@/types/emotion.type";
-
 import { BackHeader } from "../common/BackHeader";
 import { FullButton } from "../common/FullButton";
 import { ProgressDots } from "../common/ProgressDot";
