@@ -62,7 +62,7 @@ const OnboardingProfileClient = () => {
       console.log("createProfile result:", result);
 
       if (result.success) {
-        router.replace("/login/phone");
+        router.replace("/");
       }
     } catch (e) {
       console.error("프로필 생성 에러:", e);
