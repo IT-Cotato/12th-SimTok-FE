@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { useSignupStore } from "@/stores/useSignupStore";
 
@@ -21,16 +21,6 @@ const AgreePage = () => {
   const [agreements, setAgreements] = useState<Record<string, boolean>>(() =>
     Object.fromEntries(terms.map(t => [t.code, false])),
   );
-
-  useEffect(() => {
-    if (terms.length > 0) {
-      setAgreements(prev => {
-        const hasKeys = terms.some(t => t.code in prev);
-        if (hasKeys) return prev;
-        return Object.fromEntries(terms.map(t => [t.code, false]));
-      });
-    }
-  }, [terms]);
 
   const isConfirmActive = useMemo(
     () =>
@@ -71,10 +61,11 @@ const AgreePage = () => {
       if (result.success) {
         router.push("/signup/profile");
       } else {
-        console.error(result.message || "약관 동의 제출에 실패했습니다.");
+        alert(result.message || "약관 동의 제출에 실패했습니다.");
       }
     } catch (error) {
       console.error("제출 실패:", error);
+      alert("네트워크 오류가 발생했습니다.");
     } finally {
       setIsSubmitting(false);
     }

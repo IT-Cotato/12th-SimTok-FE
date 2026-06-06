@@ -59,7 +59,10 @@ const Chatting = () => {
           title={displayName}
           onBack={handleBack}
           menuIcon={() => {
-            window.location.href = `/chat/${roomId}/setting?name=${encodeURIComponent(displayName)}&img=${opponentProfileImg}&fsId=${fsId}`;
+            const params = new URLSearchParams({ name: displayName });
+            if (opponentProfileImg) params.set("img", opponentProfileImg);
+            if (fsId) params.set("fsId", fsId);
+            window.location.href = `/chat/${roomId}/setting?${params.toString()}`;
           }}
         />
         <section
