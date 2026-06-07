@@ -64,8 +64,8 @@ const SettingPage = () => {
           return;
         }
 
-        localStorage.setItem("accessToken", access);
-        localStorage.setItem("refreshToken", refresh);
+        localStorage.setItem("access_token", access);
+        localStorage.setItem("refresh_token", refresh);
 
         router.push("/onboarding");
       } else {

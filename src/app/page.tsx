@@ -59,7 +59,7 @@ export default function HomePage() {
       }
     };
     fetchInvitationList();
-  }, [isAuthenticated]);
+  }, []);
 
   const handleInviteAction = async (id: number, status: InviteResponse) => {
     try {
@@ -74,8 +74,6 @@ export default function HomePage() {
       console.error(`${status} 처리 실패:`, error);
     }
   };
-
-  if (!isAuthenticated) return null;
 
   return (
     <main className="w-full">
