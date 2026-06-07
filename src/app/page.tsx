@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 
 import { useQuery } from "@tanstack/react-query";
 
@@ -22,9 +22,10 @@ import { getPlantWidget } from "./api/home/home.api";
 
 export default function HomePage() {
   const router = useRouter();
-  const [isAuthenticated] = useState<boolean>(
-    () =>
-      typeof window !== "undefined" && !!localStorage.getItem("accessToken"),
+  const isAuthenticated = useSyncExternalStore(
+    () => () => {},
+    () => !!localStorage.getItem("accessToken"),
+    () => false,
   );
 
   // 식물 리스트를 useQuery로 관리
