@@ -22,7 +22,19 @@ import { getPlantWidget } from "./api/home/home.api";
 
 export default function HomePage() {
   const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const init = async () => {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        router.replace("/login/phone");
+        return;
+      }
+      setIsAuthenticated(true);
+    };
+    init();
+  }, [router]);
 
   // 식물 리스트를 useQuery로 관리
   const { data: plantData } = useQuery<GardenListResponse>({
@@ -35,6 +47,7 @@ export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
+    if (!isAuthenticated) return;
     const fetchInvitationList = async () => {
       try {
         const data = await getInvitationList();

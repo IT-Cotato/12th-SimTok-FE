@@ -134,9 +134,12 @@ export const useChattingRoom = () => {
 
   useEffect(() => {
     if (roomId && roomId !== "new") {
-      markAsRead(roomId);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      fetchHistory(roomId);
+      const init = async () => {
+        await markAsRead(roomId);
+         
+        await fetchHistory(roomId);
+      };
+      init();
     }
   }, [roomId, markAsRead, fetchHistory]);
 

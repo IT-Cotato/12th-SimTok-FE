@@ -58,11 +58,12 @@ const SettingChatPage = () => {
                 name: opponentName,
                 profileImageUrl: opponentImg,
               }}
-              onEdit={() =>
+              onEdit={() => {
+                if (!fsId || fsId === "undefined") return;
                 router.push(
                   `/friends/settings/${fsId}?name=${encodeURIComponent(opponentName)}&img=${encodeURIComponent(opponentImg)}`,
-                )
-              }
+                );
+              }}
             />
           </section>
           <nav className="mt-10">
