@@ -12,7 +12,7 @@ import notiList from "@/mock/notiList.json";
 
 type NotiListItem = (typeof notiList)[number];
 
-const SECTIONS = ["정원", "하루기록"] as const;
+const SECTIONS = ["정원", "하루기록", "채팅"] as const;
 
 const NotiPage = () => {
   const router = useRouter();
