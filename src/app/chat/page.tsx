@@ -79,7 +79,15 @@ const ChatListPage = () => {
       }),
     );
 
-    setChats(results.filter((r): r is ChatRoomItem => r !== null));
+    setChats(
+      results
+        .filter((r): r is ChatRoomItem => r !== null)
+        .sort(
+          (a, b) =>
+            new Date(b.lastMessageAt).getTime() -
+            new Date(a.lastMessageAt).getTime(),
+        ),
+    );
   }, []);
 
   const fetchChatRooms = useCallback(async () => {
@@ -95,7 +103,41 @@ const ChatListPage = () => {
       const result: ApiResponse<ChatListResponse> = await res.json();
 
       if (result.success) {
-        setChats(result.data.items);
+        const items: ChatRoomItem[] = result.data.items;
+        if (items.some(item => !item.friendshipId)) {
+          // friendshipId 누락 시 친구 목록으로 roomId→friendshipId 맵 생성
+          const friendsRes = await fetch("/api/friendships?status=ACTIVE", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const friendsData = await friendsRes.json();
+          const friends: FriendShipProfile[] =
+            friendsData?.data?.friendshipList ?? [];
+
+          const roomToFriendship = new Map<number, number>();
+          await Promise.all(
+            friends.map(async friend => {
+              try {
+                const r = await fetch(
+                  `/api/chat/rooms/direct/resolve?opponentMemberId=${friend.friendId}`,
+                );
+                const d = await r.json();
+                if (d?.data?.exists && d?.data?.roomId) {
+                  roomToFriendship.set(d.data.roomId, friend.friendshipId);
+                }
+              } catch {}
+            }),
+          );
+
+          setChats(
+            items.map(item => ({
+              ...item,
+              friendshipId:
+                item.friendshipId || roomToFriendship.get(item.roomId) || 0,
+            })),
+          );
+        } else {
+          setChats(items);
+        }
       } else {
         await fetchChatRoomsByFriends(token);
       }
@@ -109,6 +151,7 @@ const ChatListPage = () => {
 
   // 2. 초기 로드 및 포커스 이벤트 등록
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchChatRooms();
 
     const handleRefresh = () => {
@@ -193,9 +236,12 @@ const ChatListPage = () => {
                 profileImg={chat.opponent?.profileImageUrl ?? ""}
                 onDelete={() => handleOpenModal(chat)}
                 onClick={() => {
-                  router.push(
-                    `/chat/${chat.roomId}?name=${encodeURIComponent(displayChatName)}&img=${encodeURIComponent(chat.opponent?.profileImageUrl || "")}&fsId=${chat.friendshipId}`,
-                  );
+                  const params = new URLSearchParams({
+                    name: displayChatName,
+                    img: chat.opponent?.profileImageUrl || "",
+                    fsId: String(chat.friendshipId),
+                  });
+                  router.push(`/chat/${chat.roomId}?${params.toString()}`);
                 }}
               />
             );
