@@ -22,7 +22,6 @@ export async function GET(request: NextRequest) {
     const cursorRoomId = searchParams.get("cursorRoomId");
 
     let backendUrl = `${BACKEND_BASE_URL}/chat/rooms?limit=${limit}`;
-    console.log(`[chat/rooms] 백엔드 요청 URL: ${backendUrl}`);
 
     if (cursorAt && cursorRoomId) {
       backendUrl += `&cursorAt=${encodeURIComponent(cursorAt)}&cursorRoomId=${cursorRoomId}`;
