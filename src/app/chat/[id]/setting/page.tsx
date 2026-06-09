@@ -4,6 +4,8 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 import { useState } from "react";
 
+import { leaveChatRoom } from "@/app/api/chat/chatRoom.api";
+
 import { ExitChatModal } from "@/components/chat/ExitChatModal";
 import { BackHeader } from "@/components/common/BackHeader";
 import { FullButton } from "@/components/common/FullButton";
@@ -21,18 +23,8 @@ const SettingChatPage = () => {
   const opponentImg = searchParams.get("img") || "";
   const fsId = searchParams.get("fsId"); //friendshipId
   const handleConfirmExit = async () => {
-    const token = localStorage.getItem("accessToken");
-
     try {
-      const res = await fetch(`/api/chat/rooms/left/${id}`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      const result = await res.json();
+      const result = await leaveChatRoom(String(id));
 
       if (result.success) {
         setIsModalOpen(false);

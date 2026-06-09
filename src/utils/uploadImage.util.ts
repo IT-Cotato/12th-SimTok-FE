@@ -1,3 +1,5 @@
+import { getImagePresignedUrl } from "@/app/api/profile/profile.api";
+
 export type UploadFolderType =
   | "DIARY"
   | "PROFILE"
@@ -9,21 +11,11 @@ export const uploadToS3 = async (
   file: File,
   folder: UploadFolderType = "PROFILE",
 ) => {
-  const token = localStorage.getItem("accessToken");
+  const response = await getImagePresignedUrl(folder, file.name);
 
-  const res = await fetch("/api/image/presigned-url", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ fileName: file.name, folder }),
-  });
+  if (!response?.data) throw new Error("Presigned URL 발급 실패");
 
-  if (!res.ok) throw new Error("Presigned URL 발급 실패");
-
-  const { data } = await res.json();
-  const { presignedUrl, imageUrl } = data;
+  const { presignedUrl, imageUrl } = response.data;
 
   const uploadRes = await fetch(presignedUrl, {
     method: "PUT",
