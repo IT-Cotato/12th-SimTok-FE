@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { updateMyProfile } from "@/app/api/profile/profile.api";
 
@@ -17,15 +17,13 @@ import { formatDateWithSlash, formatPhone } from "@/utils/format";
 const ProfileSettingPage = () => {
   const router = useRouter();
   const { userProfileData } = useUserProfile();
-  const [profileImageUrl, setProfileImageUrl] = useState("");
+  const [localProfileImageUrl, setLocalProfileImageUrl] = useState<
+    string | null
+  >(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    if (userProfileData?.profileImageUrl) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setProfileImageUrl(userProfileData.profileImageUrl);
-    }
-  }, [userProfileData]);
+  const profileImageUrl =
+    localProfileImageUrl ?? userProfileData?.profileImageUrl ?? "";
 
   const isUploading = profileImageUrl.startsWith("blob:");
 
@@ -62,7 +60,7 @@ const ProfileSettingPage = () => {
                   : null
               }
               onModalStateChange={setIsModalOpen}
-              onImageUrlChange={setProfileImageUrl}
+              onImageUrlChange={setLocalProfileImageUrl}
             />
           </section>
         </div>
