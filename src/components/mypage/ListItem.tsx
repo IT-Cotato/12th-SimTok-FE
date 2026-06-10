@@ -70,6 +70,10 @@ export const ListItem = ({
         <Link href={href} className={commonClasses}>
           {renderInnerContent()}
         </Link>
+      ) : hasToggle ? (
+        <div onClick={handleClick} className={commonClasses}>
+          {renderInnerContent()}
+        </div>
       ) : (
         <button
           type="button"

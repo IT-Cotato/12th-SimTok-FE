@@ -1,5 +1,7 @@
 import { useRouter } from "next/navigation";
 
+import { resolveDirectRoom } from "@/app/api/chat/chatRoom.api";
+
 import CloseIcon from "@/assets/close-thin.svg";
 import SettingIcon from "@/assets/setting.svg";
 
@@ -24,13 +26,7 @@ export const ProfileModal = ({
 
   const handleStartChat = async () => {
     try {
-      const res = await fetch(
-        `/api/chat/rooms/direct/resolve?opponentMemberId=${friendMemberId}`,
-      );
-      if (!res.ok) {
-        throw new Error(`direct resolve 실해 : ${res.status}`);
-      }
-      const result = await res.json();
+      const result = await resolveDirectRoom(String(friendMemberId));
       const chatData = result.data;
       if (!chatData) {
         throw new Error("direct resolve 응답에 data가 없습니다.");

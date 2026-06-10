@@ -1,11 +1,4 @@
-const getAuthHeaders = () => {
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
-  return {
-    "Content-Type": "application/json",
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-  };
-};
+import { apiInstance } from "./apiInstance";
 
 export interface ProfileData {
   profileImageUrl: string;
@@ -16,23 +9,18 @@ export interface ProfileData {
 
 export const profileApi = {
   getProfile: async () => {
-    const res = await fetch("/api/profile", {
-      method: "GET",
-      headers: getAuthHeaders(),
-    });
-    return res.json();
+    const { data } = await apiInstance.get("/profile");
+    return data;
   },
 
-  // S3 Presigned URL 발급 요청
   getPresignedUrl: async (fileName: string) => {
-    const res = await fetch("/api/image/presigned-url", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ folder: "PROFILE", fileName }),
+    const { data } = await apiInstance.post("/image/presigned-url", {
+      folder: "PROFILE",
+      fileName,
     });
-    return res.json();
+    return data;
   },
-  // S3 버킷에 실제 이미지 파일 업로드
+
   uploadToS3: async (presignedUrl: string, file: File, contentType: string) => {
     const res = await fetch(presignedUrl, {
       method: "PUT",
@@ -41,24 +29,19 @@ export const profileApi = {
     });
     return res.ok;
   },
+
   updateProfile: async (imageUrl: string) => {
-    const res = await fetch("/api/profile", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ profileImageUrl: imageUrl }),
+    const { data } = await apiInstance.put("/profile", {
+      profileImageUrl: imageUrl,
     });
-    return res.json();
+    return data;
   },
 
   createProfile: async (name: string, profileImageUrl: string | null) => {
-    const res = await fetch("/api/profile", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name,
-        profileImageUrl,
-      }),
+    const { data } = await apiInstance.post("/profile", {
+      name,
+      profileImageUrl,
     });
-    return res.json();
+    return data;
   },
 };
