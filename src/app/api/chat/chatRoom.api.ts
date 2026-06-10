@@ -36,6 +36,9 @@ export const resolveDirectRoom = async (opponentMemberId: string) => {
   const { data } = await apiInstance.get("/chat/rooms/direct/resolve", {
     params: { opponentMemberId },
   });
+  if (!data.success) {
+    throw new Error(data.message ?? "Failed to resolve direct room");
+  }
   return data;
 };
 
