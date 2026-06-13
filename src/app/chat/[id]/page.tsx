@@ -143,7 +143,7 @@ const Chatting = () => {
             {replyMessage && !isTopicOpen && (
               <div className="border-neutral-09 flex items-center justify-between border-t bg-white px-4">
                 <div className="flex items-center gap-2 overflow-hidden">
-                  <div className="border-neutral-06 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border">
+                  <div className="border-neutral-06 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2">
                     <ChatReplyIcon className="text-neutral-06 h-4 w-4" />
                   </div>
                   <div className="flex flex-col overflow-hidden">
