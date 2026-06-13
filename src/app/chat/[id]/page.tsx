@@ -1,7 +1,11 @@
 "use client";
 
+import { useState } from "react";
+
 import AiIcon from "@/assets/AI.svg";
 import BackToKeywordIcon from "@/assets/backtokeyword.svg";
+import ChatReplyIcon from "@/assets/chat_reply.svg";
+import CloseThinIcon from "@/assets/close-thin.svg";
 
 import { ChatDateDivider } from "@/components/chat/ChatDateDivider";
 import { FriendMessage } from "@/components/chat/FriendMessage";
@@ -42,6 +46,10 @@ const Chatting = () => {
     formatDateForDivider,
     fetchTopics,
   } = useChattingRoom();
+
+  const [replyMessage, setReplyMessage] = useState<{ content: string } | null>(
+    null,
+  );
 
   return (
     <main className="relative flex h-dvh w-full justify-center bg-white">
@@ -117,6 +125,7 @@ const Chatting = () => {
                         msg.content?.includes("http") ||
                         msg.content?.startsWith("blob:")
                       }
+                      onReply={() => setReplyMessage({ content: msg.content })}
                     />
                   )}
                 </div>
@@ -131,6 +140,27 @@ const Chatting = () => {
           }`}
         >
           <div className="relative w-full">
+            {replyMessage && (
+              <div className="border-neutral-10 flex items-center justify-between border-b bg-white px-4 py-[10px]">
+                <div className="flex items-center gap-2 overflow-hidden">
+                  <ChatReplyIcon className="text-neutral-06 h-5 w-5 shrink-0" />
+                  <div className="flex flex-col overflow-hidden">
+                    <span className="text-sub1-sb text-neutral-01">
+                      {displayName}에게 답장
+                    </span>
+                    <span className="text-sub1-r text-neutral-01 truncate">
+                      {replyMessage.content}
+                    </span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setReplyMessage(null)}
+                  className="shrink-0 p-1"
+                >
+                  <CloseThinIcon className="text-neutral-02 h-5 w-5" />
+                </button>
+              </div>
+            )}
             <div
               className={`relative w-full overflow-hidden px-4 pb-4 transition-colors ${
                 isDimmed ? "bg-transparent" : "bg-white"
@@ -222,7 +252,10 @@ const Chatting = () => {
                 onMessageChange={setInputValue}
                 isChatting={true}
                 isDimmed={isDimmed}
-                onSend={handleSend}
+                onSend={() => {
+                  handleSend();
+                  setReplyMessage(null);
+                }}
                 onImageUpload={handleImageUpload}
               />
             </div>

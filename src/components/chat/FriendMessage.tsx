@@ -1,5 +1,7 @@
 "use client";
-import { TouchEvent, useState } from "react";
+import { useState } from "react";
+
+import { motion } from "framer-motion";
 
 import ChatReplyIcon from "@/assets/chat_reply.svg";
 
@@ -28,54 +30,19 @@ export const FriendMessage = ({
   const isImage = content.startsWith("blob:") || content.startsWith("http");
   const paddingTop = isPrevSame ? "pt-[2px]" : "pt-[10px]";
   const paddingBottom = isNextSame ? "pb-[2px]" : "pb-[10px]";
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [translateX, setTranslateX] = useState<number>(0);
-  const [isSwiping, setIsSwiping] = useState<boolean>(false);
+  const [dragX, setDragX] = useState(0);
 
   const SWIPE_THRESHOLD = 60;
-  const MAX_SWIPE = 80; // 최대 스와이프 한도
+  const MAX_SWIPE = 80;
 
-  const handleTouchStart = (e: TouchEvent) => {
-    setTouchStart(e.targetTouches[0].clientX);
-    setIsSwiping(true);
-  };
-
-  const handleTouchMove = (e: TouchEvent) => {
-    if (touchStart === null) return;
-
-    const currentTouch = e.targetTouches[0].clientX;
-    const diff = touchStart - currentTouch;
-
-    if (diff > 0) {
-      const move = Math.min(diff, MAX_SWIPE);
-      setTranslateX(-move);
-    } else {
-      setTranslateX(0);
-    }
-  };
-
-  const handleTouchEnd = () => {
-    setIsSwiping(false);
-
-    // 임계값을 넘었을 때만 콜백 실행
-    if (Math.abs(translateX) >= SWIPE_THRESHOLD && onReply) {
-      onReply();
-    }
-
-    setTranslateX(0);
-    setTouchStart(null);
-  };
-
-  const isThresholdPassed = Math.abs(translateX) >= SWIPE_THRESHOLD;
+  const opacity = dragX < 0 ? Math.min(-dragX / SWIPE_THRESHOLD, 1) : 0;
+  const isThresholdPassed = dragX < -SWIPE_THRESHOLD;
 
   return (
     <div className="relative w-full overflow-hidden">
       <div
         className="absolute top-1/2 right-4 z-0 -translate-y-1/2 transition-opacity duration-150"
-        style={{
-          opacity:
-            translateX < 0 ? Math.min(-translateX / SWIPE_THRESHOLD, 1) : 0,
-        }}
+        style={{ opacity }}
       >
         <ChatReplyIcon
           className={`transition-colors duration-150 ${
@@ -84,14 +51,20 @@ export const FriendMessage = ({
         />
       </div>
 
-      <div
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-        style={{ transform: `translateX(${translateX}px)` }}
-        className={`relative z-10 flex w-full justify-start gap-[6px] bg-white px-4 ${paddingTop} ${paddingBottom} ${
-          isSwiping ? "" : "transition-transform duration-200 select-none"
-        }`}
+      <motion.div
+        drag="x"
+        dragConstraints={{ left: -MAX_SWIPE, right: 0 }}
+        dragElastic={0.1}
+        onDrag={(_, info) => setDragX(info.offset.x)}
+        onDragEnd={(_, info) => {
+          if (info.offset.x < -SWIPE_THRESHOLD) {
+            onReply?.();
+          }
+          setDragX(0);
+        }}
+        animate={{ x: 0 }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        className={`relative z-10 flex w-full justify-start gap-[6px] bg-white px-4 ${paddingTop} ${paddingBottom}`}
       >
         <div className="w-12 flex-shrink-0">
           {!isPrevSame ? (
@@ -134,7 +107,7 @@ export const FriendMessage = ({
             )}
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
