@@ -4,6 +4,14 @@ import { useRouter } from "next/navigation";
 
 import { useCallback, useEffect, useState } from "react";
 
+import {
+  getChatMessages,
+  getChatRooms,
+  leaveChatRoom,
+  resolveDirectRoom,
+} from "@/app/api/chat/chatRoom.api";
+import { getFriendsList } from "@/app/api/friendships/friend.api";
+
 import FloatingButtonIcon from "@/assets/floating_button.svg";
 
 import { ChatItem } from "@/components/chat/ChatItem";
@@ -35,31 +43,20 @@ const ChatListPage = () => {
     return `${year}.${month}.${day}`;
   };
 
-  const fetchChatRoomsByFriends = useCallback(async (token: string | null) => {
-    const friendsRes = await fetch("/api/friendships?status=ACTIVE", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const friendsData = await friendsRes.json();
-    const friends: FriendShipProfile[] =
-      friendsData?.data?.friendshipList ?? [];
+  const fetchChatRoomsByFriends = useCallback(async () => {
+    const friendsList = await getFriendsList("ACTIVE");
+    const friends: FriendShipProfile[] = friendsList?.friendshipList ?? [];
 
     const results = await Promise.all(
       friends.map(async friend => {
         try {
-          const r = await fetch(
-            `/api/chat/rooms/direct/resolve?opponentMemberId=${friend.friendId}`,
-          );
-          const data = await r.json();
-          if (!data?.data?.exists) return null;
+          const resolved = await resolveDirectRoom(String(friend.friendId));
+          if (!resolved?.data?.exists) return null;
 
-          const roomId: number = data.data.roomId;
+          const roomId: number = resolved.data.roomId;
 
-          const msgRes = await fetch(
-            `/api/chat/rooms/${roomId}/messages?limit=1`,
-            { headers: { Authorization: `Bearer ${token}` } },
-          );
-          const msgData = await msgRes.json();
-          const lastMsg = msgData?.data?.items?.[0];
+          const items = await getChatMessages(String(roomId), 1);
+          const lastMsg = items?.[0];
 
           return {
             roomId,
@@ -91,36 +88,23 @@ const ChatListPage = () => {
   }, []);
 
   const fetchChatRooms = useCallback(async () => {
-    const token = localStorage.getItem("accessToken");
     try {
       setIsLoading(true);
 
-      const res = await fetch("/api/chat/rooms", {
-        cache: "no-store",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      const result: ApiResponse<ChatListResponse> = await res.json();
+      const result: ApiResponse<ChatListResponse> = await getChatRooms();
 
       if (result.success) {
         const items: ChatRoomItem[] = result.data.items;
         if (items.some(item => !item.friendshipId)) {
-          // friendshipId 누락 시 친구 목록으로 roomId→friendshipId 맵 생성
-          const friendsRes = await fetch("/api/friendships?status=ACTIVE", {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          const friendsData = await friendsRes.json();
+          const friendsList = await getFriendsList("ACTIVE");
           const friends: FriendShipProfile[] =
-            friendsData?.data?.friendshipList ?? [];
+            friendsList?.friendshipList ?? [];
 
           const roomToFriendship = new Map<number, number>();
           await Promise.all(
             friends.map(async friend => {
               try {
-                const r = await fetch(
-                  `/api/chat/rooms/direct/resolve?opponentMemberId=${friend.friendId}`,
-                );
-                const d = await r.json();
+                const d = await resolveDirectRoom(String(friend.friendId));
                 if (d?.data?.exists && d?.data?.roomId) {
                   roomToFriendship.set(d.data.roomId, friend.friendshipId);
                 }
@@ -139,17 +123,16 @@ const ChatListPage = () => {
           setChats(items);
         }
       } else {
-        await fetchChatRoomsByFriends(token);
+        await fetchChatRoomsByFriends();
       }
     } catch (error) {
       console.error("목록 로드 실패:", error);
-      await fetchChatRoomsByFriends(token);
+      await fetchChatRoomsByFriends();
     } finally {
       setIsLoading(false);
     }
   }, [fetchChatRoomsByFriends]);
 
-  // 2. 초기 로드 및 포커스 이벤트 등록
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchChatRooms();
@@ -175,19 +158,10 @@ const ChatListPage = () => {
   const handleLeaveChat = async () => {
     if (!selectedChat) return;
 
-    const token = localStorage.getItem("accessToken");
     const roomId = selectedChat.roomId;
 
     try {
-      const res = await fetch(`/api/chat/rooms/left/${roomId}`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      const result = await res.json();
+      const result = await leaveChatRoom(String(roomId));
 
       if (result.success) {
         setChats(prev => prev.filter(chat => chat.roomId !== roomId));
@@ -202,7 +176,6 @@ const ChatListPage = () => {
     }
   };
 
-  // 2. 검색 필터링 (방 이름 기준)
   const filteredChats = chats.filter(chat => {
     const name = chat.opponent?.name ?? "";
     return name.toLowerCase().includes(searchText.toLowerCase());
@@ -229,7 +202,7 @@ const ChatListPage = () => {
               <ChatItem
                 key={chat.roomId}
                 id={chat.roomId}
-                name={displayChatName} // 상대방 이름 전달
+                name={displayChatName}
                 lastMessage={chat.lastMessagePreview}
                 date={formatDate(chat.lastMessageAt)}
                 unreadCount={chat.unreadCount}

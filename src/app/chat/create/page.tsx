@@ -3,6 +3,8 @@ import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
+import { resolveDirectRoom } from "@/app/api/chat/chatRoom.api";
+
 import CloseIcon from "@/assets/close-thin.svg";
 
 import { BackHeader } from "@/components/common/BackHeader";
@@ -31,15 +33,10 @@ const CreateChatPage = () => {
   const handleStartChat = async () => {
     if (selectedFriends.length === 0) return;
     const opponent = selectedFriends[0];
-    const token = localStorage.getItem("accessToken");
 
     try {
       const targetId = opponent.friendId;
-      const res = await fetch(
-        `/api/chat/rooms/direct/resolve?opponentMemberId=${targetId}`,
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
-      const result = await res.json();
+      const result = await resolveDirectRoom(String(targetId));
 
       const chatData = result.data;
       const opponentName = getFriendName(opponent, false);

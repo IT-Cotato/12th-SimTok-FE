@@ -2,7 +2,9 @@
 
 import { useRouter } from "next/navigation";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+
+import { updateMyProfile } from "@/app/api/profile/profile.api";
 
 import { BackHeader } from "@/components/common/BackHeader";
 import { FullButton } from "@/components/common/FullButton";
@@ -15,29 +17,22 @@ import { formatDateWithSlash, formatPhone } from "@/utils/format";
 const ProfileSettingPage = () => {
   const router = useRouter();
   const { userProfileData } = useUserProfile();
-  const [profileImageUrl, setProfileImageUrl] = useState("");
+  const [localProfileImageUrl, setLocalProfileImageUrl] = useState<
+    string | null
+  >(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    if (userProfileData?.profileImageUrl) {
-      setProfileImageUrl(userProfileData.profileImageUrl);
-    }
-  }, [userProfileData]);
+  const profileImageUrl =
+    localProfileImageUrl ?? userProfileData?.profileImageUrl ?? "";
 
   const isUploading = profileImageUrl.startsWith("blob:");
 
   const handleUpdateProfile = async () => {
     if (isUploading) return;
     try {
-      const res = await fetch("/api/profile", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ profileImageUrl }),
-      });
-
-      if (!res.ok) throw new Error("프로필 수정 실패");
+      await updateMyProfile(profileImageUrl);
       router.push("/mypage");
-    } catch (error) {
+    } catch {
       alert("프로필 저장에 실패했습니다.");
     }
   };
@@ -65,7 +60,7 @@ const ProfileSettingPage = () => {
                   : null
               }
               onModalStateChange={setIsModalOpen}
-              onImageUrlChange={setProfileImageUrl}
+              onImageUrlChange={setLocalProfileImageUrl}
             />
           </section>
         </div>
