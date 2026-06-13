@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 
 import ChatReplyIcon from "@/assets/chat_reply.svg";
 
@@ -30,6 +30,7 @@ export const FriendMessage = ({
   const isImage = content.startsWith("blob:") || content.startsWith("http");
   const paddingTop = isPrevSame ? "pt-[2px]" : "pt-[10px]";
   const paddingBottom = isNextSame ? "pb-[2px]" : "pb-[10px]";
+  const controls = useAnimation();
   const [dragX, setDragX] = useState(0);
 
   const SWIPE_THRESHOLD = 60;
@@ -61,10 +62,13 @@ export const FriendMessage = ({
             onReply?.();
           }
           setDragX(0);
+          controls.start({
+            x: 0,
+            transition: { type: "spring", stiffness: 300, damping: 30 },
+          });
         }}
-        animate={{ x: 0 }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className={`relative z-10 flex w-full justify-start gap-[6px] bg-white px-4 ${paddingTop} ${paddingBottom}`}
+        animate={controls}
+        className={`relative z-10 flex w-full cursor-pointer justify-start gap-[6px] bg-white px-4 ${paddingTop} ${paddingBottom}`}
       >
         <div className="w-12 flex-shrink-0">
           {!isPrevSame ? (
