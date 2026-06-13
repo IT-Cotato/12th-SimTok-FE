@@ -140,10 +140,12 @@ const Chatting = () => {
           }`}
         >
           <div className="relative w-full">
-            {replyMessage && (
-              <div className="border-neutral-10 flex items-center justify-between border-b bg-white px-4 py-[10px]">
+            {replyMessage && !isTopicOpen && (
+              <div className="border-neutral-09 flex items-center justify-between border-t bg-white px-4">
                 <div className="flex items-center gap-2 overflow-hidden">
-                  <ChatReplyIcon className="text-neutral-06 h-5 w-5 shrink-0" />
+                  <div className="border-neutral-06 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border">
+                    <ChatReplyIcon className="text-neutral-06 h-4 w-4" />
+                  </div>
                   <div className="flex flex-col overflow-hidden">
                     <span className="text-sub1-sb text-neutral-01">
                       {displayName}에게 답장
@@ -157,7 +159,7 @@ const Chatting = () => {
                   onClick={() => setReplyMessage(null)}
                   className="shrink-0 p-1"
                 >
-                  <CloseThinIcon className="text-neutral-02 h-5 w-5" />
+                  <CloseThinIcon className="text-neutral-02 h-4 w-4 cursor-pointer" />
                 </button>
               </div>
             )}
@@ -231,7 +233,7 @@ const Chatting = () => {
                 </div>
               )}
 
-              {!isTopicOpen && (
+              {!isTopicOpen && !replyMessage && (
                 <div className="flex justify-end">
                   <button
                     onClick={() => {

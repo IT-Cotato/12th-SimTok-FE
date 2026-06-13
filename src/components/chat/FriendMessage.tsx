@@ -45,11 +45,13 @@ export const FriendMessage = ({
         className="absolute top-1/2 right-4 z-0 -translate-y-1/2 transition-opacity duration-150"
         style={{ opacity }}
       >
-        <ChatReplyIcon
-          className={`transition-colors duration-150 ${
-            isThresholdPassed ? "text-neutral-06" : "text-white"
+        <div
+          className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors duration-150 ${
+            isThresholdPassed ? "bg-neutral-06" : "bg-transparent"
           }`}
-        />
+        >
+          <ChatReplyIcon className="h-5 w-5 text-white" />
+        </div>
       </div>
 
       <motion.div
