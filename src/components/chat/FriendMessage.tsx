@@ -96,6 +96,7 @@ export const FriendMessage = ({
                 <img
                   src={content}
                   alt="전송 이미지"
+                  draggable={false}
                   className="h-auto w-full object-cover"
                 />
               </div>

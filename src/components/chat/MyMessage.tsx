@@ -43,7 +43,10 @@ export const MyMessage = ({
                   {replyTo.userName}에게 답장
                 </p>
                 <p className="text-sub1-r break-all text-white opacity-70">
-                  {replyTo.content}
+                  {replyTo.content.startsWith("blob:") ||
+                  replyTo.content.startsWith("http")
+                    ? "이미지"
+                    : replyTo.content}
                 </p>
                 <div className="my-2 border-t border-white/30" />
               </>

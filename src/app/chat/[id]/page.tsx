@@ -178,7 +178,10 @@ const Chatting = () => {
                       {displayName}에게 답장
                     </span>
                     <span className="text-sub1-r text-neutral-01 truncate">
-                      {replyMessage.content}
+                      {replyMessage.content.startsWith("blob:") ||
+                      replyMessage.content.startsWith("http")
+                        ? "이미지"
+                        : replyMessage.content}
                     </span>
                   </div>
                 </div>
@@ -291,6 +294,7 @@ const Chatting = () => {
                       mineCount: messages.filter(m => m.type === "mine").length,
                     };
                   }
+
                   handleSend();
                   setReplyMessage(null);
                 }}
