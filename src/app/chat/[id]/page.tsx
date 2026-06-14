@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import AiIcon from "@/assets/AI.svg";
 import BackToKeywordIcon from "@/assets/backtokeyword.svg";
@@ -50,6 +50,29 @@ const Chatting = () => {
   const [replyMessage, setReplyMessage] = useState<{ content: string } | null>(
     null,
   );
+  const [focusTrigger, setFocusTrigger] = useState(0);
+  const pendingReplyRef = useRef<{
+    userName: string;
+    content: string;
+    mineCount: number;
+  } | null>(null);
+  const [localReplyMap, setLocalReplyMap] = useState<
+    Record<string, { userName: string; content: string }>
+  >({});
+
+  useEffect(() => {
+    if (!pendingReplyRef.current) return;
+    const myMessages = messages.filter(m => m.type === "mine");
+    if (myMessages.length > pendingReplyRef.current.mineCount) {
+      const newMsg = myMessages[pendingReplyRef.current.mineCount];
+      const { userName, content } = pendingReplyRef.current;
+      setLocalReplyMap(prev => ({
+        ...prev,
+        [String(newMsg.id)]: { userName, content },
+      }));
+      pendingReplyRef.current = null;
+    }
+  }, [messages]);
 
   return (
     <main className="relative flex h-dvh w-full justify-center bg-white">
@@ -110,6 +133,7 @@ const Chatting = () => {
                         msg.content?.includes("http") ||
                         msg.content?.startsWith("blob:")
                       }
+                      replyTo={localReplyMap[String(msg.id)]}
                     />
                   ) : (
                     <FriendMessage
@@ -125,7 +149,10 @@ const Chatting = () => {
                         msg.content?.includes("http") ||
                         msg.content?.startsWith("blob:")
                       }
-                      onReply={() => setReplyMessage({ content: msg.content })}
+                      onReply={() => {
+                        setReplyMessage({ content: msg.content });
+                        setFocusTrigger(prev => prev + 1);
+                      }}
                     />
                   )}
                 </div>
@@ -255,9 +282,17 @@ const Chatting = () => {
                 isChatting={true}
                 isDimmed={isDimmed}
                 onSend={() => {
+                  if (replyMessage) {
+                    pendingReplyRef.current = {
+                      userName: displayName,
+                      content: replyMessage.content,
+                      mineCount: messages.filter(m => m.type === "mine").length,
+                    };
+                  }
                   handleSend();
                   setReplyMessage(null);
                 }}
+                focusTrigger={focusTrigger}
                 onImageUpload={handleImageUpload}
               />
             </div>

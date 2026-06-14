@@ -1,11 +1,10 @@
-import Image from "next/image";
-
 interface MyMessageProps {
   content: string;
   time: string;
   isPrevSame?: boolean;
   isNextSame?: boolean;
   isImage?: boolean;
+  replyTo?: { userName: string; content: string };
 }
 
 export const MyMessage = ({
@@ -13,6 +12,7 @@ export const MyMessage = ({
   time,
   isPrevSame,
   isNextSame,
+  replyTo,
 }: MyMessageProps) => {
   const isImage = content.startsWith("blob:") || content.startsWith("http");
   const paddingTop = isPrevSame ? "pt-[2px]" : "pt-[10px]";
@@ -37,6 +37,17 @@ export const MyMessage = ({
           </div>
         ) : (
           <div className="bg-green-02 rounded-2xl px-4 py-2">
+            {replyTo && (
+              <>
+                <p className="text-sub1-sb break-all text-white">
+                  {replyTo.userName}에게 답장
+                </p>
+                <p className="text-sub1-r break-all text-white opacity-70">
+                  {replyTo.content}
+                </p>
+                <div className="my-2 border-t border-white/30" />
+              </>
+            )}
             <p className="text-sub1-r break-all text-white">{content}</p>
           </div>
         )}
