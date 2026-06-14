@@ -183,6 +183,8 @@ const Chatting = () => {
                   </div>
                 </div>
                 <button
+                  type="button"
+                  aria-label="답장 취소"
                   onClick={() => setReplyMessage(null)}
                   className="shrink-0 p-1"
                 >
