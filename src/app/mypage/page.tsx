@@ -2,9 +2,14 @@
 
 import { useRouter } from "next/navigation";
 
+import { useState } from "react";
+
+import { logout } from "@/app/api/auth/auth.api";
+
 import { BackHeader } from "@/components/common/BackHeader";
 import { NavBar } from "@/components/common/NavBar";
 import { ListItem } from "@/components/mypage/ListItem";
+import { LogoutModal } from "@/components/mypage/LogoutModal";
 import { ProfileCard } from "@/components/mypage/ProfileCard";
 
 import { MY_PAGE_MENU_ITEMS } from "@/constants/mypage";
@@ -14,6 +19,17 @@ import { useUserProfile } from "@/hooks/useUserProfile";
 const MyPage = () => {
   const router = useRouter();
   const { userProfileData } = useUserProfile();
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch {
+      // 토큰 만료 등으로 401이 와도 클라이언트 로그아웃은 진행
+    }
+    localStorage.removeItem("accessToken");
+    window.location.href = "/login";
+  };
 
   return (
     <main className="flex min-h-dvh w-full flex-col">
@@ -41,7 +57,11 @@ const MyPage = () => {
                   <ListItem
                     label={item.label}
                     Icon={item.Icon}
-                    onClick={() => router.push(item.path)}
+                    onClick={
+                      item.label === "로그아웃"
+                        ? () => setIsLogoutModalOpen(true)
+                        : () => router.push(item.path)
+                    }
                     hoverBg={true}
                   />
                 </li>
@@ -51,6 +71,11 @@ const MyPage = () => {
         </div>
       </div>
       <NavBar />
+      <LogoutModal
+        isOpen={isLogoutModalOpen}
+        onClose={() => setIsLogoutModalOpen(false)}
+        onConfirm={handleLogout}
+      />
     </main>
   );
 };
