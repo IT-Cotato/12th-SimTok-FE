@@ -14,7 +14,7 @@ export const NavBar = () => {
     >
       {NAV_ITEMS.map(({ key, label, href, icons }) => {
         const isActive =
-          href === "/" ? pathname === "/" : pathname.startsWith(href);
+          href === "/home" ? pathname === "/home" : pathname.startsWith(href);
 
         const Icon = isActive ? icons.fill : icons.blank;
 

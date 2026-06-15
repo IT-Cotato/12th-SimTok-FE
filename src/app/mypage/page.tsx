@@ -4,13 +4,14 @@ import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
-import { logout } from "@/app/api/auth/auth.api";
+import { deleteAccount, logout } from "@/app/api/auth/auth.api";
 
 import { BackHeader } from "@/components/common/BackHeader";
 import { NavBar } from "@/components/common/NavBar";
 import { ListItem } from "@/components/mypage/ListItem";
 import { LogoutModal } from "@/components/mypage/LogoutModal";
 import { ProfileCard } from "@/components/mypage/ProfileCard";
+import { WithdrawModal } from "@/components/mypage/WithdrawModal";
 
 import { MY_PAGE_MENU_ITEMS } from "@/constants/mypage";
 
@@ -20,6 +21,25 @@ const MyPage = () => {
   const router = useRouter();
   const { userProfileData } = useUserProfile();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
+
+  const handleWithdraw = async () => {
+    try {
+      await deleteAccount();
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      window.location.href = "/login";
+    } catch (e: unknown) {
+      const err = e as { response?: { data?: unknown; status?: number } };
+      console.error(
+        "회원탈퇴 실패:",
+        err?.response?.status,
+        err?.response?.data,
+      );
+      alert("회원탈퇴에 실패했습니다. 다시 시도해주세요.");
+      setIsWithdrawModalOpen(false);
+    }
+  };
 
   const handleLogout = async () => {
     try {
@@ -60,7 +80,9 @@ const MyPage = () => {
                     onClick={
                       item.label === "로그아웃"
                         ? () => setIsLogoutModalOpen(true)
-                        : () => router.push(item.path)
+                        : item.label === "회원탈퇴"
+                          ? () => setIsWithdrawModalOpen(true)
+                          : () => router.push(item.path)
                     }
                     hoverBg={true}
                   />
@@ -75,6 +97,11 @@ const MyPage = () => {
         isOpen={isLogoutModalOpen}
         onClose={() => setIsLogoutModalOpen(false)}
         onConfirm={handleLogout}
+      />
+      <WithdrawModal
+        isOpen={isWithdrawModalOpen}
+        onClose={() => setIsWithdrawModalOpen(false)}
+        onConfirm={handleWithdraw}
       />
     </main>
   );

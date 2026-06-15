@@ -47,7 +47,7 @@ const LoginPage = () => {
           localStorage.setItem("accessToken", AT);
           localStorage.setItem("refreshToken", RT);
 
-          window.location.href = "/";
+          window.location.href = "/home";
         } else {
           console.error("토큰 데이터 누락:", result.data);
         }
