@@ -6,9 +6,11 @@ import { useState } from "react";
 
 import EyeIcon from "@/assets/eye.svg";
 import LockIcon from "@/assets/lock.svg";
+import ErrorIcon from "@/assets/modal_error.svg";
 import PhoneIcon from "@/assets/phone.svg";
 
 import { FullButton } from "@/components/common/FullButton";
+import LoadingModal from "@/components/common/LoadingModal";
 
 import { formatPhone } from "@/utils/formatPhone";
 
@@ -17,6 +19,7 @@ export default function LoginForm() {
   const [password, setPassword] = useState("");
   const [focused, setFocused] = useState<"phone" | "password" | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
 
   const router = useRouter();
 
@@ -26,6 +29,24 @@ export default function LoginForm() {
     const raw = e.target.value;
     const onlyNumber = raw.replace(/\D/g, "");
     setPhone(onlyNumber);
+  };
+
+  const handleLogin = async () => {
+    if (!isActive) return;
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phoneNumber: phone, password }),
+      });
+      if (response.ok) {
+        router.push("/");
+      } else {
+        setIsErrorModalOpen(true);
+      }
+    } catch {
+      setIsErrorModalOpen(true);
+    }
   };
 
   return (
@@ -100,10 +121,18 @@ export default function LoginForm() {
       </div>
 
       <div>
-        <FullButton isActive={isActive} onClick={() => router.push("/")}>
+        <FullButton isActive={isActive} onClick={handleLogin}>
           로그인
         </FullButton>
       </div>
+
+      <LoadingModal
+        isOpen={isErrorModalOpen}
+        title="로그인 실패"
+        message="전화번호 또는 비밀번호가 올바르지 않습니다."
+        icon={<ErrorIcon />}
+        onClose={() => setIsErrorModalOpen(false)}
+      />
     </>
   );
 }

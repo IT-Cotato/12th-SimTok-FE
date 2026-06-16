@@ -5,11 +5,13 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import LockIcon from "@/assets/lock.svg";
+import ErrorIcon from "@/assets/modal_error.svg";
 import PhoneIcon from "@/assets/phone.svg";
 
 import { BackHeader } from "@/components/common/BackHeader";
 import { FullButton } from "@/components/common/FullButton";
 import { InputField } from "@/components/common/InputField";
+import LoadingModal from "@/components/common/LoadingModal";
 import { PageTitle } from "@/components/common/PageTitle";
 
 import { formatPhone } from "@/utils/formatPhone";
@@ -19,6 +21,7 @@ const LoginPage = () => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const router = useRouter();
   const isActive = phone.length === 11 && password.length >= 8;
   const handlePhoneChange = phoneChangeHandler(setPhone);
@@ -52,10 +55,10 @@ const LoginPage = () => {
           console.error("토큰 데이터 누락:", result.data);
         }
       } else {
-        console.error("로그인 실패:", result.message);
+        setIsErrorModalOpen(true);
       }
-    } catch (error) {
-      console.error("네트워크 오류:", error);
+    } catch {
+      setIsErrorModalOpen(true);
     } finally {
       setIsLoading(false);
     }
@@ -136,6 +139,14 @@ const LoginPage = () => {
           </FullButton>
         </div>
       </div>
+
+      <LoadingModal
+        isOpen={isErrorModalOpen}
+        title="로그인 실패"
+        message="전화번호 또는 비밀번호가 올바르지 않습니다."
+        icon={<ErrorIcon />}
+        onClose={() => setIsErrorModalOpen(false)}
+      />
     </main>
   );
 };
