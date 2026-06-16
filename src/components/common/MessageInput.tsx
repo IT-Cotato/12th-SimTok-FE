@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { deleteLike, postLike } from "@/app/api/dailyRecord/sharedDiary.api";
 
@@ -20,6 +20,7 @@ interface MessageInputProps {
   //채팅에서 사용하는 추천 문구
   suggestedMessage?: string;
   onMessageChange?: (text: string) => void;
+  focusTrigger?: number;
 }
 
 export const MessageInput = ({
@@ -33,6 +34,7 @@ export const MessageInput = ({
   blackMode = false,
   suggestedMessage,
   onMessageChange,
+  focusTrigger,
 }: MessageInputProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -41,6 +43,10 @@ export const MessageInput = ({
   const [heartClicked, setHeartClicked] = useState(isLiked);
 
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (focusTrigger) inputRef.current?.focus();
+  }, [focusTrigger]);
 
   const currentText = (isChatting ? suggestedMessage : localText) || "";
   const hasText = currentText.trim().length > 0;
