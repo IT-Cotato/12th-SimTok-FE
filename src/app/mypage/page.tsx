@@ -102,7 +102,7 @@ const MyPage = () => {
       <WithdrawModal
         isOpen={isWithdrawModalOpen}
         onClose={() => setIsWithdrawModalOpen(false)}
-        onConfirm={handleWithdraw}
+        onConfirm={() => handleWithdraw()}
       />
     </main>
   );

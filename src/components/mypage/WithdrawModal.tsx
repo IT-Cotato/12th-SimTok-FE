@@ -1,5 +1,15 @@
 "use client";
 
+import { useState } from "react";
+
+const WITHDRAW_REASONS = [
+  "서비스가 불만족스러워요",
+  "사용 빈도가 낮아요",
+  "개인정보 보호가 걱정돼요",
+  "다른 서비스를 이용할게요",
+  "기타",
+];
+
 interface WithdrawModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -11,6 +21,8 @@ export const WithdrawModal = ({
   onClose,
   onConfirm,
 }: WithdrawModalProps) => {
+  const [reason, setReason] = useState(WITHDRAW_REASONS[0]);
+
   if (!isOpen) return null;
 
   return (
@@ -25,6 +37,20 @@ export const WithdrawModal = ({
             <br />
             삭제되며 복구할 수 없습니다.
           </p>
+          <p className="text-sub1-sb text-neutral-02 mt-4 w-full text-left">
+            탈퇴 하시는 이유를 알려주세요
+          </p>
+          <select
+            value={reason}
+            onChange={e => setReason(e.target.value)}
+            className="text-sub1-r text-neutral-03 border-neutral-09 mt-3 w-full rounded-[10px] border px-3 py-2 focus:outline-none"
+          >
+            {WITHDRAW_REASONS.map(r => (
+              <option key={r} value={r}>
+                {r}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="border-neutral-11 flex h-[64px] w-full border-t">
           <button
