@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useSignupStore } from "@/stores/useSignupStore";
 
@@ -12,6 +12,11 @@ const AuthStartPage = () => {
   const router = useRouter();
   const { setSignupData } = useSignupStore();
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token) router.replace("/home");
+  }, [router]);
 
   const handleClickLogin = () => {
     router.push("/login/phone");

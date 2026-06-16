@@ -13,7 +13,7 @@ export const NAV_ITEMS = [
   {
     key: "home",
     label: "홈",
-    href: "/",
+    href: "/home",
     icons: {
       blank: HomeBlankIcon,
       fill: HomeFillIcon,
