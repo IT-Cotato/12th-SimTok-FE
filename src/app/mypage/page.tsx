@@ -7,6 +7,7 @@ import { useState } from "react";
 import { deleteAccount, logout } from "@/app/api/auth/auth.api";
 
 import { BackHeader } from "@/components/common/BackHeader";
+import LoadingModal from "@/components/common/LoadingModal";
 import { NavBar } from "@/components/common/NavBar";
 import { ListItem } from "@/components/mypage/ListItem";
 import { LogoutModal } from "@/components/mypage/LogoutModal";
@@ -22,13 +23,13 @@ const MyPage = () => {
   const { userProfileData } = useUserProfile();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
+  const [isWithdrawCompleteOpen, setIsWithdrawCompleteOpen] = useState(false);
 
   const handleWithdraw = async () => {
     try {
       await deleteAccount();
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-      window.location.href = "/login";
+      setIsWithdrawModalOpen(false);
+      setIsWithdrawCompleteOpen(true);
     } catch (e: unknown) {
       const err = e as { response?: { data?: unknown; status?: number } };
       console.error(
@@ -103,6 +104,18 @@ const MyPage = () => {
         isOpen={isWithdrawModalOpen}
         onClose={() => setIsWithdrawModalOpen(false)}
         onConfirm={() => handleWithdraw()}
+      />
+      <LoadingModal
+        isOpen={isWithdrawCompleteOpen}
+        title="탈퇴 완료"
+        message={
+          "심톡 회원 탈퇴가 완료되었습니다.\n7일 내로 다시 로그인하시면 \n탈퇴가 즉시 취소됩니다."
+        }
+        onClose={() => {
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          window.location.href = "/login";
+        }}
       />
     </main>
   );
