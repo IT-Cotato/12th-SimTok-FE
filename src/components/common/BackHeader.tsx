@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
+import CalendarIcon from "@/assets/calendar.svg";
 import BackIcon from "@/assets/left-arrow.svg";
 import ListIcon from "@/assets/list.svg";
 
@@ -9,8 +10,10 @@ interface BackHeaderProps {
   title?: string;
   timeAgo?: string; // 하루한컷보기에서 사용
   menuIcon?: () => void;
+  calendarIcon?: () => void; // 공유일기에서 사용
   onBack?: () => void;
   titleColor?: string; //하루한컷 업로드에서 사용
+  iconColor?: string;
   subtext?: string; // 친구목록에서 사용
   isEditMode?: boolean; //친구목록에서 사용;
   onClickEdit?: () => void; //친구목록에서 사용;
@@ -21,8 +24,10 @@ export const BackHeader = ({
   title,
   timeAgo,
   menuIcon,
+  calendarIcon,
   onBack,
-  titleColor = "black",
+  titleColor = "neutral",
+  iconColor = "neutral-01",
   subtext,
   isEditMode,
   onClickEdit,
@@ -47,7 +52,7 @@ export const BackHeader = ({
         onClick={handleBackClick}
         className="absolute top-1/2 left-4 -translate-y-1/2 cursor-pointer"
       >
-        <BackIcon className={`text-${titleColor} h-6 w-6`} />
+        <BackIcon className={`text-${iconColor} h-6 w-6`} />
       </button>
       <h1
         className={`text-h1 flex w-full items-center justify-center whitespace-nowrap text-${titleColor}`}
@@ -88,6 +93,13 @@ export const BackHeader = ({
           ) : (
             subtext
           )}
+        </button>
+      )}
+      {calendarIcon && (
+        <button onClick={calendarIcon}>
+          <CalendarIcon
+            className={`text-${iconColor} h-6 w-6 cursor-pointer`}
+          />
         </button>
       )}
     </header>
