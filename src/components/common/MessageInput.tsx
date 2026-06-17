@@ -6,6 +6,7 @@ import { SendButton } from "@/assets/SendButton";
 import CameraIcon from "@/assets/camera.svg";
 import HeartfillIcon from "@/assets/heart-fill.svg";
 import HeartBlankIcon from "@/assets/heart.svg";
+import ReplyIcon from "@/assets/reply.svg";
 
 interface MessageInputProps {
   diaryId?: number;
@@ -155,10 +156,13 @@ export const MessageInput = ({
         }}
       />
 
-      {hasText && (
+      {isChatting && hasText && (
         <div className="ml-1 flex-shrink-0">
           <SendButton hasText={hasText} onClick={sendMessage} />
         </div>
+      )}
+      {!isChatting && (
+        <ReplyIcon className="text-neutral-02 h-[30px] w-[30px]" />
       )}
     </div>
   );
