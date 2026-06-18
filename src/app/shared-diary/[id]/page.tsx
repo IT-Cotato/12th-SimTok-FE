@@ -45,7 +45,7 @@ const SharedDiaryPage = () => {
 
   return (
     <div className="flex w-full flex-col justify-center">
-      <HeaderWithIcon title="공유일기" havePencil={true} />
+      <HeaderWithIcon title="공유일기" havePencil={true} haveAlarm={false} />
       <SharedDiaryItem key={diary.diaryId} item={diary} commentMode />
     </div>
   );

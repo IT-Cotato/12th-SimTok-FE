@@ -4,7 +4,10 @@ import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
-import { deleteLike, postLike } from "@/app/api/dailyRecord/sharedDiary.api";
+import {
+  deleteDiaryLike,
+  postDiaryLike,
+} from "@/app/api/dailyRecord/sharedDiary.api";
 
 import HeartFillIcon from "@/assets/heart-fill.svg";
 import HeartIcon from "@/assets/heart.svg";
@@ -16,7 +19,7 @@ import { getEmotionMeta } from "@/utils/getEmotionMeta";
 import { getTimeAgo } from "@/utils/getTimeAgo";
 
 import { ProfileImagePicker } from "../common/ProfileImagePicker";
-import { SharedDiaryComment } from "./SharedDiaryChat";
+import { ChatBottomSheet } from "./ChatBottomSheet";
 
 interface SharedDiaryItemProps {
   item: DiaryDetail;
@@ -37,7 +40,7 @@ export const SharedDiaryItem = ({
     const previousState = heartClicked;
     setHeartClicked(!previousState);
     try {
-      const apiCall = heartClicked ? deleteLike : postLike;
+      const apiCall = heartClicked ? deleteDiaryLike : postDiaryLike;
       await apiCall(item.diaryId);
     } catch (error) {
       console.error("좋아요 처리 실패:", error);
@@ -129,7 +132,11 @@ export const SharedDiaryItem = ({
       </div>
       {commentMode && (
         <div className="w-full">
-          <SharedDiaryComment diaryId={item.diaryId} isLiked={item.isLiked} />
+          <ChatBottomSheet
+            type="diary"
+            targetId={item.diaryId}
+            isLiked={item.isLiked}
+          />
         </div>
       )}
     </section>

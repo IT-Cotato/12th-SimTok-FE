@@ -35,7 +35,7 @@ export const getSharedDiaryList = async (size: number, lastId?: number) => {
   return data.data;
 };
 
-export const postLike = async (diaryId: number) => {
+export const postDiaryLike = async (diaryId: number) => {
   const { data } = await apiInstance.post(`/diaries/${diaryId}/likes`);
   if (!data.success || data.code !== "SUCCESS") {
     // 서버가 보내준 message를 에러 객체에 담아 던짐
@@ -45,7 +45,7 @@ export const postLike = async (diaryId: number) => {
   return data.data;
 };
 
-export const deleteLike = async (diaryId: number) => {
+export const deleteDiaryLike = async (diaryId: number) => {
   const { data } = await apiInstance.delete(`/diaries/${diaryId}/likes`);
   if (!data.success || data.code !== "SUCCESS") {
     const error = new Error(data.message || "알 수 없는 에러가 발생했습니다.");

@@ -35,7 +35,7 @@ export const getChallengeDetail = async (challengeId: number) => {
   return data.data;
 };
 
-export const postLikeChallenge = async (challengeId: number) => {
+export const postChallengeLike = async (challengeId: number) => {
   const { data } = await apiInstance.post(`/challenges/${challengeId}/likes`, {
     challengeId,
   });
@@ -43,7 +43,7 @@ export const postLikeChallenge = async (challengeId: number) => {
   return data.data;
 };
 
-export const cancelLikeChallenge = async (challengeId: number) => {
+export const deleteChallengeLike = async (challengeId: number) => {
   const { data } = await apiInstance.delete(
     `/challenges/${challengeId}/likes`,
     {

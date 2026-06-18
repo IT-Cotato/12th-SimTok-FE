@@ -1,6 +1,13 @@
 import { useRef, useState } from "react";
 
-import { deleteLike, postLike } from "@/app/api/dailyRecord/sharedDiary.api";
+import {
+  deleteChallengeLike,
+  postChallengeLike,
+} from "@/app/api/dailyRecord/dayLog.api";
+import {
+  deleteDiaryLike,
+  postDiaryLike,
+} from "@/app/api/dailyRecord/sharedDiary.api";
 
 import { SendButton } from "@/assets/SendButton";
 import CameraIcon from "@/assets/camera.svg";
@@ -8,8 +15,11 @@ import HeartfillIcon from "@/assets/heart-fill.svg";
 import HeartBlankIcon from "@/assets/heart.svg";
 import ReplyIcon from "@/assets/reply.svg";
 
+import { SheetType } from "../dailyRecord/ChatBottomSheet";
+
 interface MessageInputProps {
-  diaryId?: number;
+  type: SheetType; // 하루미션 or 공유일기
+  targetId?: number;
   isLiked?: boolean;
   isChatting?: boolean;
   isDimmed?: boolean; // 채팅에서 추천문구 활성화 시
@@ -24,7 +34,8 @@ interface MessageInputProps {
 }
 
 export const MessageInput = ({
-  diaryId,
+  type,
+  targetId,
   isLiked = false,
   isChatting = false,
   isDimmed = false,
@@ -79,12 +90,26 @@ export const MessageInput = ({
   };
 
   const handleHeartClick = async () => {
-    if (!diaryId) return;
+    if (!targetId) return;
     const previousState = heartClicked;
     setHeartClicked(!previousState);
+
+    const likeApis = {
+      diary: {
+        like: postDiaryLike,
+        unlike: deleteDiaryLike,
+      },
+      challenge: {
+        like: postChallengeLike,
+        unlike: deleteChallengeLike,
+      },
+    };
+
+    const action = heartClicked ? "unlike" : "like";
+    const apiCall = likeApis[type][action];
+
     try {
-      const apiCall = heartClicked ? deleteLike : postLike;
-      await apiCall(diaryId);
+      await apiCall(targetId);
     } catch (error) {
       console.error("좋아요 처리 실패:", error);
       setHeartClicked(previousState);

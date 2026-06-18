@@ -10,7 +10,7 @@ import { getChallengeDetail } from "@/app/api/dailyRecord/dayLog.api";
 
 import { BackHeader } from "@/components/common/BackHeader";
 import { OnlyLoader } from "@/components/common/OnlyLoader";
-import { StoryBottomBar } from "@/components/dailyRecord/StoryBottomBar";
+import { ChatBottomSheet } from "@/components/dailyRecord/ChatBottomSheet";
 
 import { MissionDetail } from "@/types/dailyRecord.type";
 
@@ -71,9 +71,9 @@ const DailyStory = () => {
       {/* 클릭시 바텀시트 열리기 */}
       {/* {chatOpen && } */}
 
-      <div className="fixed bottom-0 w-full max-w-[440px]">
+      {/* <div className="fixed bottom-0 w-full max-w-[440px]">
         <StoryBottomBar />
-      </div>
+      </div> */}
     </section>
   );
 };

@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { getDiaryComments } from "@/app/api/dailyRecord/sharedDiary.api";
 import { postDiaryComment } from "@/app/api/dailyRecord/sharedDiary.api";
@@ -15,13 +15,18 @@ import { MyProfile } from "@/types/myProfile.type";
 import { OnlyLoader } from "../common/OnlyLoader";
 import { CommentList } from "./CommentList";
 
-export const SharedDiaryComment = ({
-  diaryId,
-  isLiked,
-}: {
-  diaryId: number;
+export type SheetType = "diary" | "challenge";
+
+interface ChatBottomSheetProps {
+  type: SheetType;
+  targetId: number;
   isLiked: boolean;
-}) => {
+}
+export const ChatBottomSheet = ({
+  type,
+  targetId,
+  isLiked,
+}: ChatBottomSheetProps) => {
   const [profile, setProfile] = useState<MyProfile | null>(null);
   const [comments, setComments] = useState<DiaryComment[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,41 +44,39 @@ export const SharedDiaryComment = ({
       }
     };
     fetchProfile();
-  }, [diaryId]);
+  }, [targetId]);
 
   const profileImg = profile?.profileImageUrl || "";
 
-  const fetchComments = async (isInitial: boolean = false) => {
-    if (isLoading || (!isInitial && !hasMore)) return;
+  const fetchComments = useCallback(
+    async (isInitial = false) => {
+      if (isLoading || (!isInitial && !hasMore)) return;
 
-    try {
-      setIsLoading(true);
-      const lastIdToSend = isInitial ? 0 : currentLastId;
+      try {
+        setIsLoading(true);
 
-      const response: DiaryCommentList = await getDiaryComments(
-        diaryId,
-        10,
-        lastIdToSend,
-      );
+        const lastIdToSend = isInitial ? 0 : currentLastId;
 
-      if (isInitial) {
-        setComments(response.comments);
-      } else {
-        setComments(prev => [...prev, ...response.comments]);
+        const response = await getDiaryComments(targetId, 10, lastIdToSend);
+
+        if (isInitial) {
+          setComments(response.comments);
+        } else {
+          setComments(prev => [...prev, ...response.comments]);
+        }
+
+        setCurrentLastId(response.lastId);
+        setHasMore(response.hasNext);
+      } finally {
+        setIsLoading(false);
       }
-
-      setCurrentLastId(response.lastId);
-      setHasMore(response.hasNext);
-    } catch (error) {
-      console.error("댓글 로드 실패:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    },
+    [targetId, currentLastId, hasMore, isLoading],
+  );
 
   useEffect(() => {
     fetchComments(true);
-  }, [diaryId]);
+  }, [fetchComments]);
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
@@ -105,7 +108,8 @@ export const SharedDiaryComment = ({
 
         <footer className="fixed bottom-0 flex w-full max-w-[440px] items-center gap-[13px] bg-white px-4 pt-4 pb-[11px]">
           <MessageInput
-            diaryId={diaryId}
+            type={type}
+            targetId={targetId}
             isLiked={isLiked}
             onSend={async message => {
               const tempId = Date.now();
@@ -125,7 +129,7 @@ export const SharedDiaryComment = ({
               setComments(prev => [...prev, optimisticComment]);
 
               try {
-                const serverComment = await postDiaryComment(diaryId, message);
+                const serverComment = await postDiaryComment(targetId, message);
 
                 setComments(prev =>
                   prev.map(comment =>
