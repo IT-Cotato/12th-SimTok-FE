@@ -18,7 +18,9 @@ import ReplyIcon from "@/assets/reply.svg";
 import { SheetType } from "../dailyRecord/ChatBottomSheet";
 
 interface MessageInputProps {
-  type: SheetType; // 하루미션 or 공유일기
+  type?: SheetType; // 하루미션 or 공유일기
+  onInputClick?: () => void;
+  readOnly?: boolean;
   targetId?: number;
   isLiked?: boolean;
   isChatting?: boolean;
@@ -27,7 +29,6 @@ interface MessageInputProps {
   onSend?: (message: string) => void;
   onImageUpload?: (file: File) => void;
   className?: string;
-  blackMode?: boolean; // 하루기록 댓글에서 사용
   //채팅에서 사용하는 추천 문구
   suggestedMessage?: string;
   onMessageChange?: (text: string) => void;
@@ -36,13 +37,14 @@ interface MessageInputProps {
 export const MessageInput = ({
   type,
   targetId,
+  onInputClick,
+  readOnly,
   isLiked = false,
   isChatting = false,
   isDimmed = false,
   onFocus,
   onSend,
   onImageUpload,
-  blackMode = false,
   suggestedMessage,
   onMessageChange,
 }: MessageInputProps) => {
@@ -57,7 +59,6 @@ export const MessageInput = ({
   const currentText = (isChatting ? suggestedMessage : localText) || "";
   const hasText = currentText.trim().length > 0;
 
-  // 2. 입력값이 바뀔 때 처리
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     if (isChatting) {
@@ -90,7 +91,7 @@ export const MessageInput = ({
   };
 
   const handleHeartClick = async () => {
-    if (!targetId) return;
+    if (!type || !targetId) return;
     const previousState = heartClicked;
     setHeartClicked(!previousState);
 
@@ -120,7 +121,7 @@ export const MessageInput = ({
     <div
       className={`focus-within:border-mint-01 relative flex h-[50px] w-full items-center gap-[10px] rounded-2xl px-[15px] transition-colors ${
         isDimmed ? "bg-neutral-04" : "bg-neutral-10"
-      } ${blackMode ? "border-neutral-02 border bg-transparent" : ""} `}
+      } ${type === "challenge" ? "border-neutral-02 border bg-transparent" : ""} `}
       onClick={() => inputRef.current?.focus()}
     >
       <input
@@ -154,7 +155,7 @@ export const MessageInput = ({
               <HeartfillIcon className="text-mint-01 h-[26px] w-[26px]" />
             ) : (
               <HeartBlankIcon
-                className={`${blackMode ? "text-neutral-06" : "text-neutral-04"} h-[26px] w-[26px]`}
+                className={`${type === "challenge" ? "text-neutral-06" : "text-neutral-04"} h-[26px] w-[26px]`}
               />
             )}
           </button>
@@ -164,9 +165,15 @@ export const MessageInput = ({
       <input
         ref={inputRef}
         className={`text-sub1-r ${
-          blackMode ? "text-neutral-05" : "text-neutral-01"
+          type === "challenge" ? "text-neutral-05" : "text-neutral-01"
         } h-full min-w-0 flex-1 bg-transparent focus:outline-none`}
         type="text"
+        readOnly={readOnly}
+        onClick={() => {
+          if (readOnly) {
+            onInputClick?.();
+          }
+        }}
         value={currentText}
         onChange={handleInputChange}
         onFocus={onFocus}

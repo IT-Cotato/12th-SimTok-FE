@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { getChallengeDetail } from "@/app/api/dailyRecord/dayLog.api";
 
 import { BackHeader } from "@/components/common/BackHeader";
+import { MessageInput } from "@/components/common/MessageInput";
 import { OnlyLoader } from "@/components/common/OnlyLoader";
 import { ChatBottomSheet } from "@/components/dailyRecord/ChatBottomSheet";
 
@@ -50,7 +51,7 @@ const DailyStory = () => {
 
   return (
     <section className="relative h-screen w-full bg-black">
-      <div className="fixed top-0 w-full max-w-[440px]">
+      <div className="fixed top-0 z-10 w-full max-w-[440px]">
         <BackHeader
           title={`${isMe ? "나" : story.memberInfo?.nickname}의 챌린지`}
           timeAgo={timeAgo}
@@ -58,22 +59,29 @@ const DailyStory = () => {
         />
       </div>
 
-      <div className="absolute top-[56px] bottom-[56px] w-full max-w-[440px]">
+      <div className="absolute top-[56px] right-0 bottom-[80px] left-0 flex items-center justify-center">
         <Image
           src={story.imageUrl}
           alt={`${story.memberInfo?.nickname}의 하루한컷`}
-          fill
-          className="object-cover"
+          width={440}
+          height={600}
+          className="h-auto w-full rounded-xl object-contain"
           priority
         />
       </div>
 
       {/* 클릭시 바텀시트 열리기 */}
-      {/* {chatOpen && } */}
-
-      {/* <div className="fixed bottom-0 w-full max-w-[440px]">
-        <StoryBottomBar />
-      </div> */}
+      <div className="fixed bottom-0 z-10 my-[15px] w-full max-w-[440px] px-4">
+        {chatOpen ? (
+          <ChatBottomSheet type="challenge" targetId={numericId} isLiked />
+        ) : (
+          <MessageInput
+            type="challenge"
+            onInputClick={() => setChatOpen(true)}
+            readOnly
+          />
+        )}
+      </div>
     </section>
   );
 };

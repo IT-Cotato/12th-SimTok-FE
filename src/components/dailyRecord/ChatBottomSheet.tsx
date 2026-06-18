@@ -76,7 +76,6 @@ export const ChatBottomSheet = ({
     }
   };
 
-   
   useEffect(() => {
     setComments([]);
     setCurrentLastId(0);
@@ -93,11 +92,11 @@ export const ChatBottomSheet = ({
 
   return (
     <div
-      className="fixed inset-0 bottom-0 left-1/2 z-50 flex w-full max-w-[440px] -translate-x-1/2 items-end justify-center bg-black/50"
+      className={`${type === "diary" && "bg-black/50"} fixed inset-0 bottom-0 left-1/2 z-50 flex w-full max-w-[440px] -translate-x-1/2 items-end justify-center`}
       onClick={() => router.back()}
     >
       <section
-        className="flex h-[545px] w-full max-w-[440px] flex-col rounded-t-2xl bg-white"
+        className={`${type === "challenge" ? "bg-black/83" : "bg-white"} flex h-[545px] w-full max-w-[440px] flex-col rounded-2xl`}
         onClick={e => e.stopPropagation()}
       >
         <div className="flex w-full items-center justify-center px-4 pt-[10px] pb-9">
@@ -111,45 +110,48 @@ export const ChatBottomSheet = ({
           <CommentList comments={comments} />
           {isLoading && comments.length > 0 && <OnlyLoader />}
         </div>
-
-        <footer className="fixed bottom-0 flex w-full max-w-[440px] items-center gap-[13px] bg-white px-4 pt-4 pb-[11px]">
-          <MessageInput
-            type={type}
-            targetId={targetId}
-            isLiked={isLiked}
-            onSend={async message => {
-              const tempId = Date.now();
-              const optimisticComment: DiaryComment = {
-                commentId: tempId,
-                writerInfo: {
-                  memberId: profile?.memberId || 0,
-                  nickname: profile?.name || "사용자",
-                  profileImageUrl: profileImg,
-                  isMe: true,
-                },
-                content: message,
-                createdAt: new Date().toISOString(),
-              };
-
-              const previousComments = [...comments];
-              setComments(prev => [...prev, optimisticComment]);
-
-              try {
-                const serverComment = await postDiaryComment(targetId, message);
-
-                setComments(prev =>
-                  prev.map(comment =>
-                    comment.commentId === tempId ? serverComment : comment,
-                  ),
-                );
-              } catch (error) {
-                console.error("댓글 등록 실패:", error);
-                setComments(previousComments);
-              }
-            }}
-          />
-        </footer>
       </section>
+      <footer
+        className={`${
+          type === "challenge" ? "bg-black" : "bg-white"
+        } fixed bottom-0 flex w-full max-w-[440px] items-center gap-[13px] px-4 pt-4 pb-[11px]`}
+      >
+        <MessageInput
+          type={type}
+          targetId={targetId}
+          isLiked={isLiked}
+          onSend={async message => {
+            const tempId = Date.now();
+            const optimisticComment: DiaryComment = {
+              commentId: tempId,
+              writerInfo: {
+                memberId: profile?.memberId || 0,
+                nickname: profile?.name || "사용자",
+                profileImageUrl: profileImg,
+                isMe: true,
+              },
+              content: message,
+              createdAt: new Date().toISOString(),
+            };
+
+            const previousComments = [...comments];
+            setComments(prev => [...prev, optimisticComment]);
+
+            try {
+              const serverComment = await postDiaryComment(targetId, message);
+
+              setComments(prev =>
+                prev.map(comment =>
+                  comment.commentId === tempId ? serverComment : comment,
+                ),
+              );
+            } catch (error) {
+              console.error("댓글 등록 실패:", error);
+              setComments(previousComments);
+            }
+          }}
+        />
+      </footer>
     </div>
   );
 };
