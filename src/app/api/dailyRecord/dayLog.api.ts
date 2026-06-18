@@ -71,4 +71,6 @@ export const postChallengeComments = async (challengeId: number) => {
   const { data } = await apiInstance.post(
     `/challenges/${challengeId}/comments`,
   );
+
+  return data.data;
 };

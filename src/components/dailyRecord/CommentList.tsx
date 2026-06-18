@@ -1,13 +1,13 @@
 import Image from "next/image";
 
-import { DiaryComment } from "@/types/diary.type";
+import { DailyComment } from "@/types/common";
 
 import { formatDate } from "@/utils/formatDate";
 
 import { ProfileImagePicker } from "../common/ProfileImagePicker";
 
 interface CommentListProps {
-  comments: DiaryComment[];
+  comments: DailyComment[];
 }
 
 export const CommentList = ({ comments }: CommentListProps) => {

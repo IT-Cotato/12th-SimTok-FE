@@ -11,7 +11,7 @@ import { getMyProfile } from "@/app/api/profile/profile.api";
 
 import { MessageInput } from "@/components/common/MessageInput";
 
-import { DiaryComment, DiaryCommentList } from "@/types/diary.type";
+import { DailyComment, DailyCommentList } from "@/types/common";
 import { MyProfile } from "@/types/myProfile.type";
 
 import { OnlyLoader } from "../common/OnlyLoader";
@@ -32,7 +32,7 @@ export const ChatBottomSheet = ({
   onHeartClick,
 }: ChatBottomSheetProps) => {
   const [profile, setProfile] = useState<MyProfile | null>(null);
-  const [comments, setComments] = useState<DiaryComment[]>([]);
+  const [comments, setComments] = useState<DailyComment[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [currentLastId, setCurrentLastId] = useState<number>(0);
@@ -59,7 +59,7 @@ export const ChatBottomSheet = ({
       setIsLoading(true);
       const lastIdToSend = isInitial ? 0 : currentLastId;
 
-      const response: DiaryCommentList = await getDiaryComments(
+      const response: DailyCommentList = await getDiaryComments(
         targetId,
         10,
         lastIdToSend,
@@ -125,7 +125,7 @@ export const ChatBottomSheet = ({
             onHeartClick={onHeartClick}
             onSend={async message => {
               const tempId = Date.now();
-              const optimisticComment: DiaryComment = {
+              const optimisticComment: DailyComment = {
                 commentId: tempId,
                 writerInfo: {
                   memberId: profile?.memberId || 0,
