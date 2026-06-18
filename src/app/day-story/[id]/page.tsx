@@ -2,10 +2,13 @@
 
 import Image from "next/image";
 import { useParams, useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
 
 import { useEffect, useState } from "react";
 
+import {
+  deleteChallengeLike,
+  postChallengeLike,
+} from "@/app/api/dailyRecord/dayLog.api";
 import { getChallengeDetail } from "@/app/api/dailyRecord/dayLog.api";
 
 import { BackHeader } from "@/components/common/BackHeader";
@@ -21,9 +24,22 @@ const DailyStory = () => {
   const [story, setStory] = useState<MissionDetail>();
   const [loading, setLoading] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
 
   const { id } = useParams<{ id: string }>();
   const numericId = Number(id);
+
+  const handleHeartClick = async () => {
+    const previousState = isLiked;
+    setIsLiked(!previousState);
+    try {
+      const apiCall = isLiked ? deleteChallengeLike : postChallengeLike;
+      await apiCall(numericId);
+    } catch (error) {
+      console.error("좋아요 처리 실패", error);
+      setIsLiked(previousState);
+    }
+  };
 
   useEffect(() => {
     const fetchStory = async () => {
@@ -32,6 +48,7 @@ const DailyStory = () => {
         const response = await getChallengeDetail(numericId);
 
         setStory(response);
+        setIsLiked(response.isLiked);
       } catch (error) {
         console.error("챌린지 상세 정보 로드 실패:", error);
       }
@@ -73,11 +90,19 @@ const DailyStory = () => {
       {/* 클릭시 바텀시트 열리기 */}
       <div className="fixed bottom-0 z-10 my-[15px] w-full max-w-[440px] px-4">
         {chatOpen ? (
-          <ChatBottomSheet type="challenge" targetId={numericId} isLiked />
+          <ChatBottomSheet
+            type="challenge"
+            targetId={numericId}
+            onHeartClick={handleHeartClick}
+            isLiked={isLiked}
+          />
         ) : (
           <MessageInput
             type="challenge"
+            targetId={numericId}
             onInputClick={() => setChatOpen(true)}
+            onHeartClick={handleHeartClick}
+            isLiked={isLiked}
             readOnly
           />
         )}

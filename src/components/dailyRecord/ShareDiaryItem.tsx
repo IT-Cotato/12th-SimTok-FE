@@ -136,6 +136,7 @@ export const SharedDiaryItem = ({
             type="diary"
             targetId={item.diaryId}
             isLiked={item.isLiked}
+            onHeartClick={handleHeartClick}
           />
         </div>
       )}

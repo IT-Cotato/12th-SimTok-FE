@@ -1,10 +1,12 @@
 "use client";
 import { useRouter } from "next/navigation";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
-import { getDiaryComments } from "@/app/api/dailyRecord/sharedDiary.api";
-import { postDiaryComment } from "@/app/api/dailyRecord/sharedDiary.api";
+import {
+  getDiaryComments,
+  postDiaryComment,
+} from "@/app/api/dailyRecord/sharedDiary.api";
 import { getMyProfile } from "@/app/api/profile/profile.api";
 
 import { MessageInput } from "@/components/common/MessageInput";
@@ -21,11 +23,13 @@ interface ChatBottomSheetProps {
   type: SheetType;
   targetId: number;
   isLiked: boolean;
+  onHeartClick?: () => void;
 }
 export const ChatBottomSheet = ({
   type,
   targetId,
   isLiked,
+  onHeartClick,
 }: ChatBottomSheetProps) => {
   const [profile, setProfile] = useState<MyProfile | null>(null);
   const [comments, setComments] = useState<DiaryComment[]>([]);
@@ -120,6 +124,7 @@ export const ChatBottomSheet = ({
           type={type}
           targetId={targetId}
           isLiked={isLiked}
+          onHeartClick={onHeartClick}
           onSend={async message => {
             const tempId = Date.now();
             const optimisticComment: DiaryComment = {

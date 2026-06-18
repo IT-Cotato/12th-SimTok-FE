@@ -32,6 +32,7 @@ interface MessageInputProps {
   //채팅에서 사용하는 추천 문구
   suggestedMessage?: string;
   onMessageChange?: (text: string) => void;
+  onHeartClick?: () => void;
 }
 
 export const MessageInput = ({
@@ -47,12 +48,12 @@ export const MessageInput = ({
   onImageUpload,
   suggestedMessage,
   onMessageChange,
+  onHeartClick,
 }: MessageInputProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [localText, setLocalText] = useState(""); // 댓글 모드용 내부 상태
   const [isComposing, setIsComposing] = useState(false);
-  const [heartClicked, setHeartClicked] = useState(isLiked);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -90,33 +91,6 @@ export const MessageInput = ({
     }
   };
 
-  const handleHeartClick = async () => {
-    if (!type || !targetId) return;
-    const previousState = heartClicked;
-    setHeartClicked(!previousState);
-
-    const likeApis = {
-      diary: {
-        like: postDiaryLike,
-        unlike: deleteDiaryLike,
-      },
-      challenge: {
-        like: postChallengeLike,
-        unlike: deleteChallengeLike,
-      },
-    };
-
-    const action = heartClicked ? "unlike" : "like";
-    const apiCall = likeApis[type][action];
-
-    try {
-      await apiCall(targetId);
-    } catch (error) {
-      console.error("좋아요 처리 실패:", error);
-      setHeartClicked(previousState);
-    }
-  };
-
   return (
     <div
       className={`focus-within:border-mint-01 relative flex h-[50px] w-full items-center gap-[10px] rounded-2xl px-[15px] transition-colors ${
@@ -148,10 +122,10 @@ export const MessageInput = ({
             className="flex cursor-pointer items-center justify-center"
             onClick={e => {
               e.stopPropagation();
-              handleHeartClick();
+              onHeartClick?.();
             }}
           >
-            {heartClicked ? (
+            {isLiked ? (
               <HeartfillIcon className="text-mint-01 h-[26px] w-[26px]" />
             ) : (
               <HeartBlankIcon
