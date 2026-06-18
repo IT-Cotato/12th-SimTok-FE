@@ -25,7 +25,9 @@ const SECTION_LABEL: Record<NotificationSection, string> = {
 const SECTION_ORDER: NotificationSection[] = ["GARDEN", "DAILY_RECORD", "CHAT"];
 
 function formatRelativeTime(createdAt: string): string {
-  const diff = Math.floor((Date.now() - new Date(createdAt).getTime()) / 1000);
+  const createdAtMs = new Date(createdAt).getTime();
+  if (Number.isNaN(createdAtMs)) return "방금";
+  const diff = Math.max(0, Math.floor((Date.now() - createdAtMs) / 1000));
   if (diff < 60) return `${diff}초`;
   if (diff < 3600) return `${Math.floor(diff / 60)}분`;
   if (diff < 86400) return `${Math.floor(diff / 3600)}시간`;
