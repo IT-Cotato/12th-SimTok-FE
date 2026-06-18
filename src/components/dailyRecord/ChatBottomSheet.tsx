@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { getDiaryComments } from "@/app/api/dailyRecord/sharedDiary.api";
 import { postDiaryComment } from "@/app/api/dailyRecord/sharedDiary.api";
@@ -48,35 +48,41 @@ export const ChatBottomSheet = ({
 
   const profileImg = profile?.profileImageUrl || "";
 
-  const fetchComments = useCallback(
-    async (isInitial = false) => {
-      if (isLoading || (!isInitial && !hasMore)) return;
+  const fetchComments = async (isInitial: boolean = false) => {
+    if (isLoading || (!isInitial && !hasMore)) return;
 
-      try {
-        setIsLoading(true);
+    try {
+      setIsLoading(true);
+      const lastIdToSend = isInitial ? 0 : currentLastId;
 
-        const lastIdToSend = isInitial ? 0 : currentLastId;
+      const response: DiaryCommentList = await getDiaryComments(
+        targetId,
+        10,
+        lastIdToSend,
+      );
 
-        const response = await getDiaryComments(targetId, 10, lastIdToSend);
-
-        if (isInitial) {
-          setComments(response.comments);
-        } else {
-          setComments(prev => [...prev, ...response.comments]);
-        }
-
-        setCurrentLastId(response.lastId);
-        setHasMore(response.hasNext);
-      } finally {
-        setIsLoading(false);
+      if (isInitial) {
+        setComments(response.comments);
+      } else {
+        setComments(prev => [...prev, ...response.comments]);
       }
-    },
-    [targetId, currentLastId, hasMore, isLoading],
-  );
 
+      setCurrentLastId(response.lastId);
+      setHasMore(response.hasNext);
+    } catch (error) {
+      console.error("댓글 로드 실패:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+   
   useEffect(() => {
+    setComments([]);
+    setCurrentLastId(0);
+    setHasMore(true);
     fetchComments(true);
-  }, [fetchComments]);
+  }, [targetId, type]);
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
