@@ -1,16 +1,12 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
 import { useEffect } from "react";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { BackHeader } from "@/components/common/BackHeader";
-import { NavBar } from "@/components/common/NavBar";
 import { NotiItem } from "@/components/noti/NotiItem";
 import { NotiSection } from "@/components/noti/NotiSection";
-import { RequestWidget } from "@/components/noti/RequestWidget";
 
 import { Notification, NotificationSection } from "@/types/noti.type";
 
@@ -36,7 +32,6 @@ function formatRelativeTime(createdAt: string): string {
 }
 
 const NotiPage = () => {
-  const router = useRouter();
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -67,11 +62,6 @@ const NotiPage = () => {
       <div className="flex flex-1 justify-center">
         <div className="mt-[13px] flex h-full w-110 flex-col pb-30">
           <BackHeader title="알림" />
-          <section className="mt-[18.5px]">
-            <RequestWidget
-              onClick={() => router.push("/notification/friend-requests")}
-            />
-          </section>
           {SECTION_ORDER.map(section => {
             const items = groupedBySection[section];
             if (items.length === 0) return null;
