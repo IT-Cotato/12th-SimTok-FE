@@ -6,11 +6,20 @@ interface NotiItemProps {
   imgUrl?: string | null;
   content: string;
   timeText: string;
+  onClick?: () => void;
 }
 
-export const NotiItem = ({ imgUrl, content, timeText }: NotiItemProps) => {
+export const NotiItem = ({
+  imgUrl,
+  content,
+  timeText,
+  onClick,
+}: NotiItemProps) => {
   return (
-    <div className="flex w-full items-center justify-between bg-white px-4 py-2.5 select-none">
+    <div
+      className="flex w-full items-center justify-between bg-white px-4 py-2.5 select-none"
+      onClick={onClick}
+    >
       <div className="flex items-center gap-4">
         <ProfileImagePicker
           imageUrl={imgUrl || null}

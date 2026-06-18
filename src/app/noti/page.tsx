@@ -13,6 +13,7 @@ import { Notification, NotificationSection } from "@/types/noti.type";
 import {
   getNotifications,
   patchReadAllNotifications,
+  patchReadNotification,
 } from "../api/noti/noti.api";
 
 const SECTION_LABEL: Record<NotificationSection, string> = {
@@ -73,6 +74,7 @@ const NotiPage = () => {
                     imgUrl={item.imageUrl}
                     content={item.content}
                     timeText={formatRelativeTime(item.createdAt)}
+                    onClick={() => patchReadNotification(item.notificationId)}
                   />
                 ))}
               </NotiSection>
