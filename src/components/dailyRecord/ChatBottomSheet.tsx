@@ -106,57 +106,56 @@ export const ChatBottomSheet = ({
         <div className="flex w-full items-center justify-center px-4 pt-[10px] pb-9">
           <div className="bg-neutral-08 h-[3px] w-[38px] rounded-[2px]"></div>
         </div>
-
         <div
           className="flex-1 overflow-y-auto pb-[109px]"
           onScroll={handleScroll}
         >
           <CommentList comments={comments} />
           {isLoading && comments.length > 0 && <OnlyLoader />}
-        </div>
+        </div>{" "}
+        <footer
+          className={`${
+            type === "challenge" ? "bg-black" : "bg-white"
+          } fixed bottom-0 flex w-full max-w-[440px] items-center gap-[13px] px-4 pt-4 pb-[11px]`}
+        >
+          <MessageInput
+            type={type}
+            targetId={targetId}
+            isLiked={isLiked}
+            onHeartClick={onHeartClick}
+            onSend={async message => {
+              const tempId = Date.now();
+              const optimisticComment: DiaryComment = {
+                commentId: tempId,
+                writerInfo: {
+                  memberId: profile?.memberId || 0,
+                  nickname: profile?.name || "사용자",
+                  profileImageUrl: profileImg,
+                  isMe: true,
+                },
+                content: message,
+                createdAt: new Date().toISOString(),
+              };
+
+              const previousComments = [...comments];
+              setComments(prev => [...prev, optimisticComment]);
+
+              try {
+                const serverComment = await postDiaryComment(targetId, message);
+
+                setComments(prev =>
+                  prev.map(comment =>
+                    comment.commentId === tempId ? serverComment : comment,
+                  ),
+                );
+              } catch (error) {
+                console.error("댓글 등록 실패:", error);
+                setComments(previousComments);
+              }
+            }}
+          />
+        </footer>
       </section>
-      <footer
-        className={`${
-          type === "challenge" ? "bg-black" : "bg-white"
-        } fixed bottom-0 flex w-full max-w-[440px] items-center gap-[13px] px-4 pt-4 pb-[11px]`}
-      >
-        <MessageInput
-          type={type}
-          targetId={targetId}
-          isLiked={isLiked}
-          onHeartClick={onHeartClick}
-          onSend={async message => {
-            const tempId = Date.now();
-            const optimisticComment: DiaryComment = {
-              commentId: tempId,
-              writerInfo: {
-                memberId: profile?.memberId || 0,
-                nickname: profile?.name || "사용자",
-                profileImageUrl: profileImg,
-                isMe: true,
-              },
-              content: message,
-              createdAt: new Date().toISOString(),
-            };
-
-            const previousComments = [...comments];
-            setComments(prev => [...prev, optimisticComment]);
-
-            try {
-              const serverComment = await postDiaryComment(targetId, message);
-
-              setComments(prev =>
-                prev.map(comment =>
-                  comment.commentId === tempId ? serverComment : comment,
-                ),
-              );
-            } catch (error) {
-              console.error("댓글 등록 실패:", error);
-              setComments(previousComments);
-            }
-          }}
-        />
-      </footer>
     </div>
   );
 };
