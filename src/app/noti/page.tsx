@@ -38,9 +38,18 @@ const NotiPage = () => {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    patchReadAllNotifications().then(() => {
-      queryClient.invalidateQueries({ queryKey: ["unreadNotificationCount"] });
-    });
+    // patchReadAllNotifications().then(() => {
+    //   queryClient.invalidateQueries({ queryKey: ["unreadNotificationCount"] });
+    // });
+    void patchReadAllNotifications()
+      .catch(error => {
+        console.error("전체 읽음 처리 실패", error);
+      })
+      .finally(() => {
+        queryClient.invalidateQueries({
+          queryKey: ["unreadNotificationCount"],
+        });
+      });
   }, [queryClient]);
 
   const { data } = useQuery({
@@ -76,7 +85,18 @@ const NotiPage = () => {
                     imgUrl={item.imageUrl}
                     content={item.content}
                     timeText={formatRelativeTime(item.createdAt)}
-                    onClick={() => patchReadNotification(item.notificationId)}
+                    //onClick={() => patchReadNotification(item.notificationId)}
+                    onClick={() => {
+                      void patchReadNotification(item.notificationId)
+                        .then(() =>
+                          queryClient.invalidateQueries({
+                            queryKey: ["unreadNotificationCount"],
+                          }),
+                        )
+                        .catch(error => {
+                          console.error("단건 읽음 처리 실패", error);
+                        });
+                    }}
                   />
                 ))}
               </NotiSection>
