@@ -6,9 +6,7 @@ import {
 
 export const getFriendName = (
   friend: CombinedFriend,
-  gardenInviteMode: boolean,
+  _gardenInviteMode?: boolean,
 ) => {
-  return gardenInviteMode
-    ? (friend as Friend).nickname
-    : (friend as FriendShipProfile).showName;
+  return "showName" in friend ? friend.showName : friend.nickname;
 };
