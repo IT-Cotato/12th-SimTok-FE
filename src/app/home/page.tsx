@@ -17,6 +17,7 @@ import { InvitationContent, InviteResponse } from "@/types/plantInvite.type";
 
 import { getInvitationList, patchInvite } from "../api/garden/invite.api";
 import { getPlantWidget } from "../api/home/home.api";
+import { getUnreadNotificationCount } from "../api/noti/noti.api";
 
 export default function HomePage() {
   const router = useRouter();
@@ -37,6 +38,12 @@ export default function HomePage() {
   const { data: plantData } = useQuery<GardenListResponse>({
     queryKey: ["gardenList"],
     queryFn: getPlantWidget,
+  });
+
+  const { data: unreadCount = 0 } = useQuery<number>({
+    queryKey: ["unreadNotificationCount"],
+    queryFn: getUnreadNotificationCount,
+    enabled: isAuthenticated,
   });
 
   const [inviteData, setInviteData] = useState<InvitationContent[]>([]);
@@ -76,8 +83,8 @@ export default function HomePage() {
     <main className="w-full">
       <div className="mt-[8.5px]">
         <Header
-          hasNewInvite={inviteCount > 0}
-          onAlarmClick={() => inviteCount > 0 && setIsModalOpen(true)}
+          hasNewInvite={unreadCount > 0}
+          onAlarmClick={() => router.push("/noti")}
         />
       </div>
 

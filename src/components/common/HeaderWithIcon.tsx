@@ -50,7 +50,7 @@ export const HeaderWithIcon = ({
               onClick={() => setIsAlarmNew(false)}
             >
               <AlarmIcon className="h-6 w-6 cursor-pointer" />
-              <span className="bg-red-00 absolute top-[2px] left-[14px] h-[10px] w-[10px] rounded-full" />
+              <span className="bg-red-01 absolute top-[2px] left-[14px] h-[10px] w-[10px] rounded-full" />
             </button>
           ) : (
             <AlarmIcon className="h-6 w-6 cursor-pointer" />

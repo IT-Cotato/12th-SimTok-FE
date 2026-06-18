@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 import { getFriendsList } from "@/app/api/friendships/friend.api";
-import { getGardenInviteFriends } from "@/app/api/garden/invite.api";
 
 import CheckIcon from "@/assets/check.svg";
 
@@ -41,9 +40,8 @@ export const FriendList = ({
     const fetchFriends = async () => {
       try {
         if (gardenInviteMode) {
-          const data = await getGardenInviteFriends();
-          // FriendGardenList 구조: { count: number, friends: Friend[] }
-          setFriends(data.friends);
+          const data = await getFriendsList("ACTIVE");
+          setFriends(data.friendshipList);
           setTotalFriendsCount(data.count);
         } else {
           const [activeData, pendingData] = await Promise.all([
@@ -54,9 +52,6 @@ export const FriendList = ({
             ...activeData.friendshipList,
             ...pendingData.friendshipList,
           ];
-
-          console.log(combined);
-          // 카운트 합치기
           const totalCount = activeData.count + pendingData.count;
           setFriends(combined);
           setTotalFriendsCount(totalCount);

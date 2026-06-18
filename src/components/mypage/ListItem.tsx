@@ -50,7 +50,7 @@ export const ListItem = ({
   const renderInnerContent = () => (
     <>
       <div className="flex items-center gap-2.5">
-        {Icon && <Icon className="h-6 w-6" />}
+        {Icon && <Icon className="text-neutral-03 h-6 w-6" />}
         <span className="text-neutral-03 text-sub0-sb">{label}</span>
       </div>
       {hasToggle && (
