@@ -11,3 +11,7 @@ export const getNotifications = async (): Promise<NotificationListResponse> => {
   const { data } = await apiInstance.get("/notifications");
   return data.data;
 };
+
+export const patchReadAllNotifications = async (): Promise<void> => {
+  await apiInstance.patch("/notifications/read-all");
+};

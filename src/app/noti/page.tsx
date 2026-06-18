@@ -2,7 +2,9 @@
 
 import { useRouter } from "next/navigation";
 
-import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
+
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { BackHeader } from "@/components/common/BackHeader";
 import { NavBar } from "@/components/common/NavBar";
@@ -12,7 +14,10 @@ import { RequestWidget } from "@/components/noti/RequestWidget";
 
 import { Notification, NotificationSection } from "@/types/noti.type";
 
-import { getNotifications } from "../api/noti/noti.api";
+import {
+  getNotifications,
+  patchReadAllNotifications,
+} from "../api/noti/noti.api";
 
 const SECTION_LABEL: Record<NotificationSection, string> = {
   GARDEN: "정원",
@@ -32,6 +37,13 @@ function formatRelativeTime(createdAt: string): string {
 
 const NotiPage = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    patchReadAllNotifications().then(() => {
+      queryClient.invalidateQueries({ queryKey: ["unreadNotificationCount"] });
+    });
+  }, [queryClient]);
 
   const { data } = useQuery({
     queryKey: ["notifications"],
