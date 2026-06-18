@@ -52,3 +52,23 @@ export const deleteChallengeLike = async (challengeId: number) => {
   );
   return data.data;
 };
+
+export const getChallengeComments = async (
+  challengeId: number,
+  size: number,
+  lastId?: number | null,
+) => {
+  const url =
+    lastId !== undefined && lastId !== null
+      ? `/challenges/${challengeId}/comments?lastId=${lastId}&size=${size}`
+      : `/challenges/${challengeId}/comments?size=${size}`;
+
+  const { data } = await apiInstance.get(url);
+  return data.data;
+};
+
+export const postChallengeComments = async (challengeId: number) => {
+  const { data } = await apiInstance.post(
+    `/challenges/${challengeId}/comments`,
+  );
+};
