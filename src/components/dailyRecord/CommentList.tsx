@@ -1,16 +1,16 @@
-import Image from "next/image";
-
 import { DailyComment } from "@/types/common";
 
 import { formatDate } from "@/utils/formatDate";
 
 import { ProfileImagePicker } from "../common/ProfileImagePicker";
+import { SheetType } from "./ChatBottomSheet";
 
 interface CommentListProps {
+  type?: SheetType;
   comments: DailyComment[];
 }
 
-export const CommentList = ({ comments }: CommentListProps) => {
+export const CommentList = ({ comments, type = "diary" }: CommentListProps) => {
   if (!comments || comments.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center pt-5">
@@ -32,11 +32,19 @@ export const CommentList = ({ comments }: CommentListProps) => {
             canEdit={false}
           />
           <div className="flex flex-1 justify-between">
-            <div className="flex flex-col gap-[1px]">
-              <p className="text-d3 text-neutral-01">
+            <div
+              className={`${type === "diary" ? "gap-[1px}" : ""} flex flex-col`}
+            >
+              <p
+                className={`${type === "diary" ? "text-neutral-01" : "text-neutral-10"} text-d3`}
+              >
                 {comment.writerInfo.nickname}
               </p>
-              <p className="text-sub1-r text-neutral-01">{comment.content}</p>
+              <p
+                className={`text-sub1-r ${type === "diary" ? "text-neutral-01" : "text-neutral-10"}`}
+              >
+                {comment.content}
+              </p>
             </div>
             <p className="text-body3 text-neutral-05 flex shrink-0 flex-col self-start">
               {formatDate(comment.createdAt)}

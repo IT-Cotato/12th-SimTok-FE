@@ -4,6 +4,10 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import {
+  getChallengeComments,
+  postChallengeComment,
+} from "@/app/api/dailyRecord/dayLog.api";
+import {
   getDiaryComments,
   postDiaryComment,
 } from "@/app/api/dailyRecord/sharedDiary.api";
@@ -59,7 +63,10 @@ export const ChatBottomSheet = ({
       setIsLoading(true);
       const lastIdToSend = isInitial ? 0 : currentLastId;
 
-      const response: DailyCommentList = await getDiaryComments(
+      const getCommentsApi =
+        type === "challenge" ? getChallengeComments : getDiaryComments;
+
+      const response: DailyCommentList = await getCommentsApi(
         targetId,
         10,
         lastIdToSend,
@@ -110,7 +117,7 @@ export const ChatBottomSheet = ({
           className="flex-1 overflow-y-auto pb-[109px]"
           onScroll={handleScroll}
         >
-          <CommentList comments={comments} />
+          <CommentList comments={comments} type={type} />
           {isLoading && comments.length > 0 && <OnlyLoader />}
         </div>{" "}
         <footer
@@ -140,8 +147,11 @@ export const ChatBottomSheet = ({
               const previousComments = [...comments];
               setComments(prev => [...prev, optimisticComment]);
 
+              const postCommentApi =
+                type === "challenge" ? postChallengeComment : postDiaryComment;
+
               try {
-                const serverComment = await postDiaryComment(targetId, message);
+                const serverComment = await postCommentApi(targetId, message);
 
                 setComments(prev =>
                   prev.map(comment =>
