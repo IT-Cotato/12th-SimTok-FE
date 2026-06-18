@@ -19,6 +19,15 @@ export const NotiItem = ({
     <div
       className="flex w-full items-center justify-between bg-white px-4 py-2.5 select-none"
       onClick={onClick}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={e => {
+        if (!onClick) return;
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onClick();
+        }
+      }}
     >
       <div className="flex items-center gap-4">
         <ProfileImagePicker
