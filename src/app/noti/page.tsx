@@ -2,20 +2,53 @@
 
 import { useRouter } from "next/navigation";
 
+import { useQuery } from "@tanstack/react-query";
+
 import { BackHeader } from "@/components/common/BackHeader";
 import { NavBar } from "@/components/common/NavBar";
 import { NotiItem } from "@/components/noti/NotiItem";
 import { NotiSection } from "@/components/noti/NotiSection";
 import { RequestWidget } from "@/components/noti/RequestWidget";
 
-import notiList from "@/mock/notiList.json";
+import { Notification, NotificationSection } from "@/types/noti.type";
 
-type NotiListItem = (typeof notiList)[number];
+import { getNotifications } from "../api/noti/noti.api";
 
-const SECTIONS = ["정원", "하루기록", "채팅"] as const;
+const SECTION_LABEL: Record<NotificationSection, string> = {
+  GARDEN: "정원",
+  DAILY_RECORD: "하루기록",
+  CHAT: "채팅",
+};
+
+const SECTION_ORDER: NotificationSection[] = ["GARDEN", "DAILY_RECORD", "CHAT"];
+
+function formatRelativeTime(createdAt: string): string {
+  const diff = Math.floor((Date.now() - new Date(createdAt).getTime()) / 1000);
+  if (diff < 60) return `${diff}초`;
+  if (diff < 3600) return `${Math.floor(diff / 60)}분`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)}시간`;
+  return `${Math.floor(diff / 86400)}일`;
+}
 
 const NotiPage = () => {
   const router = useRouter();
+
+  const { data } = useQuery({
+    queryKey: ["notifications"],
+    queryFn: getNotifications,
+  });
+
+  const notifications = data?.notifications ?? [];
+
+  const groupedBySection = SECTION_ORDER.reduce<
+    Record<NotificationSection, Notification[]>
+  >(
+    (acc, section) => {
+      acc[section] = notifications.filter(n => n.section === section);
+      return acc;
+    },
+    { GARDEN: [], DAILY_RECORD: [], CHAT: [] },
+  );
 
   return (
     <main className="flex min-h-dvh w-full flex-col">
@@ -27,23 +60,24 @@ const NotiPage = () => {
               onClick={() => router.push("/notification/friend-requests")}
             />
           </section>
-          {SECTIONS.map(section => (
-            <NotiSection key={section} title={section}>
-              {notiList
-                .filter((item: NotiListItem) => item.section === section)
-                .map((item: NotiListItem) => (
+          {SECTION_ORDER.map(section => {
+            const items = groupedBySection[section];
+            if (items.length === 0) return null;
+            return (
+              <NotiSection key={section} title={SECTION_LABEL[section]}>
+                {items.map(item => (
                   <NotiItem
-                    key={item.id}
-                    imgUrl={item.imgUrl}
+                    key={item.notificationId}
+                    imgUrl={item.imageUrl}
                     content={item.content}
-                    timeText={item.timeText}
+                    timeText={formatRelativeTime(item.createdAt)}
                   />
                 ))}
-            </NotiSection>
-          ))}
+              </NotiSection>
+            );
+          })}
         </div>
       </div>
-      <NavBar />
     </main>
   );
 };
