@@ -45,9 +45,7 @@ const MyPage = () => {
   const handleLogout = async () => {
     try {
       await logout();
-    } catch {
-      // 토큰 만료 등으로 401이 와도 클라이언트 로그아웃은 진행
-    }
+    } catch {}
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     window.location.href = "/login";
